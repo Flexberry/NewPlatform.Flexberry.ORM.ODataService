@@ -1,8 +1,9 @@
 language: csharp
-solution: Flexberry ORM ODataService.sln
+solution: NewPlatform.Flexberry.ORM.ODataService.sln
 install:
-  - nuget restore "Flexberry ORM ODataService.sln"
-  - nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
+  - nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
+  - nuget install CodeContractsRemover -Version 1.0.5 -OutputDirectory contractremover
+  - rm -rf ./packages/CodeContracts.MSBuild.1.12.0
 script:
-  - xbuild /p:Configuration=Debug "Flexberry ORM ODataService.sln"
-  - mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+  - mono ./contractremover/CodeContractsRemover.1.0.5/tools/code_contracts_remover.exe Convert ./
+  - msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln
