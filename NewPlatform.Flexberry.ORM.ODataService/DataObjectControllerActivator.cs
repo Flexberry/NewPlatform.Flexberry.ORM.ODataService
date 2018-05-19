@@ -50,7 +50,8 @@
         {
             if (controllerDescriptor.ControllerName == "DataObject")
             {
-                var ds = (IDataService)request.GetDependencyScope().GetService(typeof(IDataService));
+                var dr = request.GetConfiguration().DependencyResolver;
+                var ds = (IDataService)dr.GetService(typeof(IDataService));
                 if (ds == null)
                 {
                     throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
@@ -60,7 +61,7 @@
 
                 var controller = new DataObjectController(ds, token.Model, token.Events, token.Functions);
 
-                var offlineManager = (BaseOfflineManager)request.GetDependencyScope().GetService(typeof(BaseOfflineManager));
+                var offlineManager = (BaseOfflineManager)dr.GetService(typeof(BaseOfflineManager));
                 if (offlineManager != null)
                 {
                     controller.OfflineManager = offlineManager;

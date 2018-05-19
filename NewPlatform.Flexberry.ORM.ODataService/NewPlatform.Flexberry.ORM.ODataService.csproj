@@ -362,6 +362,7 @@
     <Compile Include="Functions\QueryParameters.cs" />
     <Compile Include="Functions\Function.cs" />
     <Compile Include="Functions\FunctionContainer.cs" />
+    <Compile Include="JSSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
