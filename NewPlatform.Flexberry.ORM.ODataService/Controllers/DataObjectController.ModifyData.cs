@@ -12,7 +12,8 @@
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
     using System.Web.OData;
-    using System.Web.Script.Serialization;
+    using System.Web.OData.Extensions;
+    using System.Web.OData.Routing;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -30,9 +31,6 @@
     using Newtonsoft.Json;
 
     using File = ICSSoft.STORMNET.FileType.File;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -337,7 +335,7 @@
 
             string json = (string)Request.Properties[PostPatchHandler.RequestContent];
 
-            Dictionary<string, object> props = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
+            Dictionary<string, object> props = JSSerializer.Deserialize<Dictionary<string, object>>(json);
             var keys = props.Keys.ToArray();
             var odataBindNullList = new List<string>();
             foreach (var key in keys)
@@ -366,7 +364,7 @@
                 }
             }
 
-            json = new JavaScriptSerializer().Serialize(props);
+            json = JSSerializer.Serialize(props);
             Request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             IContentNegotiator negotiator = (IContentNegotiator)Configuration.Services.GetService(typeof(IContentNegotiator));

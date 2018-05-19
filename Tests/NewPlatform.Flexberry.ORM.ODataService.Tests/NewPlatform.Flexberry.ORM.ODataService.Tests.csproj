@@ -360,10 +360,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Files\delorean.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SqlScripts\MssqlScript.sql" />
     <Content Include="SqlScripts\OracleScript.sql" />
