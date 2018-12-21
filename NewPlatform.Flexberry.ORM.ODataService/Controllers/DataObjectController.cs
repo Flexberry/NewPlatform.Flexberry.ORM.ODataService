@@ -40,9 +40,12 @@
     using ODataPath = System.Web.OData.Routing.ODataPath;
     using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
     using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Unity.Configuration;    /// <summary>
-                                                      /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
-                                                      /// </summary>
+    using Microsoft.Practices.Unity.Configuration;
+    using ICSSoft.STORMNET.Security;
+
+    /// <summary>
+    /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
+    /// </summary>
     public partial class DataObjectController : BaseODataController
     {
         private List<string> _filterDetailProperties;
@@ -242,11 +245,22 @@
 
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
         {
-            _lcs.View.Name = "View";
-            ExportParams par = new ExportParams { PropertiesOrder = new List<string>(), View = _lcs.View };
+            View view = _dynamicView.View;
+            if (_lcs != null)
+            {
+                view = _lcs.View;
+            }
+
+            view.Name = "View";
+            ExportParams par = new ExportParams
+            {
+                PropertiesOrder = new List<string>(),
+                View = view,
+                DataObjectTypes = null,
+                LimitFunction = null
+            };
 
             var colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
-
             par.PropertiesOrder = new List<string>();
             par.HeaderCaptions = new List<IHeaderCaption>();
 
@@ -257,9 +271,9 @@
                 par.HeaderCaptions.Add(new HeaderCaption { PropertyName = columnInfo[0], Caption = columnInfo[1] });
             }
 
-            for (int i = 0; i < _lcs.View.Details.Length; i++)
+            for (int i = 0; i < view.Details.Length; i++)
             {
-                DetailInView detail = _lcs.View.Details[i];
+                DetailInView detail = view.Details[i];
                 detail.View.Name = $"ViewDetail{i}";
                 var column = par.HeaderCaptions.FirstOrDefault(col => col.PropertyName == detail.Name);
                 if (column != null)
@@ -283,8 +297,16 @@
 
             par.DetailsInSeparateColumns = Convert.ToBoolean(queryParams.Get("detSeparateCols"));
             par.DetailsInSeparateRows = Convert.ToBoolean(queryParams.Get("detSeparateRows"));
+            MemoryStream result;
+            if (_model.ODataExportService != null)
+            {
+                result = _model.ODataExportService.CreateExportStream(_dataService, par, _objs, queryParams);
+            }
+            else
+            {
+                result = _model.ExportService.CreateExportStream(_dataService, par, _objs);
+            }
 
-            MemoryStream result = _model.ExportService.CreateExportStream(_dataService, par, _objs);
             HttpResponseMessage msg = Request.CreateResponse(HttpStatusCode.OK);
             RawOutputFormatter.PrepareHttpResponseMessage(ref msg, "application/ms-excel", _model, result.ToArray());
             msg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -377,7 +399,11 @@
                     {
                         if (item is PathSelectItem && (item as PathSelectItem).SelectedPath.FirstSegment is PropertySegment)
                         {
-                            selectedProperties.Add(((item as PathSelectItem).SelectedPath.FirstSegment as PropertySegment).Property.Name, item);
+                            string key = ((item as PathSelectItem).SelectedPath.FirstSegment as PropertySegment).Property.Name;
+                            if (!selectedProperties.ContainsKey(key))
+                            {
+                                selectedProperties.Add(key, item);
+                            }
                         }
                     }
                     else
@@ -890,9 +916,9 @@
             if (!IncludeCount || count != 0)
                 _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
 
-            NameValueCollection queryParams = HttpUtility.ParseQueryString(Request.RequestUri.Query);
+            NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
 
-            if (_model.ExportService != null && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+            if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
             {
                 return CreateExcel(queryParams);
             }
@@ -1020,6 +1046,14 @@
         /// <returns>Если параметр callGetObjectsCount установлен в false, то возвращаются объекты, иначе пустой массив объектов.</returns>
         private DataObject[] LoadObjects(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
+            foreach (var propType in Information.GetAllTypesFromView(lcs.View))
+            {
+                if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
+                {
+                    _dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Read, true);
+                }
+            }
+
             DataObject[] dobjs = new DataObject[0];
             bool doLoad = true;
             count = -1;
