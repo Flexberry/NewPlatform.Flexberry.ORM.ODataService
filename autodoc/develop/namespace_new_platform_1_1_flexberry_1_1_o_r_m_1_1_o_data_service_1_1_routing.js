@@ -1,0 +1,4 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing =
+[
+    [ "DataObjectRoutingConvention", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention" ]
+];

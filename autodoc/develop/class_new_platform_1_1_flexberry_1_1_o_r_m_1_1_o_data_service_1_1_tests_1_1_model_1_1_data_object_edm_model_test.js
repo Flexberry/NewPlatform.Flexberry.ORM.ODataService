@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_data_object_edm_model_test =
+[
+    [ "TestGetDerivedTypes", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_data_object_edm_model_test.html#af4aa44934c52065bc728855a43ca5884", null ]
+];

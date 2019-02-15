@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_default_data_object_model_builder_test =
+[
+    [ "TestDataObjectIsNotRegisteredInEmptyModel", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_default_data_object_model_builder_test.html#aa76e505e52a27dc81a02877dbe3b28ec", null ],
+    [ "TestRegisteringHierarchy", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_default_data_object_model_builder_test.html#a3933cb24f54a36eee4ca5394a04ec424", null ]
+];

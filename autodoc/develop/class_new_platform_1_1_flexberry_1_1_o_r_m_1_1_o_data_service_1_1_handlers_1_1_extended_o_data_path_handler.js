@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_handlers_1_1_extended_o_data_path_handler =
+[
+    [ "Parse", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_handlers_1_1_extended_o_data_path_handler.html#a7ec5a3e2d9f0ec4b3974c0e731b973e4", null ]
+];

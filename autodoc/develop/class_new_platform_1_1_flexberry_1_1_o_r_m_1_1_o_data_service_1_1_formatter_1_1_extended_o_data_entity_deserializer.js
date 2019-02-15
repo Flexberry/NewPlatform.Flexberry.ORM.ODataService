@@ -1,0 +1,10 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer =
+[
+    [ "ExtendedODataEntityDeserializer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#ad39a1d05a31c03efdbd5054ff06eee6a", null ],
+    [ "ApplyNavigationProperty", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#a9e71eae0ad7f931041b519f83e5f0b2b", null ],
+    [ "ApplyStructuralProperty", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#acb3ed11885710368575afd66ae31d500", null ],
+    [ "Read", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#a3888b1eedfbfc6121848fc511a7de9ef", null ],
+    [ "Dictionary", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#a7c40e9c80003de3940d8b7d14b3f7984", null ],
+    [ "OdataBindNull", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#ad57aae34fff6f9b415947e7f0552426f", null ],
+    [ "ReadException", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#a106d4cc19cd7b572f32b3343b3edeedf", null ]
+];

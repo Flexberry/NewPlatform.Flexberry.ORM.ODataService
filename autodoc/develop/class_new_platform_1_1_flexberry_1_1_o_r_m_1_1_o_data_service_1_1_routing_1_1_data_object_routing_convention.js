@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention =
+[
+    [ "SelectAction", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc", null ],
+    [ "SelectController", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a04310240045eeb54281ca095cb79da8c", null ]
+];

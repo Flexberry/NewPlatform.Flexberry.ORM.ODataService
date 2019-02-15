@@ -1,0 +1,881 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>Flexberry ORM ODataService 5.0.0: Интерфейс NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Flexberry ORM ODataService 5.0.0
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="hierarchy.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Пространства имен</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Переменные</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Перечисления</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Элементы перечислений</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Свойства</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#properties">Свойства</a> &#124;
+<a href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_3d09b9ae12f384886bf99838365eb0e4.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Интерфейс NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Интерфейс для провайдеров файловых свойств объектов данных.  
+ <a href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#details">Подробнее...</a></p>
+<div class="dynheader">
+Граф наследования:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.png" usemap="#NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider_map" alt=""/>
+  <map id="NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider_map" name="NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider_map">
+<area href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html" title="Базовый провайдер для файловых свойств объектов данных. " alt="NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider" shape="rect" coords="262,56,776,80"/>
+<area href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html" title="Провайдер для файловых свойств объектов данных типа File. " alt="NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider" shape="rect" coords="0,112,514,136"/>
+<area href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html" title="Провайдер для свойства объектов данных типа WebFile. " alt="NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider" shape="rect" coords="524,112,1038,136"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a94e20f255a6293c9b3b9fc445546306c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a94e20f255a6293c9b3b9fc445546306c">GetFileDescription</a> (object fileProperty)</td></tr>
+<tr class="memdesc:a94e20f255a6293c9b3b9fc445546306c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение метаданных с описанием файлового свойства объекта данных.  <a href="#a94e20f255a6293c9b3b9fc445546306c">Подробнее...</a><br/></td></tr>
+<tr class="separator:a94e20f255a6293c9b3b9fc445546306c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c86a00a0d5843f1b2dedaf6fb74430"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a48c86a00a0d5843f1b2dedaf6fb74430">GetFileDescription</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:a48c86a00a0d5843f1b2dedaf6fb74430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение метаданных с описанием файлового свойства объекта данных.  <a href="#a48c86a00a0d5843f1b2dedaf6fb74430">Подробнее...</a><br/></td></tr>
+<tr class="separator:a48c86a00a0d5843f1b2dedaf6fb74430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17d3e910bd4468369d4ffd6f7f5c358e"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a17d3e910bd4468369d4ffd6f7f5c358e">GetFileDescriptions</a> (DataObject dataObject)</td></tr>
+<tr class="memdesc:a17d3e910bd4468369d4ffd6f7f5c358e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение списка метаданных с описанием файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>.  <a href="#a17d3e910bd4468369d4ffd6f7f5c358e">Подробнее...</a><br/></td></tr>
+<tr class="separator:a17d3e910bd4468369d4ffd6f7f5c358e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66aa0bc22cd8017f3f7dce0b1c0cb596"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a66aa0bc22cd8017f3f7dce0b1c0cb596">GetFileProperty</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:a66aa0bc22cd8017f3f7dce0b1c0cb596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение файлового свойства объекта данных.  <a href="#a66aa0bc22cd8017f3f7dce0b1c0cb596">Подробнее...</a><br/></td></tr>
+<tr class="separator:a66aa0bc22cd8017f3f7dce0b1c0cb596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0e39b6f25b7afb45b3ced9e3bbc41c8"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab0e39b6f25b7afb45b3ced9e3bbc41c8">GetFileProperty</a> (string filePath)</td></tr>
+<tr class="memdesc:ab0e39b6f25b7afb45b3ced9e3bbc41c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение файлового свойства из файла, расположенного по заданному пути.  <a href="#ab0e39b6f25b7afb45b3ced9e3bbc41c8">Подробнее...</a><br/></td></tr>
+<tr class="separator:ab0e39b6f25b7afb45b3ced9e3bbc41c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d587adac48e3562de694526704e67b2"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a4d587adac48e3562de694526704e67b2">GetFileProperty</a> (<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> fileDescription)</td></tr>
+<tr class="memdesc:a4d587adac48e3562de694526704e67b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение файлового свойства объекта данных, по его метаданным.  <a href="#a4d587adac48e3562de694526704e67b2">Подробнее...</a><br/></td></tr>
+<tr class="separator:a4d587adac48e3562de694526704e67b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018333d6e5f27cf8f863ad03006f84c4"><td class="memItemLeft" align="right" valign="top">List&lt; object &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a018333d6e5f27cf8f863ad03006f84c4">GetFileProperties</a> (DataObject dataObject)</td></tr>
+<tr class="memdesc:a018333d6e5f27cf8f863ad03006f84c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение списка файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>.  <a href="#a018333d6e5f27cf8f863ad03006f84c4">Подробнее...</a><br/></td></tr>
+<tr class="separator:a018333d6e5f27cf8f863ad03006f84c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab62c083da1e474d2e56167da33fa64df"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab62c083da1e474d2e56167da33fa64df">GetFileName</a> (object fileProperty)</td></tr>
+<tr class="memdesc:ab62c083da1e474d2e56167da33fa64df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение имени файла для файлового свойства объекта данных.  <a href="#ab62c083da1e474d2e56167da33fa64df">Подробнее...</a><br/></td></tr>
+<tr class="separator:ab62c083da1e474d2e56167da33fa64df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8880dd1b4b862ae264745796c2d6009"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab8880dd1b4b862ae264745796c2d6009">GetFileName</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:ab8880dd1b4b862ae264745796c2d6009"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение имени файла для файлового свойства объекта данных.  <a href="#ab8880dd1b4b862ae264745796c2d6009">Подробнее...</a><br/></td></tr>
+<tr class="separator:ab8880dd1b4b862ae264745796c2d6009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a323058b1f4a7d02627af99c5b7459193"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a323058b1f4a7d02627af99c5b7459193">GetFileMimeType</a> (object fileProperty)</td></tr>
+<tr class="memdesc:a323058b1f4a7d02627af99c5b7459193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение MIME-типа для файлового свойства объекта данных.  <a href="#a323058b1f4a7d02627af99c5b7459193">Подробнее...</a><br/></td></tr>
+<tr class="separator:a323058b1f4a7d02627af99c5b7459193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af90afd864d3c72553fb78fbcc6a9b10a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#af90afd864d3c72553fb78fbcc6a9b10a">GetFileMimeType</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:af90afd864d3c72553fb78fbcc6a9b10a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение MIME-типа для файлового свойства объекта данных.  <a href="#af90afd864d3c72553fb78fbcc6a9b10a">Подробнее...</a><br/></td></tr>
+<tr class="separator:af90afd864d3c72553fb78fbcc6a9b10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a646246b105e29de598afe7108502a563"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a646246b105e29de598afe7108502a563">GetFileSize</a> (object fileProperty)</td></tr>
+<tr class="memdesc:a646246b105e29de598afe7108502a563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение размера файла, связанного с объектом данных, в байтах.  <a href="#a646246b105e29de598afe7108502a563">Подробнее...</a><br/></td></tr>
+<tr class="separator:a646246b105e29de598afe7108502a563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe9a8ef4eee6c1322708906e2dfb2384"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#abe9a8ef4eee6c1322708906e2dfb2384">GetFileSize</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:abe9a8ef4eee6c1322708906e2dfb2384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение MIME-типа для файлового свойства объекта данных.  <a href="#abe9a8ef4eee6c1322708906e2dfb2384">Подробнее...</a><br/></td></tr>
+<tr class="separator:abe9a8ef4eee6c1322708906e2dfb2384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef6bfd1a7c5b67ac35c0cbea623fa01f"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#aef6bfd1a7c5b67ac35c0cbea623fa01f">GetFileStream</a> (object fileProperty)</td></tr>
+<tr class="memdesc:aef6bfd1a7c5b67ac35c0cbea623fa01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение потока данных для файлового свойства объекта данных.  <a href="#aef6bfd1a7c5b67ac35c0cbea623fa01f">Подробнее...</a><br/></td></tr>
+<tr class="separator:aef6bfd1a7c5b67ac35c0cbea623fa01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec81576804758e4967f453294aaf460"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a8ec81576804758e4967f453294aaf460">GetFileStream</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:a8ec81576804758e4967f453294aaf460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение потока данных для файлового свойства объекта данных.  <a href="#a8ec81576804758e4967f453294aaf460">Подробнее...</a><br/></td></tr>
+<tr class="separator:a8ec81576804758e4967f453294aaf460"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a935587121833e7dd9d68d64e728cb33c"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a935587121833e7dd9d68d64e728cb33c">GetFileStream</a> (<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> fileDescription)</td></tr>
+<tr class="memdesc:a935587121833e7dd9d68d64e728cb33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение потока данных для файлового свойства объекта данных.  <a href="#a935587121833e7dd9d68d64e728cb33c">Подробнее...</a><br/></td></tr>
+<tr class="separator:a935587121833e7dd9d68d64e728cb33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a936b49dc03070643e602b2cdea62ca6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a936b49dc03070643e602b2cdea62ca6d">RemoveFile</a> (<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> fileDescription)</td></tr>
+<tr class="memdesc:a936b49dc03070643e602b2cdea62ca6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.  <a href="#a936b49dc03070643e602b2cdea62ca6d">Подробнее...</a><br/></td></tr>
+<tr class="separator:a936b49dc03070643e602b2cdea62ca6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd1a6f22657fce50234ed4871cd6117c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#afd1a6f22657fce50234ed4871cd6117c">RemoveFile</a> (object fileProperty)</td></tr>
+<tr class="memdesc:afd1a6f22657fce50234ed4871cd6117c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.  <a href="#afd1a6f22657fce50234ed4871cd6117c">Подробнее...</a><br/></td></tr>
+<tr class="separator:afd1a6f22657fce50234ed4871cd6117c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac59ea086820094baa194f290a2ca633b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ac59ea086820094baa194f290a2ca633b">RemoveFile</a> (DataObject dataObject, string dataObjectFilePropertyName)</td></tr>
+<tr class="memdesc:ac59ea086820094baa194f290a2ca633b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.  <a href="#ac59ea086820094baa194f290a2ca633b">Подробнее...</a><br/></td></tr>
+<tr class="separator:ac59ea086820094baa194f290a2ca633b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:acae3df02bc89159b85aa14777aae4c16"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16">FilePropertyType</a><code> [get]</code></td></tr>
+<tr class="memdesc:acae3df02bc89159b85aa14777aae4c16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает тип файловых свойств объектов данных, обрабатываемых провайдером.  <a href="#acae3df02bc89159b85aa14777aae4c16">Подробнее...</a><br/></td></tr>
+<tr class="separator:acae3df02bc89159b85aa14777aae4c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f39075e9db97f2fa2a6d584f13f6ac3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a7f39075e9db97f2fa2a6d584f13f6ac3">UploadsDirectoryPath</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a7f39075e9db97f2fa2a6d584f13f6ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает или задает путь к каталогу, в котором должны храниться файлы, загруженные на сервер при помощи провайдера.  <a href="#a7f39075e9db97f2fa2a6d584f13f6ac3">Подробнее...</a><br/></td></tr>
+<tr class="separator:a7f39075e9db97f2fa2a6d584f13f6ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c09774c3c0fe0f2c1d2d3ee5bbb8119"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a4c09774c3c0fe0f2c1d2d3ee5bbb8119">FileBaseUrl</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4c09774c3c0fe0f2c1d2d3ee5bbb8119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получат или задает базовую часть URL-а для ссылок на скачивание / удаление файлов.  <a href="#a4c09774c3c0fe0f2c1d2d3ee5bbb8119">Подробнее...</a><br/></td></tr>
+<tr class="separator:a4c09774c3c0fe0f2c1d2d3ee5bbb8119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Интерфейс для провайдеров файловых свойств объектов данных. </p>
+</div><h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a94e20f255a6293c9b3b9fc445546306c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescription </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение метаданных с описанием файлового свойства объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Файловое свойство объекта данных, для которого требуется получить метаданные файла. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Метаданные с описанием файлового свойства объекта данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#aac9d226bf4f9c9c4346b522d29218ea6">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a> и <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html#a402354aebeac3a61210107aa844f40e4">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48c86a00a0d5843f1b2dedaf6fb74430"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescription </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение метаданных с описанием файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Метаданные с описанием файлового свойства объекта данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ab5f0c7b87cb90bd792399d6e3e8956f4">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a17d3e910bd4468369d4ffd6f7f5c358e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&gt; NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescriptions </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение списка метаданных с описанием файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловые свойства. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Список метаданных с описанием файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a7f688a4e87fea0288276742255f93d0f">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a323058b1f4a7d02627af99c5b7459193"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileMimeType </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение MIME-типа для файлового свойства объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Файловое свойство объекта данных, для которого требуется получить MIME-тип. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>MIME-тип файла, соответствующего заданному файловому свойству. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a2fcd091973982d95f97b07929d8dbbb8">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af90afd864d3c72553fb78fbcc6a9b10a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileMimeType </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение MIME-типа для файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство, для которого требуется получить MIME-тип. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>MIME-тип файла, соответствующего заданному файловому свойству. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a57cd9c87de0551f4ea7ab034ef4c3aa9">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab62c083da1e474d2e56167da33fa64df"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileName </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение имени файла для файлового свойства объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Файловое свойство объекта данных, для которого требуется получить имя файла. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Имя файла. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ad52034443594594aa86e4d9224f69d42">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>, <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html#a7ca3d746db2bf4f9e9b097aef5c81d7b">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider</a> и <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a29c172e2007e589dfc66ffb62f0d82b2">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab8880dd1b4b862ae264745796c2d6009"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileName </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение имени файла для файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство, для которого требуется получить имя. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Имя файла. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a30c15e5e7ae76fca537b150b385eb890">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a018333d6e5f27cf8f863ad03006f84c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;object&gt; NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperties </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение списка файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловые свойства. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Список файловых свойств объекта данных, соответствующих типу <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#acae3df02bc89159b85aa14777aae4c16" title="Получает тип файловых свойств объектов данных, обрабатываемых провайдером. ">FilePropertyType</a>. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a2392eaaef107a2171c52937111b8774b">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a66aa0bc22cd8017f3f7dce0b1c0cb596"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">object NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Значение файлового свойства объекта данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a144151c5a18370287108f6c8e966a67f">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab0e39b6f25b7afb45b3ced9e3bbc41c8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">object NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение файлового свойства из файла, расположенного по заданному пути. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Путь к файлу. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Значение файлового свойства объекта данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a30985e39a37eb5d3b74e6198cc9a777b">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>, <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html#ac603c46f1902ec599b4d321230f57959">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider</a> и <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a7032d2605d9487454fc38deab2337674">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4d587adac48e3562de694526704e67b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">object NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td>
+          <td class="paramname"><em>fileDescription</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение файлового свойства объекта данных, по его метаданным. </p>
+<p>При необходимости будет вычитан объект данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileDescription</td><td>Метаданные с описанием файлового свойства объекта данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Значение файлового свойства объекта данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ab7da2a499304180957ded8d02b2f3f86">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a646246b105e29de598afe7108502a563"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileSize </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение размера файла, связанного с объектом данных, в байтах. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Файловое свойство объекта данных, для которого требуется получить размер файла. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Размер файла в байтах. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ae34dd43e214f417755588d0c39a389c3">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>, <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html#a8e572c5c421bde309abf85d0f8241e5b">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider</a> и <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a5e8de16a2cced01d2f0c24fafe7ee1f1">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abe9a8ef4eee6c1322708906e2dfb2384"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileSize </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение MIME-типа для файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство, для которого требуется получить MIME-тип. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>MIME-тип файла, соответствующего заданному файловому свойству. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ad4ba679f319edd232bfb989051d41bb9">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef6bfd1a7c5b67ac35c0cbea623fa01f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Stream NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение потока данных для файлового свойства объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Значение файлового свойства объекта данных, для которого требуется получить поток данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Поток данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a7c1f38cb69fe890aa65638a88e43906a">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>, <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_web_file_provider.html#a268042c9da858e75035baacf94332ec5">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider</a> и <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#ab3e4ec01f13ab23e983d1df12c87495e">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ec81576804758e4967f453294aaf460"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Stream NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение потока данных для файлового свойства объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство, для которого требуется получить поток данных. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Поток данных. </dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a3bb3befbe5a477ee73e37fc59f0c1807">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a935587121833e7dd9d68d64e728cb33c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Stream NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td>
+          <td class="paramname"><em>fileDescription</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение потока данных для файлового свойства объекта данных. </p>
+<p>При необходимости будет вычитан объект данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileDescription</td><td>Метаданные с описанием файлового свойства объекта данных, для которого требуется получить поток данных.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Поток данных.</dd></dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#aac6a9e1ed670f40b881c1f8b68f63335">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a936b49dc03070643e602b2cdea62ca6d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td>
+          <td class="paramname"><em>fileDescription</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileDescription</td><td>Метаданные удаляемого файла. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#acc81900e8effbc6a5caa88ee515e4cb5">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afd1a6f22657fce50234ed4871cd6117c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>fileProperty</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileProperty</td><td>Значение файлового свойства объекта данных, для которого требуется выполнить удаление. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#a00c7876b95a5a85ae55334dcc542f920">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac59ea086820094baa194f290a2ca633b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловое свойство. </td></tr>
+    <tr><td class="paramname">dataObjectFilePropertyName</td><td>Имя файлового свойства в объекте данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Замещается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#ae89062f498d2f0c48845b95c3a09805a">NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Полный список свойств</h2>
+<a class="anchor" id="a4c09774c3c0fe0f2c1d2d3ee5bbb8119"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FileBaseUrl</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получат или задает базовую часть URL-а для ссылок на скачивание / удаление файлов. </p>
+
+</div>
+</div>
+<a class="anchor" id="acae3df02bc89159b85aa14777aae4c16"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Type NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает тип файловых свойств объектов данных, обрабатываемых провайдером. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7f39075e9db97f2fa2a6d584f13f6ac3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.UploadsDirectoryPath</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает или задает путь к каталогу, в котором должны храниться файлы, загруженные на сервер при помощи провайдера. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_new_platform.html">NewPlatform</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry.html">Flexberry</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m.html">ORM</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html">ODataService</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files.html">Files</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers.html">Providers</a></li><li class="navelem"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html">IDataObjectFileProvider</a></li>
+    <li class="footer">Документация по Flexberry ORM ODataService 5.0.0. Последние изменения: Пт 15 Фев 2019 11:12:08. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

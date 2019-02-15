@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84 =
+[
+    [ "DetailArrayOfЖурнал", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84.html#a9f535a2edad1cb85b586a8f6035864d3", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84.html#a3fb7aa3ba7ca19c258c21f5a97eea329", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84.html#a332779a4837bac240975dda22c3ac50a", null ]
+];

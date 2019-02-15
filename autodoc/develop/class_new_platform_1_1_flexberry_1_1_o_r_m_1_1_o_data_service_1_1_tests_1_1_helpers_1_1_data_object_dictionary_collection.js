@@ -1,0 +1,7 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection =
+[
+    [ "DataObjectDictionaryCollection", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#aa48d83cdf325649328bec3c4fc086739", null ],
+    [ "DataObjectDictionaryCollection", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#aa7d997397820c0474a81e31aaefc651a", null ],
+    [ "Equals", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#a34c49e364be13a91ce4afcf643661b46", null ],
+    [ "GetHashCode", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#ab179a705f9a1adcb1eaa744848c76509", null ]
+];

@@ -1,0 +1,7 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test =
+[
+    [ "TestArgs", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args" ],
+    [ "_builder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test.html#a53ccc1701db7e45a3c0bbc936812aa8f", null ],
+    [ "DataObjectsAssembliesNames", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test.html#a853a3209bb5c691b39a1a665670df197", null ],
+    [ "UseNamespaceInEntitySetName", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test.html#a5a09df658ccb6805b6959ba3e6b27044", null ]
+];

@@ -1,0 +1,13 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test =
+[
+    [ "DeleteObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a3f2c6b917659931981a76b2513aaf8ca", null ],
+    [ "PatchComplexObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#ac101d30c3b1cefd0cdae203bfcdf7748", null ],
+    [ "PatchNavigationPropertiesTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#adafb39d62886f33844020b76942273fd", null ],
+    [ "PatchSimpleObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a643755664cc04c089376b12a3895ae86", null ],
+    [ "PostComplexObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#afdfa797fbc92bd960db4579dfd87a428", null ],
+    [ "PostDataTimeValueTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aa796310f1368a18844672792a4f31b77", null ],
+    [ "PostNavigationPropertiesTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9a606c6c8aa163f738f0c0d5ba04751c", null ],
+    [ "PostObjDateTimeNoPKTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aa9dc6e45843527e0efb5ec639cbdba7a", null ],
+    [ "PostSimpleObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#ac58b2feb229e703bbcd3179f3c383747", null ],
+    [ "UpdateCicleDeteilTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9ae46a051612244d474c9b12561c1793", null ]
+];

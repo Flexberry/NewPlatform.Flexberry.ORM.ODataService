@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_custom_o_data_serializer_provider =
+[
+    [ "CustomODataSerializerProvider", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_custom_o_data_serializer_provider.html#a4f4ae16fa991a428d47b0cd9bb9d2545", null ],
+    [ "GetEdmTypeSerializer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_custom_o_data_serializer_provider.html#af307c1e5c27cb69627a6a69f124ea857", null ],
+    [ "GetODataPayloadSerializer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_custom_o_data_serializer_provider.html#a75d0ab6c4c689753171b151166c45b41", null ]
+];

@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test =
+[
+    [ "BSTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test.html#a9f15ecc5cc0e197f624a3dbee5096440", null ]
+];

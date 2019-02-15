@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079 =
+[
+    [ "DetailArrayOfКнига", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079.html#acb92f733af68fb1a26953676f8e63f26", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079.html#aab4a41bb6111c615d8d4d50e16b306c4", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079.html#a63403a7d554637c5c4968ca32cde8de9", null ]
+];

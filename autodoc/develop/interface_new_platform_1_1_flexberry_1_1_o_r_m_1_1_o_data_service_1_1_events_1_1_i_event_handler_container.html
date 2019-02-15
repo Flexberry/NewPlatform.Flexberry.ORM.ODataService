@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>Flexberry ORM ODataService 5.0.0: Интерфейс NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Flexberry ORM ODataService 5.0.0
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="hierarchy.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Пространства имен</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Переменные</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Перечисления</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Элементы перечислений</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Свойства</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#properties">Свойства</a> &#124;
+<a href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Интерфейс NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Interface of container with OData Service event handlers.  
+ <a href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#details">Подробнее...</a></p>
+
+<p>Производные классы:NewPlatform.Flexberry.ORM.ODataService.Events.EventHandlerContainer.</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:a24e8c84fca61d804fc81af4e5fe24416"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a8b022d265af944ddbac186426d9f7c1a">DelegateBeforeGet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a24e8c84fca61d804fc81af4e5fe24416">CallbackBeforeGet</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a24e8c84fca61d804fc81af4e5fe24416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики перед выполнением запроса.  <a href="#a24e8c84fca61d804fc81af4e5fe24416">Подробнее...</a><br/></td></tr>
+<tr class="separator:a24e8c84fca61d804fc81af4e5fe24416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1259204b70f73a9cb701027cd29f2315"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a1e855ea4b91e4d2f4e5d307ae3b6870d">DelegateBeforeUpdate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a1259204b70f73a9cb701027cd29f2315">CallbackBeforeUpdate</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1259204b70f73a9cb701027cd29f2315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики перед изменением объекта.  <a href="#a1259204b70f73a9cb701027cd29f2315">Подробнее...</a><br/></td></tr>
+<tr class="separator:a1259204b70f73a9cb701027cd29f2315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a640dcebe7280dd81498c7dadc194e021"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a51532a69b5fd862d3470c4680d70638b">DelegateBeforeCreate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a640dcebe7280dd81498c7dadc194e021">CallbackBeforeCreate</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a640dcebe7280dd81498c7dadc194e021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики перед созданием объекта.  <a href="#a640dcebe7280dd81498c7dadc194e021">Подробнее...</a><br/></td></tr>
+<tr class="separator:a640dcebe7280dd81498c7dadc194e021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26116139cd7e17c10d2b1ebc8654a7bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a9177728cbb23ea3a5ae6f2baf1157e81">DelegateBeforeDelete</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a26116139cd7e17c10d2b1ebc8654a7bd">CallbackBeforeDelete</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a26116139cd7e17c10d2b1ebc8654a7bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики перед удалением объекта.  <a href="#a26116139cd7e17c10d2b1ebc8654a7bd">Подробнее...</a><br/></td></tr>
+<tr class="separator:a26116139cd7e17c10d2b1ebc8654a7bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a086d4e66d0625263224c8a53d0ee3edb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a7b6b9513d63527d32f1d35b89a0c3835">DelegateAfterGet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a086d4e66d0625263224c8a53d0ee3edb">CallbackAfterGet</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a086d4e66d0625263224c8a53d0ee3edb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики после вычитывания объектов.  <a href="#a086d4e66d0625263224c8a53d0ee3edb">Подробнее...</a><br/></td></tr>
+<tr class="separator:a086d4e66d0625263224c8a53d0ee3edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ad9baac434d178cfafd0007887a0b9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a0546b65ce4ff010900dbb0248de9906a">DelegateAfterCreate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a5ad9baac434d178cfafd0007887a0b9c">CallbackAfterCreate</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5ad9baac434d178cfafd0007887a0b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики после сохранения объекта.  <a href="#a5ad9baac434d178cfafd0007887a0b9c">Подробнее...</a><br/></td></tr>
+<tr class="separator:a5ad9baac434d178cfafd0007887a0b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f995fe7ad3f57a97b412da5e544b7f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a48c4f147d96ed13091aec6abc07b668d">DelegateAfterUpdate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a2f995fe7ad3f57a97b412da5e544b7f5">CallbackAfterUpdate</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2f995fe7ad3f57a97b412da5e544b7f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики после обновления объекта.  <a href="#a2f995fe7ad3f57a97b412da5e544b7f5">Подробнее...</a><br/></td></tr>
+<tr class="separator:a2f995fe7ad3f57a97b412da5e544b7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b10179f38ce7cd7c8081dbabc7d2714"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a72223b4fedaca368f2f68d8424f3b6b8">DelegateAfterDelete</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a1b10179f38ce7cd7c8081dbabc7d2714">CallbackAfterDelete</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a1b10179f38ce7cd7c8081dbabc7d2714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат для вызова логики после удаления объекта.  <a href="#a1b10179f38ce7cd7c8081dbabc7d2714">Подробнее...</a><br/></td></tr>
+<tr class="separator:a1b10179f38ce7cd7c8081dbabc7d2714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92b2aa2b2773b649db3f1a3feab1a49b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a9fd38389a510ac88fc309f36a31030bc">DelegateAfterInternalServerError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html#a92b2aa2b2773b649db3f1a3feab1a49b">CallbackAfterInternalServerError</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a92b2aa2b2773b649db3f1a3feab1a49b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Делегат, вызываемый после возникновения исключения.  <a href="#a92b2aa2b2773b649db3f1a3feab1a49b">Подробнее...</a><br/></td></tr>
+<tr class="separator:a92b2aa2b2773b649db3f1a3feab1a49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Interface of container with OData Service event handlers. </p>
+</div><h2 class="groupheader">Полный список свойств</h2>
+<a class="anchor" id="a5ad9baac434d178cfafd0007887a0b9c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a0546b65ce4ff010900dbb0248de9906a">DelegateAfterCreate</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackAfterCreate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики после сохранения объекта. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1b10179f38ce7cd7c8081dbabc7d2714"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a72223b4fedaca368f2f68d8424f3b6b8">DelegateAfterDelete</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackAfterDelete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики после удаления объекта. </p>
+
+</div>
+</div>
+<a class="anchor" id="a086d4e66d0625263224c8a53d0ee3edb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a7b6b9513d63527d32f1d35b89a0c3835">DelegateAfterGet</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackAfterGet</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики после вычитывания объектов. </p>
+
+</div>
+</div>
+<a class="anchor" id="a92b2aa2b2773b649db3f1a3feab1a49b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a9fd38389a510ac88fc309f36a31030bc">DelegateAfterInternalServerError</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackAfterInternalServerError</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат, вызываемый после возникновения исключения. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2f995fe7ad3f57a97b412da5e544b7f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a48c4f147d96ed13091aec6abc07b668d">DelegateAfterUpdate</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackAfterUpdate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики после обновления объекта. </p>
+
+</div>
+</div>
+<a class="anchor" id="a640dcebe7280dd81498c7dadc194e021"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a51532a69b5fd862d3470c4680d70638b">DelegateBeforeCreate</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackBeforeCreate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики перед созданием объекта. </p>
+
+</div>
+</div>
+<a class="anchor" id="a26116139cd7e17c10d2b1ebc8654a7bd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a9177728cbb23ea3a5ae6f2baf1157e81">DelegateBeforeDelete</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackBeforeDelete</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики перед удалением объекта. </p>
+
+</div>
+</div>
+<a class="anchor" id="a24e8c84fca61d804fc81af4e5fe24416"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a8b022d265af944ddbac186426d9f7c1a">DelegateBeforeGet</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackBeforeGet</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики перед выполнением запроса. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1259204b70f73a9cb701027cd29f2315"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html#a1e855ea4b91e4d2f4e5d307ae3b6870d">DelegateBeforeUpdate</a> NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer.CallbackBeforeUpdate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Делегат для вызова логики перед изменением объекта. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_new_platform.html">NewPlatform</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry.html">Flexberry</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m.html">ORM</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html">ODataService</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html">Events</a></li><li class="navelem"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html">IEventHandlerContainer</a></li>
+    <li class="footer">Документация по Flexberry ORM ODataService 5.0.0. Последние изменения: Пт 15 Фев 2019 11:12:08. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

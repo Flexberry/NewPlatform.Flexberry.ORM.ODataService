@@ -1,0 +1,8 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test =
+[
+    [ "OfflineAuditServiceIntegratedTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html#abd91053e26f4b39a0cb22aa4f74044f0", null ],
+    [ "CreateMssqlDataService", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html#aa5d419eee8f6978d8e8350832214d0ee", null ],
+    [ "CreatePostgresDataService", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html#a51c26de5c91ba0d2306a16e33b1edce0", null ],
+    [ "GetAuditServiceForTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html#a23a3422fe2011c13729fa460c677088f", null ],
+    [ "TestSettingAuditFieldsForTypeWithEnabledAudit", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html#a199beba23465720c9f28fd896e123024", null ]
+];

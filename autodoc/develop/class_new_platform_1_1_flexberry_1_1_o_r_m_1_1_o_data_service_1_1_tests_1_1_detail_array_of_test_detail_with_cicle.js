@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_test_detail_with_cicle =
+[
+    [ "DetailArrayOfTestDetailWithCicle", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_test_detail_with_cicle.html#aaf9e1bbed145484679e55f3172dad9f3", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_test_detail_with_cicle.html#a6fa814960985630589004b33b6353d8d", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_test_detail_with_cicle.html#ac043dab2cab38230a9f800ca0e75be6e", null ]
+];

@@ -1,0 +1,13 @@
+var searchData=
+[
+  ['dataobjectsassembliesnames',['DataObjectsAssembliesNames',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test.html#a853a3209bb5c691b39a1a665670df197',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::BaseODataServiceIntegratedTest']]],
+  ['dataservices',['DataServices',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_integrated_test.html#ab73da2750f5d427e37998ff66198b9ae',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::BaseIntegratedTest']]],
+  ['defaultview',['DefaultView',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_type_settings.html#a093b05ce91edca214c4109c7c48b242e',1,'NewPlatform::Flexberry::ORM::ODataService::Model::DataObjectEdmTypeSettings']]],
+  ['deserializerprovider',['DeserializerProvider',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_action_payload_deserializer.html#afbc2aa495cb04fa76d508937e4879008',1,'NewPlatform::Flexberry::ORM::ODataService::Formatter::ExtendedODataActionPayloadDeserializer']]],
+  ['detailproperties',['DetailProperties',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_type_settings.html#aabffa458b35733dc86ba24e69968658d',1,'NewPlatform::Flexberry::ORM::ODataService::Model::DataObjectEdmTypeSettings']]],
+  ['detailtype',['DetailType',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_detail_settings.html#a28487563e68ef363068fcd5ce2380307',1,'NewPlatform::Flexberry::ORM::ODataService::Model::DataObjectEdmDetailSettings']]],
+  ['documents',['Documents',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_driver.html#a2626f8825088e3f1b5c1221e953e17f8',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Driver']]],
+  ['driver',['Driver',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_car.html#a66dc989603592099c7237d8025e1270d',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Car']]],
+  ['dжурнал',['Dжурнал',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x96_xD1_x83_xD1_a37a2afc2e77aee052ed4b79eba5352c.html#abfb3c925164c2322774769571535efed',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Журнал::Views']]],
+  ['dкнига',['Dкнига',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBD_xD0_xB8_xD0_xB3_xD0_xB0_1_1_views.html#a958c0180c0d66381a0b90449218f6411',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Книга::Views']]]
+];

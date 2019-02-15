@@ -1,0 +1,7 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args =
+[
+    [ "DataService", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html#a896e5a677366e76324b91f9ea1261b9c", null ],
+    [ "HttpClient", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html#a8431e211040287ebd8a6ba9adcbe7fde", null ],
+    [ "Token", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html#af95d4d7797bfe4610f07e5899420e92d", null ],
+    [ "UnityContainer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html#a84c5808074a7004d8742555fe858bc7d", null ]
+];

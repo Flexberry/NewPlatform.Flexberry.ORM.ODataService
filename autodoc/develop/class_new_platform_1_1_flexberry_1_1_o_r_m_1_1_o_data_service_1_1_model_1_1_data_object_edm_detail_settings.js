@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_detail_settings =
+[
+    [ "DataObjectEdmDetailSettings", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_detail_settings.html#ab253d976de944e38120feda607509cfe", null ],
+    [ "DetailType", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_detail_settings.html#a28487563e68ef363068fcd5ce2380307", null ]
+];

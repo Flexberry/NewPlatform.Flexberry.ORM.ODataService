@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9D_xD0_xB0_xD1_876e517d5c3c3205d952d2c47967f4aa =
+[
+    [ "Master", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9D_xD0_xB0_xD1_876e517d5c3c3205d952d2c47967f4aa.html#ad322f14ea7dba6f984a3d8db27b0712d", null ],
+    [ "Мастер", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9D_xD0_xB0_xD1_876e517d5c3c3205d952d2c47967f4aa.html#aff5ed790c1cf5a02acfacb2e0428b57c", null ],
+    [ "Свойство", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9D_xD0_xB0_xD1_876e517d5c3c3205d952d2c47967f4aa.html#a60ec75997bc930dfd5642ef43a5d59c3", null ]
+];

@@ -1,0 +1,4 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions =
+[
+    [ "OrderByQueryOption", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option" ]
+];

@@ -1,0 +1,10 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4 =
+[
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_9f1c86c37cba7873dc7a4ade29df6b2e.html", null ],
+    [ "Заброшена", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a5cfb4f5541309d78f3b6eaadbecf1998", null ],
+    [ "Комфортность", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#ae2cb4636a234cd105efa19131c6c6f5f", null ],
+    [ "ЛесРасположения", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#ab5e95e63c755dcfe90774fc4afb5569f", null ],
+    [ "Медведь", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a9fcc4ec4257a7a081b6e99e59ff42090", null ],
+    [ "Наименование", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a93b11d6b87412d7c113b6656fd849778", null ],
+    [ "ПолеБС", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a914c39e84a5b31d6c76e977059e9c685", null ]
+];

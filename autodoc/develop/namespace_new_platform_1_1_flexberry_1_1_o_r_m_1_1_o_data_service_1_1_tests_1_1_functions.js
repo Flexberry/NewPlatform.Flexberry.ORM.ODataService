@@ -1,0 +1,6 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions =
+[
+    [ "ActionsTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_actions_test.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_actions_test" ],
+    [ "DelegateFunctionsTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_delegate_functions_test.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_delegate_functions_test" ],
+    [ "FunctionsTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_functions_test.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_functions_test" ]
+];

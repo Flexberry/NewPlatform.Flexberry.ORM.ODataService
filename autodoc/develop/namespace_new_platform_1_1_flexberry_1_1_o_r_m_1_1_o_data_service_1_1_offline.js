@@ -1,0 +1,7 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline =
+[
+    [ "BaseOfflineManager", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_base_offline_manager.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_base_offline_manager" ],
+    [ "DefaultOfflineManager", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_default_offline_manager.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_default_offline_manager" ],
+    [ "DummyOfflineManager", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_dummy_offline_manager.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_dummy_offline_manager" ],
+    [ "OfflineAuditService", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_offline_audit_service.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_offline_audit_service" ]
+];

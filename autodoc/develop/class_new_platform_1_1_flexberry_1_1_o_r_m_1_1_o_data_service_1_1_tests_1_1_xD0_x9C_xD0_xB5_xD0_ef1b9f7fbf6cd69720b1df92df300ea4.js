@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_ef1b9f7fbf6cd69720b1df92df300ea4 =
+[
+    [ "OnUpdateМедведь", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_ef1b9f7fbf6cd69720b1df92df300ea4.html#aa7329c47f7b70a46babc2997caa1d23f", null ]
+];

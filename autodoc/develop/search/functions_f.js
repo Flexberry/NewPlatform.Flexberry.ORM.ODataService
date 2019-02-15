@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['selectaction',['SelectAction',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc',1,'NewPlatform::Flexberry::ORM::ODataService::Routing::DataObjectRoutingConvention']]],
+  ['selectcontroller',['SelectController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a04310240045eeb54281ca095cb79da8c',1,'NewPlatform::Flexberry::ORM::ODataService::Routing::DataObjectRoutingConvention']]],
+  ['selfhostbaseodataserviceintegratedtest',['SelfHostBaseODataServiceIntegratedTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_self_host_base_o_data_service_integrated_test.html#a9dce3dc29cd6707907ddc617bb0ecaf6',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::SelfHostBaseODataServiceIntegratedTest']]],
+  ['sendasync',['SendAsync',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_handlers_1_1_post_patch_handler.html#a6dc87bc5d2bd2e8f0c972c4f19c129d9',1,'NewPlatform::Flexberry::ORM::ODataService::Handlers::PostPatchHandler']]],
+  ['serialize',['Serialize',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#abcb14bc811f72d05b4f72f8f49a8e291',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Helpers::DataObjectDictionary']]],
+  ['setresult_3c_20t_20_3e',['SetResult&lt; T &gt;',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0eeceb994009d5bd8f38b6690d7eaf82',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers::DataObjectController']]],
+  ['setresultprimitive',['SetResultPrimitive',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a17a33582c3d99b1646cfafd52f7b59c6',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers::DataObjectController']]]
+];

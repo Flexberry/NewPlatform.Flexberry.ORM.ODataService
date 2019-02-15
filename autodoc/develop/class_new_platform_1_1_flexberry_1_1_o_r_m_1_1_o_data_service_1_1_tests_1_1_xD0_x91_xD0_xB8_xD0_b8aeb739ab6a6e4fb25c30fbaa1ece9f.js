@@ -1,0 +1,7 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f =
+[
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_80621d878b3d2574605f520cf1a208e5.html", null ],
+    [ "Адрес", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f.html#a7e4643c833325930ce301fa01287ce07", null ],
+    [ "Журнал", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f.html#af88170eb33b7eb0e5e601d148a57bac6", null ],
+    [ "Книга", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f.html#a5e99fc4d33002c8f5942d207901cbe3f", null ]
+];

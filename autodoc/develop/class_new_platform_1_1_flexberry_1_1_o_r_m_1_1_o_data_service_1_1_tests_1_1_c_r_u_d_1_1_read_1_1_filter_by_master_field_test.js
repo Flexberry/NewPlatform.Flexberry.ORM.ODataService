@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_filter_by_master_field_test =
+[
+    [ "TestFilterByMasterField", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_filter_by_master_field_test.html#af7c54bae103fe6b1ea938916fc95989b", null ]
+];

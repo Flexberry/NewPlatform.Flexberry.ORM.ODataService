@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_931c905bdcaee9c464ee811ddf93a64c =
+[
+    [ "DetailArrayOfДетейл2", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_931c905bdcaee9c464ee811ddf93a64c.html#ad3c51a6d532dcc42d4303e7b8fe171a8", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_931c905bdcaee9c464ee811ddf93a64c.html#af862d06f4ecb5bd5d62304a5c89814d6", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_931c905bdcaee9c464ee811ddf93a64c.html#a756e2867177dabecd87058b8fe894f09", null ]
+];

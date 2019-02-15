@@ -1,0 +1,1102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>Flexberry ORM ODataService 5.0.0: Класс NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">Flexberry ORM ODataService 5.0.0
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="hierarchy.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Пространства имен</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Переменные</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Перечисления</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Элементы перечислений</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Свойства</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#properties">Свойства</a> &#124;
+<a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>OData controller class. Part with OData Service functions.  
+ <a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#details">Подробнее...</a></p>
+<div class="dynheader">
+Граф наследования:NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.png" usemap="#NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController_map" alt=""/>
+  <map id="NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController_map" name="NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController_map">
+<area href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller.html" title="Базовый класс для OData-контроллеров. " alt="NewPlatform.Flexberry.ORM.ODataService.Controllers.BaseODataController" shape="rect" coords="0,56,449,80"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:aa8ae875fa5baf30973d61f59164519cf"><td class="memItemLeft" align="right" valign="top">IHttpActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aa8ae875fa5baf30973d61f59164519cf">PostODataActionsExecute</a> (ODataActionParameters parameters)</td></tr>
+<tr class="memdesc:aa8ae875fa5baf30973d61f59164519cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполняет action. Имя "PostODataActionsExecute" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>.  <a href="#aa8ae875fa5baf30973d61f59164519cf">Подробнее...</a><br/></td></tr>
+<tr class="separator:aa8ae875fa5baf30973d61f59164519cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa504259ae59f012706a22c8e93365857"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aa504259ae59f012706a22c8e93365857">DataObjectController</a> (IDataService dataService, <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_model.html">DataObjectEdmModel</a> model, <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html">IEventHandlerContainer</a> events, <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_i_function_container.html">IFunctionContainer</a> functions)</td></tr>
+<tr class="memdesc:aa504259ae59f012706a22c8e93365857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор по-умолчанию.  <a href="#aa504259ae59f012706a22c8e93365857">Подробнее...</a><br/></td></tr>
+<tr class="separator:aa504259ae59f012706a22c8e93365857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd1edd2cd2b0ac7d6d05352bcb02f42"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a1fd1edd2cd2b0ac7d6d05352bcb02f42">HandleUnmappedRequest</a> (ODataPath odataPath)</td></tr>
+<tr class="memdesc:a1fd1edd2cd2b0ac7d6d05352bcb02f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает все несопоставленные запросы OData  <a href="#a1fd1edd2cd2b0ac7d6d05352bcb02f42">Подробнее...</a><br/></td></tr>
+<tr class="separator:a1fd1edd2cd2b0ac7d6d05352bcb02f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9df9f80ebb9df1dfa01fc7b04b960d6c"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a9df9f80ebb9df1dfa01fc7b04b960d6c">GetEntity</a> ()</td></tr>
+<tr class="memdesc:a9df9f80ebb9df1dfa01fc7b04b960d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность. Имя "GetEntity" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>.  <a href="#a9df9f80ebb9df1dfa01fc7b04b960d6c">Подробнее...</a><br/></td></tr>
+<tr class="separator:a9df9f80ebb9df1dfa01fc7b04b960d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5388940e12625a5163f2bbe7501d03d2"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a5388940e12625a5163f2bbe7501d03d2">GetCollection</a> ()</td></tr>
+<tr class="memdesc:a5388940e12625a5163f2bbe7501d03d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей. Этот метод вычисляет совпадающие сущности, применяя параметры запроса. Имя "GetCollection" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>.  <a href="#a5388940e12625a5163f2bbe7501d03d2">Подробнее...</a><br/></td></tr>
+<tr class="separator:a5388940e12625a5163f2bbe7501d03d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e71126cf91177ce9f8ef43f5f72baa7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e71126cf91177ce9f8ef43f5f72baa7"></a>
+HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><b>GetString</b> ()</td></tr>
+<tr class="separator:a8e71126cf91177ce9f8ef43f5f72baa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a367a976f0ef13162845f3c921d393df9"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a367a976f0ef13162845f3c921d393df9">GetGuid</a> ()</td></tr>
+<tr class="memdesc:a367a976f0ef13162845f3c921d393df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.  <a href="#a367a976f0ef13162845f3c921d393df9">Подробнее...</a><br/></td></tr>
+<tr class="separator:a367a976f0ef13162845f3c921d393df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab921bd9af10b6235c4287a96c878eaa1"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#ab921bd9af10b6235c4287a96c878eaa1">Get</a> ()</td></tr>
+<tr class="memdesc:ab921bd9af10b6235c4287a96c878eaa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей. Этот метод вычисляет совпадающие сущности, применяя параметры запроса.  <a href="#ab921bd9af10b6235c4287a96c878eaa1">Подробнее...</a><br/></td></tr>
+<tr class="separator:ab921bd9af10b6235c4287a96c878eaa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6b447fbd390401ed1ad1188aae0cf5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#ab6b447fbd390401ed1ad1188aae0cf5a">GetObjectsCount</a> (Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0657c36acb13b21ba62e762f15d18f8d">type</a>, ODataQueryOptions queryOptions)</td></tr>
+<tr class="memdesc:ab6b447fbd390401ed1ad1188aae0cf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает количество объектов для linq-выражения соответствующего параметрам запроса OData (только для $filter).  <a href="#ab6b447fbd390401ed1ad1188aae0cf5a">Подробнее...</a><br/></td></tr>
+<tr class="separator:ab6b447fbd390401ed1ad1188aae0cf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaeb6e5e79a69dd60af9b6bdb6431224"><td class="memItemLeft" align="right" valign="top">EdmEntityObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aeaeb6e5e79a69dd60af9b6bdb6431224">GetEdmObject</a> (IEdmEntityType entityType, object obj, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem)</td></tr>
+<tr class="memdesc:aeaeb6e5e79a69dd60af9b6bdb6431224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Преобразует объект DataObject в сущность.  <a href="#aeaeb6e5e79a69dd60af9b6bdb6431224">Подробнее...</a><br/></td></tr>
+<tr class="separator:aeaeb6e5e79a69dd60af9b6bdb6431224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a134c594750872d26b32491544d78e18e"><td class="memItemLeft" align="right" valign="top">Expression&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a134c594750872d26b32491544d78e18e">ToExpression&lt; TElement &gt;</a> (ODataQueryOptions queryOpt)</td></tr>
+<tr class="memdesc:a134c594750872d26b32491544d78e18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает linq-выражение соответствующее параметрам запроса OData.  <a href="#a134c594750872d26b32491544d78e18e">Подробнее...</a><br/></td></tr>
+<tr class="separator:a134c594750872d26b32491544d78e18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c958e052bf901e6dc4ad2c166ca2fd7"><td class="memItemLeft" align="right" valign="top">Expression&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a3c958e052bf901e6dc4ad2c166ca2fd7">ToExpressionFilterOnly&lt; TElement &gt;</a> (ODataQueryOptions queryOpt)</td></tr>
+<tr class="memdesc:a3c958e052bf901e6dc4ad2c166ca2fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Возвращает linq-выражение соответствующее параметрам запроса OData (только для $filter).  <a href="#a3c958e052bf901e6dc4ad2c166ca2fd7">Подробнее...</a><br/></td></tr>
+<tr class="separator:a3c958e052bf901e6dc4ad2c166ca2fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5a8aaf9f68a2f01f110886aedd72551"><td class="memItemLeft" align="right" valign="top">IQueryable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aa5a8aaf9f68a2f01f110886aedd72551">ApplyTo&lt; TElement &gt;</a> (ODataQueryOptions queryOpt, DataObject[] objs)</td></tr>
+<tr class="memdesc:aa5a8aaf9f68a2f01f110886aedd72551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применяет linq-выражение соответствующее параметрам запроса OData к массиву объектов DataObject.  <a href="#aa5a8aaf9f68a2f01f110886aedd72551">Подробнее...</a><br/></td></tr>
+<tr class="separator:aa5a8aaf9f68a2f01f110886aedd72551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17a33582c3d99b1646cfafd52f7b59c6"><td class="memItemLeft" align="right" valign="top">IHttpActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a17a33582c3d99b1646cfafd52f7b59c6">SetResultPrimitive</a> (Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0657c36acb13b21ba62e762f15d18f8d">type</a>, object content)</td></tr>
+<tr class="memdesc:a17a33582c3d99b1646cfafd52f7b59c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Преобразует примитивное значение в результат Http для ответа.  <a href="#a17a33582c3d99b1646cfafd52f7b59c6">Подробнее...</a><br/></td></tr>
+<tr class="separator:a17a33582c3d99b1646cfafd52f7b59c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eeceb994009d5bd8f38b6690d7eaf82"><td class="memItemLeft" align="right" valign="top">OkNegotiatedContentResult&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0eeceb994009d5bd8f38b6690d7eaf82">SetResult&lt; T &gt;</a> (T content)</td></tr>
+<tr class="memdesc:a0eeceb994009d5bd8f38b6690d7eaf82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Преобразует сущность или набор сущностей в результат Http для ответа.  <a href="#a0eeceb994009d5bd8f38b6690d7eaf82">Подробнее...</a><br/></td></tr>
+<tr class="separator:a0eeceb994009d5bd8f38b6690d7eaf82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79443d5a4ffc7e11531144be1475ec6e"><td class="memItemLeft" align="right" valign="top">ODataQueryOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a79443d5a4ffc7e11531144be1475ec6e">CreateODataQueryOptions</a> (Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0657c36acb13b21ba62e762f15d18f8d">type</a>)</td></tr>
+<tr class="memdesc:a79443d5a4ffc7e11531144be1475ec6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создаёт параметры запроса OData.  <a href="#a79443d5a4ffc7e11531144be1475ec6e">Подробнее...</a><br/></td></tr>
+<tr class="separator:a79443d5a4ffc7e11531144be1475ec6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba7b8a570fc9de6b25019c041b4f52a"><td class="memItemLeft" align="right" valign="top">ODataQueryOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a4ba7b8a570fc9de6b25019c041b4f52a">CreateODataQueryOptions</a> (Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0657c36acb13b21ba62e762f15d18f8d">type</a>, HttpRequestMessage request)</td></tr>
+<tr class="memdesc:a4ba7b8a570fc9de6b25019c041b4f52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создаёт параметры запроса OData.  <a href="#a4ba7b8a570fc9de6b25019c041b4f52a">Подробнее...</a><br/></td></tr>
+<tr class="separator:a4ba7b8a570fc9de6b25019c041b4f52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04e7de7e637503a795dae358cf922f92"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04e7de7e637503a795dae358cf922f92"></a>
+LoadingCustomizationStruct&#160;</td><td class="memItemRight" valign="bottom"><b>CreateLcs</b> ()</td></tr>
+<tr class="separator:a04e7de7e637503a795dae358cf922f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af00af860e417bd0eaa69c577b70f857b"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#af00af860e417bd0eaa69c577b70f857b">Post</a> ([FromBody] EdmEntityObject edmEntity)</td></tr>
+<tr class="memdesc:af00af860e417bd0eaa69c577b70f857b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создание сущности и всех связанных. При существовании в БД произойдёт обновление.  <a href="#af00af860e417bd0eaa69c577b70f857b">Подробнее...</a><br/></td></tr>
+<tr class="separator:af00af860e417bd0eaa69c577b70f857b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a141c078631d6d4a2f5f0ab4d8027d163"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a141c078631d6d4a2f5f0ab4d8027d163">Patch</a> ([FromODataUri] Guid key, [FromBody] EdmEntityObject edmEntity)</td></tr>
+<tr class="memdesc:a141c078631d6d4a2f5f0ab4d8027d163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновление сущности (свойства могут быть заданы частично, т.е. указывать можно значения только измененных свойств). Если сущности с заданным ключом нет в БД происходит Upsert (в соответствии со стандартом).  <a href="#a141c078631d6d4a2f5f0ab4d8027d163">Подробнее...</a><br/></td></tr>
+<tr class="separator:a141c078631d6d4a2f5f0ab4d8027d163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8995dd6bafbebac90d902e2c4366bc41"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a8995dd6bafbebac90d902e2c4366bc41">DeleteString</a> ()</td></tr>
+<tr class="memdesc:a8995dd6bafbebac90d902e2c4366bc41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление сущности.  <a href="#a8995dd6bafbebac90d902e2c4366bc41">Подробнее...</a><br/></td></tr>
+<tr class="separator:a8995dd6bafbebac90d902e2c4366bc41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9812b14ac0549ff0eb6c8fd2f5a6c6ba"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a9812b14ac0549ff0eb6c8fd2f5a6c6ba">DeleteGuid</a> ()</td></tr>
+<tr class="memdesc:a9812b14ac0549ff0eb6c8fd2f5a6c6ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление сущности.  <a href="#a9812b14ac0549ff0eb6c8fd2f5a6c6ba">Подробнее...</a><br/></td></tr>
+<tr class="separator:a9812b14ac0549ff0eb6c8fd2f5a6c6ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="memItemLeft" align="right" valign="top">IHttpActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#ade1946fc8cfa48046eb58d58bc85ecf9">GetODataFunctionsExecute</a> ()</td></tr>
+<tr class="memdesc:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполняет пользовательскую функцию. Имя "GetODataFunctionsExecute" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>.  <a href="#ade1946fc8cfa48046eb58d58bc85ecf9">Подробнее...</a><br/></td></tr>
+<tr class="separator:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:acb1a72941e69d9d8d6a14dbcff75090c"><td class="memItemLeft" align="right" valign="top">ODataQueryOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#acb1a72941e69d9d8d6a14dbcff75090c">QueryOptions</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:acb1a72941e69d9d8d6a14dbcff75090c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Используемые в запросе параметры. Заполняется в методе Init().  <a href="#acb1a72941e69d9d8d6a14dbcff75090c">Подробнее...</a><br/></td></tr>
+<tr class="separator:acb1a72941e69d9d8d6a14dbcff75090c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0657c36acb13b21ba62e762f15d18f8d"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a0657c36acb13b21ba62e762f15d18f8d">type</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0657c36acb13b21ba62e762f15d18f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип DataObject, который соответствует сущности в наборе из запроса. Заполняется в методе Init().  <a href="#a0657c36acb13b21ba62e762f15d18f8d">Подробнее...</a><br/></td></tr>
+<tr class="separator:a0657c36acb13b21ba62e762f15d18f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a935885827d9ca732196294505e9a0f0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a935885827d9ca732196294505e9a0f0a">IncludeCount</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a935885827d9ca732196294505e9a0f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включать или нет в метаданные количество сущностей.  <a href="#a935885827d9ca732196294505e9a0f0a">Подробнее...</a><br/></td></tr>
+<tr class="separator:a935885827d9ca732196294505e9a0f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4b2e56f614bf3061044519b2e3d66cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#ac4b2e56f614bf3061044519b2e3d66cb">Count</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac4b2e56f614bf3061044519b2e3d66cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Количество сущностей в результате, которое будет указано в метаданных.  <a href="#ac4b2e56f614bf3061044519b2e3d66cb">Подробнее...</a><br/></td></tr>
+<tr class="separator:ac4b2e56f614bf3061044519b2e3d66cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Дополнительные унаследованные члены</h2></td></tr>
+<tr class="inherit_header pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller')"><img src="closed.png" alt="-"/>&#160;Защищенные члены унаследованные от <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller.html">NewPlatform.Flexberry.ORM.ODataService.Controllers.BaseODataController</a></td></tr>
+<tr class="memitem:aee45057b1648da1d341fc7d3ffb20cd0 inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller.html#aee45057b1648da1d341fc7d3ffb20cd0">Initialize</a> (HttpControllerContext controllerContext)</td></tr>
+<tr class="memdesc:aee45057b1648da1d341fc7d3ffb20cd0 inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет инициализацию, которая должна выполниться до начала обработки какого-либо запроса.  <a href="#aee45057b1648da1d341fc7d3ffb20cd0">Подробнее...</a><br/></td></tr>
+<tr class="separator:aee45057b1648da1d341fc7d3ffb20cd0 inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>OData controller class. Part with OData Service functions. </p>
+<p>OData controller class. Part with event handlers. </p>
+<p>Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата. </p>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="aa504259ae59f012706a22c8e93365857"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.DataObjectController </td>
+          <td>(</td>
+          <td class="paramtype">IDataService&#160;</td>
+          <td class="paramname"><em>dataService</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_data_object_edm_model.html">DataObjectEdmModel</a>&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html">IEventHandlerContainer</a>&#160;</td>
+          <td class="paramname"><em>events</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_i_function_container.html">IFunctionContainer</a>&#160;</td>
+          <td class="paramname"><em>functions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор по-умолчанию. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataService</td><td>Data service for all manipulations with data.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a class="anchor" id="aa5a8aaf9f68a2f01f110886aedd72551"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IQueryable NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.ApplyTo&lt; TElement &gt; </td>
+          <td>(</td>
+          <td class="paramtype">ODataQueryOptions&#160;</td>
+          <td class="paramname"><em>queryOpt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DataObject[]&#160;</td>
+          <td class="paramname"><em>objs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Применяет linq-выражение соответствующее параметрам запроса OData к массиву объектов DataObject. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queryOpt</td><td>Параметры запроса.</td></tr>
+    <tr><td class="paramname">objs</td><td>Массив объектов DataObject.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TElement</td><td>Параметр.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Совпадающие с запросом OData объекты DataObject.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a79443d5a4ffc7e11531144be1475ec6e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ODataQueryOptions NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.CreateODataQueryOptions </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создаёт параметры запроса OData. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип DataObject.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Параметры запроса OData.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4ba7b8a570fc9de6b25019c041b4f52a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ODataQueryOptions NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.CreateODataQueryOptions </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">HttpRequestMessage&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создаёт параметры запроса OData. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип DataObject.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Параметры запроса OData.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9812b14ac0549ff0eb6c8fd2f5a6c6ba"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.DeleteGuid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление сущности. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат выполнения запроса типа StatusCodeResult, соответствующий статусу HttpStatusCode.NoContent. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8995dd6bafbebac90d902e2c4366bc41"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.DeleteString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление сущности. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат выполнения запроса типа StatusCodeResult, соответствующий статусу HttpStatusCode.NoContent. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab921bd9af10b6235c4287a96c878eaa1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.Get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей. Этот метод вычисляет совпадающие сущности, применяя параметры запроса. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Совпадающие сущности из набора сущностей.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5388940e12625a5163f2bbe7501d03d2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetCollection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей. Этот метод вычисляет совпадающие сущности, применяя параметры запроса. Имя "GetCollection" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Совпадающие сущности из набора сущностей.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aeaeb6e5e79a69dd60af9b6bdb6431224"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">EdmEntityObject NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetEdmObject </td>
+          <td>(</td>
+          <td class="paramtype">IEdmEntityType&#160;</td>
+          <td class="paramname"><em>entityType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ExpandedNavigationSelectItem&#160;</td>
+          <td class="paramname"><em>expandedNavigationSelectItem</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Преобразует объект DataObject в сущность. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entityType</td><td>Тип сущности.</td></tr>
+    <tr><td class="paramname">obj</td><td>Объект DataObject.</td></tr>
+    <tr><td class="paramname">level</td><td>Глубина раскрытия для навигационных свойств. Пока всегда должно быть равно 1, а если это рекурсивный вызов, то может быть равно 0.</td></tr>
+    <tr><td class="paramname">expandedNavigationSelectItem</td><td>Навигационное свойство.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Сущность.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9df9f80ebb9df1dfa01fc7b04b960d6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetEntity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность. Имя "GetEntity" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Сущность</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a367a976f0ef13162845f3c921d393df9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetGuid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Ключ сущности, которую необходимо получить.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Сущность</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6b447fbd390401ed1ad1188aae0cf5a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetObjectsCount </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ODataQueryOptions&#160;</td>
+          <td class="paramname"><em>queryOptions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Возвращает количество объектов для linq-выражения соответствующего параметрам запроса OData (только для $filter). </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип DataObject.</td></tr>
+    <tr><td class="paramname">queryOptions</td><td>Параметры запроса.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Количество объектов.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ade1946fc8cfa48046eb58d58bc85ecf9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IHttpActionResult NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.GetODataFunctionsExecute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выполняет пользовательскую функцию. Имя "GetODataFunctionsExecute" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат выполнения пользовательской функции, преобразованный к типам сущностей EDM-модели или к примитивным типам. После преобразования создаётся результат HTTP для ответа. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1fd1edd2cd2b0ac7d6d05352bcb02f42"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.HandleUnmappedRequest </td>
+          <td>(</td>
+          <td class="paramtype">ODataPath&#160;</td>
+          <td class="paramname"><em>odataPath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обрабатывает все несопоставленные запросы OData </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">odataPath</td><td>Путь запроса.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Содержит сообщение ответа для отправки в клиент после завершения.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a141c078631d6d4a2f5f0ab4d8027d163"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.Patch </td>
+          <td>(</td>
+          <td class="paramtype">[FromODataUri] Guid&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[FromBody] EdmEntityObject&#160;</td>
+          <td class="paramname"><em>edmEntity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обновление сущности (свойства могут быть заданы частично, т.е. указывать можно значения только измененных свойств). Если сущности с заданным ключом нет в БД происходит Upsert (в соответствии со стандартом). </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Ключ обновляемой сущности. </td></tr>
+    <tr><td class="paramname">edmEntity</td><td>Обновляемая сущность. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Обновлённая сущность.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af00af860e417bd0eaa69c577b70f857b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.Post </td>
+          <td>(</td>
+          <td class="paramtype">[FromBody] EdmEntityObject&#160;</td>
+          <td class="paramname"><em>edmEntity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создание сущности и всех связанных. При существовании в БД произойдёт обновление. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">edmEntity</td><td>Создаваемая сущность. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Созданная сущность. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa8ae875fa5baf30973d61f59164519cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IHttpActionResult NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.PostODataActionsExecute </td>
+          <td>(</td>
+          <td class="paramtype">ODataActionParameters&#160;</td>
+          <td class="paramname"><em>parameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Выполняет action. Имя "PostODataActionsExecute" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parameters</td><td>Параметры action.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат выполнения action, преобразованный к типам сущностей EDM-модели или к примитивным типам. В случае, если зарегистрированый action не возвращает результат, будет возвращён только код 200 OK. После преобразования создаётся результат HTTP для ответа. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0eeceb994009d5bd8f38b6690d7eaf82"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">OkNegotiatedContentResult&lt;T&gt; NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.SetResult&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>content</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Преобразует сущность или набор сущностей в результат Http для ответа. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">content</td><td>Содержимое.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Параметр.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат Http для ответа.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a17a33582c3d99b1646cfafd52f7b59c6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IHttpActionResult NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.SetResultPrimitive </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>content</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Преобразует примитивное значение в результат Http для ответа. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Тип содержимого.</td></tr>
+    <tr><td class="paramname">content</td><td>Содержимое.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Результат Http для ответа.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a134c594750872d26b32491544d78e18e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Expression NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.ToExpression&lt; TElement &gt; </td>
+          <td>(</td>
+          <td class="paramtype">ODataQueryOptions&#160;</td>
+          <td class="paramname"><em>queryOpt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Возвращает linq-выражение соответствующее параметрам запроса OData. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queryOpt</td><td>Параметры запроса.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TElement</td><td>Параметр.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Linq-выражение.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3c958e052bf901e6dc4ad2c166ca2fd7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Expression NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.ToExpressionFilterOnly&lt; TElement &gt; </td>
+          <td>(</td>
+          <td class="paramtype">ODataQueryOptions&#160;</td>
+          <td class="paramname"><em>queryOpt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Возвращает linq-выражение соответствующее параметрам запроса OData (только для $filter). </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">queryOpt</td><td>Параметры запроса.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TElement</td><td>Параметр.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Linq-выражение.</dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Полный список свойств</h2>
+<a class="anchor" id="ac4b2e56f614bf3061044519b2e3d66cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.Count</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Количество сущностей в результате, которое будет указано в метаданных. </p>
+
+</div>
+</div>
+<a class="anchor" id="a935885827d9ca732196294505e9a0f0a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.IncludeCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Включать или нет в метаданные количество сущностей. </p>
+
+</div>
+</div>
+<a class="anchor" id="acb1a72941e69d9d8d6a14dbcff75090c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ODataQueryOptions NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.QueryOptions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Используемые в запросе параметры. Заполняется в методе Init(). </p>
+
+</div>
+</div>
+<a class="anchor" id="a0657c36acb13b21ba62e762f15d18f8d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Type NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип DataObject, который соответствует сущности в наборе из запроса. Заполняется в методе Init(). </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_new_platform.html">NewPlatform</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry.html">Flexberry</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m.html">ORM</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html">ODataService</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers.html">Controllers</a></li><li class="navelem"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html">DataObjectController</a></li>
+    <li class="footer">Документация по Flexberry ORM ODataService 5.0.0. Последние изменения: Пт 15 Фев 2019 11:12:08. Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>

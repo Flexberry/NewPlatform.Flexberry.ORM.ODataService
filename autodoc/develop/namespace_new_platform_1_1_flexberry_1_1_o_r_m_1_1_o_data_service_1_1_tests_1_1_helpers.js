@@ -1,0 +1,6 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers =
+[
+    [ "DataObjectDictionary", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary" ],
+    [ "DataObjectDictionaryCollection", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection" ],
+    [ "FilesComparer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_files_comparer.html", null ]
+];

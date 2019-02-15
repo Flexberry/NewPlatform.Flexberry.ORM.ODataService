@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_a5437f57f78cdaa29f2c81654c72a604 =
+[
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_fb80bac198447fb607aa5ebe74bef9e3.html", null ],
+    [ "Мастер", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_a5437f57f78cdaa29f2c81654c72a604.html#a5961235eca8b3d90b96a48ab4ab8b6c8", null ],
+    [ "Ссылка", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_a5437f57f78cdaa29f2c81654c72a604.html#afc54980f8efec9953a1c0ce761827edd", null ]
+];

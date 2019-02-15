@@ -1,0 +1,11 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test =
+[
+    [ "DataServiceWrapper", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_contr1aacb5b4177b2e37b5b4caa7632ae005.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_contr1aacb5b4177b2e37b5b4caa7632ae005" ],
+    [ "CreateDownloadsSubDirectory", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#a0542e295116017858bf7ff185d9830f0", null ],
+    [ "CreateUploadsSubDirectory", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#a610add1aac6a698722cd07ad5379a000", null ],
+    [ "TestFileDownloadFromDataObjectSuccess", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#a515d9e42b66c1c3ff5f2366ba98097c6", null ],
+    [ "TestFileDownloadSuccess", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#aebb8caa88ac4139cb260d304ea3d194f", null ],
+    [ "TestPreviewDownloadFromDataObjectSuccess", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#aa8357f79b2c50da6f0e0f322d6171855", null ],
+    [ "TestPreviewDownloadSuccess", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#aedf8dd48832e3e826898ed16eb25140f", null ],
+    [ "TestUploadSuccess", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html#acdf81a6337a70667357a3a914ef43a1e", null ]
+];

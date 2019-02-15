@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_upload_stream_provider =
+[
+    [ "FileUploadStreamProvider", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_upload_stream_provider.html#a68051ed86e389c0e3220dcd1c0b949d4", null ],
+    [ "GetLocalFileName", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_upload_stream_provider.html#a823a426586b29df5ea7c61c061a125da", null ]
+];

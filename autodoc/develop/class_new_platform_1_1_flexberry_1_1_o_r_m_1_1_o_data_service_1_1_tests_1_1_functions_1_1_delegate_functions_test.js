@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_delegate_functions_test =
+[
+    [ "TestFunctionCallWithoutQueryParameters", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_delegate_functions_test.html#abc4cf7ad54517bc194feaa07960cd6f8", null ],
+    [ "TestFunctionCallWithQueryParameters", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions_1_1_delegate_functions_test.html#a6f095a26e949725f47b10459193971da", null ]
+];

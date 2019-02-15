@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_70a7e462d65e1ab6451357c897b2a978 =
+[
+    [ "DetailArrayOfБерлога", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_70a7e462d65e1ab6451357c897b2a978.html#a5ece337dbfdb7c1eaf531a4110d56835", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_70a7e462d65e1ab6451357c897b2a978.html#adcd76553b9ee70b1dcaf68f9e60cfe56", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_70a7e462d65e1ab6451357c897b2a978.html#a591b62f68636a249c4f6015657b7d7a3", null ]
+];

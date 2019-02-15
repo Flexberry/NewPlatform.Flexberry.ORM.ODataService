@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test =
+[
+    [ "NtlmSelfHostConfiguration", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test48df220aab40a32558fa34f72060b234.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test48df220aab40a32558fa34f72060b234" ],
+    [ "LockControllerTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test.html#a4c39ce1a6a1070663a738779d4d5a58a", null ],
+    [ "TestStartStop", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test.html#a9a51e6c98b5130e118bce2e18439b5af", null ]
+];

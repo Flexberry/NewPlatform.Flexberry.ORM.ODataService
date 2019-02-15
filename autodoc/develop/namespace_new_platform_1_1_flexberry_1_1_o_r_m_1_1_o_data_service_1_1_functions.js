@@ -1,0 +1,7 @@
+var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions =
+[
+    [ "Action", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_action.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_action" ],
+    [ "Function", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_function.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_function" ],
+    [ "IFunctionContainer", "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_i_function_container.html", "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_i_function_container" ],
+    [ "QueryParameters", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_query_parameters.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_query_parameters" ]
+];

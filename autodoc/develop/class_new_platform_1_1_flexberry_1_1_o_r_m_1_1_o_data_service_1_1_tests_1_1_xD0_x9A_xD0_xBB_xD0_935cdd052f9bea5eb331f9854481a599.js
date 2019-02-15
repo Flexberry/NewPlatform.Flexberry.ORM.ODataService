@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_935cdd052f9bea5eb331f9854481a599 =
+[
+    [ "__PrimaryKey", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_935cdd052f9bea5eb331f9854481a599.html#a964440445df81d4b589144ec575883ad", null ],
+    [ "StoragePrimaryKey", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_935cdd052f9bea5eb331f9854481a599.html#a2a9d3049dba847f26a6c2b83c390d51f", null ]
+];

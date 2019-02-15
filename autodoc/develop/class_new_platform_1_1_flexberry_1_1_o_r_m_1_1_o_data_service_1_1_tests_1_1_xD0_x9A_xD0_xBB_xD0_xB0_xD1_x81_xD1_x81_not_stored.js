@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_xB0_xD1_x81_xD1_x81_not_stored =
+[
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_1ec21cc3dd683c29dc2ed2172be5eef6.html", null ],
+    [ "StrAttr", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_xB0_xD1_x81_xD1_x81_not_stored.html#ab9e492d4ff070ac2a312f61c0ce92bd9", null ]
+];

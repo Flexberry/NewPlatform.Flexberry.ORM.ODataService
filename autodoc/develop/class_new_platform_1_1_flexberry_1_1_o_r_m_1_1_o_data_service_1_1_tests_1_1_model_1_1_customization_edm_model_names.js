@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_customization_edm_model_names =
+[
+    [ "CustomizationEdmModelCreateTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_customization_edm_model_names.html#a60d0c9ce2f9555d5f475d670ec5944c7", null ],
+    [ "CustomizationEdmModelReadTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_customization_edm_model_names.html#aa3d7698a6bc14cdc1a4e7bbff5ad0e7a", null ],
+    [ "PostNavigationPropertiesTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_customization_edm_model_names.html#a72d1af9b13d190d6773dc411ee73d261", null ]
+];

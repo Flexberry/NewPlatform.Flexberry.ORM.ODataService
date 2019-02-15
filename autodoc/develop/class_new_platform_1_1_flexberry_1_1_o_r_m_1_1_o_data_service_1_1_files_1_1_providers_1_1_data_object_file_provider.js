@@ -1,0 +1,9 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider =
+[
+    [ "DataObjectFileProvider", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#af7c4631e21c0bfeec75c080c28dc07cc", null ],
+    [ "GetFileName", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a29c172e2007e589dfc66ffb62f0d82b2", null ],
+    [ "GetFileProperty", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a7032d2605d9487454fc38deab2337674", null ],
+    [ "GetFileSize", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a5e8de16a2cced01d2f0c24fafe7ee1f1", null ],
+    [ "GetFileStream", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#ab3e4ec01f13ab23e983d1df12c87495e", null ],
+    [ "FilePropertyType", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_data_object_file_provider.html#a2eb88e08144f053051c7d53d249ce5de", null ]
+];

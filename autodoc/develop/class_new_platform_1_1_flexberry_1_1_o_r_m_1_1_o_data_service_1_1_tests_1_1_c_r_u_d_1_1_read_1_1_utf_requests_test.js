@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_utf_requests_test =
+[
+    [ "TestUsingUtfRequests", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_utf_requests_test.html#a764f67f64e9c13b5ba309bae2724a6db", null ]
+];

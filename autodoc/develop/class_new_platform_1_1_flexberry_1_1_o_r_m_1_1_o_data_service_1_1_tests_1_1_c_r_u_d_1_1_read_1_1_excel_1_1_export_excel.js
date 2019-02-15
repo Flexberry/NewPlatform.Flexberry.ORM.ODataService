@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_1_1_export_excel =
+[
+    [ "CreateExportStream", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_1_1_export_excel.html#aed0c1ecaae7f4fe5777bb791fc18ac40", null ]
+];
