@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB0_xD0_148c6cd49df9f2efd9202797fb06eddd.html#ab201456595f93531e66ddbe6df0df7ca":[1,0,0,0,0,0,11,25,0],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_12041e156162ee527dfd94168992bc17.html":[1,0,0,0,0,0,11,10],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_12041e156162ee527dfd94168992bc17.html#af233ca04fecfc4f4cef14432e50befbd":[1,0,0,0,0,0,11,10,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html":[1,0,0,0,0,0,11,26],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a5cfb4f5541309d78f3b6eaadbecf1998":[1,0,0,0,0,0,11,26,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a935587121833e7dd9d68d64e728cb33c":[1,0,0,0,0,0,4,0,3,15],
 "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a936b49dc03070643e602b2cdea62ca6d":[1,0,0,0,0,0,4,0,3,16],
 "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#a94e20f255a6293c9b3b9fc445546306c":[1,0,0,0,0,0,4,0,3,0],
-"interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab0e39b6f25b7afb45b3ced9e3bbc41c8":[1,0,0,0,0,0,4,0,3,9],
-"interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab62c083da1e474d2e56167da33fa64df":[1,0,0,0,0,0,4,0,3,5],
-"interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab8880dd1b4b862ae264745796c2d6009":[1,0,0,0,0,0,4,0,3,6]
+"interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html#ab0e39b6f25b7afb45b3ced9e3bbc41c8":[1,0,0,0,0,0,4,0,3,9]
 };
