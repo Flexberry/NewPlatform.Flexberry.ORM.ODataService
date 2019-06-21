@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>NewPlatform.Flexberry.ORM.ODataService</id>
+    <id>NewPlatform.Flexberry.ORM.ODataService-Debug</id>
     <version>5.0.1-alpha04</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
@@ -27,15 +27,15 @@
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Cors" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.OData" version="5.7.0" />
+      <dependency id="Microsoft.AspNet.OData-Debug" version="5.7.0" />
       <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
       <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
       <dependency id="Microsoft.AspNet.WebApi.Cors" version="5.2.3" />
-      <dependency id="Microsoft.OData.Core" version="[6.15.0, 7.0.0)" />
-      <dependency id="Microsoft.OData.Edm" version="6.15.0" />
-      <dependency id="Microsoft.Spatial" version="6.15.0" />
+      <dependency id="Microsoft.OData.Core-Debug" version="[6.15.0, 7.0.0)" />
+      <dependency id="Microsoft.OData.Edm-Debug" version="6.15.0" />
+      <dependency id="Microsoft.Spatial-Debug" version="6.15.0" />
       <dependency id="NewPlatform.Flexberry.LockService" version="2.0.0" />
-      <dependency id="NewPlatform.Flexberry.ORM" version="5.0.0" />
+      <dependency id="NewPlatform.Flexberry.ORM-Debug" version="5.0.0" />
       <dependency id="NewPlatform.Flexberry.UserSettingsService" version="3.0.0" />
       <dependency id="Newtonsoft.Json" version="8.0.3" />
     </dependencies>
@@ -43,5 +43,6 @@
   <files>
     <file src="NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.pdb" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.pdb" />
   </files>
 </package>
