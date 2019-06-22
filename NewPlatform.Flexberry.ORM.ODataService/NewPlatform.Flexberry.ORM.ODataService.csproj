@@ -123,7 +123,7 @@
       <HintPath>..\packages\Microsoft.Spatial-Debug.6.15.0\lib\portable-net45+win+wpa81\Microsoft.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="NewPlatform.Flexberry.LockService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=90cf813b4f0caf3c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NewPlatform.Flexberry.LockService.2.0.0\lib\net45\NewPlatform.Flexberry.LockService.dll</HintPath>
+      <HintPath>..\packages\NewPlatform.Flexberry.LockService-Debug.2.0.0\lib\net45\NewPlatform.Flexberry.LockService.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -181,10 +181,11 @@
       <HintPath>..\packages\Unity.Container.5.8.6\lib\net45\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="UserSettingsService, Version=1.1.0.0, Culture=neutral, PublicKeyToken=2169f05da5d7fddc, processorArchitecture=MSIL">
-      <HintPath>..\packages\NewPlatform.Flexberry.UserSettingsService.3.0.0\lib\net45\UserSettingsService.dll</HintPath>
+      <HintPath>..\packages\NewPlatform.Flexberry.UserSettingsService-Debug.3.0.0\lib\net45\UserSettingsService.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batch\DataObjectODataBatchHandler.cs" />
     <Compile Include="Controllers\DataObjectController.Events.cs" />
     <Compile Include="Controllers\DataObjectController.Actions.cs" />
     <Compile Include="Controllers\DataObjectController.UserFunctions.cs" />

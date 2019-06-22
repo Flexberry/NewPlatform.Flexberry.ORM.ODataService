@@ -152,7 +152,7 @@
       <HintPath>..\..\packages\NewPlatform.Flexberry.Caching.1.0.0\lib\net45\NewPlatform.Flexberry.Caching.dll</HintPath>
     </Reference>
     <Reference Include="NewPlatform.Flexberry.LockService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=90cf813b4f0caf3c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NewPlatform.Flexberry.LockService.2.0.0\lib\net45\NewPlatform.Flexberry.LockService.dll</HintPath>
+      <HintPath>..\..\packages\NewPlatform.Flexberry.LockService-Debug.2.0.0\lib\net45\NewPlatform.Flexberry.LockService.dll</HintPath>
     </Reference>
     <Reference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService, Version=1.0.0.1, Culture=neutral, PublicKeyToken=c6a0c26547452df4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.GisMSSQLDataService.1.0.0-alpha09\lib\net45\NewPlatform.Flexberry.ORM.GisMSSQLDataService.dll</HintPath>
