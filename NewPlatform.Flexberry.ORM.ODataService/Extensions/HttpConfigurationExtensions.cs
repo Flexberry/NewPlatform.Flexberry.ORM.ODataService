@@ -74,7 +74,7 @@
             var model = builder.Build();
 
             // Support batch requests.
-            ODataBatchHandler batchHandler = new DefaultODataBatchHandler(httpServer);
+            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(httpServer);
             batchHandler.ODataRouteName = routeName;
             config.Routes.MapHttpBatchRoute(routeName + "Batch", routePrefix + "/$batch", batchHandler);
 

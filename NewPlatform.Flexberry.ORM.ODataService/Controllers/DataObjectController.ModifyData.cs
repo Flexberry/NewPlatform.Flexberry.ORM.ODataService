@@ -31,6 +31,7 @@
     using File = ICSSoft.STORMNET.FileType.File;
     using System.Web.OData.Routing;
     using System.Web.OData.Extensions;
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -219,7 +220,17 @@
                 obj.SetStatus(ObjectStatus.Deleted);
 
                 if (ExecuteCallbackBeforeDelete(obj))
-                    _dataService.UpdateObject(obj);
+                {
+                    if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                    {
+                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        dataObjectsToUpdate.Add(obj);
+                    }
+                    else
+                    {
+                        _dataService.UpdateObject(obj);
+                    }
+                }
 
                 // При успешном удалении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
@@ -454,8 +465,15 @@
 
                 // Список объектов для обновления без UnAltered.
                 var objsArrSmall = objsArr.Where(t => t.GetStatus() != ObjectStatus.UnAltered).ToArray();
-
-                _dataService.UpdateObjects(ref objsArrSmall);
+                if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                {
+                    List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                    dataObjectsToUpdate.Add(obj);
+                }
+                else
+                {
+                    _dataService.UpdateObjects(ref objsArrSmall);
+                }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);

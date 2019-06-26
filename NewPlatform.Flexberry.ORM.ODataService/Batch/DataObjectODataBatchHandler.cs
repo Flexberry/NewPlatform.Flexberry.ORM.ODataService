@@ -1,80 +1,59 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Batch
 {
-    using Microsoft.OData.Core;
-    using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Batch;
     using System.Web.OData.Batch;
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
 
+    /// <summary>
+    /// Batch handler for DataService.
+    /// </summary>
     internal class DataObjectODataBatchHandler : DefaultODataBatchHandler
     {
-        public DataObjectODataBatchHandler(HttpServer httpServer) : base(httpServer)
+        /// <summary>
+        /// Initializes a new instance of the NewPlatform.Flexberry.ORM.ODataService.Batch.DataObjectODataBatchHandler class.
+        /// </summary>
+        /// <param name="httpServer">The System.Web.Http.HttpServer for handling the individual batch requests.</param>
+        public DataObjectODataBatchHandler(HttpServer httpServer)
+            : base(httpServer)
         {
         }
 
-        public override async Task<HttpResponseMessage> ProcessBatchAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            if (request == null)
-            {
-                throw Error.ArgumentNull("request");
-            }
+        /// <summary>
+        /// Request Properties collection key for DataObjectsToUpdate list.
+        /// </summary>
+        public const string DataObjectsToUpdatePropertyKey = "DataObjectsToUpdate";
 
-            ValidateRequest(request);
-
-            IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(request, cancellationToken);
-
-            //string preferHeader = RequestPreferenceHelpers.GetRequestPreferHeader(request);
-            //if ((preferHeader != null && preferHeader.Contains(PreferenceContinueOnError)) || (!request.GetConfiguration().HasEnabledContinueOnErrorHeader()))
-            //{
-            //    ContinueOnError = true;
-            //}
-            //else
-            //{
-            //    ContinueOnError = false;
-            //}
-
-            try
-            {
-                IList<ODataBatchResponseItem> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
-                return await CreateResponseMessageAsync(responses, request, cancellationToken);
-            }
-            finally
-            {
-                foreach (ODataBatchRequestItem subRequest in subRequests)
-                {
-                    request.RegisterForDispose(subRequest.GetResourcesForDisposal());
-                    request.RegisterForDispose(subRequest);
-                }
-            }
-        }
-
-        public override async Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(IEnumerable<ODataBatchRequestItem> requests, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async override Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(
+                   IEnumerable<ODataBatchRequestItem> requests,
+                   CancellationToken cancellation)
         {
             if (requests == null)
             {
-                throw Error.ArgumentNull("requests");
+                throw new ArgumentNullException("requests");
             }
 
             IList<ODataBatchResponseItem> responses = new List<ODataBatchResponseItem>();
-
             try
             {
                 foreach (ODataBatchRequestItem request in requests)
                 {
-                    ODataBatchResponseItem responseItem = await request.SendRequestAsync(Invoker, cancellationToken);
-                    responses.Add(responseItem);
-                    
-                    //if (responseItem != null && responseItem.IsResponseSuccessful() == false && ContinueOnError == false)
-                    //{
-                    //    break;
-                    //}
+                    var operation = request as OperationRequestItem;
+                    if (operation != null)
+                    {
+                        responses.Add(await request.SendRequestAsync(Invoker, cancellation));
+                    }
+                    else
+                    {
+                        await ExecuteChangeSet((ChangeSetRequestItem)request, responses, cancellation);
+                    }
                 }
             }
             catch
@@ -86,52 +65,43 @@
                         response.Dispose();
                     }
                 }
+
                 throw;
             }
 
             return responses;
         }
 
-        public override async Task<IList<ODataBatchRequestItem>> ParseBatchRequestsAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Execute changeset processing.
+        /// </summary>
+        /// <param name="changeSet">Changeset for processing.</param>
+        /// <param name="responses">Responses for each request.</param>
+        /// <param name="cancellation">Cancelation token.</param>
+        /// <returns>Task for changeset processing.</returns>
+        private async Task ExecuteChangeSet(ChangeSetRequestItem changeSet, IList<ODataBatchResponseItem> responses, CancellationToken cancellation)
         {
-            if (request == null)
-            {
-                throw Error.ArgumentNull("request");
-            }
+            ChangeSetResponseItem changeSetResponse;
 
-            ODataMessageReaderSettings oDataReaderSettings = new ODataMessageReaderSettings
-            {
-                DisableMessageStreamDisposal = true,
-                MessageQuotas = MessageQuotas,
-                BaseUri = GetBaseUri(request)
-            };
+            List<DataObject> dataObjectsToUpdate = new List<DataObject>();
 
-            ODataMessageReader reader = await request.Content.GetODataMessageReaderAsync(oDataReaderSettings, cancellationToken);
-            request.RegisterForDispose(reader);
-
-            List<ODataBatchRequestItem> requests = new List<ODataBatchRequestItem>();
-            ODataBatchReader batchReader = reader.CreateODataBatchReader();
-            Guid batchId = Guid.NewGuid();
-            while (batchReader.Read())
+            foreach (HttpRequestMessage request in changeSet.Requests)
             {
-                if (batchReader.State == ODataBatchReaderState.ChangesetStart)
+                if (!request.Properties.ContainsKey(DataObjectsToUpdatePropertyKey))
                 {
-                    IList<HttpRequestMessage> changeSetRequests = await batchReader.ReadChangeSetRequestAsync(batchId, cancellationToken);
-                    foreach (HttpRequestMessage changeSetRequest in changeSetRequests)
-                    {
-                        changeSetRequest.CopyBatchRequestProperties(request);
-                    }
-                    requests.Add(new ChangeSetRequestItem(changeSetRequests));
-                }
-                else if (batchReader.State == ODataBatchReaderState.Operation)
-                {
-                    HttpRequestMessage operationRequest = await batchReader.ReadOperationRequestAsync(batchId, bufferContentStream: true, cancellationToken: cancellationToken);
-                    operationRequest.CopyBatchRequestProperties(request);
-                    requests.Add(new OperationRequestItem(operationRequest));
+                    request.Properties.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);
                 }
             }
 
-            return requests;
+            changeSetResponse = (ChangeSetResponseItem)await changeSet.SendRequestAsync(Invoker, cancellation);
+            responses.Add(changeSetResponse);
+
+            if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
+            {
+                IDataService ds = DataServiceProvider.DataService;
+                DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
+                ds.UpdateObjects(ref dataObjects);
+            }
         }
     }
 }
