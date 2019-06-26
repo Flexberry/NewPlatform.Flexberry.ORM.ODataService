@@ -333,7 +333,13 @@
 
             Stream stream;
 
-            string json = (string)Request.Properties[PostPatchHandler.RequestContent];
+            string requestContentKey = PostPatchHandler.RequestContent;
+            if (Request.Properties.ContainsKey(PostPatchHandler.PropertyKeyBatchRequest) && (bool)Request.Properties[PostPatchHandler.PropertyKeyBatchRequest] == true)
+            {
+                requestContentKey = PostPatchHandler.RequestContent + $"_{PostPatchHandler.PropertyKeyContentId}_{Request.Properties[PostPatchHandler.PropertyKeyContentId]}";
+            }
+
+            string json = (string)Request.Properties[requestContentKey];
 
             Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             var keys = props.Keys.ToArray();
