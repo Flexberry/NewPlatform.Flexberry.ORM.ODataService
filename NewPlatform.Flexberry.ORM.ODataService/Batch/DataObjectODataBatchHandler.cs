@@ -88,8 +88,6 @@
         /// <returns>Task for changeset processing.</returns>
         private async Task ExecuteChangeSet(ChangeSetRequestItem changeSet, IList<ODataBatchResponseItem> responses, CancellationToken cancellation)
         {
-            ChangeSetResponseItem changeSetResponse;
-
             List<DataObject> dataObjectsToUpdate = new List<DataObject>();
 
             foreach (HttpRequestMessage request in changeSet.Requests)
@@ -100,7 +98,7 @@
                 }
             }
 
-            changeSetResponse = (ChangeSetResponseItem)await changeSet.SendRequestAsync(Invoker, cancellation);
+            ChangeSetResponseItem changeSetResponse = (ChangeSetResponseItem)await changeSet.SendRequestAsync(Invoker, cancellation);
             responses.Add(changeSetResponse);
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
