@@ -1,6 +1,7 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Model
+namespace NewPlatform.Flexberry.ORM.ODataService.Model
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Metadata class for master relations.
@@ -23,7 +24,9 @@
         /// <param name="masterType">The type of the master.</param>
         public DataObjectEdmMasterSettings(Type masterType)
         {
-            MasterType = masterType ?? throw new ArgumentNullException(nameof(masterType), "Contract assertion not met: masterType != null");
+            Contract.Requires<ArgumentNullException>(masterType != null);
+
+            MasterType = masterType;
         }
     }
 }

@@ -3,22 +3,27 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Routing;
-    using Microsoft.OData.Core;
+    //using Microsoft.AspNet.OData.Properties;
+    using Microsoft.AspNet.OData.Routing;
+    //using Microsoft.OData.Core;
     using Microsoft.OData.Edm;
-    using System.Web.OData.Formatter.Deserialization;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
     using System;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using ICSSoft.STORMNET;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using Microsoft.OData.Edm.Library;
+    using Microsoft.OData;
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
+    using Microsoft.OData.UriParser;
+
+    // using Microsoft.OData.Edm.Library;
 
     /// <inheritdoc />
     public class ExtendedODataActionPayloadDeserializer : ODataDeserializer
@@ -32,13 +37,19 @@
         public ExtendedODataActionPayloadDeserializer(ODataDeserializerProvider deserializerProvider)
             : base(ODataPayloadKind.Parameter)
         {
-            DeserializerProvider = deserializerProvider ?? throw new ArgumentNullException(nameof(deserializerProvider));
+            if (deserializerProvider == null)
+            {
+                throw Error.ArgumentNull("deserializerProvider");
+            }
+
+            DeserializerProvider = deserializerProvider;
         }
 
         /// <summary>
         /// Gets the deserializer provider to use to read inner objects.
         /// </summary>
         public ODataDeserializerProvider DeserializerProvider { get; private set; }
+
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling",
@@ -47,14 +58,11 @@
         {
             if (messageReader == null)
             {
-                throw new ArgumentNullException(nameof(messageReader));
+                throw Error.ArgumentNull("messageReader");
             }
 
             IEdmAction action = GetAction(readContext);
-            if (action == null)
-            {
-                throw new ArgumentException("Contract assertion not met: action != null", nameof(readContext));
-            }
+            Contract.Assert(action != null);
 
             // Create the correct resource type;
             Dictionary<string, object> payload;
@@ -80,11 +88,7 @@
                         parameterName = reader.Name;
                         parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
                         // ODataLib protects against this but asserting just in case.
-                        if (parameter == null)
-                        {
-                            throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName), "value");
-                        }
-
+                        Contract.Assert(parameter != null, String.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName));
                         if (parameter.Type.IsPrimitive())
                         {
                             payload[parameterName] = reader.Value;
@@ -100,119 +104,96 @@
                         parameterName = reader.Name;
                         parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
                         // ODataLib protects against this but asserting just in case.
-                        if (parameter == null)
-                        {
-                            throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName), "value");
-                        }
-
+                        Contract.Assert(parameter != null, String.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName));
                         IEdmCollectionTypeReference collectionType = parameter.Type as IEdmCollectionTypeReference;
-                        if (collectionType == null)
-                        {
-                            throw new ArgumentException("Contract assertion not met: collectionType != null", "value");
-                        }
-
+                        Contract.Assert(collectionType != null);
                         ODataCollectionValue value = ReadCollection(reader.CreateCollectionReader());
                         ODataCollectionDeserializer collectionDeserializer = (ODataCollectionDeserializer)DeserializerProvider.GetEdmTypeDeserializer(collectionType);
                         payload[parameterName] = collectionDeserializer.ReadInline(value, collectionType, readContext);
                         break;
 
-                    case ODataParameterReaderState.Entry:
-                        parameterName = reader.Name;
-                        parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
-                        if (parameter == null)
-                        {
-                            throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName), "value");
-                        }
+                    //case ODataParameterReaderState.Entry:
+                    //    parameterName = reader.Name;
+                    //    parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
+                    //    Contract.Assert(parameter != null, String.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName));
 
-                        IEdmEntityTypeReference entityTypeReference = parameter.Type as IEdmEntityTypeReference;
-                        if (entityTypeReference == null)
-                        {
-                            throw new ArgumentException("Contract assertion not met: entityTypeReference != null", "value");
-                        }
+                    //    IEdmEntityTypeReference entityTypeReference = parameter.Type as IEdmEntityTypeReference;
+                    //    Contract.Assert(entityTypeReference != null);
 
-                        ODataReader entryReader = reader.CreateEntryReader();
-                        object item = ODataEntityDeserializer.ReadEntryOrFeed(entryReader);
-                        var savedProps = new List<ODataProperty>();
-                        if (item is ODataEntryWithNavigationLinks)
-                        {
-                            var obj = CreateDataObject(readContext.Model as DataObjectEdmModel, entityTypeReference, item as ODataEntryWithNavigationLinks, out Type objType);
-                            payload[parameterName] = obj;
-                            break;
-                        }
+                    //    ODataReader entryReader = reader.CreateEntryReader();
+                    //    object item = ODataEntityDeserializer.ReadEntryOrFeed(entryReader);
+                    //    var savedProps = new List<ODataProperty>();
+                    //    if (item is ODataEntryWithNavigationLinks)
+                    //    {
+                    //        var obj = CreateDataObject(readContext.Model as DataObjectEdmModel, entityTypeReference, item as ODataEntryWithNavigationLinks, out Type objType);
+                    //        payload[parameterName] = obj;
+                    //        break;
+                    //    }
 
-                        ODataEntityDeserializer entityDeserializer = (ODataEntityDeserializer)DeserializerProvider.GetEdmTypeDeserializer(entityTypeReference);
-                        payload[parameterName] = entityDeserializer.ReadInline(item, entityTypeReference, readContext);
-                        break;
+                    //    ODataEntityDeserializer entityDeserializer = (ODataEntityDeserializer)DeserializerProvider.GetEdmTypeDeserializer(entityTypeReference);
+                    //    payload[parameterName] = entityDeserializer.ReadInline(item, entityTypeReference, readContext);
+                    //    break;
 
-                    case ODataParameterReaderState.Feed:
-                        parameterName = reader.Name;
-                        parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
-                        if (parameter == null)
-                        {
-                            throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName), "value");
-                        }
+                    //case ODataParameterReaderState.Feed:
+                    //    parameterName = reader.Name;
+                    //    parameter = action.Parameters.SingleOrDefault(p => p.Name == parameterName);
+                    //    Contract.Assert(parameter != null, String.Format(CultureInfo.InvariantCulture, "Parameter '{0}' not found.", parameterName));
 
-                        IEdmCollectionTypeReference feedType = parameter.Type as IEdmCollectionTypeReference;
-                        if (feedType == null)
-                        {
-                            throw new ArgumentException("Contract assertion not met: feedType != null", "value");
-                        }
+                    //    IEdmCollectionTypeReference feedType = parameter.Type as IEdmCollectionTypeReference;
+                    //    Contract.Assert(feedType != null);
 
-                        ODataReader feedReader = reader.CreateFeedReader();
-                        object feed = ODataEntityDeserializer.ReadEntryOrFeed(feedReader);
-                        IEnumerable enumerable;
-                        ODataFeedWithEntries odataFeedWithEntries = feed as ODataFeedWithEntries;
-                        if (odataFeedWithEntries != null)
-                        {
-                            List<DataObject> list = new List<DataObject>();
-                            Type objType = null;
-                            foreach (ODataEntryWithNavigationLinks entry in odataFeedWithEntries.Entries)
-                            {
-                                list.Add(CreateDataObject(readContext.Model as DataObjectEdmModel, feedType.ElementType() as IEdmEntityTypeReference, entry, out objType));
-                            }
+                    //    ODataReader feedReader = reader.CreateFeedReader();
+                    //    object feed = ODataEntityDeserializer.ReadEntryOrFeed(feedReader);
+                    //    IEnumerable enumerable;
+                    //    ODataFeedWithEntries odataFeedWithEntries = feed as ODataFeedWithEntries;
+                    //    if (odataFeedWithEntries != null)
+                    //    {
+                    //        List<DataObject> list = new List<DataObject>();
+                    //        Type objType = null;
+                    //        foreach (ODataEntryWithNavigationLinks entry in odataFeedWithEntries.Entries)
+                    //        {
+                    //            list.Add(CreateDataObject(readContext.Model as DataObjectEdmModel, feedType.ElementType() as IEdmEntityTypeReference, entry, out objType));
+                    //        }
 
-                            IEnumerable castedResult =
-                                _castMethodInfo.MakeGenericMethod(objType)
-                                    .Invoke(null, new[] { list }) as IEnumerable;
-                            payload[parameterName] = castedResult;
-                            break;
-                        }
+                    //        IEnumerable castedResult =
+                    //            _castMethodInfo.MakeGenericMethod(objType)
+                    //                .Invoke(null, new[] { list }) as IEnumerable;
+                    //        payload[parameterName] = castedResult;
+                    //        break;
+                    //    }
 
-                        ODataFeedDeserializer feedDeserializer = (ODataFeedDeserializer)DeserializerProvider.GetEdmTypeDeserializer(feedType);
+                    //    ODataFeedDeserializer feedDeserializer = (ODataFeedDeserializer)DeserializerProvider.GetEdmTypeDeserializer(feedType);
 
-                        object result = feedDeserializer.ReadInline(feed, feedType, readContext);
+                    //    object result = feedDeserializer.ReadInline(feed, feedType, readContext);
 
-                        IEdmTypeReference elementTypeReference = feedType.ElementType();
-                        if (!elementTypeReference.IsEntity())
-                        {
-                            throw new ArgumentException("Contract assertion not met: elementTypeReference.IsEntity()", "value");
-                        }
+                    //    IEdmTypeReference elementTypeReference = feedType.ElementType();
+                    //    Contract.Assert(elementTypeReference.IsEntity());
 
-                        enumerable = result as IEnumerable;
-                        if (enumerable != null)
-                        {
-                            var isUntypedProp = readContext.GetType().GetProperty("IsUntyped", BindingFlags.NonPublic | BindingFlags.Instance);
-                            bool isUntyped = (bool)isUntypedProp.GetValue(readContext, null);
-                            if (isUntyped)
-                            {
-                                EdmEntityObjectCollection entityCollection = new EdmEntityObjectCollection(feedType);
-                                foreach (EdmEntityObject entityObject in enumerable)
-                                {
-                                    entityCollection.Add(entityObject);
-                                }
+                    //    enumerable = result as IEnumerable;
+                    //    if (enumerable != null)
+                    //    {
+                    //        var isUntypedProp = readContext.GetType().GetProperty("IsUntyped", BindingFlags.NonPublic | BindingFlags.Instance);
+                    //        bool isUntyped = (bool)isUntypedProp.GetValue(readContext, null);
+                    //        if (isUntyped)
+                    //        {
+                    //            EdmEntityObjectCollection entityCollection = new EdmEntityObjectCollection(feedType);
+                    //            foreach (EdmEntityObject entityObject in enumerable)
+                    //            {
+                    //                entityCollection.Add(entityObject);
+                    //            }
 
-                                payload[parameterName] = entityCollection;
-                            }
-                            else
-                            {
-                                Type elementClrType = EdmLibHelpers.GetClrType(elementTypeReference, readContext.Model);
-                                IEnumerable castedResult =
-                                    _castMethodInfo.MakeGenericMethod(elementClrType)
-                                        .Invoke(null, new[] { result }) as IEnumerable;
-                                payload[parameterName] = castedResult;
-                            }
-                        }
-                        break;
+                    //            payload[parameterName] = entityCollection;
+                    //        }
+                    //        else
+                    //        {
+                    //            Type elementClrType = EdmLibHelpers.GetClrType(elementTypeReference, readContext.Model);
+                    //            IEnumerable castedResult =
+                    //                _castMethodInfo.MakeGenericMethod(elementClrType)
+                    //                    .Invoke(null, new[] { result }) as IEnumerable;
+                    //            payload[parameterName] = castedResult;
+                    //        }
+                    //    }
+                    //    break;
                 }
             }
 
@@ -226,7 +207,7 @@
                 throw Error.ArgumentNull("readContext");
             }
 
-            ODataPath path = readContext.Path;
+            Microsoft.AspNet.OData.Routing.ODataPath path = readContext.Path;
             if (path == null || path.Segments.Count == 0)
             {
                 throw new SerializationException(SRResources.ODataPathMissing);
@@ -236,20 +217,23 @@
             if (path.PathTemplate == "~/unboundaction")
             {
                 // only one segment, it may be an unbound action
-                UnboundActionPathSegment unboundActionSegment = path.Segments.Last() as UnboundActionPathSegment;
+                OperationSegment unboundActionSegment = path.Segments.Last() as OperationSegment;
                 if (unboundActionSegment != null)
                 {
-                    action = unboundActionSegment.Action.Action;
+                    throw new NotImplementedException();
+                    //action = unboundActionSegment.e  Action.Action;
                 }
             }
             else
             {
-                // otherwise, it may be a bound action
-                BoundActionPathSegment actionSegment = path.Segments.Last() as BoundActionPathSegment;
-                if (actionSegment != null)
-                {
-                    action = actionSegment.Action;
-                }
+
+                throw new NotImplementedException();
+                //// otherwise, it may be a bound action
+                //BoundActionPathSegment actionSegment = path.Segments.Last() as BoundActionPathSegment;
+                //if (actionSegment != null)
+                //{
+                //    action = actionSegment.Action;
+                //}
             }
 
             if (action == null)
@@ -263,7 +247,7 @@
 
         internal static ODataCollectionValue ReadCollection(ODataCollectionReader reader)
         {
-            ArrayList items = new ArrayList();
+            List<object> items = new List<object>();
             string typeName = null;
 
             while (reader.Read())
@@ -281,16 +265,21 @@
             return new ODataCollectionValue { Items = items, TypeName = typeName };
         }
 
-        private DataObject CreateDataObject(DataObjectEdmModel model, IEdmEntityTypeReference entityTypeReference, ODataEntryWithNavigationLinks entry, out Type objType)
+        private DataObject CreateDataObject(DataObjectEdmModel model, IEdmEntityTypeReference entityTypeReference, ODataEntityReferenceLinks
+            //ODataEntryWithNavigationLinks 
+            entry, 
+            out Type objType)
         {
             IEdmEntityType entityType = entityTypeReference.EntityDefinition();
             objType = model.GetDataObjectType(model.GetEdmEntitySet(entityType).Name);
             var obj = (DataObject)Activator.CreateInstance(objType);
-            foreach (ODataProperty odataProp in entry.Entry.Properties)
-            {
-                string clrPropName = model.GetDataObjectPropertyName(objType, odataProp.Name);
-                Information.SetPropValueByName(obj, clrPropName, odataProp.Value);
-            }
+            //foreach (ODataEntityReferenceLink lnk in entry.Links)
+            //foreach (ODataProperty odataProp in entry.Entry.Properties)
+            //{
+            //    lnk.
+            //    string clrPropName = model.GetDataObjectPropertyName(objType, odataProp.Name);
+            //    Information.SetPropValueByName(obj, clrPropName, odataProp.Value);
+            //}
 
             return obj;
         }

@@ -4,24 +4,26 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     using ICSSoft.STORMNET;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Library.Expressions;
-    using Microsoft.OData.Edm.Library.Values;
+    //using Microsoft.OData.Edm.Library;
+    //using Microsoft.OData.Edm.Library.Expressions;
+    //using Microsoft.OData.Edm.Library.Values;
 
-    using ICSSoft.Services;
+    //using ICSSoft.Services;
 
     using Unity;
 
     using Action = NewPlatform.Flexberry.ORM.ODataService.Functions.Action;
+    using ICSSoft.Services;
 
     /// <summary>
     /// EDM-модель, которая строится на основе сборок с объектами данных (унаследованными от <see cref="DataObject"/>).
@@ -89,6 +91,7 @@
 
         public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
+            Contract.Requires<ArgumentNullException>(metadata != null);
             EdmModelBuilder = edmModelBuilder;
             var container = UnityFactory.GetContainer();
             if (container != null)
@@ -114,7 +117,7 @@
                 }
             }
 
-            _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
+            _metadata = metadata;
 
             BuildTypeHierarchy();
             BuildEdmEntityTypes();
@@ -130,10 +133,7 @@
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseDataObjectType = dataObjectType.BaseType;
-                if (baseDataObjectType == null)
-                {
-                    throw new ArgumentException("Contract assertion not met: baseDataObjectType != null", "value");
-                }
+                Contract.Assume(baseDataObjectType != null);
 
                 if (!_typeHierarchy.ContainsKey(baseDataObjectType))
                     _typeHierarchy[baseDataObjectType] = new List<Type> { dataObjectType };
@@ -154,10 +154,7 @@
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
-                if (baseType == null)
-                {
-                    throw new ArgumentException("Contract assertion not met: baseType != null", "value");
-                }
+                Contract.Assume(baseType != null);
 
                 // TODO: гарантирована сортировка от базового типа к дочернему?
                 EdmEntityType baseEdmEntityType;
@@ -205,7 +202,7 @@
                         for (int i = 0; i < enumNames.Length; i++)
                         {
                             int intValue = (int)enumValues.GetValue(i);
-                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmIntegerConstant(intValue)));
+                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], null));// new Microsoft.OData.Edm.Vocabularies.EdmIntegerConstant(intValue)));
                         }
 
                         _registeredEnums.Add(propertyType, edmEnumType);
@@ -334,10 +331,7 @@
 
         public bool IsDataObjectRegistered(Type dataObjectType)
         {
-            if (dataObjectType == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
-            }
+            Contract.Requires<ArgumentNullException>(dataObjectType != null);
 
             return _metadata.Contains(dataObjectType);
         }
@@ -349,11 +343,7 @@
         /// <returns>Тип EDM-сущности, соответствующий заданному типу объекта данных.</returns>
         public IEdmEntityType GetEdmEntityType(Type dataObjectType)
         {
-            if (dataObjectType == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
-            }
-
+            Contract.Requires<ArgumentNullException>(dataObjectType != null);
             if (!_registeredEdmEntityTypes.ContainsKey(dataObjectType))
                 return null;
             return _registeredEdmEntityTypes[dataObjectType];
@@ -366,11 +356,7 @@
         /// <returns>Тип EDM-перечисления, соответствующий заданному типу clr-перечисления.</returns>
         public EdmEnumType GetEdmEnumType(Type enumType)
         {
-            if (enumType == null)
-            {
-                throw new ArgumentNullException(nameof(enumType), "Contract assertion not met: enumType != null");
-            }
-
+            Contract.Requires<ArgumentNullException>(enumType != null);
             if (!_registeredEnums.ContainsKey(enumType))
                 return null;
             return _registeredEnums[enumType];
@@ -508,10 +494,7 @@
         /// <returns>Представление по умолчанию, соответствующее заданному типу объекта данных.</returns>
         public View GetDataObjectDefaultView(Type dataObjectType)
         {
-            if (dataObjectType == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
-            }
+            Contract.Requires<ArgumentNullException>(dataObjectType != null);
 
             return _metadata[dataObjectType].DefaultView;
         }
@@ -541,15 +524,8 @@
         /// <returns>Типа объекта данных, соответствующий заданному имени набора сущностей в EDM-модели.</returns>
         public Type GetDataObjectType(string edmEntitySetName)
         {
-            if (edmEntitySetName == null)
-            {
-                throw new ArgumentNullException(nameof(edmEntitySetName), "Contract assertion not met: edmEntitySetName != null");
-            }
-
-            if (edmEntitySetName == string.Empty)
-            {
-                throw new ArgumentException("Contract assertion not met: edmEntitySetName != string.Empty", nameof(edmEntitySetName));
-            }
+            Contract.Requires<ArgumentNullException>(edmEntitySetName != null);
+            Contract.Requires<ArgumentException>(edmEntitySetName != string.Empty);
 
             Type dataObjectType;
             _registeredCollections.TryGetValue(edmEntitySetName, out dataObjectType);
@@ -579,10 +555,7 @@
         /// <returns>Набор EDM-сущностей, соответствующий заданному типу объекта данных.</returns>
         public EdmEntitySet GetEdmEntitySet(Type dataObjectType)
         {
-            if (dataObjectType == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
-            }
+            Contract.Requires<ArgumentNullException>(dataObjectType != null);
 
             return GetEdmEntitySet(GetEdmEntityType(dataObjectType));
         }
@@ -633,7 +606,7 @@
 
                 edmAction = new EdmAction(DefaultNamespace, action.Name, returnEdmTypeReference);
                 edmAction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddActionImport(action.Name, edmAction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
+                entityContainer.AddActionImport(edmAction);//   action.Name, edmAction,  new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
             }
 
             AddElement(edmAction);
@@ -688,7 +661,7 @@
 
                 edmFunction = new EdmFunction(DefaultNamespace, function.Name, returnEdmTypeReference, true, null, true);
                 edmFunction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
+                entityContainer.AddFunctionImport(edmFunction);// function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
             }
 
             AddElement(edmFunction);

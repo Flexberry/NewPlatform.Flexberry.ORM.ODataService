@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
@@ -65,7 +66,9 @@
         /// <param name="useNamespaceInEntitySetName">Is need to add the whole type namespace for EDM entity set.</param>
         public DefaultDataObjectEdmModelBuilder(IEnumerable<Assembly> searchAssemblies, bool useNamespaceInEntitySetName = true)
         {
-            _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
+            Contract.Requires<ArgumentNullException>(searchAssemblies != null);
+
+            _searchAssemblies = searchAssemblies;
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
             EntitySetNameBuilder = BuildEntitySetName;
@@ -105,11 +108,7 @@
             if (meta[typeof(DataObject)].KeyType == null)
             {
                 var key = meta[typeof(DataObject)].OwnProperties.FirstOrDefault(p => p.Name == _keyProperty.Name);
-                if (key == null)
-                {
-                    throw new ArgumentException("Contract assertion not met: key != null", "value");
-                }
-
+                Contract.Assume(key != null);
                 meta[typeof(DataObject)].OwnProperties.Clear();
                 foreach (var type in meta.Types)
                 {
@@ -174,10 +173,7 @@
             }
 
             Type baseType = dataObjectType.BaseType;
-            if (baseType == null)
-            {
-                throw new ArgumentException("Contract assertion not met: baseType != null", nameof(dataObjectType));
-            }
+            Contract.Assume(baseType != null);
 
             AddDataObjectWithHierarchy(meta, baseType);
 
@@ -214,11 +210,9 @@
             }
             else
             {
-                if (dataObjectType.BaseType != typeof(DataObject))
-                {
-                    throw new ArgumentException($"Запрещено переопределение ключа в типе {dataObjectType.FullName}, т.к он не наследуется непосредственно от DataObject.", nameof(dataObjectType));
-                }
-
+                Contract.Assume(
+                    dataObjectType.BaseType == typeof(DataObject),
+                    $"Запрещено переопределение ключа в типе {dataObjectType.FullName}, т.к он не наследуется непосредственно от DataObject.");
                 typeSettings.KeyType = keyType;
             }
 

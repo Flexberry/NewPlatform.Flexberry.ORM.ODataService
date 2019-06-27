@@ -3,15 +3,19 @@
 // Branch of https://github.com/OData/WebApi/blob/v5.7.0/OData/src/System.Web.OData/OData/Query/Expressions/ClrCanonicalFunctions.cs
 namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
+
     using Microsoft.Spatial;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using Microsoft.OData.Edm.Library;
-    using ICSSoft.STORMNET.Business.LINQProvider.Extensions;
+    using Microsoft.OData.Edm;
+    //using Microsoft.OData.Edm.Library;
+    //using ICSSoft.STORMNET.Business.LINQProvider.Extensions;
+    using ICSSoft.STORMNET.Business.LINQProvider;
 
     /// <summary>
     /// Класс содержит определения функций описанных в стандарте OData в главе 11.2.5.1 System Query Option $filter:
@@ -364,8 +368,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Initialization is order dependent")]
         static ClrCanonicalFunctions()
         {
-            GeoIntersects = MethodOf(_ => GisExtensions.GeoIntersects(default(Geography), default(Geography)));
-            GeomIntersects = MethodOf(_ => GisExtensions.GeomIntersects(default(Geometry), default(Geometry)));
+            //GeoIntersects = MethodOf(_ => GisExtensions.GeoIntersects(default(Geography), default(Geography)));
+            //GeomIntersects = MethodOf(_ => GisExtensions.GeomIntersects(default(Geometry), default(Geometry)));
 
             StartsWith = MethodOf(_ => _defaultString.StartsWith(default(string)));
             EndsWith = MethodOf(_ => _defaultString.EndsWith(default(string)));
@@ -401,21 +405,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         private static MethodInfo MethodOf(Expression expression)
         {
             LambdaExpression lambdaExpression = expression as LambdaExpression;
-            if (lambdaExpression == null)
-            {
-                throw new ArgumentException("Contract assertion not met: lambdaExpression != null", "value");
-            }
-
-            if (expression.NodeType != ExpressionType.Lambda)
-            {
-                throw new ArgumentException("Contract assertion not met: expression.NodeType == ExpressionType.Lambda", nameof(expression));
-            }
-
-            if (lambdaExpression.Body.NodeType != ExpressionType.Call)
-            {
-                throw new ArgumentException("Contract assertion not met: lambdaExpression.Body.NodeType == ExpressionType.Call", "value");
-            }
-
+            Contract.Assert(lambdaExpression != null);
+            Contract.Assert(expression.NodeType == ExpressionType.Lambda);
+            Contract.Assert(lambdaExpression.Body.NodeType == ExpressionType.Call);
             return (lambdaExpression.Body as MethodCallExpression).Method;
         }
     }

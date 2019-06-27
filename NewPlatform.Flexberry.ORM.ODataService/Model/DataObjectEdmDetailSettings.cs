@@ -1,6 +1,7 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Model
+namespace NewPlatform.Flexberry.ORM.ODataService.Model
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Metadata class for detail relations.
@@ -18,7 +19,9 @@
         /// <param name="detailType">The type of detail.</param>
         public DataObjectEdmDetailSettings(Type detailType)
         {
-            DetailType = detailType ?? throw new ArgumentNullException(nameof(detailType), "Contract assertion not met: detailType != null");
+            Contract.Requires<ArgumentNullException>(detailType != null);
+
+            DetailType = detailType;
         }
     }
 }

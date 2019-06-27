@@ -7,12 +7,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-    using System.Web.OData.Formatter;
+    //using System.Web.Http.Dispatcher;
+    using Microsoft.AspNet.OData.Formatter;
 
     /// <summary>
     /// Класс расширения для работы с типами.

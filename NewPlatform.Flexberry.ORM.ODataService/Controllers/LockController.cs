@@ -1,9 +1,14 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
+    using ICSSoft.STORMNET.Business;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using NewPlatform.Flexberry.Services;
     using System;
+    using System.Diagnostics.Contracts;
     using System.Web.Http;
 
-    using NewPlatform.Flexberry.Services;
+    //using NewPlatform.Flexberry.Services;
 
     /// <summary>
     /// WebAPI controller for Flexberry Lock Service (<see cref="ILockService"/>).
@@ -20,7 +25,9 @@
         /// <param name="lockService">The lock service.</param>
         public LockController(ILockService lockService)
         {
-            _lockService = lockService ?? throw new ArgumentNullException(nameof(lockService), "Contract assertion not met: lockService != null");
+            Contract.Requires<ArgumentNullException>(lockService != null);
+
+            _lockService = lockService;
         }
 
         /// <summary>
@@ -30,7 +37,7 @@
         /// <returns>Information about lock.</returns>
         [HttpGet]
         [ActionName("Lock")]
-        public LockData Lock(string dataObjectId)
+        public LockInfo Lock(string dataObjectId)
         {
             return _lockService.LockObject(dataObjectId, User.Identity.Name);
         }
@@ -42,10 +49,10 @@
         /// <returns>Returns <c>true</c> if object is successfully unlocked or <c>false</c> if it's not exist.</returns>
         [HttpGet]
         [ActionName("Unlock")]
-        public IHttpActionResult Unlock(string dataObjectId)
+        public IActionResult Unlock(string dataObjectId)
         {
             return _lockService.UnlockObject(dataObjectId)
-                ? (IHttpActionResult)Ok()
+                ? (IActionResult)Ok()
                 : NotFound();
         }
     }

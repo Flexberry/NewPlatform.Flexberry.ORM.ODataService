@@ -1,11 +1,12 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
+namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Net.Http;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.OData.Routing;
+    //using System.Web.OData.Routing;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
 
@@ -13,7 +14,7 @@
     /// Delegate WebAPI handler class that updates current EDM model at each request.
     /// </summary>
     /// <seealso cref="DelegatingHandler" />
-    internal class PerRequestUpdateEdmModelHandler : DelegatingHandler
+    public class PerRequestUpdateEdmModelHandler : DelegatingHandler
     {
         /// <summary>
         /// The OData Service management token.
@@ -40,18 +41,21 @@
         /// </param>
         public PerRequestUpdateEdmModelHandler(ManagementToken token, IDataObjectEdmModelBuilder modelBuilder)
         {
+            Contract.Requires<ArgumentNullException>(token != null);
+            Contract.Requires<ArgumentNullException>(modelBuilder != null);
+
             // In current Microsoft implementation of OData for WebAPI, EDM model is stored
             // in ODataPathRouteConstraint, but doesn't have public setter.
             // In order to rebuild EDM model for different requests (e.g. authorized users),
             // this handler uses reflection for private setter calling.
-            _edmModelProperty = typeof(ODataPathRouteConstraint).GetProperty("EdmModel");
+            _edmModelProperty = typeof(Microsoft.AspNet.OData.Routing.ODataPathRouteConstraint).GetProperty("EdmModel");
             if (_edmModelProperty == null)
             {
                 throw new InvalidOperationException("Current OData API cannot be used for editing EDM model.");
             }
 
-            _token = token ?? throw new ArgumentNullException(nameof(token), "Contract assertion not met: token != null");
-            _modelBuilder = modelBuilder ?? throw new ArgumentNullException(nameof(modelBuilder), "Contract assertion not met: modelBuilder != null");
+            _token = token;
+            _modelBuilder = modelBuilder;
         }
 
         /// <summary>

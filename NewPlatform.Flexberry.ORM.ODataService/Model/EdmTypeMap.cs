@@ -2,15 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
+    using System.Linq;
     using System.IO;
     using System.Xml.Linq;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
+    //using Microsoft.OData.Edm.Library;
     using Microsoft.Spatial;
 
-    using FileType = ICSSoft.STORMNET.FileType;
+    //using FileType = ICSSoft.STORMNET.FileType;
     using KeyGen = ICSSoft.STORMNET.KeyGen;
     using UserDataTypes = ICSSoft.STORMNET.UserDataTypes;
 
@@ -82,7 +82,7 @@
             { typeof(TimeOfDay), GetEdmPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay) },
             { typeof(TimeOfDay?), GetEdmPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay) },
             { typeof(XElement), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
-            { typeof(Binary), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Binary) },
+//            { typeof( ), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Binary) },
             { typeof(ushort), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int32) },
             { typeof(ushort?), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int32) },
             { typeof(uint), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int64) },
@@ -106,7 +106,7 @@
             { typeof(UserDataTypes.WebFile), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
             { typeof(UserDataTypes.GeoData), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
             { typeof(UserDataTypes.Image), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
-            { typeof(FileType.File), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
+            { typeof(ICSSoft.STORMNET.FileType.File), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
             { typeof(KeyGen.KeyGuid), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Guid) }
         };
 

@@ -5,8 +5,10 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.Cors;
-    using System.Web.Http.Cors;
+    //using System.Net.Cors;
+    //using System.Web.Http.Cors;
+    using Microsoft.AspNetCore.Cors.Infrastructure;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Implementation of <see cref="ICorsPolicyProvider"/> that adds value from "Origin" request header to the
@@ -24,7 +26,9 @@
         /// <returns>The <see cref="T:System.Web.Cors.CorsPolicy" />.</returns>
         public Task<CorsPolicy> GetCorsPolicyAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var result = new CorsPolicy { AllowAnyHeader = true, AllowAnyMethod = true, AllowAnyOrigin = false };
+
+            var result = new CorsPolicyBuilder().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build();
+            // new CorsPolicy { AllowAnyHeader = true, AllowAnyMethod = true, AllowAnyOrigin = false };
 
             IEnumerable<string> origin;
             if (request.Headers.TryGetValues("Origin", out origin))
@@ -35,6 +39,11 @@
             }
 
             return Task.FromResult(result);
+        }
+
+        public Task<CorsPolicy> GetPolicyAsync(HttpContext context, string policyName)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
     using System.Web;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using MimeMapping;
 
     /// <summary>
     /// Базовый провайдер для файловых свойств объектов данных.
@@ -40,7 +42,9 @@
         /// <param name="dataService">Сервис данных для операций с БД.</param>
         protected BaseDataObjectFileProvider(IDataService dataService)
         {
-            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+            Contract.Requires<ArgumentNullException>(dataService != null);
+
+            _dataService = dataService;
         }
 
         /// <summary>
@@ -317,7 +321,7 @@
         /// </returns>
         public virtual string GetFileMimeType(object fileProperty)
         {
-            return MimeMapping.GetMimeMapping(GetFileName(fileProperty));
+            return MimeUtility.GetMimeMapping(GetFileName(fileProperty));
         }
 
         /// <summary>

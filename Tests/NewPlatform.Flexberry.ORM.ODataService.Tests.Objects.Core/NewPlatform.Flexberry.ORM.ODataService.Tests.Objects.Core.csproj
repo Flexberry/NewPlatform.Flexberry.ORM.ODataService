@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ICSSoft.STORMNET.Business">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.MSSQLDataService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.MSSQLDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.SQLDataService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\COUB_CORE2\ICSSoft.STORMNET.Business.SQLDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.DataObject">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.DataObject.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.UserDataTypes">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.UserDataTypes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -5,15 +5,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
+    //using Microsoft.AspNet.OData.Properties;
     using Microsoft.OData.Edm;
     using System;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
 
     internal static class CollectionDeserializationHelpers
     {
@@ -24,35 +26,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
         public static void AddToCollection(this IEnumerable items, IEnumerable collection, Type elementType,
             Type resourceType, string propertyName, Type propertyType)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items), "Contract assertion not met: items != null");
-            }
-
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection), "Contract assertion not met: collection != null");
-            }
-
-            if (elementType == null)
-            {
-                throw new ArgumentNullException(nameof(elementType), "Contract assertion not met: elementType != null");
-            }
-
-            if (resourceType == null)
-            {
-                throw new ArgumentNullException(nameof(resourceType), "Contract assertion not met: resourceType != null");
-            }
-
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName), "Contract assertion not met: propertyName != null");
-            }
-
-            if (propertyType == null)
-            {
-                throw new ArgumentNullException(nameof(propertyType), "Contract assertion not met: propertyType != null");
-            }
+            Contract.Assert(items != null);
+            Contract.Assert(collection != null);
+            Contract.Assert(elementType != null);
+            Contract.Assert(resourceType != null);
+            Contract.Assert(propertyName != null);
+            Contract.Assert(propertyType != null);
 
             MethodInfo addMethod = null;
             IList list = collection as IList;
@@ -77,25 +56,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 
         public static void AddToCollection(this IEnumerable items, IEnumerable collection, Type elementType, string paramName, Type paramType)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items), "Contract assertion not met: items != null");
-            }
-
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection), "Contract assertion not met: collection != null");
-            }
-
-            if (elementType == null)
-            {
-                throw new ArgumentNullException(nameof(elementType), "Contract assertion not met: elementType != null");
-            }
-
-            if (paramType == null)
-            {
-                throw new ArgumentNullException(nameof(paramType), "Contract assertion not met: paramType != null");
-            }
+            Contract.Assert(items != null);
+            Contract.Assert(collection != null);
+            Contract.Assert(elementType != null);
+            Contract.Assert(paramType != null);
 
             MethodInfo addMethod = null;
             IList list = collection as IList;
@@ -134,11 +98,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
                 }
                 else
                 {
-                    if (addMethod == null)
-                    {
-                        throw new ArgumentNullException(nameof(addMethod), "Contract assertion not met: addMethod != null");
-                    }
-
+                    Contract.Assert(addMethod != null);
                     addMethod.Invoke(collection, new object[] { element });
                 }
             }
@@ -146,10 +106,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 
         public static void Clear(this IEnumerable collection, string propertyName, Type resourceType)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection), "Contract assertion not met: collection != null");
-            }
+            Contract.Assert(collection != null);
 
             MethodInfo clearMethod = collection.GetType().GetMethod("Clear", _emptyTypeArray);
             if (clearMethod == null)
@@ -164,10 +121,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 
         public static bool TryCreateInstance(Type collectionType, IEdmCollectionTypeReference edmCollectionType, Type elementType, out IEnumerable instance)
         {
-            if (collectionType == null)
-            {
-                throw new ArgumentNullException(nameof(collectionType), "Contract assertion not met: collectionType != null");
-            }
+            Contract.Assert(collectionType != null);
 
             if (collectionType == typeof(EdmComplexObjectCollection))
             {

@@ -1,7 +1,8 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService
 {
     using System;
-    using System.Web.OData.Routing;
+    using System.Diagnostics.Contracts;
+    using Microsoft.AspNet.OData.Routing;
 
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
@@ -20,10 +21,7 @@
 
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Contract assertion not met: value != null");
-                }
+                Contract.Requires<ArgumentNullException>(value != null);
 
                 if (_model == value)
                     return;
@@ -45,8 +43,11 @@
 
         public ManagementToken(ODataRoute route, DataObjectEdmModel model)
         {
-            Route = route ?? throw new ArgumentNullException(nameof(route), "Contract assertion not met: route != null");
-            _model = model ?? throw new ArgumentNullException(nameof(model), "Contract assertion not met: model != null");
+            Contract.Requires<ArgumentNullException>(route != null);
+            Contract.Requires<ArgumentNullException>(model != null);
+
+            Route = route;
+            _model = model;
             Functions = new FunctionContainer(this);
         }
     }

@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Web;
-
+    using MimeMapping;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -229,7 +229,7 @@
             FileUploadKey = fileUploadKey;
             FileName = fileInfo.Name;
             FileSize = fileInfo.Length;
-            FileMimeType = MimeMapping.GetMimeMapping(fileInfo.Name);
+            FileMimeType = MimeUtility.GetMimeMapping(fileInfo.Name);
         }
 
         /// <summary>

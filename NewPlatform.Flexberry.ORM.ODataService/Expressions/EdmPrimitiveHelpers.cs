@@ -4,12 +4,14 @@
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Data.Linq;
+   // using System.Data.Linq;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
+    //using System.Web.OData.Properties;
     using System.Xml.Linq;
     using ValidationException=System.ComponentModel.DataAnnotations.ValidationException;
 
@@ -26,15 +28,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         /// <returns>Преобразованное значение</returns>
         public static object ConvertPrimitiveValue(object value, Type type)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value), "Contract assertion not met: value != null");
-            }
-
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type), "Contract assertion not met: type != null");
-            }
+            Contract.Assert(value != null);
+            Contract.Assert(type != null);
 
             // if value is of the same type nothing to do here.
             if (value.GetType() == type || value.GetType() == Nullable.GetUnderlyingType(type))
@@ -71,10 +66,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                 return str.ToCharArray();
             }
-            else if (type == typeof(Binary))
-            {
-                return new Binary((byte[])value);
-            }
+            //else if (type == typeof(Binary))
+            //{
+            //    return new Binary((byte[])value);
+            //}
             else if (type == typeof(XElement))
             {
                 if (str == null)
@@ -110,10 +105,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 }
                 else
                 {
-                    if (type != typeof(uint) && type != typeof(ushort) && type != typeof(ulong))
-                    {
-                        throw new ArgumentException("Contract assertion not met: type == typeof(uint) || type == typeof(ushort) || type == typeof(ulong)", nameof(type));
-                    }
+                    Contract.Assert(type == typeof(uint) || type == typeof(ushort) || type == typeof(ulong));
 
                     // Note that we are not casting the return value to nullable<T> as even if we do it
                     // CLR would unbox it back to T.

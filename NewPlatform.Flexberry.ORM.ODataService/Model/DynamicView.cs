@@ -5,14 +5,15 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-
     using AdvLimit.ExternalLangDef;
+
+    // using AdvLimit.ExternalLangDef;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
 
-    internal class DynamicView
+    public class DynamicView
     {
         /// <summary>
         /// Свойство в динамическом представлении.

@@ -9,9 +9,9 @@
     using System.Net.Http.Formatting;
     using System.Text;
     using System.Web.Http;
-    using System.Web.Http.Results;
-    using System.Web.Http.Validation;
-    using System.Web.OData;
+    //using System.Web.Http.Results;
+    //using System.Web.Http.Validation;
+    using Microsoft.OData;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -19,7 +19,7 @@
     using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
+   // using Microsoft.OData.Edm.Library;
 
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
@@ -28,9 +28,13 @@
 
     using Newtonsoft.Json;
 
-    using File = ICSSoft.STORMNET.FileType.File;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Extensions;
+    //using File = ICSSoft.STORMNET.FileType.File;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNet.OData;
+
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -83,7 +87,7 @@
                 // ... выполнить необходимые действия с JSON
                 result.Content = new StringContent(taskResult, Encoding.UTF8, "application/json"); // вставить обратно окончательный JSON-ответ
                 */
-                if (Request.Headers.Contains("Prefer"))
+                if (Request.Headers.ContainsKey("Prefer"))
                 {
                     result.Headers.Add("Preference-Applied", "return=representation");
                 }
@@ -119,8 +123,8 @@
 
                 IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
 
-                var dictionary = Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
-                    (Dictionary<string, object>)Request.Properties[ExtendedODataEntityDeserializer.Dictionary] :
+                var dictionary = Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
+                    (Dictionary<string, object>)Request.HttpContext.Items[ExtendedODataEntityDeserializer.Dictionary] :
                     new Dictionary<string, object>();
 
                 foreach (var prop in entityType.Properties())
@@ -146,7 +150,7 @@
                     return responseForPreferMinimal;
                 }
 
-                if (!Request.Headers.Contains("Prefer"))
+                if (!Request.Headers.ContainsKey("Prefer"))
                 {
                     return Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
                 }
@@ -170,7 +174,7 @@
         /// </returns>
         public HttpResponseMessage DeleteString()
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
+            ODataPath odataPath = Request.ODataFeature().Path;
             string key = odataPath.Segments[1].ToString().Trim().Replace("'", string.Empty);
             return DeleteEntity(key);
         }
@@ -183,7 +187,7 @@
         /// </returns>
         public HttpResponseMessage DeleteGuid()
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
+            ODataPath odataPath = Request.ODataFeature().Path;
             Guid key = new Guid(odataPath.Segments[1].ToString());
             return DeleteEntity(key);
         }
@@ -304,10 +308,11 @@
 
         private HttpResponseMessage TestPreferMinimal()
         {
-            if (Request.Headers.Contains("Prefer"))
+            if (Request.Headers.ContainsKey("Prefer"))
             {
-                KeyValuePair<string, IEnumerable<string>> header = Request.Headers.FirstOrDefault(h => h.Key == "Prefer");
-                if (header.Value != null && header.Value.Contains("return=minimal"))
+                KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> header = Request.Headers.FirstOrDefault(h => h.Key == "Prefer");
+                if (//header.Value != null && 
+                    header.Value.Contains("return=minimal"))
                 {
                     HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
                     result.Headers.Add("Preference-Applied", "return=minimal");
@@ -324,78 +329,82 @@
         /// <returns>Возвращается EdmEntityObject преобразованный из JSON-строки.</returns>
         private EdmEntityObject ReplaceOdataBindNull()
         {
-            if (!Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.OdataBindNull))
+            if (!Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.OdataBindNull))
             {
-                if (Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
-                    throw (Exception)Request.Properties[ExtendedODataEntityDeserializer.ReadException];
+                if (Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
+                    throw (Exception)Request.HttpContext.Items[ExtendedODataEntityDeserializer.ReadException];
                 throw new Exception("ReplaceOdataBindNull: edmEntity is null.");
             }
 
-            Stream stream;
+            //Stream stream;
 
-            string json = (string)Request.Properties[PostPatchHandler.RequestContent];
+            //string json = (string)Request.HttpContext.Items[PostPatchHandler.RequestContent];
 
-            Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            var keys = props.Keys.ToArray();
-            var odataBindNullList = new List<string>();
-            foreach (var key in keys)
-            {
-                var p = key.IndexOf("@odata.bind");
-                if (p != -1 && props[key] == null)
-                {
-                    props.Remove(key);
-                    var newKey = key.Substring(0, p);
-                    if (props.ContainsKey(newKey))
-                    {
-                        props.Remove(newKey);
-                    }
+            //Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            //var keys = props.Keys.ToArray();
+            //var odataBindNullList = new List<string>();
+            //foreach (var key in keys)
+            //{
+            //    var p = key.IndexOf("@odata.bind");
+            //    if (p != -1 && props[key] == null)
+            //    {
+            //        props.Remove(key);
+            //        var newKey = key.Substring(0, p);
+            //        if (props.ContainsKey(newKey))
+            //        {
+            //            props.Remove(newKey);
+            //        }
 
-                    var type = (EdmEntityTypeReference)Request.Properties[ExtendedODataEntityDeserializer.OdataBindNull];
+            //        HttpRequestMessage requestMessage = new HttpRequestMessage();
+            //        var type = (EdmEntityTypeReference)requestMessage.Properties[ExtendedODataEntityDeserializer.OdataBindNull];
 
-                    var prop = type.FindNavigationProperty(newKey);
-                    if (prop.Type.IsCollection())
-                    {
-                        odataBindNullList.Add(newKey);
-                    }
-                    else
-                    {
-                        props.Add(newKey, null);
-                    }
-                }
-            }
+            //        var prop = type.FindNavigationProperty(newKey);
+            //        if (prop.Type.IsCollection())
+            //        {
+            //            odataBindNullList.Add(newKey);
+            //        }
+            //        else
+            //        {
+            //            props.Add(newKey, null);
+            //        }
+            //    }
+            //}
 
-            json = JsonConvert.SerializeObject(props);
-            Request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            //json = JsonConvert.SerializeObject(props);
+            //Request.Body.Write(  (new StringContent(json, Encoding.UTF8, "application/json")).r );
+            //    //Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            IContentNegotiator negotiator = (IContentNegotiator)Configuration.Services.GetService(typeof(IContentNegotiator));
-            var resultNegotiate = negotiator.Negotiate(typeof(EdmEntityObject), Request, Configuration.Formatters);
+            //IContentNegotiator negotiator = (IContentNegotiator)Configuration.Services.GetService(typeof(IContentNegotiator));
+            //var resultNegotiate = negotiator.Negotiate(typeof(EdmEntityObject), Request, Configuration.Formatters);
 
-            stream = Request.Content.ReadAsStreamAsync().Result;
-            var formatter = resultNegotiate.Formatter;
+            //stream = Request.Body;
+            //var formatter = resultNegotiate.Formatter;
 
-            /*
-            // Другой вариант получения форматтера.
-                var formatter = ((ODataMediaTypeFormatter)Configuration.Formatters[0]).GetPerRequestFormatterInstance(
-                    typeof(EdmEntityObject), Request, Request.Content.Headers.ContentType);
+            ///*
+            //// Другой вариант получения форматтера.
+            //    var formatter = ((ODataMediaTypeFormatter)Configuration.Formatters[0]).GetPerRequestFormatterInstance(
+            //        typeof(EdmEntityObject), Request, Request.Content.Headers.ContentType);
 
-            */
+            //*/
 
-            var edmEntity = (EdmEntityObject)formatter.ReadFromStreamAsync(
-                typeof(EdmEntityObject),
-                stream,
-                Request.Content,
-                new ModelStateFormatterLogger(ModelState, "edmEntity")).Result;
-            if (edmEntity == null && Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
-            {
-                throw (Exception)Request.Properties[ExtendedODataEntityDeserializer.ReadException];
-            }
+            //var edmEntity = (EdmEntityObject)formatter.ReadFromStreamAsync(
+            //    typeof(EdmEntityObject),
+            //    stream,
+            //    null,  // Content,
+            //    null //new ModelStateFormatterLogger(ModelState, "edmEntity")
+            //    ).Result;
+            //if (edmEntity == null && Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
+            //{
+            //    throw (Exception)Request.HttpContext.Items[ExtendedODataEntityDeserializer.ReadException];
+            //}
 
-            foreach (var prop in odataBindNullList)
-            {
-                edmEntity.TrySetPropertyValue(prop, null);
-            }
+            //foreach (var prop in odataBindNullList)
+            //{
+            //    edmEntity.TrySetPropertyValue(prop, null);
+            //}
 
-            return edmEntity;
+            //return edmEntity;
+            return null;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;

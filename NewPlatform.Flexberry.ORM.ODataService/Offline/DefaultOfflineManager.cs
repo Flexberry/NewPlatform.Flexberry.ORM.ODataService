@@ -1,14 +1,16 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Offline
+namespace NewPlatform.Flexberry.ORM.ODataService.Offline
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Web.OData.Query;
+    using Microsoft.AspNet.OData.Query;
 
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
     using NewPlatform.Flexberry.Services;
+
+    //using NewPlatform.Flexberry.Services;
 
     public class DefaultOfflineManager : BaseOfflineManager
     {
@@ -18,52 +20,25 @@
 
         public DefaultOfflineManager(ILockService lockService, CurrentUserService.IUser currentUser)
         {
-            _lockService = lockService ?? throw new ArgumentNullException(nameof(lockService), "Contract assertion not met: lockService != null");
-            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser), "Contract assertion not met: currentUser != null");
+            Contract.Requires<ArgumentNullException>(lockService != null);
+            Contract.Requires<ArgumentNullException>(currentUser != null);
+
+            _lockService = lockService;
+            _currentUser = currentUser;
         }
 
         protected override bool IsLockingRequired(ODataQueryOptions queryOptions, DataObject dataObject)
         {
-            if (queryOptions == null)
-            {
-                throw new ArgumentNullException(nameof(queryOptions), "Contract assertion not met: queryOptions != null");
-            }
-
-            if (dataObject == null)
-            {
-                throw new ArgumentNullException(nameof(dataObject), "Contract assertion not met: dataObject != null");
-            }
-
             return queryOptions.Request.Headers.Any(i => i.Key == "Flexberry-Sync" && i.Value.Contains("Lock"));
         }
 
         protected override bool IsUnlockingRequired(ODataQueryOptions queryOptions, DataObject dataObject)
         {
-            if (queryOptions == null)
-            {
-                throw new ArgumentNullException(nameof(queryOptions), "Contract assertion not met: queryOptions != null");
-            }
-
-            if (dataObject == null)
-            {
-                throw new ArgumentNullException(nameof(dataObject), "Contract assertion not met: dataObject != null");
-            }
-
             return queryOptions.Request.Headers.Any(i => i.Key == "Flexberry-Sync" && i.Value.Contains("Unlock"));
         }
 
         public override bool LockObjects(ODataQueryOptions queryOptions, IEnumerable<DataObject> dataObjects)
         {
-            if (queryOptions == null)
-            {
-                throw new ArgumentNullException(nameof(queryOptions), "Contract assertion not met: queryOptions != null");
-            }
-
-            if (dataObjects == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjects), "Contract assertion not met: dataObjects != null");
-            }
-
             var lockKeys = new List<object>();
             try
             {
@@ -94,16 +69,6 @@
 
         public override bool UnlockObjects(ODataQueryOptions queryOptions, IEnumerable<DataObject> dataObjects)
         {
-            if (queryOptions == null)
-            {
-                throw new ArgumentNullException(nameof(queryOptions), "Contract assertion not met: queryOptions != null");
-            }
-
-            if (dataObjects == null)
-            {
-                throw new ArgumentNullException(nameof(dataObjects), "Contract assertion not met: dataObjects != null");
-            }
-
             var unlockedKeys = new List<object>();
             try
             {

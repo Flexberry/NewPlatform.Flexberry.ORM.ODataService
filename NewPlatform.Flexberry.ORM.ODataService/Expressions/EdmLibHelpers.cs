@@ -7,25 +7,51 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Data.Linq;
+    //using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.Loader;
     using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-    using System.Web.OData;
-    using System.Web.OData.Builder;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Query.Expressions;
+    //using System.Web.Http.Dispatcher;
+    //using Microsoft.AspNet.OData;
+    //using System.Web.OData.Builder;
+    //using System.Web.OData.Properties;
+    //using System.Web.OData.Query.Expressions;
     using System.Xml.Linq;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Builder;
+    using Microsoft.Extensions.DependencyModel;
+    using Microsoft.Extensions.DependencyModel.Resolution;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Annotations;
-    using Microsoft.OData.Edm.Expressions;
-    using Microsoft.OData.Edm.Library;
+    //using Microsoft.AspNet.OData;
+    //using Microsoft.Data.Edm;
+    //using Microsoft.Data.Edm.Library;
+    // using Microsoft.OData.Edm;
+    //using Microsoft.OData.Edm.Annotations;
+    //using Microsoft.OData.Edm.Expressions;
+    //using Microsoft.OData.Edm.Library;
     using Microsoft.OData.Edm.Vocabularies.V1;
     using Microsoft.Spatial;
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
+
+
+    public interface IAssembliesResolver
+    {
+        ICollection<Assembly> GetAssemblies();
+    }
+    public class DefaultAssembliesResolver : IAssembliesResolver
+    {
+        public ICollection<Assembly> GetAssemblies()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 
     /// <summary>
     /// Класс содержит вспомогательные методы для работы с EDM-моделью.
@@ -80,16 +106,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(GeometryMultiPolygon), GetPrimitiveType(EdmPrimitiveTypeKind.GeometryMultiPolygon)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(DateTimeOffset), GetPrimitiveType(EdmPrimitiveTypeKind.DateTimeOffset)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(DateTimeOffset?), GetPrimitiveType(EdmPrimitiveTypeKind.DateTimeOffset)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeSpan), GetPrimitiveType(EdmPrimitiveTypeKind.Duration)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeSpan?), GetPrimitiveType(EdmPrimitiveTypeKind.Duration)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Date), GetPrimitiveType(EdmPrimitiveTypeKind.Date)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Date?), GetPrimitiveType(EdmPrimitiveTypeKind.Date)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeOfDay), GetPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeOfDay?), GetPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeSpan), GetPrimitiveType(EdmPrimitiveTypeKind.Duration)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(TimeSpan?), GetPrimitiveType(EdmPrimitiveTypeKind.Duration)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Microsoft.OData.Edm.Date), GetPrimitiveType(EdmPrimitiveTypeKind.Date)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Microsoft.OData.Edm.Date?), GetPrimitiveType(EdmPrimitiveTypeKind.Date)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Microsoft.OData.Edm.TimeOfDay), GetPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay)),
+                //new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Microsoft.OData.Edm.TimeOfDay?), GetPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay)),
 
                 // Keep the Binary and XElement in the end, since there are not the default mappings for Edm.Binary and Edm.String.
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(XElement), GetPrimitiveType(EdmPrimitiveTypeKind.String)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Binary), GetPrimitiveType(EdmPrimitiveTypeKind.Binary)),
+                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(byte[]), GetPrimitiveType(EdmPrimitiveTypeKind.Binary)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort?), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(uint), GetPrimitiveType(EdmPrimitiveTypeKind.Int64)),
@@ -115,10 +141,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         /// <returns>Ссылку на IEdmType.</returns>
         public static IEdmTypeReference ToEdmTypeReference(this IEdmType edmType, bool isNullable)
         {
-            if (edmType == null)
-            {
-                throw new ArgumentNullException(nameof(edmType), "Contract assertion not met: edmType != null");
-            }
+            Contract.Assert(edmType != null);
 
             switch (edmType.TypeKind)
             {
@@ -196,10 +219,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         {
             IEdmSchemaType edmSchemaType = edmType as IEdmSchemaType;
 
-            if (edmSchemaType == null)
-            {
-                throw new ArgumentException("Contract assertion not met: edmSchemaType != null", "value");
-            }
+            Contract.Assert(edmSchemaType != null);
 
             ClrTypeAnnotation annotation = edmModel.GetAnnotationValue<ClrTypeAnnotation>(edmSchemaType);
             if (annotation != null)
@@ -368,10 +388,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         // TODO (workitem 336): Support nested types and anonymous types.
         private static string MangleClrTypeName(Type type)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type), "Contract assertion not met: type != null");
-            }
+            Contract.Assert(type != null);
 
             if (!type.IsGenericType)
             {
@@ -428,15 +445,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
         private static QueryableRestrictionsAnnotation GetPropertyRestrictions(IEdmProperty edmProperty, IEdmModel edmModel)
         {
-            if (edmProperty == null)
-            {
-                throw new ArgumentNullException(nameof(edmProperty), "Contract assertion not met: edmProperty != null");
-            }
-
-            if (edmModel == null)
-            {
-                throw new ArgumentNullException(nameof(edmModel), "Contract assertion not met: edmModel != null");
-            }
+            Contract.Assert(edmProperty != null);
+            Contract.Assert(edmModel != null);
 
             return edmModel.GetAnnotationValue<QueryableRestrictionsAnnotation>(edmProperty);
         }

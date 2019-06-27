@@ -9,11 +9,12 @@
     using System.Web.Http;
 
     using ICSSoft.STORMNET;
-
+    using Microsoft.AspNetCore.Mvc;
+    using MimeMapping;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
 
-    using File = ICSSoft.STORMNET.FileType.File;
+    //using File = ICSSoft.STORMNET.FileType.File;
     using WebFile = ICSSoft.STORMNET.UserDataTypes.WebFile;
 
     /// <summary>
@@ -57,7 +58,7 @@
             FileInfo fileInfo = new FileInfo(filePath);
             using (FileStream fileStream = fileInfo.Open(FileMode.Open, FileAccess.Read))
             {
-                result = GetBase64StringFileData(MimeMapping.GetMimeMapping(fileInfo.Name), fileStream);
+                result = GetBase64StringFileData(MimeUtility.GetMimeMapping(fileInfo.Name), fileStream);
             }
 
             return result;
@@ -71,7 +72,7 @@
         /// <param name="getPreview">Параметр, определяющий, требуется ли файл просто для предпросмотра (если значение <c>true</c>), либо требуется его скачать и сохранить.</param>
         /// <returns>Описание загруженного файла.</returns>
         [HttpGet]
-        public HttpResponseMessage Get([FromUri] FileDescription fileDescription = null, [FromUri] bool getPreview = false)
+        public HttpResponseMessage Get([FromQuery] FileDescription fileDescription = null, [FromQuery] bool getPreview = false)
         {
             HttpResponseMessage response = null;
 

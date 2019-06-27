@@ -1,10 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Offline
 {
     using System.Collections.Generic;
-    using System.Web.OData.Query;
+    using System.Diagnostics.Contracts;
+    using Microsoft.AspNet.OData.Query;
 
     using ICSSoft.STORMNET;
 
+    [ContractClass(typeof(OfflineManagerContract))]
     public abstract class BaseOfflineManager
     {
         protected abstract bool IsLockingRequired(ODataQueryOptions queryOptions, DataObject dataObject);

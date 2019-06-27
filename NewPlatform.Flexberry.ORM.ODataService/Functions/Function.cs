@@ -1,7 +1,8 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Functions
+namespace NewPlatform.Flexberry.ORM.ODataService.Functions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Class of user-defined OData function.
@@ -37,19 +38,14 @@
         /// <param name="parametersTypes">The arguments of the function.</param>
         public Function(string functionName, DelegateODataFunction handler, Type returnType, Dictionary<string, Type> parametersTypes = null)
         {
-            if (functionName == null)
-            {
-                throw new ArgumentNullException(nameof(functionName), "Contract assertion not met: functionName != null");
-            }
-
-            if (functionName == string.Empty)
-            {
-                throw new ArgumentException("Contract assertion not met: functionName != string.Empty", nameof(functionName));
-            }
+            Contract.Requires<ArgumentNullException>(functionName != null);
+            Contract.Requires<ArgumentException>(functionName != string.Empty);
+            Contract.Requires<ArgumentNullException>(handler != null);
+            Contract.Requires<ArgumentNullException>(returnType != null);
 
             Name = functionName;
-            Handler = handler ?? throw new ArgumentNullException(nameof(handler), "Contract assertion not met: handler != null");
-            ReturnType = returnType ?? throw new ArgumentNullException(nameof(returnType), "Contract assertion not met: returnType != null");
+            Handler = handler;
+            ReturnType = returnType;
 
             if (parametersTypes == null)
                 parametersTypes = new Dictionary<string, Type>();

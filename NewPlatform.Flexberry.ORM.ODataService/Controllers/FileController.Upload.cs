@@ -9,7 +9,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
-
+    using Microsoft.AspNetCore.Mvc;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
 
     /// <summary>

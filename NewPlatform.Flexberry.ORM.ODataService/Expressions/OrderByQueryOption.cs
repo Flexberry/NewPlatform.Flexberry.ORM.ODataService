@@ -6,19 +6,24 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Query;
-    using System.Web.OData.Query.Expressions;
-    using System.Web.OData.Query.Validators;
-    using System.Web.OData.Routing;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Core.UriParser;
-    using Microsoft.OData.Core.UriParser.Semantic;
+    using Microsoft.AspNet.OData;
+   // using Microsoft.AspNet.OData.Properties;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.AspNet.OData.Query.Expressions;
+    using Microsoft.AspNet.OData.Query.Validators;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
+    //using Microsoft.Data.OData;
+    //using Microsoft.OData.Core;
+    //using Microsoft.OData.Core.UriParser;
+    //using Microsoft.OData.Core.UriParser.Semantic;
     using Microsoft.OData.Edm;
+    using Microsoft.OData.UriParser;
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
 
     /// <summary>
     /// This defines a $orderby OData query option for querying.
@@ -41,7 +46,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         /// Создает экземпляр NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption по экземпляру System.Web.OData.Query.OrderByQueryOption.
         /// </summary>
         /// <param name="orderByQueryOption">Экземпляр System.Web.OData.Query.OrderByQueryOption.</param>
-        public OrderByQueryOption(System.Web.OData.Query.OrderByQueryOption orderByQueryOption, Type contextElementClrType)
+        public OrderByQueryOption(Microsoft.AspNet.OData.Query.OrderByQueryOption orderByQueryOption, Type contextElementClrType)
         {
             Context = orderByQueryOption.Context;
             _contextElementClrType = contextElementClrType;
@@ -114,11 +119,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     }
 
                     openPropertiesSoFar.Add(openPropertyNode.PropertyName);
-                    if (openPropertyNode.OrderByClause == null)
-                    {
-                        throw new ArgumentException("Contract assertion not met: openPropertyNode.OrderByClause != null", "value");
-                    }
-
+                    Contract.Assert(openPropertyNode.OrderByClause != null);
                     querySoFar = AddOrderByQueryForProperty(query, querySettings, openPropertyNode.OrderByClause, querySoFar, openPropertyNode.Direction, alreadyOrdered);
                     alreadyOrdered = true;
                 }
@@ -146,7 +147,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             ODataQuerySettings updatedSettings = querySettings;
             if (querySettings.HandleNullPropagation == HandleNullPropagationOption.Default)
             {
-                updatedSettings = new ODataQuerySettings(updatedSettings);
+                updatedSettings = new ODataQuerySettings();// updatedSettings);
                 updatedSettings.HandleNullPropagation =
                     HandleNullPropagationOptionHelper.GetDefaultHandleNullPropagationOption(query);
             }

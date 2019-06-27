@@ -5,7 +5,7 @@
     using Model;
     using System;
     using System.Net.Http;
-    using System.Web.OData.Query;
+    //using System.Web.OData.Query;
 
     /// <summary>
     /// Класс для хранения параметров запроса OData.
@@ -57,13 +57,14 @@
         /// <returns>Возвращает lcs.</returns>
         public LoadingCustomizationStruct CreateLcs(Type type, string odataQuery = null)
         {
-            HttpRequestMessage request = _controller.Request;
+            HttpRequestMessage request = new HttpRequestMessage((HttpMethod)Enum.Parse(typeof(HttpMethod),_controller.HttpContext.Request.Method,true) ,_controller.HttpContext.Request.QueryString.ToString());
             if (odataQuery != null)
             {
                 request = new HttpRequestMessage(HttpMethod.Get, odataQuery);
             }
+            Microsoft.AspNetCore.Http.HttpRequest req = null;
 
-            _controller.QueryOptions = _controller.CreateODataQueryOptions(type, request);
+            _controller.QueryOptions = _controller.CreateODataQueryOptions(type, req);
             _controller.type = type;
             return _controller.CreateLcs();
         }

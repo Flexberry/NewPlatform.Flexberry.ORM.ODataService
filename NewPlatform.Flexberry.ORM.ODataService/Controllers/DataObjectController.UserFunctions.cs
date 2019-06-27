@@ -8,14 +8,18 @@
     using System.Net.Http;
     using System.Reflection;
     using System.Web.Http;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
+    using Microsoft.AspNet.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData;
+    using Microsoft.OData.UriParser;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// OData controller class.
@@ -37,7 +41,7 @@
         /// После преобразования создаётся результат HTTP для ответа.
         /// </returns>
         [CustomEnableQuery]
-        public IHttpActionResult GetODataFunctionsExecute()
+        public IActionResult GetODataFunctionsExecute()
         {
             try
             {
@@ -46,29 +50,32 @@
             }
             catch (HttpResponseException ex)
             {
-                if (HasOdataError(ex))
-                {
-                    return ResponseMessage(ex.Response);
-                }
-                else
-                {
-                    return ResponseMessage(InternalServerErrorMessage(ex));
-                }
+                throw new NotImplementedException();
+                //if (HasOdataError(ex))
+                //{
+                //    return ResponseMessage(ex.Response);
+                //}
+                //else
+                //{
+                //    return ResponseMessage(InternalServerErrorMessage(ex));
+                //}
             }
             catch (TargetInvocationException ex)
             {
-                if (HasOdataError(ex.InnerException))
-                {
-                    return ResponseMessage(((HttpResponseException)ex.InnerException).Response);
-                }
-                else
-                {
-                    return ResponseMessage(InternalServerErrorMessage(ex));
-                }
+                throw new NotImplementedException();
+                //if (HasOdataError(ex.InnerException))
+                //{
+                //    return ResponseMessage(((HttpResponseException)ex.InnerException).Response);
+                //}
+                //else
+                //{
+                //    return ResponseMessage(InternalServerErrorMessage(ex));
+                //}
             }
             catch (Exception ex)
             {
-                return ResponseMessage(InternalServerErrorMessage(ex));
+                throw new NotImplementedException();
+                //return ResponseMessage(InternalServerErrorMessage(ex));
             }
         }
 
@@ -77,17 +84,20 @@
         /// </summary>
         /// <param name="queryParameters">Параметры запроса.</param>
         /// <returns>Результат выполнения пользовательской функции, преобразованный к типам сущностей EDM-модели или к примитивным типам.</returns>
-        internal IHttpActionResult ExecuteUserFunction(QueryParameters queryParameters)
+        internal IActionResult ExecuteUserFunction(QueryParameters queryParameters)
         {
             queryParameters.Count = null;
-            queryParameters.Request = Request;
-            ODataPath odataPath = Request.ODataProperties().Path;
-            UnboundFunctionPathSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as UnboundFunctionPathSegment;
+            queryParameters.Request = new HttpRequestMessage((HttpMethod)Enum.Parse(typeof(HttpMethod),HttpContext.Request.Method, true), HttpContext.Request.QueryString.ToString());
+            //HttpContext.Request;
 
-            if (segment == null || !_functions.IsRegistered(segment.FunctionName))
+            Microsoft.AspNet.OData.Routing.ODataPath odataPath = Request.ODataFeature().Path;
+
+            Microsoft.OData.UriParser.OperationSegment /*UnboundFunctionPathSegment*/ segment = odataPath.Segments.Last() as OperationSegment; // Segments[odataPath.Segments.Count - 1]
+
+            if (segment == null || !_functions.IsRegistered(segment.Identifier)) // FunctionName))
                 return SetResult("Function not found");
 
-            Function function = _functions.GetFunction(segment.FunctionName);
+            Function function = _functions.GetFunction(segment.Identifier);// FunctionName);
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             foreach (var parameterName in function.ParametersTypes.Keys)
             {
@@ -128,7 +138,7 @@
                     QueryOptions = queryOpt;
                     if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                     {
-                        Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                        Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                     }
 
                     this.type = type;
@@ -147,12 +157,14 @@
                         }
                     }
 
-                    NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+                    IQueryCollection queryParams = Request.Query;
+                        //RequestUri.ParseQueryString();
 
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Headers.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
                     {
-                        _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
-                        return ResponseMessage(CreateExcel(queryParams));
+                        // _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
+                        // return   ResponseMessage(CreateExcel(queryParams));
+                        throw new NotImplementedException();
                     }
 
                     var coll = GetEdmCollection((IEnumerable)result, type, 1, null, _dynamicView);
@@ -167,7 +179,7 @@
                 QueryOptions = CreateODataQueryOptions(result.GetType());
                 if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                 {
-                    Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                    Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                 }
 
                 this.type = result.GetType();

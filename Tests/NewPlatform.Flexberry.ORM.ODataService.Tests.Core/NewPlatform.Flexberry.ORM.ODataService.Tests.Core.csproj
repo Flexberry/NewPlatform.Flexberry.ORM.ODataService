@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="MimeMapping" Version="1.0.1.12" />
+    <PackageReference Include="Moq" Version="4.11.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="Npgsql" Version="4.0.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.3" />
+    <PackageReference Include="Unity" Version="5.10.3" />
+    <PackageReference Include="Unity.Abstractions" Version="4.1.3" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ICSSoft.STORMNET.Business.OracleDataService.Core\ICSSoft.STORMNET.Business.OracleDataService.Core.csproj" />
+    <ProjectReference Include="..\..\NewPlatform.Flexberry.CurrentUserService.Core\NewPlatform.Flexberry.CurrentUserService.Core.csproj" />
+    <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataService.Core\NewPlatform.Flexberry.ORM.ODataService.Core.csproj" />
+    <ProjectReference Include="..\NewPlatform.Flexberry.ORM.ODataService.Tests.Objects.Core\NewPlatform.Flexberry.ORM.ODataService.Tests.Objects.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ExternalLangDef">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ExternalLangDef.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.LINQProvider">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.LINQProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.LockService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.LockService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.MSSQLDataService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.MSSQLDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.PostgresDataService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.PostgresDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.Business.SQLDataService">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.Business.SQLDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.DataObject">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.DataObject.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.FunctionalLanguage">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.FunctionalLanguage.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSSoft.STORMNET.UserDataTypes">
+      <HintPath>..\..\..\..\KSA_E5MES\development\dependencies\FlexberryORM_CORE2\ICSSoft.STORMNET.UserDataTypes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

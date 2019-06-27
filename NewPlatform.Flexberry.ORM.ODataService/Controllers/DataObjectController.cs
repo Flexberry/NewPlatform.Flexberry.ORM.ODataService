@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
@@ -11,14 +12,14 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
-    using System.Web;
-    using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-    using System.Web.Http.Results;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
-    using System.Web.OData.Routing;
+    //using System.Web;
+    //using System.Web.Http;
+    //using System.Web.Http.Dispatcher;
+    //using System.Web.Http.Results;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
+    //using System.Web.OData.Query;
+    //using System.Web.OData.Routing;
     using Handlers;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -27,21 +28,34 @@
     using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.UserDataTypes;
-    using Microsoft.OData.Core.UriParser.Semantic;
+    //using Microsoft.OData.Core.UriParser.Semantic;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
+    //using Microsoft.OData.Edm.Library;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
-    using ODataPath = System.Web.OData.Routing.ODataPath;
-    using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
-    using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Unity.Configuration;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
+    //using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
+    //using Microsoft.Practices.Unity;
+    //using Microsoft.Practices.Unity.Configuration;
     using ICSSoft.STORMNET.Security;
-    using Microsoft.OData.Core;
+    //using Microsoft.Data.OData.Query.SemanticAst;
+    //using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.AspNetCore.Mvc;
+    //using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
+    using System.Web.Http;
+    using Microsoft.Data.OData;
+    using Microsoft.OData.UriParser;
+    using Microsoft.Extensions.DependencyModel.Resolution;
+    using NewPlatform.Flexberry.ORM.ODataService.Core.Expressions;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    //using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+
+    //    using Microsoft.AspNetCore.Core;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -83,6 +97,7 @@
         public int Count { get; set; }
 
         private static readonly IAssembliesResolver _defaultAssembliesResolver = new DefaultAssembliesResolver();
+
         private List<Type> _lcsLoadingTypes = new List<Type>();
         private DynamicView _dynamicView;
         private Dictionary<SelectItem, ExpandedNavigationSelectItem> _parentExpandedNavigationSelectItem = new Dictionary<SelectItem, ExpandedNavigationSelectItem>();
@@ -100,7 +115,8 @@
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
-            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+            Contract.Requires<ArgumentNullException>(dataService != null);
+            _dataService = dataService;
             _model = model;
             _events = events;
             _functions = functions;
@@ -147,6 +163,7 @@
         {
             try
             {
+                
                 var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, EvaluateOdataPath());
                 return result;
             }
@@ -161,7 +178,7 @@
         {
             try
             {
-                ODataPath odataPath = Request.ODataProperties().Path;
+                ODataPath odataPath = Request.ODataFeature().Path;
                 string key = odataPath.Segments[1].ToString().Trim().Replace("'", string.Empty);
                 Init();
                 var obj = LoadObject(type, key);
@@ -188,7 +205,7 @@
         {
             try
             {
-                ODataPath odataPath = Request.ODataProperties().Path;
+                ODataPath odataPath = Request.ODataFeature().Path;
                 Guid key = new Guid(odataPath.Segments[1].ToString());
 
                 Init();
@@ -334,7 +351,7 @@
         /// <param name="expandedNavigationSelectItem">Навигационное свойство.</param>
         /// <param name="dynamicView">Динамическое представление.</param>
         /// <returns>Набор сущностей.</returns>
-        internal EdmEntityObjectCollection GetEdmCollection(IEnumerable objs, Type type, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView = null)
+        public EdmEntityObjectCollection GetEdmCollection(IEnumerable objs, Type type, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView = null)
         {
             if (level == 0)
                 return null;
@@ -351,7 +368,7 @@
 
             if (IncludeCount && expandedNavigationSelectItem == null)
             {
-                Request.Properties.Add(CustomODataFeedSerializer.Count, Count);
+                this.HttpContext.Items.Add(CustomODataFeedSerializer.Count, Count);
             }
 
             IEdmCollectionTypeReference entityCollectionType = new EdmCollectionTypeReference(new EdmCollectionType(new EdmEntityTypeReference(entityType, false)));
@@ -604,7 +621,7 @@
             if (queryOpt.OrderBy != null)
             {
                 // queryable = queryOpt.OrderBy.ApplyTo(queryable, new ODataQuerySettings());
-                queryable = new OrderByQueryOption(queryOpt.OrderBy, type).ApplyTo(queryable, new ODataQuerySettings());
+                queryable = new Expressions.OrderByQueryOption(queryOpt.OrderBy, type).ApplyTo(queryable, new ODataQuerySettings());
             }
 
             if (queryOpt.Skip != null)
@@ -667,10 +684,10 @@
         /// <param name="type">Тип содержимого.</param>
         /// <param name="content">Содержимое.</param>
         /// <returns>Результат Http для ответа.</returns>
-        public IHttpActionResult SetResultPrimitive(Type type, object content)
+        public IActionResult SetResultPrimitive(Type type, object content)
         {
             MethodInfo methodSetResult = GetType().GetMethod("SetResult").MakeGenericMethod(type);
-            return (IHttpActionResult)methodSetResult.Invoke(this, new[] { content });
+            return (IActionResult)methodSetResult.Invoke(this, new[] { content });
         }
 
         /// <summary>
@@ -679,7 +696,7 @@
         /// <param name="content">Содержимое.</param>
         /// <typeparam name="T">Параметр.</typeparam>
         /// <returns>Результат Http для ответа.</returns>
-        public OkNegotiatedContentResult<T> SetResult<T>(T content)
+        public OkObjectResult SetResult<T>(T content)
         {
             return Ok(content);
         }
@@ -699,7 +716,7 @@
         /// </summary>
         /// <param name="type">Тип DataObject.</param>
         /// <returns>Параметры запроса OData.</returns>
-        public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequestMessage request)
+        public ODataQueryOptions CreateODataQueryOptions(Type type, Microsoft.AspNetCore.Http.HttpRequest request)
         {
             return new ODataQueryOptions(CreateODataQueryContext(type), request);
         }
@@ -738,7 +755,7 @@
             ODataQuerySettings updatedSettings = querySettings;
             if (querySettings.HandleNullPropagation == HandleNullPropagationOption.Default)
             {
-                updatedSettings = new ODataQuerySettings(updatedSettings);
+                updatedSettings = new ODataQuerySettings(); //updatedSettings);
                 updatedSettings.HandleNullPropagation = HandleNullPropagationOptionHelper.GetDefaultHandleNullPropagationOption(query);
             }
 
@@ -764,7 +781,7 @@
         /// <returns>Контекст запроса OData.</returns>
         private ODataQueryContext CreateODataQueryContext(Type type)
         {
-            ODataPath path = new ODataPath(new EntitySetPathSegment(_model.GetEdmEntitySet(_model.GetEdmEntityType(type))));
+            ODataPath path = new ODataPath(new  EntitySetSegment(_model.GetEdmEntitySet(_model.GetEdmEntityType(type))));
             return new ODataQueryContext(_model, type, path);
         }
 
@@ -774,9 +791,9 @@
         /// <returns>Сущность или коллекция сущностей.</returns>
         private IEdmObject EvaluateOdataPath()
         {
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetPathSegment>().First().ToString());
+            type = _model.GetDataObjectType(Request.ODataFeature().Path.Segments.OfType<EntitySetSegment>().First().ToString());
             DetailArray detail = null;
-            ODataPath odataPath = Request.ODataProperties().Path;
+            ODataPath odataPath = Request.ODataFeature().Path;
             Guid key = new Guid(odataPath.Segments[1].ToString());
             IEdmEntityType entityType = null;
             var obj = LoadObject(type, key);
@@ -846,10 +863,10 @@
                 type = obj.GetType();
             }
 
-            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
+            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataFeature().Path), Request);
             if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
             {
-                Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
             }
 
             if (returnCollection)
@@ -927,9 +944,9 @@
             if (!IncludeCount || count != 0)
                 _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
 
-            NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+            NameValueCollection queryParams = (new Uri( Request.QueryString.Value)).ParseQueryString();
 
-            if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+            if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.HttpContext.Items.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
             {
                 return CreateExcel(queryParams);
             }
@@ -988,11 +1005,11 @@
         /// </summary>
         private void Init()
         {
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetPathSegment>().First().ToString());
-            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
+            type = _model.GetDataObjectType(Request.ODataFeature().Path.Segments.OfType<EntitySetSegment>().First().ToString());
+            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataFeature().Path), Request);
             if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
             {
-                Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
             }
 
             CreateDynamicView();
@@ -1201,10 +1218,10 @@
                     }
                     else
                     {
-                        var openPropertySegment = pathSelectItem.SelectedPath.FirstSegment as OpenPropertySegment;
+                        var openPropertySegment = pathSelectItem.SelectedPath.FirstSegment as PropertySegment;// OpenPropertySegment;
                         if (openPropertySegment != null)
                         {
-                            throw new Exception($"Property name does not exist: {openPropertySegment.PropertyName}");
+                            throw new Exception($"Property name does not exist: {openPropertySegment.Property.Name}");// PropertyName}");
                         }
 
                         throw new Exception($"Invalid segment: {pathSelectItem.SelectedPath.FirstSegment.ToString()}");
