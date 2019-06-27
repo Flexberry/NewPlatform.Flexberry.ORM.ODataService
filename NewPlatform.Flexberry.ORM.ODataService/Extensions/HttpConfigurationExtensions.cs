@@ -74,7 +74,14 @@
             var model = builder.Build();
 
             // Support batch requests.
-            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(httpServer);
+            IDataService dataService = (IDataService)config.DependencyResolver.GetService(typeof(IDataService));
+
+            if (dataService == null)
+            {
+                throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
+            }
+
+            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(dataService, httpServer);
             batchHandler.ODataRouteName = routeName;
             config.Routes.MapHttpBatchRoute(routeName + "Batch", routePrefix + "/$batch", batchHandler);
 

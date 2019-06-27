@@ -17,12 +17,19 @@
     internal class DataObjectODataBatchHandler : DefaultODataBatchHandler
     {
         /// <summary>
+        /// DataService instance for execute queries.
+        /// </summary>
+        private IDataService dataService;
+
+        /// <summary>
         /// Initializes a new instance of the NewPlatform.Flexberry.ORM.ODataService.Batch.DataObjectODataBatchHandler class.
         /// </summary>
+        /// <param name="dataService">DataService instance for execute queries.</param>
         /// <param name="httpServer">The System.Web.Http.HttpServer for handling the individual batch requests.</param>
-        public DataObjectODataBatchHandler(HttpServer httpServer)
+        public DataObjectODataBatchHandler(IDataService dataService, HttpServer httpServer)
             : base(httpServer)
         {
+            this.dataService = dataService;
         }
 
         /// <summary>
@@ -98,9 +105,8 @@
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
             {
-                IDataService ds = DataServiceProvider.DataService;
                 DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                ds.UpdateObjects(ref dataObjects);
+                dataService.UpdateObjects(ref dataObjects);
             }
         }
     }
