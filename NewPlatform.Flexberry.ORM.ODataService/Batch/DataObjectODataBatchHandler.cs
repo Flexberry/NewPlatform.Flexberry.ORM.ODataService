@@ -44,7 +44,7 @@
         {
             if (requests == null)
             {
-                throw new ArgumentNullException("requests");
+                throw new ArgumentNullException(nameof(requests));
             }
 
             IList<ODataBatchResponseItem> responses = new List<ODataBatchResponseItem>();
