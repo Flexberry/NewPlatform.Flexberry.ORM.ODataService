@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['batch',['Batch',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_batch.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['controllers',['Controllers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['create',['Create',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD']]],
   ['crud',['CRUD',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
@@ -13,8 +14,8 @@ var searchData=
   ['files',['Files',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['flexberry',['Flexberry',['../namespace_new_platform_1_1_flexberry.html',1,'NewPlatform']]],
   ['formatter',['Formatter',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
-  ['functions',['Functions',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['functions',['Functions',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_functions.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
+  ['functions',['Functions',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['handlers',['Handlers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_handlers.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['handlers',['Handlers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_handlers.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['helpers',['Helpers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
@@ -22,8 +23,8 @@ var searchData=
   ['model',['Model',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['newplatform',['NewPlatform',['../namespace_new_platform.html',1,'']]],
   ['odataservice',['ODataService',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html',1,'NewPlatform::Flexberry::ORM']]],
-  ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
+  ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['orm',['ORM',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m.html',1,'NewPlatform::Flexberry']]],
   ['providers',['Providers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers.html',1,'NewPlatform::Flexberry::ORM::ODataService::Files']]],
   ['read',['Read',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD']]],

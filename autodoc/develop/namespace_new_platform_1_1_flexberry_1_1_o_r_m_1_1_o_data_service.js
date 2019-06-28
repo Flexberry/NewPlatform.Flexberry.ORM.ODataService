@@ -1,5 +1,6 @@
 var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service =
 [
+    [ "Batch", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_batch.html", null ],
     [ "Controllers", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers" ],
     [ "Events", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events" ],
     [ "Expressions", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions" ],
