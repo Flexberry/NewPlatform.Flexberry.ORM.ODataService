@@ -19,7 +19,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,36 +61,40 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///
-        ///
-        ///
-        ///
-        ///
-        ///CREATE TABLE [InformationTestClass] (
+        ///   Looks up a localized string similar to CREATE TABLE [Driver] (
         ///
         ///	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
         ///
-        ///	 [PublicStringProperty] VARCHAR(255)  NULL,
+        ///	 [Name] VARCHAR(255)  NULL,
         ///
-        ///	 [StringPropertyForInfTestClass] VARCHAR(255)  NULL,
+        ///	 [CarCount] INT  NULL,
         ///
-        ///	 [IntPropertyForInfTestClass] INT  NULL,
-        ///
-        ///	 [ColorPropertyForInfTestClass] VARCHAR(255)  NULL,
-        ///
-        ///	 [BoolPropertyForInfTestClass] BIT  NULL,
+        ///	 [Documents] BIT  NULL,
         ///
         ///	 PRIMARY KEY ([primaryKey]))
         ///
         ///
-        ///CREATE TABLE [ТипЛапы] (
+        ///CREATE TABLE [Страна] (
         ///
         ///	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
         ///
         ///	 [Название] VARCHAR(255)  NULL,
         ///
-        ///	 [Актуально] BI [rest of string was truncated]&quot;;.
+        ///	 PRIMARY KEY ([primaryKey]))
+        ///
+        ///
+        ///CREATE TABLE [Master] (
+        ///
+        ///	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+        ///
+        ///	 [property] VARCHAR(255)  NULL,
+        ///
+        ///	 PRIMARY KEY ([primaryKey]))
+        ///
+        ///
+        ///CREATE TABLE [Лес] (
+        ///
+        ///	 [pr [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MssqlScript {
             get {
@@ -105,33 +109,41 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
         ///
         ///
         ///
-        ///CREATE TABLE &quot;InformationTestClass&quot;
+        ///CREATE TABLE &quot;TestDetailWithCicle&quot; (
+        ///
+        /// &quot;primaryKey&quot; RAW(16) NOT NULL,
+        ///
+        /// &quot;TestDetailName&quot; NVARCHAR2(255) NULL,
+        ///
+        /// &quot;Parent&quot; RAW(16) NULL,
+        ///
+        /// &quot;TestMaster&quot; RAW(16) NOT NULL,
+        ///
+        /// PRIMARY KEY (&quot;primaryKey&quot;)
+        ///
+        /// );
+        ///
+        ///CREATE TABLE &quot;TestMaster&quot;
         ///(
         ///
-        ///	&quot;primaryKey&quot; RAW(16) NOT NULL,
+        ///	 &quot;primaryKey&quot; RAW(16) NOT NULL,
         ///
-        ///	&quot;PublicStringProperty&quot; NVARCHAR2(255) NULL,
-        ///
-        ///	&quot;StringPropertyForInfTestClass&quot; NVARCHAR2(255) NULL,
-        ///
-        ///	&quot;IntPropertyForInfTestClass&quot; NUMBER(10) NULL,
-        ///
-        ///	&quot;ColorPropertyForInfTestClass&quot; NVARCHAR2(255) NULL,
-        ///
-        ///	&quot;BoolPropertyForInfTestClass&quot; NUMBER(1) NULL,
+        ///	 &quot;TestMasterName&quot; NVARCHAR2(255) NULL,
         ///
         ///	 PRIMARY KEY (&quot;primaryKey&quot;)
-        ///) ;
         ///
+        /// );
         ///
-        ///CREATE TABLE &quot;ТипЛапы&quot;
+        ///CREATE TABLE &quot;Детейл2&quot;
         ///(
         ///
         ///	&quot;primaryKey&quot; RAW(16) NOT NULL,
         ///
-        ///	&quot;Название&quot; NVARCHAR2(255) NULL,
+        ///	&quot;prop2&quot; NVARCHAR2(255) NULL,
         ///
-        ///	&quot;Актуально&quot; NUMBER(1)  [rest of string was truncated]&quot;;.
+        ///	&quot;Детейл&quot; RAW(16) NOT NULL,
+        ///
+        ///	 PRI [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string OracleScript {
             get {
@@ -140,17 +152,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///
-        ///
-        ///
-        ///
-        ///
-        ///CREATE TABLE Библиотека (
+        ///   Looks up a localized string similar to CREATE TABLE Driver (
         ///
         /// primaryKey UUID NOT NULL,
         ///
-        /// Адрес VARCHAR(255) NULL,
+        /// Name VARCHAR(255) NULL,
+        ///
+        /// CarCount INT NULL,
+        ///
+        /// Documents BOOLEAN NULL,
+        ///
+        /// PRIMARY KEY (primaryKey));
+        ///
+        ///
+        ///CREATE TABLE Страна (
+        ///
+        /// primaryKey UUID NOT NULL,
+        ///
+        /// Название VARCHAR(255) NULL,
+        ///
+        /// PRIMARY KEY (primaryKey));
+        ///
+        ///
+        ///CREATE TABLE Master (
+        ///
+        /// primaryKey UUID NOT NULL,
+        ///
+        /// property VARCHAR(255) NULL,
         ///
         /// PRIMARY KEY (primaryKey));
         ///
@@ -162,28 +190,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
         /// Название VARCHAR(255) NULL,
         ///
         /// Площадь INT NULL,
-        ///
-        /// Заповедник BOOLEAN NULL,
-        ///
-        /// ДатаПоследнегоОсмотра TIMESTAMP(3) NULL,
-        ///
-        /// Страна UUID NULL,
-        ///
-        /// PRIMARY KEY (primaryKey));
-        ///
-        ///
-        ///CREATE TABLE ПоставщикКниг (
-        ///
-        /// primaryKey UUID NOT NULL,
-        ///
-        /// Ссылка UUID NULL,
-        ///
-        /// PRIMARY KEY (primaryKey));
-        ///
-        ///
-        ///CREATE TABLE Журнал (
-        ///
-        /// p [rest of string was truncated]&quot;;.
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PostgresScript {
             get {
