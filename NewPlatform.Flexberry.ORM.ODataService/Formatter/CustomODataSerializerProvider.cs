@@ -6,8 +6,9 @@
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web.OData;
-    using System.Web.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Serialization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.OData.Edm;
 
     /// <summary>
@@ -21,8 +22,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomODataSerializerProvider"/> class.
         /// </summary>
-        public CustomODataSerializerProvider()
-            : base()
+        public CustomODataSerializerProvider(IServiceProvider rootContainer) : base(rootContainer)
         {
             _feedSerializer = new CustomODataFeedSerializer(this);
         }
@@ -38,10 +38,6 @@
         public override ODataEdmTypeSerializer GetEdmTypeSerializer(IEdmTypeReference edmType)
         {
             ODataEdmTypeSerializer serializer = base.GetEdmTypeSerializer(edmType);
-            if (serializer is ODataFeedSerializer)
-            {
-                serializer = _feedSerializer;
-            }
 
             return serializer;
         }
@@ -50,18 +46,19 @@
         /// Gets an <see cref="T:System.Web.OData.Formatter.Serialization.ODataSerializer"/> for the given <paramref name="model"/> and <paramref name="type"/>.
         ///
         /// </summary>
-        /// <param name="model">The EDM model associated with the request.</param><param name="type">The <see cref="T:System.Type"/> for which the serializer is being requested.</param><param name="request">The request for which the response is being serialized.</param>
+        /// <param name="type">The <see cref="T:System.Type"/> for which the serializer is being requested.</param>
+        /// <param name="request">The request for which the response is being serialized.</param>
         /// <returns>
         /// The <see cref="T:System.Web.OData.Formatter.Serialization.ODataSerializer"/> for the given type.
         /// </returns>
-        public override ODataSerializer GetODataPayloadSerializer(IEdmModel model, Type type, HttpRequestMessage request)
+        public override ODataSerializer GetODataPayloadSerializer(Type type, HttpRequest request)
         {
             if (type == typeof(EnumerableQuery<IEdmEntityObject>))
             {
-                return _feedSerializer;
+                throw new NotImplementedException();
             }
 
-            return base.GetODataPayloadSerializer(model, type, request);
+            return base.GetODataPayloadSerializer(type, request);
         }
     }
 }

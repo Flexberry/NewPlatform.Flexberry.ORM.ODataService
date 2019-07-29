@@ -9,11 +9,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
     using Microsoft.OData.Edm;
     using System;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     internal static class CollectionDeserializationHelpers
     {

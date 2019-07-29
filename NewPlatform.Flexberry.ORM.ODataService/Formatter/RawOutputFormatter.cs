@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using ICSSoft.STORMNET;
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
+    using System.Collections.Generic;
+    using ICSSoft.STORMNET;
+    using Microsoft.OData.Edm;
     using Model;
     using System;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Formatting;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     public class RawOutputFormatter : BufferedMediaTypeFormatter
     {

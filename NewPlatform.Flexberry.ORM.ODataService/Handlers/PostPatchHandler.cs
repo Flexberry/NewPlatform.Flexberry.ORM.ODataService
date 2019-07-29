@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
 {
     using System.Net.Http;
     using System.Threading;

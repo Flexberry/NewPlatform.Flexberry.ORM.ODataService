@@ -6,16 +6,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     using ICSSoft.STORMNET;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Library.Expressions;
-    using Microsoft.OData.Edm.Library.Values;
 
     using ICSSoft.Services;
 
@@ -205,7 +202,7 @@
                         for (int i = 0; i < enumNames.Length; i++)
                         {
                             int intValue = (int)enumValues.GetValue(i);
-                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmIntegerConstant(intValue)));
+                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], null));
                         }
 
                         _registeredEnums.Add(propertyType, edmEnumType);
