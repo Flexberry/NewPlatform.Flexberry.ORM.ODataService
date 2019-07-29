@@ -85,7 +85,7 @@ var hierarchy =
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfЖурнал", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84.html", null ],
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfКнига", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079.html", null ]
     ] ],
-    [ "Dictionary< string, object >", null, [
+    [ "Dictionary", null, [
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers.DataObjectDictionary", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html", null ]
     ] ],
     [ "EdmModel", null, [
@@ -170,7 +170,7 @@ var hierarchy =
     [ "JsonConverter", null, [
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers.DataObjectDictionary.KeyGuidToStringConverter", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_objbe0b0f3013754552014f0ceba8e1d1f7.html", null ]
     ] ],
-    [ "List< DataObjectDictionary >", null, [
+    [ "List", null, [
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers.DataObjectDictionaryCollection", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html", null ]
     ] ],
     [ "NewPlatform.Flexberry.ORM.ODataService.ManagementToken", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_management_token.html", null ],
