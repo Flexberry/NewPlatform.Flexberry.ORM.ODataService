@@ -3,15 +3,6 @@
     using System;
     using System.Net.Http;
 
-    using ICSSoft.STORMNET.Business;
-
-    using Microsoft.OData.Core;
-
-    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
-
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Класс для хранения параметров запроса OData.
     /// </summary>
@@ -62,7 +53,7 @@
         /// <returns>Возвращает lcs.</returns>
         public LoadingCustomizationStruct CreateLcs(Type type, string odataQuery = null)
         {
-            HttpRequestMessage request = _controller.Request;
+            HttpRequestMessage request = new HttpRequestMessage((HttpMethod)Enum.Parse(typeof(HttpMethod), _controller.HttpContext.Request.Method, true), _controller.HttpContext.Request.QueryString.ToString());
             if (odataQuery != null)
             {
                 request = new HttpRequestMessage(HttpMethod.Get, odataQuery);

@@ -1,13 +1,10 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web.OData;
-    using System.Web.OData.Query;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.AspNetCore.Http;
+
 
     /// <summary>
     /// This class defines an attribute that can be applied to an action to enable querying using the OData query
@@ -26,7 +23,7 @@
         /// <param name="queryOptions">
         /// The <see cref="ODataQueryOptions"/> instance constructed based on the incoming request.
         /// </param>
-        public override void ValidateQuery(HttpRequestMessage request, ODataQueryOptions queryOptions)
+        public override void ValidateQuery(HttpRequest request, ODataQueryOptions queryOptions)
         {
         }
 

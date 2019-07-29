@@ -6,12 +6,10 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.Http;
-    using System.Web.Http.Batch;
-    using System.Web.OData.Batch;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using Microsoft.OData.Core;
+    using Microsoft.AspNet.OData.Batch;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Batch handler for DataService.
@@ -54,9 +52,8 @@
         /// Initializes a new instance of the NewPlatform.Flexberry.ORM.ODataService.Batch.DataObjectODataBatchHandler class.
         /// </summary>
         /// <param name="dataService">DataService instance for execute queries.</param>
-        /// <param name="httpServer">The System.Web.Http.HttpServer for handling the individual batch requests.</param>
-        public DataObjectODataBatchHandler(IDataService dataService, HttpServer httpServer)
-            : base(httpServer)
+        public DataObjectODataBatchHandler(IDataService dataService)
+            : base()
         {
             this.dataService = dataService;
         }
@@ -180,9 +177,7 @@
         }
 
         /// <inheritdoc />
-        public async override Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(
-                   IEnumerable<ODataBatchRequestItem> requests,
-                   CancellationToken cancellation)
+        public async override Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(IEnumerable<ODataBatchRequestItem> requests, RequestDelegate handler)
         {
             if (requests == null)
             {
@@ -256,8 +251,10 @@
             DataObjectCache dataObjectCache = new DataObjectCache();
             dataObjectCache.StartCaching(false);
 
-            foreach (HttpRequestMessage request in changeSet.Requests)
+            foreach (var context in changeSet.Contexts)
             {
+                // TODO: теперь вместо HttpRequestMessage приходит HttpContext. Надо разобраться как правильно его обработать.
+                HttpRequestMessage request;
                 if (!request.Properties.ContainsKey(DataObjectsToUpdatePropertyKey))
                 {
                     request.Properties.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);

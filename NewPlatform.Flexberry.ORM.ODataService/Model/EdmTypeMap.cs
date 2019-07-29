@@ -2,12 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.IO;
     using System.Xml.Linq;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
     using Microsoft.Spatial;
 
     using FileType = ICSSoft.STORMNET.FileType;
@@ -82,7 +80,6 @@
             { typeof(TimeOfDay), GetEdmPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay) },
             { typeof(TimeOfDay?), GetEdmPrimitiveType(EdmPrimitiveTypeKind.TimeOfDay) },
             { typeof(XElement), GetEdmPrimitiveType(EdmPrimitiveTypeKind.String) },
-            { typeof(Binary), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Binary) },
             { typeof(ushort), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int32) },
             { typeof(ushort?), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int32) },
             { typeof(uint), GetEdmPrimitiveType(EdmPrimitiveTypeKind.Int64) },

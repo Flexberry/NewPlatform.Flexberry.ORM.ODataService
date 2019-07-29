@@ -7,9 +7,9 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
-    using System.Web.OData.Batch;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter;
+    using Microsoft.AspNet.OData.Batch;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Formatter;
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
@@ -81,7 +81,7 @@
                 throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
             }
 
-            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(dataService, httpServer);
+            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(dataService);
             batchHandler.ODataRouteName = routeName;
             config.Routes.MapHttpBatchRoute(routeName + "Batch", routePrefix + "/$batch", batchHandler);
 
