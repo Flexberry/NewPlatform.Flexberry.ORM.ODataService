@@ -10,7 +10,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using Microsoft.OData.Edm.Library;
+    using Microsoft.OData.Edm;
     using ICSSoft.STORMNET.Business.LINQProvider.Extensions;
 
     /// <summary>

@@ -14,10 +14,10 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Results;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Query;
+    using Handlers;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
@@ -25,10 +25,7 @@
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.UserDataTypes;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Core.UriParser.Semantic;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
@@ -36,8 +33,13 @@
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
-    using ODataPath = System.Web.OData.Routing.ODataPath;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
     using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
+    using ICSSoft.STORMNET.Security;
+    using Microsoft.OData.UriParser;
+    using Microsoft.Extensions.DependencyModel.Resolution;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    using Microsoft.OData;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -178,7 +180,7 @@
         {
             try
             {
-                ODataPath odataPath = Request.ODataProperties().Path;
+                ODataPath odataPath = Request.ODataFeature().Path;
                 string key = odataPath.Segments[1].ToString().Trim().Replace("'", string.Empty);
                 Init();
                 var obj = LoadObject(type, key);
@@ -204,7 +206,7 @@
         {
             try
             {
-                ODataPath odataPath = Request.ODataProperties().Path;
+                ODataPath odataPath = Request.ODataFeature().Path;
                 Guid key = new Guid(odataPath.Segments[1].ToString());
 
                 Init();
@@ -367,7 +369,7 @@
 
             if (IncludeCount && expandedNavigationSelectItem == null)
             {
-                Request.Properties.Add(CustomODataFeedSerializer.Count, Count);
+                Request.HttpContext.Items.Add(CustomODataFeedSerializer.Count, Count);
             }
 
             IEdmCollectionTypeReference entityCollectionType = new EdmCollectionTypeReference(new EdmCollectionType(new EdmEntityTypeReference(entityType, false)));
