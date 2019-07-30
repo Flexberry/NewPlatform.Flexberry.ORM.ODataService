@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.5.0" />
     <PackageReference Include="Microsoft.Spatial" Version="7.5.0" />
@@ -21,4 +22,28 @@
     <PackageReference Include="Unity.Container" Version="5.11.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Expressions\CommonWebApiResources.Designer.cs">
+      <DependentUpon>CommonWebApiResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Expressions\SRResources.Designer.cs">
+      <DependentUpon>SRResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Expressions\CommonWebApiResources.resx">
+      <LastGenOutput>CommonWebApiResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Expressions\SRResources.resx">
+      <LastGenOutput>SRResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  
 </Project>

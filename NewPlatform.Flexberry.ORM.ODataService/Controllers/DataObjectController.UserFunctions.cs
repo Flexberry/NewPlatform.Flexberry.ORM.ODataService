@@ -8,14 +8,15 @@
     using System.Net.Http;
     using System.Reflection;
     using System.Web.Http;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
+    using Microsoft.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// OData controller class.
@@ -80,14 +81,14 @@
         internal IHttpActionResult ExecuteUserFunction(QueryParameters queryParameters)
         {
             queryParameters.Count = null;
-            queryParameters.Request = Request;
-            ODataPath odataPath = Request.ODataProperties().Path;
-            UnboundFunctionPathSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as UnboundFunctionPathSegment;
+            queryParameters.Request = new HttpRequestMessage((HttpMethod)Enum.Parse(typeof(HttpMethod), HttpContext.Request.Method, true), HttpContext.Request.QueryString.ToString());
+            ODataPath odataPath = Request.ODataFeature().Path;
+            Microsoft.OData.UriParser.OperationSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as Microsoft.OData.UriParser.OperationSegment;
 
-            if (segment == null || !_functions.IsRegistered(segment.FunctionName))
+            if (segment == null || !_functions.IsRegistered(segment.Identifier))
                 return SetResult("Function not found");
 
-            Function function = _functions.GetFunction(segment.FunctionName);
+            Function function = _functions.GetFunction(segment.Identifier);
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             foreach (var parameterName in function.ParametersTypes.Keys)
             {
@@ -128,7 +129,7 @@
                     QueryOptions = queryOpt;
                     if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                     {
-                        Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                        Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                     }
 
                     this.type = type;
@@ -147,9 +148,9 @@
                         }
                     }
 
-                    NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+                    IQueryCollection queryParams = Request.Query;
 
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Headers.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
                         return ResponseMessage(CreateExcel(queryParams));
@@ -167,7 +168,7 @@
                 QueryOptions = CreateODataQueryOptions(result.GetType());
                 if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                 {
-                    Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                    Request.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                 }
 
                 this.type = result.GetType();

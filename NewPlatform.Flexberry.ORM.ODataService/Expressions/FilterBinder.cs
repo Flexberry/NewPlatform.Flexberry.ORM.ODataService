@@ -7,7 +7,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using Microsoft.Spatial;
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
@@ -16,15 +15,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Runtime.CompilerServices;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
-    using System.Web.OData.Formatter;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Query;
+    using Microsoft.AspNet.OData.Formatter;
+    using Microsoft.AspNet.OData.Query;
     using System.Xml.Linq;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Core.UriParser.Semantic;
-    using Microsoft.OData.Core.UriParser.TreeNodeKinds;
+    using Microsoft.OData;
+    using Microsoft.OData.UriParser;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
 
     /// <summary>
     /// Translates an OData $filter parse tree represented by <see cref="FilterClause"/> to
@@ -585,13 +581,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     case QueryNodeKind.CollectionPropertyAccess:
                         return BindCollectionPropertyAccessNode(node as CollectionPropertyAccessNode);
 
-                    case QueryNodeKind.EntityCollectionCast:
-                        return BindEntityCollectionCastNode(node as EntityCollectionCastNode);
-
                     case QueryNodeKind.CollectionFunctionCall:
-                    case QueryNodeKind.EntityCollectionFunctionCall:
-                    case QueryNodeKind.CollectionOpenPropertyAccess:
-                    case QueryNodeKind.CollectionPropertyCast:
                     // Unused or have unknown uses.
                     default:
                         throw Error.NotSupported(SRResources.QueryNodeBindingNotSupported, node.Kind, typeof(FilterBinder).Name);
@@ -609,12 +599,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                     case QueryNodeKind.Convert:
                         return BindConvertNode(node as ConvertNode);
-
-                    case QueryNodeKind.EntityRangeVariableReference:
-                        return BindRangeVariable((node as EntityRangeVariableReferenceNode).RangeVariable);
-
-                    case QueryNodeKind.NonentityRangeVariableReference:
-                        return BindRangeVariable((node as NonentityRangeVariableReferenceNode).RangeVariable);
 
                     case QueryNodeKind.SingleValuePropertyAccess:
                         return BindPropertyAccessQueryNode(node as SingleValuePropertyAccessNode);
@@ -637,12 +621,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                     case QueryNodeKind.All:
                         return BindAllNode(node as AllNode);
-
-                    case QueryNodeKind.SingleEntityCast:
-                        return BindSingleEntityCastNode(node as SingleEntityCastNode);
-
-                    case QueryNodeKind.SingleEntityFunctionCall:
-                        return BindSingleEntityFunctionCallNode(node as SingleEntityFunctionCallNode);
 
                     case QueryNodeKind.NamedFunctionParameter:
                     case QueryNodeKind.ParameterAlias:
@@ -729,80 +707,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
             var prop = EdmLibHelpers.GetDynamicPropertyDictionary(edmStructuredType, _model);
             return prop;
-        }
-
-        private Expression BindSingleEntityFunctionCallNode(SingleEntityFunctionCallNode node)
-        {
-            switch (node.Name)
-            {
-                case ClrCanonicalFunctions.CastFunctionName:
-                    return BindSingleEntityCastFunctionCall(node);
-                default:
-                    throw Error.NotSupported(SRResources.ODataFunctionNotSupported, node.Name);
-            }
-        }
-
-        private Expression BindSingleEntityCastFunctionCall(SingleEntityFunctionCallNode node)
-        {
-            if (node.Name != ClrCanonicalFunctions.CastFunctionName)
-            {
-                throw new ArgumentException("Contract assertion not met: node.Name == ClrCanonicalFunctions.CastFunctionName", nameof(node));
-            }
-
-            Expression[] arguments = BindArguments(node.Parameters);
-
-            if (arguments.Length != 2)
-            {
-                throw new ArgumentException("Contract assertion not met: arguments.Length == 2", "value");
-            }
-
-            string targetEdmTypeName = (string)((ConstantNode)node.Parameters.Last()).Value;
-            IEdmType targetEdmType = _model.FindType(targetEdmTypeName);
-            Type targetClrType = null;
-
-            if (targetEdmType != null)
-            {
-                targetClrType = EdmLibHelpers.GetClrType(targetEdmType.ToEdmTypeReference(false), _model);
-            }
-
-            if (arguments[0].Type == targetClrType)
-            {
-                // We only support to cast Entity type to the same type now.
-                return arguments[0];
-            }
-            else
-            {
-                // Cast fails and return null.
-                return _nullConstant;
-            }
-        }
-
-        private Expression BindSingleEntityCastNode(SingleEntityCastNode node)
-        {
-            IEdmEntityTypeReference entity = node.EntityTypeReference;
-            if (entity == null)
-            {
-                throw new ArgumentException("NS casts can contain only entity types", nameof(node));
-            }
-
-            Type clrType = EdmLibHelpers.GetClrType(entity, _model);
-
-            Expression source = BindCastSourceNode(node.Source);
-            return Expression.TypeAs(source, clrType);
-        }
-
-        private Expression BindEntityCollectionCastNode(EntityCollectionCastNode node)
-        {
-            IEdmEntityTypeReference entity = node.EntityItemType;
-            if (entity == null)
-            {
-                throw new ArgumentException("NS casts can contain only entity types", nameof(node));
-            }
-
-            Type clrType = EdmLibHelpers.GetClrType(entity, _model);
-
-            Expression source = BindCastSourceNode(node.Source);
-            return OfType(source, clrType);
         }
 
         private Expression BindCastSourceNode(QueryNode sourceNode)
@@ -2017,42 +1921,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             var firstNode = anyNode.Source as CollectionNavigationNode;
             if (firstNode != null)
             {
-                var it = firstNode.Source as EntityRangeVariableReferenceNode;
-                if (it != null && it.Name == "$it")
-                {
-                    var binaryNode = anyNode.Body as BinaryOperatorNode;
-                    var propertyNodes = new SingleValuePropertyAccessNode[0];
-                    if (binaryNode != null)
-                    {
-                        propertyNodes = new SingleValuePropertyAccessNode[] { binaryNode.Left as SingleValuePropertyAccessNode, binaryNode.Right as SingleValuePropertyAccessNode };
-                    }
-
-                    var functionCallNode = anyNode.Body as SingleValueFunctionCallNode;
-                    if (functionCallNode != null && functionCallNode.Name == "contains")
-                    {
-                        var parameters = functionCallNode.Parameters.ToList();
-                        propertyNodes = new SingleValuePropertyAccessNode[] { parameters[0] as SingleValuePropertyAccessNode, parameters[1] as SingleValuePropertyAccessNode };
-                    }
-
-                    foreach (var propertyNode in propertyNodes)
-                    {
-                        if (propertyNode != null)
-                        {
-                            var masters = new List<string>();
-                            var navigationNode = propertyNode.Source as SingleNavigationNode;
-                            while (navigationNode != null)
-                            {
-                                masters.Insert(0, navigationNode.NavigationProperty.Name);
-                                navigationNode = navigationNode.Source as SingleNavigationNode;
-                            }
-
-                            masters.Insert(0, firstNode.NavigationProperty.Name);
-                            masters.Add(propertyNode.Property.Name);
-                            var nameProperty = string.Join(".", masters.ToArray());
-                            FilterDetailProperties.Add(nameProperty);
-                        }
-                    }
-                }
+                throw new NotImplementedException();
             }
         }
 
@@ -2195,10 +2064,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                             else if (sourceType == typeof(XElement))
                             {
                                 convertedExpression = Expression.Call(source, "ToString", typeArguments: null, arguments: null);
-                            }
-                            else if (sourceType == typeof(Binary))
-                            {
-                                convertedExpression = Expression.Call(source, "ToArray", typeArguments: null, arguments: null);
                             }
                             else if (sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDateTime)
                                 || sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDecimal)

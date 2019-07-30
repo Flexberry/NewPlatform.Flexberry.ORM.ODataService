@@ -7,22 +7,23 @@
     using System.Net;
     using System.Net.Http;
     using System.Reflection;
-    using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
-    using System.Web.OData.Routing;
+    using System.Text;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.AspNet.OData.Routing;
     using Expressions;
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Values;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
     using Action = NewPlatform.Flexberry.ORM.ODataService.Functions.Action;
+    using Microsoft.OData.UriParser;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Web.Http;
+
 
     /// <summary>
     /// OData controller class.
@@ -40,7 +41,7 @@
         /// В случае, если зарегистрированый action не возвращает результат, будет возвращён только код 200 OK.
         /// После преобразования создаётся результат HTTP для ответа.
         /// </returns>
-        public IHttpActionResult PostODataActionsExecute(ODataActionParameters parameters)
+        public IActionResult PostODataActionsExecute(ODataActionParameters parameters)
         {
             try
             {
@@ -51,40 +52,40 @@
             {
                 if (HasOdataError(ex))
                 {
-                    return ResponseMessage(ex.Response);
+                    return new ResponseMessageResult(ex.Response);
                 }
                 else
                 {
-                    return ResponseMessage(InternalServerErrorMessage(ex));
+                    return new ResponseMessageResult(InternalServerErrorMessage(ex));
                 }
             }
             catch (TargetInvocationException ex)
             {
                 if (HasOdataError(ex.InnerException))
                 {
-                    return ResponseMessage(((HttpResponseException)ex.InnerException).Response);
+                    return new ResponseMessageResult(((HttpResponseException)ex.InnerException).Response);
                 }
                 else
                 {
-                    return ResponseMessage(InternalServerErrorMessage(ex));
+                    return new ResponseMessageResult(InternalServerErrorMessage(ex));
                 }
             }
             catch (Exception ex)
             {
-                return ResponseMessage(InternalServerErrorMessage(ex));
+                return new ResponseMessageResult(InternalServerErrorMessage(ex));
             }
         }
 
-        private IHttpActionResult ExecuteAction(ODataActionParameters parameters)
+        private IActionResult ExecuteAction(ODataActionParameters parameters)
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
-            UnboundActionPathSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as UnboundActionPathSegment;
-            if (segment == null || !_functions.IsRegistered(segment.ActionName))
+            Microsoft.AspNet.OData.Routing.ODataPath odataPath = Request.ODataFeature().Path;
+            OperationSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationSegment;
+            if (segment == null || !_functions.IsRegistered(segment.Identifier))
             {
                 return SetResult("Action not found");
             }
 
-            Action action = _functions.GetFunction(segment.ActionName) as Action;
+            Action action = _functions.GetFunction(segment.Identifier) as Action;
             if (action == null)
             {
                 return SetResult("Action not found");
@@ -92,8 +93,11 @@
 
             QueryParameters queryParameters = new QueryParameters(this);
             queryParameters.Count = null;
-            queryParameters.Request = Request;
-            queryParameters.RequestBody = (string)Request.Properties[PostPatchHandler.RequestContent];
+            queryParameters.Request = new HttpRequestMessage((HttpMethod)Enum.Parse(typeof(HttpMethod), Request.Method, true), Request.QueryString.ToString());
+            byte[] body = new byte[(long)Request.ContentLength];
+            Request.Body.Read(body, 0, (int)Request.ContentLength);
+
+            queryParameters.RequestBody = Encoding.ASCII.GetString(body);
             var result = action.Handler(queryParameters, parameters);
             if (action.ReturnType == typeof(void))
             {

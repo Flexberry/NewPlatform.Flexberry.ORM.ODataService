@@ -7,7 +7,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
@@ -15,15 +14,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Reflection;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
-    using System.Web.OData;
-    using System.Web.OData.Builder;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Query.Expressions;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Builder;
+    using Microsoft.AspNet.OData.Query.Expressions;
     using System.Xml.Linq;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Annotations;
-    using Microsoft.OData.Edm.Expressions;
-    using Microsoft.OData.Edm.Library;
     using Microsoft.OData.Edm.Vocabularies.V1;
     using Microsoft.Spatial;
 
@@ -89,7 +84,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                 // Keep the Binary and XElement in the end, since there are not the default mappings for Edm.Binary and Edm.String.
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(XElement), GetPrimitiveType(EdmPrimitiveTypeKind.String)),
-                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Binary), GetPrimitiveType(EdmPrimitiveTypeKind.Binary)),
+                new KeyValuePair<Type, IEdmPrimitiveType>(typeof(byte[]), GetPrimitiveType(EdmPrimitiveTypeKind.Binary)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort?), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(uint), GetPrimitiveType(EdmPrimitiveTypeKind.Int64)),
