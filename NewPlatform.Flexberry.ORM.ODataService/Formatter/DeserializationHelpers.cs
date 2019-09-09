@@ -3,17 +3,21 @@
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Web.Http;
+
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Common;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
+
+    // using System.Web.Http;
     using Microsoft.AspNet.OData.Formatter.Deserialization;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-    using Microsoft.AspNet.OData;
-    using System;
-    using Microsoft.OData;
 
     internal static class DeserializationHelpers
     {
@@ -267,13 +271,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
                 return null;
             }
 
-            ODataComplexValue complexValue = oDataValue as ODataComplexValue;
-            if (complexValue != null)
-            {
-                typeKind = EdmTypeKind.Complex;
-                return ConvertComplexValue(complexValue, ref propertyType, deserializerProvider, readContext);
-            }
-
             ODataEnumValue enumValue = oDataValue as ODataEnumValue;
             if (enumValue != null)
             {
@@ -286,6 +283,23 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
             {
                 typeKind = EdmTypeKind.Collection;
                 return ConvertCollectionValue(collection, ref propertyType, deserializerProvider, readContext);
+            }
+
+            ODataUntypedValue untypedValue = oDataValue as ODataUntypedValue;
+            if (untypedValue != null)
+            {
+                if (untypedValue.RawValue == null)
+                {
+                    throw new ArgumentNullException(nameof(untypedValue.RawValue), "Contract assertion not met: untypedValue.RawValue != null");
+                }
+
+                if (untypedValue.RawValue.StartsWith("[", StringComparison.Ordinal) ||
+                    untypedValue.RawValue.StartsWith("{", StringComparison.Ordinal))
+                {
+                    throw new ODataException(Error.Format(SRResources.InvalidODataUntypedValue, untypedValue.RawValue));
+                }
+
+                oDataValue = ConvertPrimitiveValue(untypedValue.RawValue);
             }
 
             typeKind = EdmTypeKind.Primitive;
@@ -316,37 +330,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
                 PropertyInfo property = resource.GetType().GetProperty(propertyName);
                 return property == null ? null : property.PropertyType;
             }
-        }
-
-        private static object ConvertComplexValue(ODataComplexValue complexValue, ref IEdmTypeReference propertyType,
-            ODataDeserializerProvider deserializerProvider, ODataDeserializerContext readContext)
-        {
-            IEdmComplexTypeReference edmComplexType;
-            if (propertyType == null)
-            {
-                // open complex property
-                if (string.IsNullOrEmpty(complexValue.TypeName))
-                {
-                    throw new ArgumentException("ODataLib should have verified that open complex value has a type name since we provided metadata.", nameof(complexValue));
-                }
-
-                IEdmModel model = readContext.Model;
-                IEdmType edmType = model.FindType(complexValue.TypeName);
-                if (edmType.TypeKind != EdmTypeKind.Complex)
-                {
-                    throw new ArgumentException("ODataLib should have verified that complex value has a complex resource type.", "value");
-                }
-
-                edmComplexType = new EdmComplexTypeReference(edmType as IEdmComplexType, isNullable: true);
-                propertyType = edmComplexType;
-            }
-            else
-            {
-                edmComplexType = propertyType.AsComplex();
-            }
-
-            ODataEdmTypeDeserializer deserializer = deserializerProvider.GetEdmTypeDeserializer(edmComplexType);
-            return deserializer.ReadInline(complexValue, propertyType, readContext);
         }
 
         private static bool CanSetProperty(object resource, string propertyName)
@@ -421,6 +404,41 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 
             ODataEdmTypeDeserializer deserializer = deserializerProvider.GetEdmTypeDeserializer(collectionType);
             return deserializer.ReadInline(collection, collectionType, readContext);
+        }
+
+        private static object ConvertPrimitiveValue(string value)
+        {
+            double doubleValue;
+            int intValue;
+            decimal decimalValue;
+
+            if (String.CompareOrdinal(value, "null") == 0)
+            {
+                return null;
+            }
+
+            if (Int32.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out intValue))
+            {
+                return intValue;
+            }
+
+            // todo: if it is Ieee754Compatible, parse decimal after double
+            if (Decimal.TryParse(value, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out decimalValue))
+            {
+                return decimalValue;
+            }
+
+            if (Double.TryParse(value, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out doubleValue))
+            {
+                return doubleValue;
+            }
+
+            if (!value.StartsWith("\"", StringComparison.Ordinal) || !value.EndsWith("\"", StringComparison.Ordinal))
+            {
+                throw new ODataException(Error.Format(SRResources.InvalidODataUntypedValue, value));
+            }
+
+            return value.Substring(1, value.Length - 2);
         }
 
         private static object ConvertEnumValue(ODataEnumValue enumValue, ref IEdmTypeReference propertyType,

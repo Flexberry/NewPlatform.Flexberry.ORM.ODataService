@@ -40,6 +40,7 @@
     using Microsoft.Extensions.DependencyModel.Resolution;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using Microsoft.OData;
+    using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -148,6 +149,7 @@
             try
             {
                 var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, EvaluateOdataPath());
+                
                 return result;
             }
             catch (Exception ex)

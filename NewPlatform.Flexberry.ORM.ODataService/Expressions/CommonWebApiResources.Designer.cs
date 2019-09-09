@@ -8,10 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
+namespace Microsoft.AspNet.OData.Common
+{
     using System;
-    
-    
+    using System.Linq;
+    using System.Reflection;
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,7 +22,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class CommonWebApiResources {
@@ -39,7 +42,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NewPlatform.Flexberry.ORM.ODataService.Expressions.CommonWebApiResources", typeof(CommonWebApiResources).Assembly);
+                    Assembly assembly = TypeHelper.GetAssembly(typeof(CommonWebApiResources));
+
+                    // Find the CommonResources.resources file's full resource name in this assembly
+                    string commonResourcesName = assembly.GetManifestResourceNames().Where(s => s.EndsWith("CommonWebApiResources.resources", StringComparison.OrdinalIgnoreCase)).Single();
+
+                    // Trim off the ".resources"
+                    commonResourcesName = commonResourcesName.Substring(0, commonResourcesName.Length - 10);
+
+                    // Load the resource manager
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(commonResourcesName, assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

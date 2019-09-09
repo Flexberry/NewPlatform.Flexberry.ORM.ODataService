@@ -8,10 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
+namespace Microsoft.AspNet.OData.Common
+{
     using System;
-    
-    
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +41,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NewPlatform.Flexberry.ORM.ODataService.Expressions.SRResources", typeof(SRResources).Assembly);
+                    Assembly assembly = TypeHelper.GetAssembly(typeof(CommonWebApiResources));
+
+                    // Find the CommonResources.resources file's full resource name in this assembly
+                    string srResourcesName = assembly.GetManifestResourceNames().Where(s => s.EndsWith("SRResources.resources", StringComparison.OrdinalIgnoreCase)).Single();
+
+                    // Trim off the ".resources"
+                    srResourcesName = srResourcesName.Substring(0, srResourcesName.Length - 10);
+
+                    // Load the resource manager
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(srResourcesName, assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -97,11 +108,49 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The action &apos;{0}&apos; is not bound to the collection of entity. Only actions that are bound to entities can have action links..
+        /// </summary>
+        internal static string ActionNotBoundToCollectionOfEntity {
+            get {
+                return ResourceManager.GetString("ActionNotBoundToCollectionOfEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The action &apos;{0}&apos; is not bound to an entity. Only actions that are bound to entities can have action links..
         /// </summary>
         internal static string ActionNotBoundToEntity {
             get {
                 return ResourceManager.GetString("ActionNotBoundToEntity", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} type of aggregation is not supported..
+        /// </summary>
+        internal static string AggregateKindNotSupported
+        {
+            get
+            {
+                return ResourceManager.GetString("AggregateKindNotSupported", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Aggregation method &apos;{0}&apos; is not supported..
+        /// </summary>
+        internal static string AggregationMethodNotSupported {
+            get {
+                return ResourceManager.GetString("AggregationMethodNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aggregation &apos;{0}&apos; not supported for property &apos;{1}&apos; of type &apos;{2}&apos;..
+        /// </summary>
+        internal static string AggregationNotSupportedForType {
+            get {
+                return ResourceManager.GetString("AggregationNotSupportedForType", resourceCulture);
             }
         }
         
@@ -196,7 +245,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot automatically bind the navigation property &apos;{0}&apos; on entity type &apos;{1}&apos; for the entity set or singleton &apos;{2}&apos; because there are two or more matching target entity sets or singletons. The matching entity sets or singletons are: {3}..
+        ///   Looks up a localized string similar to Cannot automatically bind the navigation property &apos;{0}&apos; on type &apos;{1}&apos; for the entity set or singleton &apos;{2}&apos; because there are two or more matching target entity sets or singletons. The matching entity sets or singletons are: {3}..
         /// </summary>
         internal static string CannotAutoCreateMultipleCandidates {
             get {
@@ -213,6 +262,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; does not exist on type &apos;{1}&apos;. Make sure to only use property names that are defined by the type..
+        /// </summary>
+        internal static string CannotDeserializeUnknownProperty {
+            get {
+                return ResourceManager.GetString("CannotDeserializeUnknownProperty", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Cannot define keys on type &apos;{0}&apos; deriving from &apos;{1}&apos;. The base type in the entity inheritance hierarchy already contains keys..
         /// </summary>
@@ -232,20 +290,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An instance of the abstract complex type &apos;{0}&apos; was found. Abstract complex types cannot be instantiated..
+        ///   Looks up a localized string similar to An instance of the abstract resource type &apos;{0}&apos; was found. Abstract resource types cannot be instantiated..
         /// </summary>
-        internal static string CannotInstantiateAbstractComplexType {
+        internal static string CannotInstantiateAbstractResourceType {
             get {
-                return ResourceManager.GetString("CannotInstantiateAbstractComplexType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An instance of the abstract entity type &apos;{0}&apos; was found. Abstract entity types cannot be instantiated..
-        /// </summary>
-        internal static string CannotInstantiateAbstractEntityType {
-            get {
-                return ResourceManager.GetString("CannotInstantiateAbstractEntityType", resourceCulture);
+                return ResourceManager.GetString("CannotInstantiateAbstractResourceType", resourceCulture);
             }
         }
         
@@ -282,6 +331,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string CannotRedefineBaseTypeProperty {
             get {
                 return ResourceManager.GetString("CannotRedefineBaseTypeProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot re-enable dependency injection for HTTP routes..
+        /// </summary>
+        internal static string CannotReEnableDependencyInjection {
+            get {
+                return ResourceManager.GetString("CannotReEnableDependencyInjection", resourceCulture);
             }
         }
         
@@ -358,24 +416,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find the complex type &apos;{0}&apos; in the model..
-        /// </summary>
-        internal static string ComplexTypeNotInModel {
-            get {
-                return ResourceManager.GetString("ComplexTypeNotInModel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The complex type &apos;{0}&apos; refers to the entity type &apos;{1}&apos; through the property &apos;{2}&apos;..
-        /// </summary>
-        internal static string ComplexTypeRefersToEntityType {
-            get {
-                return ResourceManager.GetString("ComplexTypeRefersToEntityType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot compare an enum of type &apos;{0}&apos; to an expression of type &apos;{1}&apos;..
         /// </summary>
         internal static string ConvertToEnumFailed {
@@ -410,7 +450,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
                 return ResourceManager.GetString("DeltaTypeMismatch", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find nested resource name &apos;{0}&apos; in parent resource type &apos;{1}&apos;..
+        /// </summary>
+        internal static string DeltaNestedResourceNameNotFound
+        {
+            get
+            {
+                return ResourceManager.GetString("DeltaNestedResourceNameNotFound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to The dependent property type &apos;{0}&apos; is not same as the principal property type &apos;{1}. The dependent and principal properties must have must have same types in the same order..
         /// </summary>
@@ -466,11 +517,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of dynamic property &apos;{0}&apos; was already used as the declared property name of open complex type &apos;{1}&apos;..
+        ///   Looks up a localized string similar to The name of dynamic property &apos;{0}&apos; was already used as the declared property name of open type &apos;{1}&apos;..
         /// </summary>
         internal static string DynamicPropertyNameAlreadyUsedAsDeclaredPropertyName {
             get {
                 return ResourceManager.GetString("DynamicPropertyNameAlreadyUsedAsDeclaredPropertyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type name of the dynamic resource set &apos;{0}&apos; is required and cannot be empty. Consider using a OData type annotation explicitly..
+        /// </summary>
+        internal static string DynamicResourceSetTypeNameIsRequired {
+            get {
+                return ResourceManager.GetString("DynamicResourceSetTypeNameIsRequired", resourceCulture);
             }
         }
         
@@ -525,6 +585,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string ElementClrTypeNull {
             get {
                 return ResourceManager.GetString("ElementClrTypeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key template value &apos;{0}&apos; for key segment &apos;{1}&apos; is empty..
+        /// </summary>
+        internal static string EmptyKeyTemplate {
+            get {
+                return ResourceManager.GetString("EmptyKeyTemplate", resourceCulture);
             }
         }
         
@@ -590,6 +659,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
                 return ResourceManager.GetString("EntityTypeDoesntHaveKeyDefined", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The entity type &apos;{0}&apos; of navigation property &apos;{1}&apos; on structural type &apos;{2}&apos; does not have a key defined..
+        /// </summary>
+        internal static string CollectionNavigationPropertyEntityTypeDoesntHaveKeyDefined
+        {
+            get
+            {
+                return ResourceManager.GetString("CollectionNavigationPropertyEntityTypeDoesntHaveKeyDefined", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to The entity type &apos;{0}&apos; does not match the expected entity type &apos;{1}&apos; as set on the query context..
@@ -597,15 +677,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string EntityTypeMismatch {
             get {
                 return ResourceManager.GetString("EntityTypeMismatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot find the entity type &apos;{0}&apos; in the model..
-        /// </summary>
-        internal static string EntityTypeNotInModel {
-            get {
-                return ResourceManager.GetString("EntityTypeNotInModel", resourceCulture);
             }
         }
         
@@ -655,6 +726,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to $filter in $expand of reference navigation property &apos;{0}&apos; is not expected type &apos;{1}&apos;.
+        /// </summary>
+        internal static string ExpandFilterExpressionNotLambdaExpression {
+            get {
+                return ResourceManager.GetString("ExpandFilterExpressionNotLambdaExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot create an EDM model as the action &apos;{0}&apos; on controller &apos;{1}&apos; has a void return type..
         /// </summary>
         internal static string FailedToBuildEdmModelBecauseReturnTypeIsNull {
@@ -682,7 +762,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The function &apos;{0}&apos; is not bound to an entity. Only actions that are bound to entities can have function links..
+        ///   Looks up a localized string similar to The function &apos;{0}&apos; is not bound to the collection of entity. Only functions that are bound to entities can have function links..
+        /// </summary>
+        internal static string FunctionNotBoundToCollectionOfEntity {
+            get {
+                return ResourceManager.GetString("FunctionNotBoundToCollectionOfEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The function &apos;{0}&apos; is not bound to an entity. Only functions that are bound to entities can have function links..
         /// </summary>
         internal static string FunctionNotBoundToEntity {
             get {
@@ -727,11 +816,38 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To register an action link factory, actions must be bindable to the collection of entity. Action &apos;{0}&apos; does not meet this requirement..
+        /// </summary>
+        internal static string HasActionLinkRequiresBindToCollectionOfEntity {
+            get {
+                return ResourceManager.GetString("HasActionLinkRequiresBindToCollectionOfEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To register an action link factory, actions must be bindable to a single entity. Action &apos;{0}&apos; does not meet this requirement..
         /// </summary>
         internal static string HasActionLinkRequiresBindToEntity {
             get {
                 return ResourceManager.GetString("HasActionLinkRequiresBindToEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To register a function link factory, functions must be bindable to the collection of entity. Function &apos;{0}&apos; does not meet this requirement..
+        /// </summary>
+        internal static string HasFunctionLinkRequiresBindToCollectionOfEntity {
+            get {
+                return ResourceManager.GetString("HasFunctionLinkRequiresBindToCollectionOfEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To register a function link factory, functions must be bindable to a single entity. Function &apos;{0}&apos; does not meet this requirement..
+        /// </summary>
+        internal static string HasFunctionLinkRequiresBindToEntity {
+            get {
+                return ResourceManager.GetString("HasFunctionLinkRequiresBindToEntity", resourceCulture);
             }
         }
         
@@ -826,6 +942,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The given untyped value &apos;{0}&apos; in payload is invalid. Consider using a OData type annotation explicitly..
+        /// </summary>
+        internal static string InvalidODataUntypedValue {
+            get {
+                return ResourceManager.GetString("InvalidODataUntypedValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The URI segment &apos;{0}&apos; is invalid after the segment &apos;{1}&apos;..
         /// </summary>
         internal static string InvalidPathSegment {
@@ -889,6 +1014,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Key template value &apos;{0}&apos; for key segment &apos;{1}&apos; does not start with &apos;{{&apos; or ends with &apos;}}&apos;..
+        /// </summary>
+        internal static string KeyTemplateMustBeInCurlyBraces {
+            get {
+                return ResourceManager.GetString("KeyTemplateMustBeInCurlyBraces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key property &apos;{0}&apos; of type &apos;{1}&apos; is null. Key properties cannot have null values..
         /// </summary>
         internal static string KeyValueCannotBeNull {
@@ -943,11 +1077,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided mapping does not contain an entry for the entity type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to The provided mapping does not contain a resource for the resource type &apos;{0}&apos;..
         /// </summary>
-        internal static string MappingDoesNotContainEntityType {
+        internal static string MappingDoesNotContainResourceType {
             get {
-                return ResourceManager.GetString("MappingDoesNotContainEntityType", resourceCulture);
+                return ResourceManager.GetString("MappingDoesNotContainResourceType", resourceCulture);
             }
         }
         
@@ -961,7 +1095,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The request includes a $expand path which is too deep. The maximum depth allowed is {0}. To increase the limit, set the &apos;{1}&apos; property on EnableQueryAttribute or ODataValidationSettings..
+        ///   Looks up a localized string similar to The request includes a $expand path which is too deep. The maximum depth allowed is {0}. To increase the limit, set the &apos;{1}&apos; property on EnableQueryAttribute or ODataValidationSettings, or set the &apos;MaxDepth&apos; property in ExpandAttribute..
         /// </summary>
         internal static string MaxExpandDepthExceeded {
             get {
@@ -986,7 +1120,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
                 return ResourceManager.GetString("MemberExpressionsMustBeBoundToLambdaParameter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Member &apos;{0}.{1}&apos; is not a property..
         /// </summary>
@@ -995,7 +1129,40 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
                 return ResourceManager.GetString("MemberExpressionsMustBeProperties", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find '{0}'. OData services have not been configured. Are you missing a call to AddOData()?.
+        /// </summary>
+        internal static string MissingODataServices
+        {
+            get
+            {
+                return ResourceManager.GetString("MissingODataServices", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the services container for route '{0}'. This should not happen and represents a bug.
+        /// </summary>
+        internal static string MissingODataContainer
+        {
+            get
+            {
+                return ResourceManager.GetString("MissingODataContainer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the services container for the non-OData route. This can occur when using OData components on the non-OData route and is usually a configuration issue. Call EnableDependencyInjection() to enable OData components on non-OData routes. This may also occur when a request was mistakenly handled by the ASP.NET Core routing layer instead of the OData routing layer, for instance the URL does not include the OData route prefix configured via a call to MapODataServiceRoute().
+        /// </summary>
+        internal static string MissingNonODataContainer
+        {
+            get
+            {
+                return ResourceManager.GetString("MissingNonODataContainer", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to The binding context cannot have a null ModelMetadata..
         /// </summary>
@@ -1033,20 +1200,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to More than one Operation called &apos;{0}&apos; was found. Try using the other RemoveOperation override..
+        /// </summary>
+        internal static string MoreThanOneOperationFound {
+            get {
+                return ResourceManager.GetString("MoreThanOneOperationFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Found more than one action with name &apos;{0}&apos; bound to the same type &apos;{1}&apos;. Each bound action must have a different binding type or name..
         /// </summary>
         internal static string MoreThanOneOverloadActionBoundToSameTypeFound {
             get {
                 return ResourceManager.GetString("MoreThanOneOverloadActionBoundToSameTypeFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to More than one Procedure called &apos;{0}&apos; was found. Try using the other RemoveProcedure override..
-        /// </summary>
-        internal static string MoreThanOneProcedureFound {
-            get {
-                return ResourceManager.GetString("MoreThanOneProcedureFound", resourceCulture);
             }
         }
         
@@ -1096,6 +1263,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; on type &apos;{1}&apos; must be a System.DateTime property..
+        /// </summary>
+        internal static string MustBeDateTimeProperty {
+            get {
+                return ResourceManager.GetString("MustBeDateTimeProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; on type &apos;{1}&apos; must be an Enum property..
         /// </summary>
         internal static string MustBeEnumProperty {
@@ -1132,6 +1308,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; on type &apos;{1}&apos; must be a System.TimeSpan property..
+        /// </summary>
+        internal static string MustBeTimeSpanProperty {
+            get {
+                return ResourceManager.GetString("MustBeTimeSpanProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The multiplicity of the &apos;{0}&apos; property must be &apos;{1}&apos;..
         /// </summary>
         internal static string MustHaveMatchingMultiplicity {
@@ -1141,11 +1326,29 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find navigation property &apos;{0}&apos; on the entity type &apos;{1}&apos;..
+        ///   Looks up a localized string similar to The navigation property binding path &apos;{0}&apos; is not valid. The last segment must be the navigation property &apos;{1}&apos;..
         /// </summary>
-        internal static string NavigationPropertyNotfound {
+        internal static string NavigationPropertyBindingPathIsNotValid {
             get {
-                return ResourceManager.GetString("NavigationPropertyNotfound", resourceCulture);
+                return ResourceManager.GetString("NavigationPropertyBindingPathIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; of the binding type cast segment &apos;{1}&apos; is not a part of the type &apos;{2}&apos; hierarchy..
+        /// </summary>
+        internal static string NavigationPropertyBindingPathNotInHierarchy {
+            get {
+                return ResourceManager.GetString("NavigationPropertyBindingPathNotInHierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The navigation property binding path segment &apos;{0}&apos; of member type &apos;{1}&apos; is not supported..
+        /// </summary>
+        internal static string NavigationPropertyBindingPathNotSupported {
+            get {
+                return ResourceManager.GetString("NavigationPropertyBindingPathNotSupported", resourceCulture);
             }
         }
         
@@ -1186,11 +1389,31 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entity set &apos;{0}&apos; is based on type &apos;{1}&apos; that has no keys defined..
+        /// </summary>
+        internal static string EntitySetTypeHasNoKeys
+        {
+            get
+            {
+                return ResourceManager.GetString("EntitySetTypeHasNoKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; is a nested collection type. Nested collection types are not allowed..
         /// </summary>
         internal static string NestedCollectionsNotSupported {
             get {
                 return ResourceManager.GetString("NestedCollectionsNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find nested property &apos;{0}&apos; on the resource type &apos;{1}&apos;..
+        /// </summary>
+        internal static string NestedPropertyNotfound {
+            get {
+                return ResourceManager.GetString("NestedPropertyNotfound", resourceCulture);
             }
         }
         
@@ -1227,6 +1450,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string NonNullUriRequiredForMediaTypeMapping {
             get {
                 return ResourceManager.GetString("NonNullUriRequiredForMediaTypeMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No non-OData HTTP route registered..
+        /// </summary>
+        internal static string NoNonODataHttpRouteRegistered {
+            get {
+                return ResourceManager.GetString("NoNonODataHttpRouteRegistered", resourceCulture);
             }
         }
         
@@ -1294,6 +1526,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entity set &apos;{0}&apos; cannot be used for $count..
+        /// </summary>
+        internal static string NotCountableEntitySetUsedForCount {
+            get {
+                return ResourceManager.GetString("NotCountableEntitySetUsedForCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; cannot be used for $count..
         /// </summary>
         internal static string NotCountablePropertyUsedForCount {
@@ -1330,11 +1571,29 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; cannot be used in the $select query option..
+        /// </summary>
+        internal static string NotSelectablePropertyUsedInSelect {
+            get {
+                return ResourceManager.GetString("NotSelectablePropertyUsedInSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; cannot be used in the $orderby query option..
         /// </summary>
         internal static string NotSortablePropertyUsedInOrderBy {
             get {
                 return ResourceManager.GetString("NotSortablePropertyUsedInOrderBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transformation kind {0} is not supported..
+        /// </summary>
+        internal static string NotSupportedTransformationKind {
+            get {
+                return ResourceManager.GetString("NotSupportedTransformationKind", resourceCulture);
             }
         }
         
@@ -1348,11 +1607,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Null collections cannot be serialized..
+        ///   Looks up a localized string similar to The container built by the container builder must not be null..
         /// </summary>
-        internal static string NullCollectionsCannotBeSerialized {
+        internal static string NullContainer {
             get {
-                return ResourceManager.GetString("NullCollectionsCannotBeSerialized", resourceCulture);
+                return ResourceManager.GetString("NullContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The container builder created by the container builder factory must not be null..
+        /// </summary>
+        internal static string NullContainerBuilder {
+            get {
+                return ResourceManager.GetString("NullContainerBuilder", resourceCulture);
             }
         }
         
@@ -1371,6 +1639,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string NullETagHandler {
             get {
                 return ResourceManager.GetString("NullETagHandler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type verification failed. Expected non-nullable type &apos;{0}&apos; but received a null value..
+        /// </summary>
+        internal static string NullOnNonNullableFunctionParameter {
+            get {
+                return ResourceManager.GetString("NullOnNonNullableFunctionParameter", resourceCulture);
             }
         }
         
@@ -1407,6 +1684,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string ODataPathNotFound {
             get {
                 return ResourceManager.GetString("ODataPathNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid EntitySetPath detected. &apos;{0}&apos; is not a valid entity set path for operation &apos;{1}&apos;..
+        /// </summary>
+        internal static string OperationHasInvalidEntitySetPath {
+            get {
+                return ResourceManager.GetString("OperationHasInvalidEntitySetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The operation import segment must be a function import segment..
+        /// </summary>
+        internal static string OperationImportSegmentMustBeFunction {
+            get {
+                return ResourceManager.GetString("OperationImportSegmentMustBeFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The operation segment must be a function segment..
+        /// </summary>
+        internal static string OperationSegmentMustBeFunction {
+            get {
+                return ResourceManager.GetString("OperationSegmentMustBeFunction", resourceCulture);
             }
         }
         
@@ -1465,15 +1769,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid EntitySetPath detected. &apos;{0}&apos; is not a valid entity set path for procedure &apos;{1}&apos;..
-        /// </summary>
-        internal static string ProcedureHasInvalidEntitySetPath {
-            get {
-                return ResourceManager.GetString("ProcedureHasInvalidEntitySetPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot define property &apos;{0}&apos; in the base type &apos;{1}&apos; as the derived type &apos;{2}&apos; already defines it..
         /// </summary>
         internal static string PropertyAlreadyDefinedInDerivedType {
@@ -1501,11 +1796,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be a DateTimeOffset..
+        ///   Looks up a localized string similar to The value must be a DateTimeOffset or Date..
         /// </summary>
-        internal static string PropertyMustBeDateTimeOffset {
+        internal static string PropertyMustBeDateTimeOffsetOrDate {
             get {
-                return ResourceManager.GetString("PropertyMustBeDateTimeOffset", resourceCulture);
+                return ResourceManager.GetString("PropertyMustBeDateTimeOffsetOrDate", resourceCulture);
             }
         }
         
@@ -1546,6 +1841,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value must be a Edm.TimeOfDay..
+        /// </summary>
+        internal static string PropertyMustBeTimeOfDay {
+            get {
+                return ResourceManager.GetString("PropertyMustBeTimeOfDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The PropertyInfo provided must have public &apos;get&apos; and &apos;set&apos; accessor methods..
         /// </summary>
         internal static string PropertyMustHavePublicGetterAndSetter {
@@ -1560,6 +1864,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string PropertyNotFound {
             get {
                 return ResourceManager.GetString("PropertyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property or path {0} isn&apos;t available in the current context. It was removed in earlier transformation..
+        /// </summary>
+        internal static string PropertyOrPathWasRemovedFromContext {
+            get {
+                return ResourceManager.GetString("PropertyOrPathWasRemovedFromContext", resourceCulture);
             }
         }
         
@@ -1636,11 +1949,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The complex type &apos;{0}&apos; has a reference to itself through the property &apos;{1}&apos;. A recursive loop of complex types is not allowed..
+        ///   Looks up a localized string similar to Found unexpected parameter &apos;{0}&apos;..
         /// </summary>
-        internal static string RecursiveComplexTypesNotAllowed {
+        internal static string ReferenceNavigationPropertyExpandFilterVisitorUnexpectedParameter {
             get {
-                return ResourceManager.GetString("RecursiveComplexTypesNotAllowed", resourceCulture);
+                return ResourceManager.GetString("ReferenceNavigationPropertyExpandFilterVisitorUnexpectedParameter", resourceCulture);
             }
         }
         
@@ -1672,6 +1985,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A request container already exists on the request..
+        /// </summary>
+        internal static string RequestContainerAlreadyExists {
+            get {
+                return ResourceManager.GetString("RequestContainerAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request message does not contain an HttpConfiguration object..
         /// </summary>
         internal static string RequestMustContainConfiguration {
@@ -1681,7 +2003,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The request must have an associated EDM model. Consider using the extension method HttpConfiguration.Routes.MapODataServiceRoute to register a route that parses the OData URI and attaches the model information..
+        ///   Looks up a localized string similar to The request must have an associated EDM model. Consider using the extension method HttpConfiguration.MapODataServiceRoute to register a route that parses the OData URI and attaches the model information..
         /// </summary>
         internal static string RequestMustHaveModel {
             get {
@@ -1713,6 +2035,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string RequestUriTooShortForODataPath {
             get {
                 return ResourceManager.GetString("RequestUriTooShortForODataPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the resource type &apos;{0}&apos; in the model..
+        /// </summary>
+        internal static string ResourceTypeNotInModel {
+            get {
+                return ResourceManager.GetString("ResourceTypeNotInModel", resourceCulture);
             }
         }
         
@@ -1843,7 +2174,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be deserialized using the {1}..
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be deserialized using the ODataMediaTypeFormatter..
         /// </summary>
         internal static string TypeCannotBeDeserialized {
             get {
@@ -1870,7 +2201,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be serialized using the {1}..
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be serialized using the ODataMediaTypeFormatter..
         /// </summary>
         internal static string TypeCannotBeSerialized {
             get {
@@ -1897,20 +2228,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is not a collection of type {1}. Only entity collections are supported..
-        /// </summary>
-        internal static string TypeMustBeEntityCollection {
-            get {
-                return ResourceManager.GetString("TypeMustBeEntityCollection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; must be an enum or Nullable&lt;T&gt; where T is an enum type..
         /// </summary>
         internal static string TypeMustBeEnumOrNullableEnum {
             get {
                 return ResourceManager.GetString("TypeMustBeEnumOrNullableEnum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not a resource set type. Only resource set are supported..
+        /// </summary>
+        internal static string TypeMustBeResourceSet {
+            get {
+                return ResourceManager.GetString("TypeMustBeResourceSet", resourceCulture);
             }
         }
         
@@ -2019,6 +2350,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions {
         internal static string UnterminatedStringLiteral {
             get {
                 return ResourceManager.GetString("UnterminatedStringLiteral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The function &apos;{0}&apos; is already bound to another method..
+        /// </summary>
+        internal static string UriFunctionClrBinderAlreadyBound {
+            get {
+                return ResourceManager.GetString("UriFunctionClrBinderAlreadyBound", resourceCulture);
             }
         }
         

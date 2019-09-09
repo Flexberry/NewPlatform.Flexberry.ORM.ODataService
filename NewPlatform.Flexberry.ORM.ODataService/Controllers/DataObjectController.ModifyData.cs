@@ -25,6 +25,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using Newtonsoft.Json;
     using File = ICSSoft.STORMNET.FileType.File;
+    using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
