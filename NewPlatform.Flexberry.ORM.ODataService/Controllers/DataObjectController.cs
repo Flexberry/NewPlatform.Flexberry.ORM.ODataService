@@ -58,6 +58,11 @@
         private readonly IDataService _dataService;
 
         /// <summary>
+        /// Data object cache for sync loading.
+        /// </summary>
+        private readonly DataObjectCache _dataObjectCache;
+
+        /// <summary>
         /// The current EDM model.
         /// </summary>
         private readonly DataObjectEdmModel _model;
@@ -94,6 +99,9 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="dataService">Data service for all manipulations with data.</param>
+        /// <param name="model">EDM model.</param>
+        /// <param name="events">The container with registered events.</param>
+        /// <param name="functions">The container with OData Service functions.</param>
         public DataObjectController(
             IDataService dataService,
             DataObjectEdmModel model,
@@ -101,6 +109,9 @@
             IFunctionContainer functions)
         {
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+
+            _dataObjectCache = new DataObjectCache();
+
             _model = model;
             _events = events;
             _functions = functions;
@@ -464,7 +475,7 @@
                                 {
                                     if (!DynamicView.ContainsPoperty(dynamicView.View, propPath))
                                     {
-                                        _dataService.LoadObject(dynamicView.View, (DataObject)master);
+                                        _dataService.LoadObject(dynamicView.View, (DataObject)master, _dataObjectCache);
                                     }
 
                                     edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem, dynamicView);
@@ -1074,7 +1085,7 @@
             {
                 if (!callGetObjectsCount)
                 {
-                    dobjs = _dataService.LoadObjects(lcs);
+                    dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
                 }
                 else
                 {
