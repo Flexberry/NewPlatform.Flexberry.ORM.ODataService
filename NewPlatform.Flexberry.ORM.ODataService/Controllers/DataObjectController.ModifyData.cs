@@ -495,7 +495,7 @@
             var ldef = SQLWhereLanguageDef.LanguageDef;
             LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
             lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
-            DataObject[] dobjs = _dataService.LoadObjects(lcs);
+            DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
             if (dobjs.Length == 1)
             {
                 _newDataObjects.Add(dobjs[0], false);
