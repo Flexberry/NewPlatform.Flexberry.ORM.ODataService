@@ -99,18 +99,27 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="dataService">Data service for all manipulations with data.</param>
+        /// <param name="dataObjectCache">DataObject cache.</param>
         /// <param name="model">EDM model.</param>
         /// <param name="events">The container with registered events.</param>
         /// <param name="functions">The container with OData Service functions.</param>
         public DataObjectController(
             IDataService dataService,
+            DataObjectCache dataObjectCache,
             DataObjectEdmModel model,
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
 
-            _dataObjectCache = new DataObjectCache();
+            if (dataObjectCache != null)
+            {
+                _dataObjectCache = dataObjectCache;
+            }
+            else
+            {
+                _dataObjectCache = new DataObjectCache();
+            }
 
             _model = model;
             _events = events;
