@@ -494,7 +494,11 @@
 
                 if (dataObjectFromCache != null)
                 {
-                    _newDataObjects.Add(dataObjectFromCache, false);
+                    if (!_newDataObjects.ContainsKey(dataObjectFromCache))
+                    {
+                        _newDataObjects.Add(dataObjectFromCache, false);
+                    }
+
                     return dataObjectFromCache;
                 }
 
