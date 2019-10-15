@@ -483,11 +483,16 @@
         /// <summary>
         /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
         /// </summary>
-        /// <param name="objType"> Тип объекта.</param>
-        /// <param name="keyValue"> Значение ключа.</param>>
-        /// <returns> Объект данных.</returns>
+        /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
+        /// <param name="keyValue">Значение ключа.</param>>
+        /// <returns>Объект данных.</returns>
         private DataObject ReturnDataObject(Type objType, object keyValue)
         {
+            if (objType == null)
+            {
+                throw new ArgumentNullException(nameof(objType));
+            }
+
             if (keyValue != null)
             {
                 DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
