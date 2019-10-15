@@ -254,6 +254,7 @@
 
             List<DataObject> dataObjectsToUpdate = new List<DataObject>();
             DataObjectCache dataObjectCache = new DataObjectCache();
+            dataObjectCache.StartCaching(false);
 
             foreach (HttpRequestMessage request in changeSet.Requests)
             {

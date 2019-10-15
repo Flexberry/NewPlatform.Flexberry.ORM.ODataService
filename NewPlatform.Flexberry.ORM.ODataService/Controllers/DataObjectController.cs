@@ -119,6 +119,7 @@
             else
             {
                 _dataObjectCache = new DataObjectCache();
+                _dataObjectCache.StartCaching(false);
             }
 
             _model = model;
