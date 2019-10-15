@@ -1,6 +1,6 @@
 var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller =
 [
-    [ "DataObjectController", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aa504259ae59f012706a22c8e93365857", null ],
+    [ "DataObjectController", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a018801724d05e2387998e4b097ede040", null ],
     [ "ApplyTo< TElement >", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#aa5a8aaf9f68a2f01f110886aedd72551", null ],
     [ "CreateLcs", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a04e7de7e637503a795dae358cf922f92", null ],
     [ "CreateODataQueryOptions", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a79443d5a4ffc7e11531144be1475ec6e", null ],
