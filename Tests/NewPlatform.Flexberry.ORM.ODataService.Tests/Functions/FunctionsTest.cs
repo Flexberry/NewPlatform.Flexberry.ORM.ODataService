@@ -160,6 +160,25 @@
                     parametersTypes));
             }
 
+            if (!container.IsRegistered("FunctionEntityWithMaster"))
+            {
+                parametersTypes = new Dictionary<string, Type> { { "пол", typeof(Медведь) } };
+                container.Register(new Function(
+                    "FunctionEntityWithMaster",
+                    (queryParameters, parameters) =>
+                    {
+                        Медведь медведь = new Медведь { Вес = 49 };
+                        Берлога берлога = new Берлога { Наименование = "Высокая" };
+                        Лес лес = new Лес { Площадь = 1001 };
+                        берлога.ЛесРасположения = лес;
+                        медведь.Берлога.Add(берлога);
+
+                        dataService.UpdateObject(медведь);
+                        return медведь;
+                    },
+                    typeof(Медведь),
+                    null));
+            }
         }
 
         /// <summary>
@@ -515,6 +534,39 @@
 
                     // Проверим сообщение об ошибке.
                     Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку возвращаемого значения сущности с созданым мастером.
+        /// </summary>
+        [Fact]
+        public void TestFunctionEntityWithMaster()
+        {
+            ActODataService(args =>
+            {
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                var code = HttpStatusCode.InternalServerError;
+                var s = $"{code.ToString()}";
+
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = $"http://localhost/odata/FunctionEntityWithMaster()";
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    // Получим строку с ответом.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+
+                    // Преобразуем полученный объект в словарь.
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.True(receivedDict.ContainsKey("value"));
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                 }
             });
         }
