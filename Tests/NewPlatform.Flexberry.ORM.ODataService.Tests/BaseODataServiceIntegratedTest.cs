@@ -23,13 +23,20 @@
 
         public class TestArgs
         {
+            private readonly Lazy<ManagementToken> _token;
+
             public IUnityContainer UnityContainer { get; set; }
 
-            public ManagementToken Token { get; set; }
+            public ManagementToken Token => _token.Value;
 
             public IDataService DataService { get; set; }
 
             public HttpClient HttpClient { get; set; }
+
+            public TestArgs(Func<ManagementToken> func)
+            {
+                _token = new Lazy<ManagementToken>(func);
+            }
         }
 
         /// <summary>
@@ -81,8 +88,7 @@
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
-                    var token = config.MapODataServiceDataObjectRoute(_builder, new HttpServer());
-                    var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                    var args = new TestArgs(() => config.MapODataServiceDataObjectRoute(_builder, new HttpServer())) { UnityContainer = container, DataService = dataService, HttpClient = client };
                     action(args);
                 }
             }

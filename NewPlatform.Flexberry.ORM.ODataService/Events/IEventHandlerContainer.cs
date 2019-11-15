@@ -1,53 +1,90 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Events
 {
+    using System;
+    using System.Net;
+
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
+
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+
     /// <summary>
     /// Interface of container with OData Service event handlers.
     /// </summary>
     public interface IEventHandlerContainer
     {
         /// <summary>
-        /// Делегат для вызова логики перед выполнением запроса.
+        /// The OData Service token.
         /// </summary>
-        DelegateBeforeGet CallbackBeforeGet { get; set; }
+        ManagementToken Token { get; set; }
 
         /// <summary>
-        /// Делегат для вызова логики перед изменением объекта.
+        /// Обработчик, вызываемый перед выполнением запроса.
         /// </summary>
-        DelegateBeforeUpdate CallbackBeforeUpdate { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="lcs">Структура загрузки.</param>
+        /// <returns><see langword="true" /> для продолжения операции.</returns>
+        bool BeforeGet(DataObjectController controller, ref LoadingCustomizationStruct lcs);
 
         /// <summary>
-        /// Делегат для вызова логики перед созданием объекта.
+        /// Обработчик, вызываемый перед созданием объекта.
         /// </summary>
-        DelegateBeforeCreate CallbackBeforeCreate { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект.</param>
+        /// <returns><see langword="true" /> для продолжения операции.</returns>
+        bool BeforeCreate(DataObjectController controller, DataObject obj);
 
         /// <summary>
-        /// Делегат для вызова логики перед удалением объекта.
+        /// Обработчик, вызываемый перед изменением объекта.
         /// </summary>
-        DelegateBeforeDelete CallbackBeforeDelete { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект.</param>
+        /// <returns><see langword="true" /> для продолжения операции.</returns>
+        bool BeforeUpdate(DataObjectController controller, DataObject obj);
 
         /// <summary>
-        /// Делегат для вызова логики после вычитывания объектов.
+        /// Обработчик, вызываемый перед удалением объекта.
         /// </summary>
-        DelegateAfterGet CallbackAfterGet { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект.</param>
+        /// <returns><see langword="true" /> для продолжения операции.</returns>
+        bool BeforeDelete(DataObjectController controller, DataObject obj);
 
         /// <summary>
-        /// Делегат для вызова логики после сохранения объекта.
+        /// Обработчик, вызываемый после вычитывания объектов.
         /// </summary>
-        DelegateAfterCreate CallbackAfterCreate { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="objs">Вычитанные объекты.</param>
+        void AfterGet(DataObjectController controller, ref DataObject[] objs);
 
         /// <summary>
-        /// Делегат для вызова логики после обновления объекта.
+        /// Обработчик, вызываемый после создания объекта.
         /// </summary>
-        DelegateAfterUpdate CallbackAfterUpdate { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект после создания.</param>
+        void AfterCreate(DataObjectController controller, DataObject obj);
 
         /// <summary>
-        /// Делегат для вызова логики после удаления объекта.
+        /// Обработчик, вызываемый после обновления объекта.
         /// </summary>
-        DelegateAfterDelete CallbackAfterDelete { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект после обновления.</param>
+        void AfterUpdate(DataObjectController controller, DataObject obj);
 
         /// <summary>
-        /// Делегат, вызываемый после возникновения исключения.
+        /// Обработчик, вызываемый после удаления объекта.
         /// </summary>
-        DelegateAfterInternalServerError CallbackAfterInternalServerError { get; set; }
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="obj">Объект перед удалением.</param>
+        void AfterDelete(DataObjectController controller, DataObject obj);
+
+        /// <summary>
+        /// Обработчик, вызываемый после возникновения исключения.
+        /// </summary>
+        /// <param name="controller">Контроллер OData.</param>
+        /// <param name="ex">Исключение, которое возникло внутри ODataService.</param>
+        /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
+        /// <returns>Исключение, которое будет отправлено клиенту.</returns>
+        Exception AfterInternalServerError(DataObjectController controller, Exception ex, ref HttpStatusCode code);
     }
 }

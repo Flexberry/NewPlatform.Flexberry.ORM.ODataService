@@ -1,54 +1,69 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Events
 {
+    using System;
+    using System.Net;
+
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
+
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+
     /// <summary>
     /// Default implementation of <see cref="IEventHandlerContainer"/>.
     /// </summary>
-    /// <seealso cref="IEventHandlerContainer" />
     internal class EventHandlerContainer : IEventHandlerContainer
     {
-        /// <summary>
-        /// Делегат для вызова логики перед выполнением запроса.
-        /// </summary>
-        public DelegateBeforeGet CallbackBeforeGet { get; set; }
+        /// <inheritdoc />
+        public ManagementToken Token { get; set; }
 
-        /// <summary>
-        /// Делегат для вызова логики перед изменением объекта.
-        /// </summary>
-        public DelegateBeforeUpdate CallbackBeforeUpdate { get; set; }
+        /// <inheritdoc />
+        public bool BeforeGet(DataObjectController controller, ref LoadingCustomizationStruct lcs)
+        {
+            return true;
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики перед созданием объекта.
-        /// </summary>
-        public DelegateBeforeCreate CallbackBeforeCreate { get; set; }
+        /// <inheritdoc />
+        public bool BeforeCreate(DataObjectController controller, DataObject obj)
+        {
+            return true;
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики перед удалением объекта.
-        /// </summary>
-        public DelegateBeforeDelete CallbackBeforeDelete { get; set; }
+        /// <inheritdoc />
+        public bool BeforeUpdate(DataObjectController controller, DataObject obj)
+        {
+            return true;
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики после вычитывания объектов.
-        /// </summary>
-        public DelegateAfterGet CallbackAfterGet { get; set; }
+        /// <inheritdoc />
+        public bool BeforeDelete(DataObjectController controller, DataObject obj)
+        {
+            return true;
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики после сохранения объекта.
-        /// </summary>
-        public DelegateAfterCreate CallbackAfterCreate { get; set; }
+        /// <inheritdoc />
+        public void AfterGet(DataObjectController controller, ref DataObject[] objs)
+        {
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики после обновления объекта.
-        /// </summary>
-        public DelegateAfterUpdate CallbackAfterUpdate { get; set; }
+        /// <inheritdoc />
+        public void AfterCreate(DataObjectController controller, DataObject obj)
+        {
+        }
 
-        /// <summary>
-        /// Делегат для вызова логики после удаления объекта.
-        /// </summary>
-        public DelegateAfterDelete CallbackAfterDelete { get; set; }
+        /// <inheritdoc />
+        public void AfterUpdate(DataObjectController controller, DataObject obj)
+        {
+        }
 
-        /// <summary>
-        /// Делегат, вызываемый после возникновения исключения.
-        /// </summary>
-        public DelegateAfterInternalServerError CallbackAfterInternalServerError { get; set; }
+        /// <inheritdoc />
+        public void AfterDelete(DataObjectController controller, DataObject obj)
+        {
+        }
+
+        /// <inheritdoc />
+        public Exception AfterInternalServerError(DataObjectController controller, Exception ex, ref HttpStatusCode code)
+        {
+            return ex;
+        }
     }
 }

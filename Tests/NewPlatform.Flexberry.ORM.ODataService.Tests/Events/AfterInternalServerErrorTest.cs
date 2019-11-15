@@ -1,12 +1,15 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Events
 {
+    using System;
     using System.Net;
     using System.Net.Http;
 
     using ICSSoft.STORMNET;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+    using Unity;
     using Xunit;
-    using System;
 
     /// <summary>
     /// Класс тестов для тестирования логики после возникновения исключения.
@@ -21,7 +24,7 @@
         /// <param name="e">Исключение, которое возникло внутри ODataService.</param>
         /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
-        public Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
+        public Exception AfterInternalServerError(DataObjectController controller, Exception e, ref HttpStatusCode code)
         {
             Ex = e;
             code = HttpStatusCode.InternalServerError;
@@ -36,7 +39,8 @@
         {
             ActODataService(args =>
             {
-                args.Token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackAfterInternalServerError = AfterInternalServerError };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 Медведь медв = new Медведь { Вес = 48, Пол = tПол.Мужской };
                 Медведь медв2 = new Медведь { Вес = 148, Пол = tПол.Мужской };

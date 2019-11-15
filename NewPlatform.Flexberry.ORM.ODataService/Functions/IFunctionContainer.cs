@@ -9,6 +9,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Functions
     public interface IFunctionContainer
     {
         /// <summary>
+        /// The OData Service token.
+        /// </summary>
+        ManagementToken Token { get; set; }
+
+        /// <summary>
         /// Registers the specified OData Service function.
         /// </summary>
         /// <param name="function">The function.</param>

@@ -13,8 +13,10 @@
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+    using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
@@ -103,7 +105,9 @@
             config.Properties[typeof(CustomODataSerializerProvider)] = customODataSerializerProvider;
 
             // Token.
-            var token = new ManagementToken(route, model);
+            IEventHandlerContainer eventHandlerContainer = (IEventHandlerContainer)config.DependencyResolver.GetService(typeof(IEventHandlerContainer)) ?? new EventHandlerContainer();
+            IFunctionContainer functionContainer = (IFunctionContainer)config.DependencyResolver.GetService(typeof(IFunctionContainer)) ?? new FunctionContainer();
+            var token = new ManagementToken(route, model, eventHandlerContainer, functionContainer);
             config.SetODataServiceToken(token);
 
             // Handlers.

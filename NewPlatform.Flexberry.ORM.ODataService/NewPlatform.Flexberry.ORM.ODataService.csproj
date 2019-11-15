@@ -190,10 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch\DataObjectODataBatchHandler.cs" />
-    <Compile Include="Controllers\DataObjectController.Events.cs" />
     <Compile Include="Controllers\DataObjectController.Actions.cs" />
     <Compile Include="Controllers\DataObjectController.UserFunctions.cs" />
-    <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\EventHandlerContainer.cs" />
     <Compile Include="Events\IEventHandlerContainer.cs" />
     <Compile Include="Formatter\CollectionDeserializationHelpers.cs" />

@@ -5,6 +5,11 @@
 
     using ICSSoft.STORMNET;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+
+    using Unity;
+
     using Xunit;
 
     /// <summary>
@@ -22,7 +27,7 @@
         /// Метод вызываемый после вычитывания объектов.
         /// </summary>
         /// <param name="objs">Считанные объекты.</param>
-        public void AfterGet(ref DataObject[] objs)
+        public void AfterGet(DataObjectController controller, ref DataObject[] objs)
         {
             Objs = objs;
         }
@@ -35,7 +40,8 @@
         {
             ActODataService(args =>
             {
-                args.Token.Events.CallbackAfterGet = AfterGet;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackAfterGet = AfterGet };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 Медведь медв = new Медведь { Вес = 48, Пол = tПол.Мужской };
                 Медведь медв2 = new Медведь { Вес = 148, Пол = tПол.Мужской };
