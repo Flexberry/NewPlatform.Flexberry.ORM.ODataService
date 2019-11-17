@@ -4,7 +4,7 @@
     using System.Net;
 
     using ICSSoft.STORMNET;
-
+    using ICSSoft.STORMNET.Windows.Forms;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Newtonsoft.Json;
@@ -45,6 +45,7 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
+                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = "http://localhost/odata/Блохаs?$filter=МедведьОбитания/Берлога/any(f:f/Наименование eq 'Берлога 1')";
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)

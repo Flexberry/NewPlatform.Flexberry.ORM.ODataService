@@ -61,23 +61,34 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
 
             foreach (MethodCallExpression callExpression in agregatorsExpressions)
             {
-                MemberExpression expression = callExpression.Arguments[0] as MemberExpression;
+                MethodCallExpression firstArgument = callExpression.Arguments[0] as MethodCallExpression;
+                MemberExpression expression = firstArgument.Arguments[0] as MemberExpression;
+
+                Type agregatorType = expression.Expression.Type;
+
+                if (agregatorType == view.DefineClassType)
+                {
+                    // Если это собственный детейл класса, для которого строится ограничение, то никакой дополнительной логики не надо.
+                    continue;
+                }
 
                 // Если выражение содержит упоминание любого детейла, к которому применяется any, то надо вычислить представление агрегатора для метода LinqToLcs.GetLcs(...).
                 View agregatorView = new View();
-                agregatorView.DefineClassType = expression.Expression.Type;
+                agregatorView.DefineClassType = agregatorType;
                 agregatorView.Name = "DynamicFromODataServiceForAgregator";
 
+                // Добавим свойства в представление - выбрать все свойства из лямбды.
+                LambdaExpression lambdaExpression = callExpression.Arguments[1] as LambdaExpression;
+                List<string> properties = GetMembersFromLambdaExpression(lambdaExpression);
+
                 View detailView = new View();
-                detailView.DefineClassType = expression.Member.ReflectedType;
+                detailView.DefineClassType = lambdaExpression.Parameters[0].Type;
                 detailView.Name = "DynamicFormOdataServiceForDetail";
 
-                // TODO: Добавить свойства в представление - выбрать все свойства из лямбды.
-
-                LambdaExpression lambdaExpression = callExpression.Arguments[1] as LambdaExpression;
-
-                string propName = null;
-                detailView.AddProperty(propName);
+                foreach (string propName in properties)
+                {
+                    detailView.AddProperty(propName);
+                }
 
                 string detailname = expression.Member.Name;
                 agregatorView.AddDetailInView(detailname, detailView, true);
@@ -110,15 +121,112 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
             }
 
             if (lcs.LimitFunction == null)
+            {
                 return view;
+            }
+
             return ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(view, lcs.LimitFunction, dataService);
         }
 
         /// <summary>
-        /// Получить указание на агрегаторов в выражении.
+        /// Рекурсивный поиск названий свойств, участвующих в выражении.
+        /// </summary>
+        /// <param name="expression">Выражение, по которому ищем.</param>
+        /// <returns>Список найденных свойств.</returns>
+        private static List<string> GetMembersFromLambdaExpression(Expression expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expression.NodeType == ExpressionType.Quote)
+            {
+                UnaryExpression expr = expression as UnaryExpression;
+                return GetMembersFromLambdaExpression(expr.Operand);
+            }
+
+            if (expression.NodeType == ExpressionType.Lambda)
+            {
+                LambdaExpression expr = expression as LambdaExpression;
+                return GetMembersFromLambdaExpression(expr.Body);
+            }
+
+            if (expression.NodeType == ExpressionType.MemberAccess)
+            {
+                MemberExpression expr = expression as MemberExpression;
+                if (expr.Expression.NodeType == ExpressionType.Parameter)
+                {
+                    return new List<string> { expr.Member.Name };
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            if (expression is BinaryExpression)
+            {
+                Expression left = (expression as BinaryExpression).Left;
+                Expression right = (expression as BinaryExpression).Right;
+
+                List<string> leftMembers = GetMembersFromLambdaExpression(left);
+                List<string> rightMembers = GetMembersFromLambdaExpression(right);
+
+                List<string> retList = null;
+
+                if (leftMembers != null)
+                {
+                    retList = leftMembers;
+                }
+
+                if (rightMembers != null)
+                {
+                    if (retList != null)
+                    {
+                        retList.AddRange(rightMembers);
+                    }
+                    else
+                    {
+                        retList = rightMembers;
+                    }
+                }
+
+                return retList;
+            }
+
+            if (expression.NodeType == ExpressionType.Call)
+            {
+                MethodCallExpression expr = expression as MethodCallExpression;
+
+                List<string> retList = null;
+                foreach (Expression argumentExpression in expr.Arguments)
+                {
+                    List<string> argumentExpressionList = GetMembersFromLambdaExpression(argumentExpression);
+                    if (argumentExpressionList != null)
+                    {
+                        if (retList != null)
+                        {
+                            retList.AddRange(argumentExpressionList);
+                        }
+                        else
+                        {
+                            retList = argumentExpressionList;
+                        }
+                    }
+                }
+
+                return retList;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Получить список выражений с вызовом метода Cast.
         /// </summary>
         /// <param name="expression">Выражение, по которому пробегаемся.</param>
-        /// <returns>Массив выражений, указывающих на агрегаторов.</returns>
+        /// <returns>Список выражений, указывающих на Cast.</returns>
         private static IEnumerable<Expression> GetCastCallInExpression(Expression expression)
         {
             if (expression == null)
@@ -142,14 +250,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
             {
                 MethodCallExpression expr = expression as MethodCallExpression;
 
-                if (expr.Method.Name == "Cast")
-                {
-                    return new List<Expression>() { expr /*.Arguments[0] */ };
-                }
-
                 if (expr.Arguments.Count == 2 && expr.Arguments[0] is MethodCallExpression && (expr.Arguments[0] as MethodCallExpression).Method.Name == "Cast")
                 {
-                    return new List<Expression>() { expr /*.Arguments[0] */ };
+                    return new List<Expression>() { expr };
                 }
                 else
                 {
