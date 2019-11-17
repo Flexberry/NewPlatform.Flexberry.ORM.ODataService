@@ -50,10 +50,56 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
         /// <param name="dataObjectType">Тип</param>
         /// <param name="view">Начальное представление</param>
         /// <param name="dataService">Сервис данных</param>
+        /// <param name="resolvingViews">Представления для разрешения сложных выражений, например, детейлов мастера.</param>
         /// <returns>Представление</returns>
-        public static View GetViewWithPropertiesUsedInExpression(Expression expr, Type dataObjectType, View view, IDataService dataService)
+        public static View GetViewWithPropertiesUsedInExpression(Expression expr, Type dataObjectType, View view, IDataService dataService, out IEnumerable<View> resolvingViews)
         {
-            var lcs = LinqToLcs.GetLcs(expr, dataObjectType);
+            resolvingViews = null;
+
+            List<View> agregatorsViews = null;
+            IEnumerable<Expression> agregatorsExpressions = GetCastCallInExpression(expr);
+
+            foreach (MethodCallExpression callExpression in agregatorsExpressions)
+            {
+                MemberExpression expression = callExpression.Arguments[0] as MemberExpression;
+
+                // Если выражение содержит упоминание любого детейла, к которому применяется any, то надо вычислить представление агрегатора для метода LinqToLcs.GetLcs(...).
+                View agregatorView = new View();
+                agregatorView.DefineClassType = expression.Expression.Type;
+                agregatorView.Name = "DynamicFromODataServiceForAgregator";
+
+                View detailView = new View();
+                detailView.DefineClassType = expression.Member.ReflectedType;
+                detailView.Name = "DynamicFormOdataServiceForDetail";
+
+                // TODO: Добавить свойства в представление - выбрать все свойства из лямбды.
+
+                LambdaExpression lambdaExpression = callExpression.Arguments[1] as LambdaExpression;
+
+                string propName = null;
+                detailView.AddProperty(propName);
+
+                string detailname = expression.Member.Name;
+                agregatorView.AddDetailInView(detailname, detailView, true);
+
+                if (agregatorsViews == null)
+                {
+                    agregatorsViews = new List<View>();
+                }
+
+                agregatorsViews.Add(agregatorView);
+            }
+
+            LoadingCustomizationStruct lcs;
+            if (agregatorsViews == null)
+            {
+                lcs = LinqToLcs.GetLcs(expr, dataObjectType);
+            }
+            else
+            {
+                lcs = LinqToLcs.GetLcs(expr, view, agregatorsViews);
+                resolvingViews = agregatorsViews;
+            }
 
             if (lcs.ColumnsSort != null)
             {
@@ -66,6 +112,69 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
             if (lcs.LimitFunction == null)
                 return view;
             return ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(view, lcs.LimitFunction, dataService);
+        }
+
+        /// <summary>
+        /// Получить указание на агрегаторов в выражении.
+        /// </summary>
+        /// <param name="expression">Выражение, по которому пробегаемся.</param>
+        /// <returns>Массив выражений, указывающих на агрегаторов.</returns>
+        private static IEnumerable<Expression> GetCastCallInExpression(Expression expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expression.NodeType == ExpressionType.Quote)
+            {
+                UnaryExpression expr = expression as UnaryExpression;
+                return GetCastCallInExpression(expr.Operand);
+            }
+
+            if (expression.NodeType == ExpressionType.Lambda)
+            {
+                LambdaExpression expr = expression as LambdaExpression;
+                return GetCastCallInExpression(expr.Body);
+            }
+
+            if (expression.NodeType == ExpressionType.Call)
+            {
+                MethodCallExpression expr = expression as MethodCallExpression;
+
+                if (expr.Method.Name == "Cast")
+                {
+                    return new List<Expression>() { expr /*.Arguments[0] */ };
+                }
+
+                if (expr.Arguments.Count == 2 && expr.Arguments[0] is MethodCallExpression && (expr.Arguments[0] as MethodCallExpression).Method.Name == "Cast")
+                {
+                    return new List<Expression>() { expr /*.Arguments[0] */ };
+                }
+                else
+                {
+                    List<Expression> retList = null;
+                    foreach (Expression argumentExpression in expr.Arguments)
+                    {
+                        IEnumerable<Expression> argumentExpressionList = GetCastCallInExpression(argumentExpression);
+                        if (argumentExpressionList != null)
+                        {
+                            if (retList != null)
+                            {
+                                retList.AddRange(argumentExpressionList);
+                            }
+                            else
+                            {
+                                retList = argumentExpressionList as List<Expression>;
+                            }
+                        }
+                    }
+
+                    return retList;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -240,7 +349,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                     }
 
                     p = pp - 1;
-                    var itemType = propTypes[0].GetProperty("Item", new [] { typeof(int) }).PropertyType;
+                    var itemType = propTypes[0].GetProperty("Item", new[] { typeof(int) }).PropertyType;
                     propList.AddRange(GetProperties(itemType));
                     view.AddDetailInView(detailSegment, Create(itemType, propList, cache).View, true, "", true, "", null);
                 }
