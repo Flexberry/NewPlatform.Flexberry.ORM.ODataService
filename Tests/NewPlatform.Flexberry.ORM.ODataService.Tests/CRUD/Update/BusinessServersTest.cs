@@ -64,6 +64,12 @@
                 var objs = new DataObject[] { медв };
                 args.DataService.UpdateObjects(ref objs);
 
+                // Проверим, что через сервис данных БС отрабатывает корректно.
+                медв.ЛесОбитания = лес2;
+                args.DataService.UpdateObject(медв);
+                Assert.Equal($"Медведь обитает в {лес2.Название}", медв.ПолеБС);
+
+                // Сделаем тоже самое, но через OData.
                 string requestUrl;
 
                 string requestJsonDataМедв = медв.ToJson(медвDynamicView, args.Token.Model);
@@ -74,7 +80,7 @@
                     string.Format(
                         "{0}({1})",
                         args.Token.Model.GetEdmEntitySet(typeof(Лес)).Name,
-                        ((KeyGuid)лес2.__PrimaryKey).Guid.ToString("D")));
+                        ((KeyGuid)лес1.__PrimaryKey).Guid.ToString("D")));
 
                 requestJsonDataМедв = objJsonМедв.Serialize();
                 requestUrl = string.Format(
@@ -89,9 +95,15 @@
                     string receivedJsonObjs = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedObjs = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonObjs);
 
-                    Assert.Equal($"Медведь обитает в {лес2.Название}", receivedObjs[nameof(Медведь.ПолеБС)]);
+                    Assert.Equal($"Медведь обитает в {лес1.Название}", receivedObjs[nameof(Медведь.ПолеБС)]);
                 }
 
+                // Проверим, что через сервис данных БС отрабатывает корректно.
+                берлога1.ЛесРасположения = лес2;
+                args.DataService.UpdateObject(берлога1);
+                Assert.Equal($"Берлога расположена в {лес2.Название}", берлога1.ПолеБС);
+
+                // Сделаем тоже самое, но через OData.
                 string requestJsonDataБерлога = берлога1.ToJson(берлогаDynamicView, args.Token.Model);
                 var objJsonБерлога = DataObjectDictionary.Parse(requestJsonDataБерлога, берлогаDynamicView, args.Token.Model);
 
@@ -100,7 +112,7 @@
                     string.Format(
                         "{0}({1})",
                         args.Token.Model.GetEdmEntitySet(typeof(Лес)).Name,
-                        ((KeyGuid)лес2.__PrimaryKey).Guid.ToString("D")));
+                        ((KeyGuid)лес1.__PrimaryKey).Guid.ToString("D")));
 
                 objJsonБерлога.Add(
                     $"{nameof(Берлога.Медведь)}@odata.bind",
@@ -119,7 +131,7 @@
                     string receivedJsonObjs = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedObjs = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonObjs);
 
-                    Assert.Equal($"Берлога расположена в {лес2.Название}", receivedObjs[nameof(Берлога.ПолеБС)]);
+                    Assert.Equal($"Берлога расположена в {лес1.Название}", receivedObjs[nameof(Берлога.ПолеБС)]);
                 }
             });
         }
