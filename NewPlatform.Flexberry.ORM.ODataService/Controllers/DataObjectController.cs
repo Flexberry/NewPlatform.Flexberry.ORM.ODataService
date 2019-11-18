@@ -991,14 +991,7 @@
             LoadingCustomizationStruct lcs = new LoadingCustomizationStruct(null);
             if (expr != null)
             {
-                if (resolvingViews != null)
-                {
-                    lcs = LinqToLcs.GetLcs(expr, view, resolvingViews);
-                }
-                else
-                {
-                    lcs = LinqToLcs.GetLcs(expr, view);
-                }
+                lcs = LinqToLcs.GetLcs(expr, view, resolvingViews);
             }
 
             lcs.View = view;

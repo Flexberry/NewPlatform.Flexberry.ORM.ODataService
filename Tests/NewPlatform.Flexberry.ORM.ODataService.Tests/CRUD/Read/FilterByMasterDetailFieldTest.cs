@@ -47,7 +47,11 @@
                 args.DataService.UpdateObjects(ref newDataObjects);
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
 
-                string requestUrl = "http://localhost/odata/Блохаs?$filter=МедведьОбитания/Берлога/any(f:f/Наименование eq 'Берлога 1')";
+                string requestUrl = string.Format(
+                "http://localhost/odata/{0}?$filter={1}",
+                args.Token.Model.GetEdmEntitySet(typeof(Блоха)).Name,
+                "МедведьОбитания/Берлога/any(f:(f/Наименование eq 'Берлога 1') and ( ( not(f/ЛесРасположения/Площадь eq 123)) or (f/ЛесРасположения eq null) ))");
+
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();

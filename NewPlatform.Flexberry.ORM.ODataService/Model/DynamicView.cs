@@ -57,11 +57,22 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
             resolvingViews = null;
 
             List<View> agregatorsViews = null;
-            IEnumerable<Expression> agregatorsExpressions = GetCastCallInExpression(expr);
+            IEnumerable<MethodCallExpression> agregatorsExpressions = GetCastCallInExpression(expr).OfType<MethodCallExpression>();
 
             foreach (MethodCallExpression callExpression in agregatorsExpressions)
             {
+                if (callExpression.Arguments.Count != 2 || !(callExpression.Arguments[0] is MethodCallExpression))
+                {
+                    throw new Exception("Linq expression parsing error");
+                }
+
                 MethodCallExpression firstArgument = callExpression.Arguments[0] as MethodCallExpression;
+
+                if (firstArgument == null || firstArgument.Arguments.Count < 1 || !(firstArgument.Arguments[0] is MemberExpression))
+                {
+                    throw new Exception("Linq expression parsing error");
+                }
+
                 MemberExpression expression = firstArgument.Arguments[0] as MemberExpression;
 
                 Type agregatorType = expression.Expression.Type;
@@ -73,17 +84,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                 }
 
                 // Если выражение содержит упоминание любого детейла, к которому применяется any, то надо вычислить представление агрегатора для метода LinqToLcs.GetLcs(...).
-                View agregatorView = new View();
-                agregatorView.DefineClassType = agregatorType;
-                agregatorView.Name = "DynamicFromODataServiceForAgregator";
+                View agregatorView = new View() { DefineClassType = agregatorType, Name = "DynamicFromODataServiceForAgregator" };
+
+                if (!(callExpression.Arguments[1] is LambdaExpression) || (callExpression.Arguments[1] as LambdaExpression).Parameters.Count < 1)
+                {
+                    throw new Exception("Linq expression parsing error");
+                }
 
                 // Добавим свойства в представление - выбрать все свойства из лямбды.
                 LambdaExpression lambdaExpression = callExpression.Arguments[1] as LambdaExpression;
                 List<string> properties = GetMembersFromLambdaExpression(lambdaExpression);
 
-                View detailView = new View();
-                detailView.DefineClassType = lambdaExpression.Parameters[0].Type;
-                detailView.Name = "DynamicFormOdataServiceForDetail";
+                View detailView = new View() { DefineClassType = lambdaExpression.Parameters[0].Type, Name = "DynamicFormOdataServiceForDetail" };
 
                 foreach (string propName in properties)
                 {
@@ -146,13 +158,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                 return GetMembersFromLambdaExpression(expr.Operand);
             }
 
-            if (expression.NodeType == ExpressionType.Lambda)
+            if (expression.NodeType == ExpressionType.Lambda && expression is LambdaExpression)
             {
                 LambdaExpression expr = expression as LambdaExpression;
                 return GetMembersFromLambdaExpression(expr.Body);
             }
 
-            if (expression.NodeType == ExpressionType.MemberAccess)
+            if (expression.NodeType == ExpressionType.MemberAccess && expression is MemberExpression)
             {
                 MemberExpression expr = expression as MemberExpression;
                 if (expr.Expression.NodeType == ExpressionType.Constant)
@@ -211,7 +223,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                 return retList;
             }
 
-            if (expression.NodeType == ExpressionType.Call)
+            if (expression.NodeType == ExpressionType.Call && expression is MethodCallExpression)
             {
                 MethodCallExpression expr = expression as MethodCallExpression;
 
@@ -250,19 +262,19 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (expression.NodeType == ExpressionType.Quote)
+            if (expression.NodeType == ExpressionType.Quote && expression is UnaryExpression)
             {
                 UnaryExpression expr = expression as UnaryExpression;
                 return GetCastCallInExpression(expr.Operand);
             }
 
-            if (expression.NodeType == ExpressionType.Lambda)
+            if (expression.NodeType == ExpressionType.Lambda && expression is LambdaExpression)
             {
                 LambdaExpression expr = expression as LambdaExpression;
                 return GetCastCallInExpression(expr.Body);
             }
 
-            if (expression.NodeType == ExpressionType.Call)
+            if (expression.NodeType == ExpressionType.Call && expression is MethodCallExpression)
             {
                 MethodCallExpression expr = expression as MethodCallExpression;
 
