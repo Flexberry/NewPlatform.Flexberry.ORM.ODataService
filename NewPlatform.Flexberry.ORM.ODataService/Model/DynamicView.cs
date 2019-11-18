@@ -140,7 +140,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (expression.NodeType == ExpressionType.Quote)
+            if (expression is UnaryExpression)
             {
                 UnaryExpression expr = expression as UnaryExpression;
                 return GetMembersFromLambdaExpression(expr.Operand);
@@ -155,14 +155,30 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
             if (expression.NodeType == ExpressionType.MemberAccess)
             {
                 MemberExpression expr = expression as MemberExpression;
-                if (expr.Expression.NodeType == ExpressionType.Parameter)
-                {
-                    return new List<string> { expr.Member.Name };
-                }
-                else
+                if (expr.Expression.NodeType == ExpressionType.Constant)
                 {
                     return null;
                 }
+
+                // Вычислить длинные цепочки вида Медведь.ЛесОбитания.Наименование.
+                string propName = null;
+                Expression currentEpression = expr;
+                while (currentEpression is MemberExpression)
+                {
+                    MemberExpression memberExpression = currentEpression as MemberExpression;
+                    if (propName == null)
+                    {
+                        propName = memberExpression.Member.Name;
+                    }
+                    else
+                    {
+                        propName = $"{memberExpression.Member.Name}.{propName}";
+                    }
+
+                    currentEpression = memberExpression.Expression;
+                }
+
+                return new List<string> { propName };
             }
 
             if (expression is BinaryExpression)
