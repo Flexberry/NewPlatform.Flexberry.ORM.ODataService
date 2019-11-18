@@ -497,7 +497,8 @@
             {
                 DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
 
-                if (dataObjectFromCache != null)
+                // Берем из кэша только загруженные объекты.
+                if (dataObjectFromCache != null && (bool?)dataObjectFromCache.DynamicProperties[nameof(ReturnDataObject)] == true)
                 {
                     if (!_newDataObjects.ContainsKey(dataObjectFromCache))
                     {
@@ -517,6 +518,10 @@
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
+
+                    // Помечаем объект загруженным.
+                    dataObject.DynamicProperties[nameof(ReturnDataObject)] = true;
+
                     _newDataObjects.Add(dataObject, false);
                     return dataObject;
                 }
