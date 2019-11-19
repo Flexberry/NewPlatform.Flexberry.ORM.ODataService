@@ -17,7 +17,6 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
@@ -496,6 +495,7 @@
             if (keyValue != null)
             {
                 DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
+                var view = _model.GetDataObjectDefaultView(objType);
 
                 if (dataObjectFromCache != null)
                 {
@@ -504,19 +504,29 @@
                         _newDataObjects.Add(dataObjectFromCache, false);
                     }
 
+                    // Если объект не новый и не помечен как загруженный.
+                    if (!_newDataObjects[dataObjectFromCache] && (bool?)dataObjectFromCache.DynamicProperties[nameof(ReturnDataObject)] != true)
+                    {
+                        _dataService.LoadObject(view, dataObjectFromCache);
+
+                        // Помечаем объект загруженным.
+                        dataObjectFromCache.DynamicProperties[nameof(ReturnDataObject)] = true;
+                    }
+
                     return dataObjectFromCache;
                 }
 
-                var view = _model.GetDataObjectDefaultView(objType);
-
                 // Проверим существование объекта в базе.
-                var ldef = SQLWhereLanguageDef.LanguageDef;
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-                lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
+                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
                 DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
+
+                    // Помечаем объект загруженным.
+                    dataObject.DynamicProperties[nameof(ReturnDataObject)] = true;
+
                     _newDataObjects.Add(dataObject, false);
                     return dataObject;
                 }
