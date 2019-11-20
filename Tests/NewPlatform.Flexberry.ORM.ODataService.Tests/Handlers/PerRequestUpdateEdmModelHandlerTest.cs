@@ -3,15 +3,17 @@
     using System.Reflection;
     using System.Web.OData.Routing;
     using System.Web.OData.Routing.Conventions;
-    using Xunit;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+    using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+    using Xunit;
 
     /// <summary>
     /// Unit test class for <see cref="PerRequestUpdateEdmModelHandler"/>.
     /// </summary>
-
     public class PerRequestUpdateEdmModelHandlerTest
     {
         /// <summary>
@@ -29,7 +31,9 @@
             var assemblies = new Assembly[0];
             var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies);
 
-            new PerRequestUpdateEdmModelHandler(new ManagementToken(route, model), modelBuilder);
+            var eventHandlerContainer = new EventHandlerContainer();
+            var functionContainer = new FunctionContainer();
+            new PerRequestUpdateEdmModelHandler(new ManagementToken(route, model, eventHandlerContainer, functionContainer), modelBuilder);
         }
     }
 }

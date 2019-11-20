@@ -7,6 +7,11 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+
+    using Unity;
+
     using Xunit;
 
     /// <summary>
@@ -21,7 +26,7 @@
         /// </summary>
         /// <param name="lcs"></param>
         /// <returns></returns>
-        public bool BeforeGet(ref LoadingCustomizationStruct lcs)
+        public bool BeforeGet(DataObjectController controller, ref LoadingCustomizationStruct lcs)
         {
             this.lcs = lcs;
             return true;
@@ -37,7 +42,8 @@
 
             ActODataService(args =>
             {
-                args.Token.Events.CallbackBeforeGet = BeforeGet;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackBeforeGet = BeforeGet };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 DateTime date = new DateTimeOffset(DateTime.Now).UtcDateTime;
                 string prevDate = $"{date.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss")}%2B05:00";

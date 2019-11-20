@@ -12,50 +12,48 @@
     internal class FunctionContainer : IFunctionContainer
     {
         /// <summary>
-        /// The OData Service token.
-        /// </summary>
-        private readonly ManagementToken _token;
-
-        /// <summary>
         /// The registered OData Service functions.
         /// </summary>
         private readonly Dictionary<string, Function> _functions = new Dictionary<string, Function>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionContainer"/> class.
-        /// </summary>
-        /// <param name="token">The OData Service token.</param>
-        public FunctionContainer(ManagementToken token)
-        {
-            _token = token ?? throw new ArgumentNullException(nameof(token), "Contract assertion not met: token != null");
-        }
+        /// <inheritdoc />
+        public ManagementToken Token { get; set; }
 
-        /// <summary>
-        /// Registers the specified OData Service function.
-        /// </summary>
-        /// <param name="function">The OData Service function.</param>
+        /// <inheritdoc />
         public void Register(Function function)
         {
             _functions.Add(function.Name, function);
-            _token.Model.AddUserFunction(function);
+            Token.Model.AddUserFunction(function);
         }
 
-        /// <summary>
-        /// Registers the specified delegate as OData Service function.
-        /// </summary>
-        /// <param name="function">The function.</param>
+        /// <inheritdoc />
         public void Register(Delegate function)
         {
             Register(function, false);
         }
 
-        /// <summary>
-        /// Registers the specified delegate as OData Service action.
-        /// </summary>
-        /// <param name="function">The function.</param>
+        /// <inheritdoc />
         public void RegisterAction(Delegate function)
         {
             Register(function, true);
+        }
+
+        /// <inheritdoc />
+        public bool IsRegistered(string functionName)
+        {
+            return _functions.ContainsKey(functionName);
+        }
+
+        /// <inheritdoc />
+        public Function GetFunction(string functionName)
+        {
+            return _functions[functionName];
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Function> GetFunctions()
+        {
+            return _functions.Values;
         }
 
         private void Register(Delegate function, bool createAction)
@@ -90,35 +88,6 @@
             {
                 Register(new Function(functionName, handler, returnType, arguments));
             }
-        }
-
-        /// <summary>
-        /// Determines whether the specified OData Service function is already registered.
-        /// </summary>
-        /// <param name="functionName">The name of the function.</param>
-        /// <returns>Returns <c>true</c> if function is registered; otherwise <c>false</c>.</returns>
-        public bool IsRegistered(string functionName)
-        {
-            return _functions.ContainsKey(functionName);
-        }
-
-        /// <summary>
-        /// Gets the registered OData Service function.
-        /// </summary>
-        /// <param name="functionName">Name of the function.</param>
-        /// <returns>Registered OData Service function with specified name.</returns>
-        public Function GetFunction(string functionName)
-        {
-            return _functions[functionName];
-        }
-
-        /// <summary>
-        /// Gets all registered functions.
-        /// </summary>
-        /// <returns>Enumeration of all registered functions.</returns>
-        public IEnumerable<Function> GetFunctions()
-        {
-            return _functions.Values;
         }
     }
 }

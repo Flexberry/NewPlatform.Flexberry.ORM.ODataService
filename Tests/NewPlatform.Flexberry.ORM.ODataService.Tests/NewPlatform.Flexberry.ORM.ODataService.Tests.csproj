@@ -275,6 +275,8 @@
     <Compile Include="CRUD\Create\ChangeMasterInBSTest.cs" />
     <Compile Include="CRUD\Read\FilterByMasterFieldTest.cs" />
     <Compile Include="Events\AfterGetTest.cs" />
+    <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\FakeEventHandlerContainer.cs" />
     <Compile Include="Functions\DelegateFunctionsTest.cs" />
     <Compile Include="Functions\ActionsTest.cs" />
     <Compile Include="Handlers\PerRequestUpdateEdmModelHandlerTest.cs" />

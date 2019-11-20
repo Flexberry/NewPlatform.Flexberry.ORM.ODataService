@@ -11,9 +11,12 @@
     using ICSSoft.STORMNET.Exceptions;
 
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Newtonsoft.Json;
+
+    using Unity;
 
     using Xunit;
 
@@ -31,7 +34,7 @@
         /// Метод вызываемый после создания объекта.
         /// </summary>
         /// <param name="obj">Объект после создания.</param>
-        public void AfterCreate(DataObject obj)
+        public void AfterCreate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
@@ -40,7 +43,7 @@
         /// Метод вызываемый после обновления объекта.
         /// </summary>
         /// <param name="obj">Объект после обновления.</param>
-        public void AfterUpdate(DataObject obj)
+        public void AfterUpdate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
@@ -49,7 +52,7 @@
         /// Метод вызываемый после удаления объекта.
         /// </summary>
         /// <param name="obj">Объект перед удалением.</param>
-        public void AfterDelete(DataObject obj)
+        public void AfterDelete(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
@@ -79,9 +82,8 @@
 
             ActODataService(args =>
             {
-                args.Token.Events.CallbackAfterCreate = AfterCreate;
-                args.Token.Events.CallbackAfterUpdate = AfterUpdate;
-                args.Token.Events.CallbackAfterDelete = AfterDelete;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackAfterCreate = AfterCreate, CallbackAfterUpdate = AfterUpdate, CallbackAfterDelete = AfterDelete };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 // ------------------ Только создания объектов ------------------
                 // Подготовка тестовых данных в формате OData.
@@ -226,9 +228,8 @@
         {
             ActODataService(args =>
             {
-                args.Token.Events.CallbackAfterCreate = AfterCreate;
-                args.Token.Events.CallbackAfterUpdate = AfterUpdate;
-                args.Token.Events.CallbackAfterDelete = AfterDelete;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackAfterCreate = AfterCreate, CallbackAfterUpdate = AfterUpdate, CallbackAfterDelete = AfterDelete };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 // Создаем объект данных, который потом будем обновлять, и добавляем в базу обычным сервисом данных.
                 Лес лес = new Лес { Название = "Чаща", Площадь = 100 };
@@ -279,9 +280,8 @@
         {
             ActODataService(args =>
             {
-                args.Token.Events.CallbackAfterCreate = AfterCreate;
-                args.Token.Events.CallbackAfterUpdate = AfterUpdate;
-                args.Token.Events.CallbackAfterDelete = AfterDelete;
+                var eventsContainer = new FakeEventHandlerContainer { CallbackAfterCreate = AfterCreate, CallbackAfterUpdate = AfterUpdate, CallbackAfterDelete = AfterDelete };
+                args.UnityContainer.RegisterInstance<IEventHandlerContainer>(eventsContainer);
 
                 // ------------------ Удаление простого объекта -----------------------------
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.

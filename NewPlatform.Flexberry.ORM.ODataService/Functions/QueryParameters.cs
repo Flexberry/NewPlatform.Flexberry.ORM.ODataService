@@ -64,7 +64,7 @@
             }
 
             _controller.QueryOptions = _controller.CreateODataQueryOptions(type, request);
-            _controller.type = type;
+            _controller.Type = type;
             return _controller.CreateLcs();
         }
 

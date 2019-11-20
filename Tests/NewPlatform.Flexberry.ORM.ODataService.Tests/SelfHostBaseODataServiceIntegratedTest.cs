@@ -79,8 +79,7 @@
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
-                    var token = config.MapODataServiceDataObjectRoute(_builder, new HttpServer());
-                    var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                    var args = new TestArgs(() => config.MapODataServiceDataObjectRoute(_builder, new HttpServer())) { UnityContainer = container, DataService = dataService, HttpClient = client };
 
                     try
                     {
