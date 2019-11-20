@@ -504,13 +504,12 @@
                         _newDataObjects.Add(dataObjectFromCache, false);
                     }
 
-                    // Если объект не новый и не помечен как загруженный.
-                    if (!_newDataObjects[dataObjectFromCache] && (bool?)dataObjectFromCache.DynamicProperties[nameof(ReturnDataObject)] != true)
+                    // Если объект не новый и загружен только первичным ключом.
+                    if (!_newDataObjects[dataObjectFromCache]
+                        && dataObjectFromCache.GetLoadedProperties().Length == 1
+                        && dataObjectFromCache.CheckLoadedProperty(x => x.__PrimaryKey))
                     {
                         _dataService.LoadObject(view, dataObjectFromCache);
-
-                        // Помечаем объект загруженным.
-                        dataObjectFromCache.DynamicProperties[nameof(ReturnDataObject)] = true;
                     }
 
                     return dataObjectFromCache;
@@ -523,10 +522,6 @@
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
-
-                    // Помечаем объект загруженным.
-                    dataObject.DynamicProperties[nameof(ReturnDataObject)] = true;
-
                     _newDataObjects.Add(dataObject, false);
                     return dataObject;
                 }
