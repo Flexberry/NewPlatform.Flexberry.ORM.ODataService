@@ -64,7 +64,7 @@
                 DataObject obj = UpdateObject(edmEntity, null);
                 ExecuteCallbackAfterCreate(obj);
 
-                edmEntity = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, null);
+                edmEntity = GetEdmObject(Model.GetEdmEntityType(Type), obj, 1, null, null);
                 var responseForPreferMinimal = TestPreferMinimal();
                 if (responseForPreferMinimal != null)
                 {
@@ -146,7 +146,7 @@
                     return Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
                 }
 
-                edmEntity = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, null);
+                edmEntity = GetEdmObject(Model.GetEdmEntityType(Type), obj, 1, null, null);
                 var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, edmEntity);
                 result.Headers.Add("Preference-Applied", "return=representation");
                 return result;
@@ -194,7 +194,7 @@
 
                 Init();
 
-                var obj = _dataObjectCache.CreateDataObject(type, key);
+                var obj = DataObjectCache.CreateDataObject(Type, key);
 
                 // Раз объект данных удаляется, то и все ассоциированные с ним файлы должны быть удалены.
                 // Запоминаем метаданные всех ассоциированных файлов, кроме файлов соответствующих файловым свойствам типа File
@@ -221,7 +221,7 @@
                     }
                     else
                     {
-                        _dataService.UpdateObject(obj);
+                        DataService.UpdateObject(obj);
                     }
                 }
 
@@ -465,7 +465,7 @@
                 }
                 else
                 {
-                    _dataService.UpdateObjects(ref objsArrSmall);
+                    DataService.UpdateObjects(ref objsArrSmall);
                 }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
@@ -494,8 +494,8 @@
 
             if (keyValue != null)
             {
-                DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
-                var view = _model.GetDataObjectDefaultView(objType);
+                DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
+                var view = Model.GetDataObjectDefaultView(objType);
 
                 if (dataObjectFromCache != null)
                 {
@@ -509,7 +509,7 @@
                         && dataObjectFromCache.GetLoadedProperties().Length == 1
                         && dataObjectFromCache.CheckLoadedProperty(x => x.__PrimaryKey))
                     {
-                        _dataService.LoadObject(view, dataObjectFromCache);
+                        DataService.LoadObject(view, dataObjectFromCache);
                     }
 
                     return dataObjectFromCache;
@@ -518,7 +518,7 @@
                 // Проверим существование объекта в базе.
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
                 lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
-                DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                DataObject[] dobjs = DataService.LoadObjects(lcs, DataObjectCache);
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
@@ -532,12 +532,12 @@
 
             if (keyValue != null)
             {
-                obj = _dataObjectCache.CreateDataObject(objType, keyValue);
+                obj = DataObjectCache.CreateDataObject(objType, keyValue);
             }
             else
             {
                 obj = (DataObject)Activator.CreateInstance(objType);
-                _dataObjectCache.AddDataObject(obj);
+                DataObjectCache.AddDataObject(obj);
             }
 
             _newDataObjects.Add(obj, true);
@@ -560,13 +560,13 @@
             }
 
             IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
-            Type objType = _model.GetDataObjectType(_model.GetEdmEntitySet(entityType).Name);
+            Type objType = Model.GetDataObjectType(Model.GetEdmEntitySet(entityType).Name);
 
             // Значение свойства.
             object value;
 
             // Получим значение ключа.
-            var keyProperty = entityType.Properties().FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            var keyProperty = entityType.Properties().FirstOrDefault(prop => prop.Name == Model.KeyPropertyName);
             if (key != null)
             {
                 value = key;
@@ -599,7 +599,7 @@
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
             foreach (var prop in entityType.Properties())
             {
-                string dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
+                string dataObjectPropName = Model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
                 if (edmEntity.GetChangedPropertyNames().Contains(prop.Name))
                 {
                     // Обработка мастеров и детейлов.

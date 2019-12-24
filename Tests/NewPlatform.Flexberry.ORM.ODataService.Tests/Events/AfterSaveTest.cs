@@ -31,7 +31,7 @@
         /// Метод вызываемый после создания объекта.
         /// </summary>
         /// <param name="obj">Объект после создания.</param>
-        public void AfterCreate(DataObject obj)
+        public void AfterCreate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
@@ -40,7 +40,7 @@
         /// Метод вызываемый после обновления объекта.
         /// </summary>
         /// <param name="obj">Объект после обновления.</param>
-        public void AfterUpdate(DataObject obj)
+        public void AfterUpdate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
@@ -49,7 +49,7 @@
         /// Метод вызываемый после удаления объекта.
         /// </summary>
         /// <param name="obj">Объект перед удалением.</param>
-        public void AfterDelete(DataObject obj)
+        public void AfterDelete(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
         }
