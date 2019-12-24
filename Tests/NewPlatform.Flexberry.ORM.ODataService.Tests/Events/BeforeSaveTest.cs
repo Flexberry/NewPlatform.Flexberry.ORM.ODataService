@@ -9,6 +9,7 @@
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Exceptions;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Newtonsoft.Json;
@@ -29,7 +30,7 @@
         /// Метод вызываемый перед созданием объекта.
         /// </summary>
         /// <param name="obj">Объект перед созданием.</param>
-        public bool BeforeCreate(DataObject obj)
+        public bool BeforeCreate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
             return true;
@@ -39,7 +40,7 @@
         /// Метод вызываемый перед обновлением объекта.
         /// </summary>
         /// <param name="obj">Объект перед обновлением.</param>
-        public bool BeforeUpdate(DataObject obj)
+        public bool BeforeUpdate(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
             return true;
@@ -49,7 +50,7 @@
         /// Метод вызываемый перед удалением объекта.
         /// </summary>
         /// <param name="obj">Объект перед удалением.</param>
-        public bool BeforeDelete(DataObject obj)
+        public bool BeforeDelete(DataObjectController controller, DataObject obj)
         {
             ParamObj = obj;
             return true;

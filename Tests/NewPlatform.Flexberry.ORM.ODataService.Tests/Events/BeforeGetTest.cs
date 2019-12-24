@@ -7,6 +7,8 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+
     using Xunit;
 
     /// <summary>
@@ -21,7 +23,7 @@
         /// </summary>
         /// <param name="lcs"></param>
         /// <returns></returns>
-        public bool BeforeGet(ref LoadingCustomizationStruct lcs)
+        public bool BeforeGet(DataObjectController controller, ref LoadingCustomizationStruct lcs)
         {
             this.lcs = lcs;
             return true;

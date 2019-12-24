@@ -5,6 +5,8 @@
 
     using ICSSoft.STORMNET;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+
     using Xunit;
 
     /// <summary>
@@ -22,7 +24,7 @@
         /// Метод вызываемый после вычитывания объектов.
         /// </summary>
         /// <param name="objs">Считанные объекты.</param>
-        public void AfterGet(ref DataObject[] objs)
+        public void AfterGet(DataObjectController controller, ref DataObject[] objs)
         {
             Objs = objs;
         }

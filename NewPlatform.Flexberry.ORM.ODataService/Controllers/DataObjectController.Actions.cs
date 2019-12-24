@@ -2,26 +2,18 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
     using System.Reflection;
     using System.Web.Http;
     using System.Web.OData;
     using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
     using System.Web.OData.Routing;
-    using Expressions;
+
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Values;
-    using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+
     using Action = NewPlatform.Flexberry.ORM.ODataService.Functions.Action;
 
     /// <summary>
@@ -107,7 +99,7 @@
 
             if (result is DataObject)
             {
-                var entityType = _model.GetEdmEntityType(result.GetType());
+                var entityType = Model.GetEdmEntityType(result.GetType());
                 return SetResult(GetEdmObject(entityType, result, 1, null));
             }
 

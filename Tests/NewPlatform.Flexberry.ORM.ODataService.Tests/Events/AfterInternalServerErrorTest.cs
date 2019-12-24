@@ -8,6 +8,8 @@
     using Xunit;
     using System;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+
     /// <summary>
     /// Класс тестов для тестирования логики после возникновения исключения.
     /// </summary>
@@ -21,7 +23,7 @@
         /// <param name="e">Исключение, которое возникло внутри ODataService.</param>
         /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
-        public Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
+        public Exception AfterInternalServerError(DataObjectController controller, Exception e, ref HttpStatusCode code)
         {
             Ex = e;
             code = HttpStatusCode.InternalServerError;

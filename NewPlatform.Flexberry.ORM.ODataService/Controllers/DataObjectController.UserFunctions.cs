@@ -131,7 +131,7 @@
                         Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                     }
 
-                    this.type = type;
+                    this.Type = type;
                     CreateDynamicView();
                     IncludeCount = false;
                     if (queryOpt.Count != null && queryOpt.Count.Value)
@@ -149,7 +149,7 @@
 
                     NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
 
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((Model.ExportService != null || Model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
                         return ResponseMessage(CreateExcel(queryParams));
@@ -170,9 +170,9 @@
                     Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
                 }
 
-                this.type = result.GetType();
+                this.Type = result.GetType();
                 CreateDynamicView();
-                var entityType = _model.GetEdmEntityType(this.type);
+                var entityType = Model.GetEdmEntityType(this.Type);
                 return SetResult(GetEdmObject(entityType, result, 1, null, _dynamicView));
             }
 

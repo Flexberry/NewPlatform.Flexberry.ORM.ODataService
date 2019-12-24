@@ -1,11 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Functions
 {
-    using Controllers;
-    using ICSSoft.STORMNET.Business;
-    using Model;
     using System;
     using System.Net.Http;
-    using System.Web.OData.Query;
+
+    using ICSSoft.STORMNET.Business;
+
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
 
     /// <summary>
     /// Класс для хранения параметров запроса OData.
@@ -64,7 +65,7 @@
             }
 
             _controller.QueryOptions = _controller.CreateODataQueryOptions(type, request);
-            _controller.type = type;
+            _controller.Type = type;
             return _controller.CreateLcs();
         }
 

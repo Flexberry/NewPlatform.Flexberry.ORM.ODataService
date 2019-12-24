@@ -1,11 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
+    using System;
+    using System.Net;
+
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
     using NewPlatform.Flexberry.ORM.ODataService.Events;
-    using System;
-    using System.Net;
 
     /// <summary>
     /// OData controller class.
@@ -25,7 +26,7 @@
         /// <returns></returns>
         internal bool ExecuteCallbackBeforeGet(ref LoadingCustomizationStruct lcs)
         {
-            return _events.CallbackBeforeGet == null || _events.CallbackBeforeGet(ref lcs);
+            return _events.CallbackBeforeGet == null || _events.CallbackBeforeGet(this, ref lcs);
         }
 
         /// <summary>
@@ -35,7 +36,7 @@
         /// <returns></returns>
         internal bool ExecuteCallbackBeforeCreate(DataObject obj)
         {
-            return _events.CallbackBeforeCreate == null || _events.CallbackBeforeCreate(obj);
+            return _events.CallbackBeforeCreate == null || _events.CallbackBeforeCreate(this, obj);
         }
 
         /// <summary>
@@ -45,7 +46,7 @@
         /// <returns></returns>
         internal bool ExecuteCallbackBeforeUpdate(DataObject obj)
         {
-            return _events.CallbackBeforeUpdate == null || _events.CallbackBeforeUpdate(obj);
+            return _events.CallbackBeforeUpdate == null || _events.CallbackBeforeUpdate(this, obj);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@
         /// <returns></returns>
         internal bool ExecuteCallbackBeforeDelete(DataObject obj)
         {
-            return _events.CallbackBeforeDelete == null || _events.CallbackBeforeDelete(obj);
+            return _events.CallbackBeforeDelete == null || _events.CallbackBeforeDelete(this, obj);
         }
 
         /// <summary>
@@ -64,7 +65,7 @@
         /// <param name="objs">Объект после создания.</param>
         internal void ExecuteCallbackAfterGet(ref DataObject[] objs)
         {
-            _events.CallbackAfterGet?.Invoke(ref objs);
+            _events.CallbackAfterGet?.Invoke(this, ref objs);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@
         /// <param name="obj">Объект после создания.</param>
         internal void ExecuteCallbackAfterCreate(DataObject obj)
         {
-            _events.CallbackAfterCreate?.Invoke(obj);
+            _events.CallbackAfterCreate?.Invoke(this, obj);
         }
 
         /// <summary>
@@ -82,7 +83,7 @@
         /// <param name="obj">Объект после обновления.</param>
         internal void ExecuteCallbackAfterUpdate(DataObject obj)
         {
-            _events.CallbackAfterUpdate?.Invoke(obj);
+            _events.CallbackAfterUpdate?.Invoke(this, obj);
         }
 
         /// <summary>
@@ -91,7 +92,7 @@
         /// <param name="obj">Объект перед удалением.</param>
         internal void ExecuteCallbackAfterDelete(DataObject obj)
         {
-            _events.CallbackAfterDelete?.Invoke(obj);
+            _events.CallbackAfterDelete?.Invoke(this, obj);
         }
 
         /// <summary>
@@ -107,7 +108,7 @@
                 return ex;
             }
 
-            return _events.CallbackAfterInternalServerError(ex, ref code);
+            return _events.CallbackAfterInternalServerError(this, ex, ref code);
         }
     }
 }
