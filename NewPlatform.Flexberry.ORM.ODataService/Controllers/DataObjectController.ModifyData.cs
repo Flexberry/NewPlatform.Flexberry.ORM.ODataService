@@ -534,6 +534,7 @@
                 // Проверим существование объекта в базе.
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
                 lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
+                lcs.ReturnTop = 2;
                 DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
                 if (dobjs.Length == 1)
                 {
@@ -582,7 +583,8 @@
             object value;
 
             // Получим значение ключа.
-            var keyProperty = entityType.Properties().FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
+            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
             if (key != null)
             {
                 value = key;
@@ -597,7 +599,7 @@
             DataObject obj = ReturnDataObject(objType, value);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
-            var objInList = dObjs.FirstOrDefault(o => o.__PrimaryKey.ToString() == obj.__PrimaryKey.ToString());
+            var objInList = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, obj, true));
             if (objInList == null)
             {
                 if (!endObject)
@@ -613,9 +615,11 @@
             }
 
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
-            foreach (var prop in entityType.Properties())
+            IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
+            IEnumerable<IEdmProperty> changedProps = entityProps.Where(ep => changedPropNames.Contains(ep.Name)).ToList();
+            foreach (var prop in entityProps)
             {
-                string dataObjectPropName = null;
+                string dataObjectPropName;
                 try
                 {
                     dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
@@ -631,13 +635,11 @@
                     throw;
                 }
 
-                if (edmEntity.GetChangedPropertyNames().Contains(prop.Name))
+                if (changedProps.Contains(prop))
                 {
                     // Обработка мастеров и детейлов.
-                    if (prop is EdmNavigationProperty)
+                    if (prop is EdmNavigationProperty navProp)
                     {
-                        EdmNavigationProperty navProp = (EdmNavigationProperty)prop;
-
                         edmEntity.TryGetPropertyValue(prop.Name, out value);
 
                         EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
@@ -645,14 +647,12 @@
                         // Обработка мастеров.
                         if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
                         {
-                            if (value != null && value is EdmEntityObject)
+                            if (value is EdmEntityObject edmMaster)
                             {
-                                EdmEntityObject edmMaster = (EdmEntityObject)value;
                                 string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
 
                                 // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
-                                bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
-                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
+                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
 
                                 Information.SetPropValueByName(obj, dataObjectPropName, master);
 
@@ -697,12 +697,10 @@
                         // Обработка детейлов.
                         if (edmMultiplicity == EdmMultiplicity.Many)
                         {
-                            Type detType = Information.GetPropertyType(objType, dataObjectPropName);
                             DetailArray detarr = (DetailArray)Information.GetPropValueByName(obj, dataObjectPropName);
 
-                            if (value != null && value is EdmEntityObjectCollection)
+                            if (value is EdmEntityObjectCollection coll)
                             {
-                                EdmEntityObjectCollection coll = (EdmEntityObjectCollection)value;
                                 if (coll != null && coll.Count > 0)
                                 {
                                     foreach (var edmEnt in coll)
@@ -805,7 +803,7 @@
 
                     if (agregator != null)
                     {
-                        DataObject existObject = dObjs.FirstOrDefault(o => o.__PrimaryKey.ToString() == agregator.__PrimaryKey.ToString());
+                        DataObject existObject = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, true));
                         if (existObject == null)
                         {
                             if (!endObject)
@@ -823,7 +821,6 @@
                             {
                                 _newDataObjects.Add(agregator, false);
                             }
-
                         }
                     }
                 }
