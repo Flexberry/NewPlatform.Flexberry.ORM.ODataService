@@ -10,10 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
     <PackageReference Include="Microsoft.OData.Core" Version="7.5.0" />
     <PackageReference Include="Microsoft.Spatial" Version="7.5.0" />
     <PackageReference Include="MimeMapping" Version="1.0.1.12" />
+    <PackageReference Include="NewPlatform.Flexberry.AspNetCore.OData" Version="7.1.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-alpha01" />
     <PackageReference Include="NewPlatform.Flexberry.LogService" Version="2.0.0-alpha03" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.Abstractions" Version="6.0.0-alpha04" />
