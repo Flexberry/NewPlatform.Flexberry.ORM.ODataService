@@ -1,0 +1,655 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>Flexberry ORM ODataService 5.1.0-beta01: Шаблон класса NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition&lt; T, TP &gt;</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Flexberry ORM ODataService 5.1.0-beta01
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="hierarchy.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Шаблон класса NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition&lt; T, TP &gt;</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Реализация интерфейса <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html" title="OData definition of the link from master to pseudodetail (pseudoproperty). ">IPseudoDetailDefinition</a> по умолчанию.  
+ <a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#details">Подробнее...</a></p>
+<div class="dynheader">
+Граф наследования:NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition&lt; T, TP &gt;:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.png" usemap="#NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition_3C_20T_2C_20TP_20_3E_map" alt=""/>
+  <map id="NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition_3C_20T_2C_20TP_20_3E_map" name="NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition&lt; T, TP &gt;_map">
+<area href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html" title="OData definition of the link from master to pseudodetail (pseudoproperty). " alt="NewPlatform.Flexberry.ORM.ODataService.Model.IPseudoDetailDefinition" shape="rect" coords="0,0,524,24"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:ab0f66c3a59fccbff32bead431494a24c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#ab0f66c3a59fccbff32bead431494a24c">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, string masterLinkName)</td></tr>
+<tr class="memdesc:ab0f66c3a59fccbff32bead431494a24c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#ab0f66c3a59fccbff32bead431494a24c">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab0f66c3a59fccbff32bead431494a24c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaa62ece7b03498120269cf0500835af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#aeaa62ece7b03498120269cf0500835af">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, Expression&lt; Func&lt; TP, object &gt;&gt; masterLink)</td></tr>
+<tr class="memdesc:aeaa62ece7b03498120269cf0500835af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#aeaa62ece7b03498120269cf0500835af">Подробнее...</a><br /></td></tr>
+<tr class="separator:aeaa62ece7b03498120269cf0500835af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f04495febf2d5e87057822a77ece955"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a5f04495febf2d5e87057822a77ece955">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view)</td></tr>
+<tr class="memdesc:a5f04495febf2d5e87057822a77ece955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. (для псевдодетейлов данный метод будет некорректен).  <a href="#a5f04495febf2d5e87057822a77ece955">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5f04495febf2d5e87057822a77ece955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4eea088da245ffb32a690c4efa43ae9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#ad4eea088da245ffb32a690c4efa43ae9">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, Expression&lt; Func&lt; TP, object &gt;&gt; masterLink, string masterToDetailPseudoProperty)</td></tr>
+<tr class="memdesc:ad4eea088da245ffb32a690c4efa43ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#ad4eea088da245ffb32a690c4efa43ae9">Подробнее...</a><br /></td></tr>
+<tr class="separator:ad4eea088da245ffb32a690c4efa43ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeec12f688f95b7f2843fd2bb1d82e7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#aeeec12f688f95b7f2843fd2bb1d82e7e">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, Expression&lt; Func&lt; TP, object &gt;&gt; masterLink, string masterToDetailPseudoProperty, string[] masterConnectProperties)</td></tr>
+<tr class="memdesc:aeeec12f688f95b7f2843fd2bb1d82e7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#aeeec12f688f95b7f2843fd2bb1d82e7e">Подробнее...</a><br /></td></tr>
+<tr class="separator:aeeec12f688f95b7f2843fd2bb1d82e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5432aeb98312579a1b7e2fc03d2fbf61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a5432aeb98312579a1b7e2fc03d2fbf61">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, string masterLinkName, string masterToDetailPseudoProperty)</td></tr>
+<tr class="memdesc:a5432aeb98312579a1b7e2fc03d2fbf61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#a5432aeb98312579a1b7e2fc03d2fbf61">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5432aeb98312579a1b7e2fc03d2fbf61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9e490599b379d90579476e90feb9f5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#abd9e490599b379d90579476e90feb9f5">DefaultPseudoDetailDefinition</a> (ICSSoft.STORMNET.View view, string masterLinkName, string masterToDetailPseudoProperty, string[] masterConnectProperties)</td></tr>
+<tr class="memdesc:abd9e490599b379d90579476e90feb9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>.  <a href="#abd9e490599b379d90579476e90feb9f5">Подробнее...</a><br /></td></tr>
+<tr class="separator:abd9e490599b379d90579476e90feb9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:a20e8d04d28b1601052af318be5383960"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a20e8d04d28b1601052af318be5383960">MasterType</a> =&gt; typeof(T)</td></tr>
+<tr class="memdesc:a20e8d04d28b1601052af318be5383960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип мастера.  <a href="#a20e8d04d28b1601052af318be5383960">Подробнее...</a><br /></td></tr>
+<tr class="separator:a20e8d04d28b1601052af318be5383960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa5c4d6f2ca59381643536257c1fdadb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#aaa5c4d6f2ca59381643536257c1fdadb">MasterToDetailPseudoProperty</a> =&gt; _pseudoDetail.MasterToDetailPseudoProperty</td></tr>
+<tr class="memdesc:aaa5c4d6f2ca59381643536257c1fdadb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя связи от мастера к псевдодетейлу (псевдосвойство).  <a href="#aaa5c4d6f2ca59381643536257c1fdadb">Подробнее...</a><br /></td></tr>
+<tr class="separator:aaa5c4d6f2ca59381643536257c1fdadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9bbc4afb9ea4af5adaa50b41319b287"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#ae9bbc4afb9ea4af5adaa50b41319b287">PseudoPropertyType</a> =&gt; typeof(List&lt;TP&gt;)</td></tr>
+<tr class="memdesc:ae9bbc4afb9ea4af5adaa50b41319b287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип псевдосвойства.  <a href="#ae9bbc4afb9ea4af5adaa50b41319b287">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae9bbc4afb9ea4af5adaa50b41319b287"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a88bd0134dcceee45606fb9e5c5070"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a20a88bd0134dcceee45606fb9e5c5070">EmptyAnyMethod</a> =&gt; _emptyAny.Method</td></tr>
+<tr class="memdesc:a20a88bd0134dcceee45606fb9e5c5070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty "Any" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#a20a88bd0134dcceee45606fb9e5c5070">Подробнее...</a><br /></td></tr>
+<tr class="separator:a20a88bd0134dcceee45606fb9e5c5070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa01f068ad9efdb4e24522df3ce64bf19"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#aa01f068ad9efdb4e24522df3ce64bf19">NonEmptyAnyMethod</a> =&gt; _nonEmptyAny.Method</td></tr>
+<tr class="memdesc:aa01f068ad9efdb4e24522df3ce64bf19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non empty "Any" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#aa01f068ad9efdb4e24522df3ce64bf19">Подробнее...</a><br /></td></tr>
+<tr class="separator:aa01f068ad9efdb4e24522df3ce64bf19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a727064ed5bd648e8e48af35dbdf4ab"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a4a727064ed5bd648e8e48af35dbdf4ab">AllMethod</a> =&gt; _all.Method</td></tr>
+<tr class="memdesc:a4a727064ed5bd648e8e48af35dbdf4ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">"All" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#a4a727064ed5bd648e8e48af35dbdf4ab">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4a727064ed5bd648e8e48af35dbdf4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d012be96062b093e0424fd895e39663"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663">PseudoDetail</a> =&gt; _pseudoDetail</td></tr>
+<tr class="memdesc:a2d012be96062b093e0424fd895e39663"><td class="mdescLeft">&#160;</td><td class="mdescRight">The associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance as object.  <a href="#a2d012be96062b093e0424fd895e39663">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2d012be96062b093e0424fd895e39663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Дополнительные унаследованные члены</h2></td></tr>
+<tr class="inherit_header properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition')"><img src="closed.png" alt="-"/>&#160;Свойства унаследованные от <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.IPseudoDetailDefinition</a></td></tr>
+<tr class="memitem:a0e9616dd1c6f1e664cfb567a73062430 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a0e9616dd1c6f1e664cfb567a73062430">MasterType</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0e9616dd1c6f1e664cfb567a73062430 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип мастера.  <a href="#a0e9616dd1c6f1e664cfb567a73062430">Подробнее...</a><br /></td></tr>
+<tr class="separator:a0e9616dd1c6f1e664cfb567a73062430 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed8ccdc4156f135de67ff3580e1ac32f inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#aed8ccdc4156f135de67ff3580e1ac32f">MasterToDetailPseudoProperty</a><code> [get]</code></td></tr>
+<tr class="memdesc:aed8ccdc4156f135de67ff3580e1ac32f inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Имя св¤зи от мастера к псевдодетейлу (псевдосвойство).  <a href="#aed8ccdc4156f135de67ff3580e1ac32f">Подробнее...</a><br /></td></tr>
+<tr class="separator:aed8ccdc4156f135de67ff3580e1ac32f inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a18ed039d0f7caed468f6fce5e1138 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a14a18ed039d0f7caed468f6fce5e1138">PseudoPropertyType</a><code> [get]</code></td></tr>
+<tr class="memdesc:a14a18ed039d0f7caed468f6fce5e1138 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип псевдосвойства.  <a href="#a14a18ed039d0f7caed468f6fce5e1138">Подробнее...</a><br /></td></tr>
+<tr class="separator:a14a18ed039d0f7caed468f6fce5e1138 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa927f07d82d92bb9d3250be84f476d61 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#aa927f07d82d92bb9d3250be84f476d61">EmptyAnyMethod</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa927f07d82d92bb9d3250be84f476d61 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty "Any" method of associated <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a38c2eba7a208ffb34d58fe1103b80d71" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#aa927f07d82d92bb9d3250be84f476d61">Подробнее...</a><br /></td></tr>
+<tr class="separator:aa927f07d82d92bb9d3250be84f476d61 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b8986e8d946a1c303a1ba317e0ba6ce inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a5b8986e8d946a1c303a1ba317e0ba6ce">NonEmptyAnyMethod</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5b8986e8d946a1c303a1ba317e0ba6ce inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non empty "Any" method of associated <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a38c2eba7a208ffb34d58fe1103b80d71" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#a5b8986e8d946a1c303a1ba317e0ba6ce">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5b8986e8d946a1c303a1ba317e0ba6ce inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af69b926b45d9f8eb99c5de9d321945bc inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">MethodInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#af69b926b45d9f8eb99c5de9d321945bc">AllMethod</a><code> [get]</code></td></tr>
+<tr class="memdesc:af69b926b45d9f8eb99c5de9d321945bc inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">"All" method of associated <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a38c2eba7a208ffb34d58fe1103b80d71" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance.  <a href="#af69b926b45d9f8eb99c5de9d321945bc">Подробнее...</a><br /></td></tr>
+<tr class="separator:af69b926b45d9f8eb99c5de9d321945bc inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c2eba7a208ffb34d58fe1103b80d71 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a38c2eba7a208ffb34d58fe1103b80d71">PseudoDetail</a><code> [get]</code></td></tr>
+<tr class="memdesc:a38c2eba7a208ffb34d58fe1103b80d71 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="mdescLeft">&#160;</td><td class="mdescRight">The associated <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html#a38c2eba7a208ffb34d58fe1103b80d71" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance as object.  <a href="#a38c2eba7a208ffb34d58fe1103b80d71">Подробнее...</a><br /></td></tr>
+<tr class="separator:a38c2eba7a208ffb34d58fe1103b80d71 inherit properties_interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>Реализация интерфейса <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html" title="OData definition of the link from master to pseudodetail (pseudoproperty). ">IPseudoDetailDefinition</a> по умолчанию. </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Тип мастера. </td></tr>
+    <tr><td class="paramname">TP</td><td>Тип детейла. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a class="anchor" id="ab0f66c3a59fccbff32bead431494a24c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterLinkName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLinkName</td><td>Имя связи от псевдодетейла к мастеру. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aeaa62ece7b03498120269cf0500835af"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Expression&lt; Func&lt; TP, object &gt;&gt;&#160;</td>
+          <td class="paramname"><em>masterLink</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLink</td><td>Метод, определяющий имя связи от псевдодетейла к мастеру (определение идёт через "Information.ExtractPropertyPath(masterLink)"). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5f04495febf2d5e87057822a77ece955"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. (для псевдодетейлов данный метод будет некорректен). </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление детейла. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad4eea088da245ffb32a690c4efa43ae9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Expression&lt; Func&lt; TP, object &gt;&gt;&#160;</td>
+          <td class="paramname"><em>masterLink</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterToDetailPseudoProperty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLink</td><td>Метод, определяющий имя связи от псевдодетейла к мастеру (определение идёт через "Information.ExtractPropertyPath(masterLink)"). </td></tr>
+    <tr><td class="paramname">masterToDetailPseudoProperty</td><td>Имя связи от мастера к псевдодетейлу (псевдосвойство). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aeeec12f688f95b7f2843fd2bb1d82e7e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Expression&lt; Func&lt; TP, object &gt;&gt;&#160;</td>
+          <td class="paramname"><em>masterLink</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterToDetailPseudoProperty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string[]&#160;</td>
+          <td class="paramname"><em>masterConnectProperties</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLink</td><td>Метод, определяющий имя связи от псевдодетейла к мастеру (определение идёт через "Information.ExtractPropertyPath(masterLink)"). </td></tr>
+    <tr><td class="paramname">masterToDetailPseudoProperty</td><td>Имя связи от мастера к псевдодетейлу (псевдосвойство). </td></tr>
+    <tr><td class="paramname">masterConnectProperties</td><td>Свойства мастера, по которым можно произвести соединение. Аналог OwnerConnectProp для DetailVariableDef в lcs. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5432aeb98312579a1b7e2fc03d2fbf61"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterLinkName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterToDetailPseudoProperty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLinkName</td><td>Имя связи от псевдодетейла к мастеру. </td></tr>
+    <tr><td class="paramname">masterToDetailPseudoProperty</td><td>Имя связи от мастера к псевдодетейлу (псевдосвойство). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abd9e490599b379d90579476e90feb9f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a> </td>
+          <td>(</td>
+          <td class="paramtype">ICSSoft.STORMNET.View&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterLinkName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>masterToDetailPseudoProperty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string[]&#160;</td>
+          <td class="paramname"><em>masterConnectProperties</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Конструктор, вызывающий соответствующий конструктор <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>Представление псевдодетейла. </td></tr>
+    <tr><td class="paramname">masterLinkName</td><td>Имя связи от псевдодетейла к мастеру. </td></tr>
+    <tr><td class="paramname">masterToDetailPseudoProperty</td><td>Имя связи от мастера к псевдодетейлу (псевдосвойство). </td></tr>
+    <tr><td class="paramname">masterConnectProperties</td><td>Свойства мастера, по которым можно произвести соединение. Аналог OwnerConnectProp для DetailVariableDef в lcs. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Данные класса</h2>
+<a class="anchor" id="a4a727064ed5bd648e8e48af35dbdf4ab"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MethodInfo <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.AllMethod =&gt; _all.Method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>"All" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance. </p>
+
+</div>
+</div>
+<a class="anchor" id="a20a88bd0134dcceee45606fb9e5c5070"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MethodInfo <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.EmptyAnyMethod =&gt; _emptyAny.Method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Empty "Any" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance. </p>
+
+</div>
+</div>
+<a class="anchor" id="aaa5c4d6f2ca59381643536257c1fdadb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.MasterToDetailPseudoProperty =&gt; _pseudoDetail.MasterToDetailPseudoProperty</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Имя связи от мастера к псевдодетейлу (псевдосвойство). </p>
+
+</div>
+</div>
+<a class="anchor" id="a20e8d04d28b1601052af318be5383960"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.MasterType =&gt; typeof(T)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тип мастера. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa01f068ad9efdb4e24522df3ce64bf19"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MethodInfo <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.NonEmptyAnyMethod =&gt; _nonEmptyAny.Method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Non empty "Any" method of associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2d012be96062b093e0424fd895e39663"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">object <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.PseudoDetail =&gt; _pseudoDetail</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The associated <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html#a2d012be96062b093e0424fd895e39663" title="The associated PseudoDetail&lt;T, TP&gt; instance as object. ">PseudoDetail&lt;T, TP&gt;</a> instance as object. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae9bbc4afb9ea4af5adaa50b41319b287"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Type <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition</a>&lt; T, TP &gt;.PseudoPropertyType =&gt; typeof(List&lt;TP&gt;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тип псевдосвойства. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_new_platform.html">NewPlatform</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry.html">Flexberry</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m.html">ORM</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html">ODataService</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model.html">Model</a></li><li class="navelem"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html">DefaultPseudoDetailDefinition</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

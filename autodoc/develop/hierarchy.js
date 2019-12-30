@@ -135,6 +135,7 @@ var hierarchy =
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.ExcelExportTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html", null ],
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.FilterByMasterDetailFieldTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1a519fe9c6009417bed9e5ddbce680329.html", null ],
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.FilterByMasterFieldTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_filter_by_master_field_test.html", null ],
+          [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.FilterByPseudoDetailFieldTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_140b587dea3cf5226fdebebca637ae0da.html", null ],
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.FilterTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_filter_test.html", null ],
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.MetaDataTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_meta_data_test.html", null ],
           [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.ReferenceToMasterTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_reference_to_master_test.html", null ],
@@ -158,6 +159,9 @@ var hierarchy =
         [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Offline.OfflineAuditServiceIntegratedTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline_1_1_offline_audit_service_integrated_test.html", null ]
       ] ]
     ] ],
+    [ "IEnumerable", null, [
+      [ "NewPlatform.Flexberry.ORM.ODataService.Model.PseudoDetailDefinitions", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_definitions.html", null ]
+    ] ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Events.IEventHandlerContainer", "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Functions.IFunctionContainer", "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_i_function_container.html", null ],
     [ "IHttpControllerActivator", null, [
@@ -165,6 +169,9 @@ var hierarchy =
     ] ],
     [ "IODataExportService", null, [
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.ExportExcel", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_1_1_export_excel.html", null ]
+    ] ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Model.IPseudoDetailDefinition", "interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_i_pseudo_detail_definition.html", [
+      [ "NewPlatform.Flexberry.ORM.ODataService.Model.DefaultPseudoDetailDefinition< T, TP >", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_pseudo_detail_definition.html", null ]
     ] ],
     [ "ISpreadsheetCustomizer", null, [
       [ "NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.SpreadsheetCustomizer", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_17518f53ef62ab7906eb5ea1a345e877f.html", null ]
@@ -192,28 +199,32 @@ var hierarchy =
     ] ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Handlers.PerRequestUpdateEdmModelHandlerTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_handlers_1_1_per_req878554f94894360d0d01fe20b2de308b.html", null ],
+    [ "PropertyInfo", null, [
+      [ "NewPlatform.Flexberry.ORM.ODataService.Model.PseudoDetailPropertyInfo", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html", null ]
+    ] ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Functions.QueryParameters", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_query_parameters.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.BaseODataServiceIntegratedTest.TestArgs", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test_1_1_test_args.html", null ],
     [ "UserSetting", null, [
       [ "NewPlatform.Flexberry.FlexberryUserSetting", "class_new_platform_1_1_flexberry_1_1_flexberry_user_setting.html", null ]
     ] ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Model.DynamicView.ViewProperty", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_dynamic_view_1_1_view_property.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Журнал.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x96_xD1_x83_xD1_a37a2afc2e77aee052ed4b79eba5352c.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Driver.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_driver_1_1_views.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Берлога.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_9f1c86c37cba7873dc7a4ade29df6b2e.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Библиотека.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_80621d878b3d2574605f520cf1a208e5.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Автор.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x90_xD0_xB2_xD1_x82_xD0_xBE_xD1_x80_1_1_views.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.КлассStoredDerived.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_e19460ee8a9d17bf70250d52afd709e6.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Книга.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBD_xD0_xB8_xD0_xB3_xD0_xB0_1_1_views.html", null ],
-    [ "NewPlatform.Flexberry.FlexberryUserSetting.Views", "class_new_platform_1_1_flexberry_1_1_flexberry_user_setting_1_1_views.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Лес.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9B_xD0_xB5_xD1_x81_1_1_views.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_8b97fbfe7c54810ccd0f0f99f43f00be.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.ДочернийКласс.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xBE_xD1_0e7ea0e0453295f6ea0aa5c8127233f7.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.ПоставщикКниг.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_fb80bac198447fb607aa5ebe74bef9e3.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.TestMaster.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_test_master_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Блоха.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xBB_xD0_xBE_xD1_x85_xD0_xB0_1_1_views.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Страна.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_xA1_xD1_x82_xD1_988bb1ad36cdc75156c67dcb8b7965ed.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Car.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_car_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Лес.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9B_xD0_xB5_xD1_x81_1_1_views.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.TestDetailWithCicle.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_test_detail_with_cicle_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Driver.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_driver_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_8b97fbfe7c54810ccd0f0f99f43f00be.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Книга.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBD_xD0_xB8_xD0_xB3_xD0_xB0_1_1_views.html", null ],
     [ "NewPlatform.Flexberry.ORM.ODataService.Tests.КлассNotStored.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_1ec21cc3dd683c29dc2ed2172be5eef6.html", null ],
-    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.КлассСМножествомТипов.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_baecab4783d58279acb132758d91f21e.html", null ]
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.ПоставщикКниг.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_fb80bac198447fb607aa5ebe74bef9e3.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.ДочернийКласс.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xBE_xD1_0e7ea0e0453295f6ea0aa5c8127233f7.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Автор.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x90_xD0_xB2_xD1_x82_xD0_xBE_xD1_x80_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.КлассСМножествомТипов.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_baecab4783d58279acb132758d91f21e.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Журнал.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x96_xD1_x83_xD1_a37a2afc2e77aee052ed4b79eba5352c.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Берлога.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_9f1c86c37cba7873dc7a4ade29df6b2e.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.Библиотека.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_80621d878b3d2574605f520cf1a208e5.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.КлассStoredDerived.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBB_xD0_e19460ee8a9d17bf70250d52afd709e6.html", null ],
+    [ "NewPlatform.Flexberry.ORM.ODataService.Tests.TestMaster.Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_test_master_1_1_views.html", null ],
+    [ "NewPlatform.Flexberry.FlexberryUserSetting.Views", "class_new_platform_1_1_flexberry_1_1_flexberry_user_setting_1_1_views.html", null ]
 ];

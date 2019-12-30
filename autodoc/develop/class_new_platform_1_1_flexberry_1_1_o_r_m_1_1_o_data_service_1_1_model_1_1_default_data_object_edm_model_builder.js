@@ -1,7 +1,9 @@
 var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder =
 [
-    [ "DefaultDataObjectEdmModelBuilder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a487ece7eb62144f64177b69ec2cfd9a8", null ],
+    [ "DefaultDataObjectEdmModelBuilder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#aa8d62f2dea8fa50e13cdc21377c804cb", null ],
     [ "Build", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a611b96c36c45deec351eaacc81789917", null ],
+    [ "GetPseudoDetail", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a570030d68cce99400b76ed08dcbcfbb2", null ],
+    [ "GetPseudoDetailDefinition", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a3657ac0a1c818fbee67c56e73c7d2f29", null ],
     [ "EntityPropertyNameBuilder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a17cdea9acf6e81c19f2d9c53a2adffbc", null ],
     [ "EntitySetNameBuilder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#a9dcc17bd730c5cc5aeb37af23002b31e", null ],
     [ "EntityTypeNameBuilder", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_default_data_object_edm_model_builder.html#aa40a0e3aa49877a10aece8239c22e419", null ],

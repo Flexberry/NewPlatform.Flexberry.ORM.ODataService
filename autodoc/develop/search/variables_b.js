@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['updateaudit',['UpdateAudit',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_00b6770f6f0593a9770b5861f7547e1d.html#a0f011914f69eefa8a93196251dab60ba',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Медведь::AuditSettings']]],
-  ['updateauditviewname',['UpdateAuditViewName',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_00b6770f6f0593a9770b5861f7547e1d.html#af2a493d06d5997559ba52b49f97e390a',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Медведь::AuditSettings']]],
-  ['usedefaultview',['UseDefaultView',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_00b6770f6f0593a9770b5861f7547e1d.html#a87fae1f97db47650b1c41ebb10f93691',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Медведь::AuditSettings']]]
+  ['readexception',['ReadException',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_formatter_1_1_extended_o_data_entity_deserializer.html#a106d4cc19cd7b572f32b3343b3edeedf',1,'NewPlatform::Flexberry::ORM::ODataService::Formatter::ExtendedODataEntityDeserializer']]],
+  ['reflectedtype',['ReflectedType',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ab4323119cd7b23b8baa8a242c060025a',1,'NewPlatform::Flexberry::ORM::ODataService::Model::PseudoDetailPropertyInfo']]],
+  ['requestcontent',['RequestContent',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_handlers_1_1_post_patch_handler.html#ae587574a3e09587a4a8a0ff67d1963d9',1,'NewPlatform::Flexberry::ORM::ODataService::Handlers::PostPatchHandler']]]
 ];
