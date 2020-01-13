@@ -306,10 +306,12 @@
 
         private HttpResponseMessage TestPreferMinimal()
         {
+            LogService.LogDebug("TestPreferMinimal" + Request.Headers?.ToString() ?? "No headers");
+
             if (Request.Headers.Contains("Prefer"))
             {
-                var header = Request.Headers.FirstOrDefault(h => h.Key == "Prefer");
-                if (header.Value.Contains("return=minimal"))
+                var header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
+                if (header.Value.ToString().ToLower().Contains("return=minimal"))
                 {
                     var result = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
                     result.Headers.Add("Preference-Applied", "return=minimal");

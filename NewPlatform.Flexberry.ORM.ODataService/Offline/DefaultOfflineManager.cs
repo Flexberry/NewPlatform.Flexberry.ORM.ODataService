@@ -1,8 +1,7 @@
-namespace NewPlatform.Flexberry.ORM.ODataService.Offline
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Offline
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Web.OData.Query;
 
@@ -19,8 +18,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Offline
 
         public DefaultOfflineManager(ILockService lockService, CurrentUserService.IUser currentUser)
         {
-            Contract.Requires<ArgumentNullException>(lockService != null);
-            Contract.Requires<ArgumentNullException>(currentUser != null);
+            if (lockService == null)
+            {
+                throw new ArgumentNullException(nameof(lockService), "Contract assertion not met: lockService != null");
+            }
+            if (currentUser == null)
+            {
+                throw new ArgumentNullException(nameof(currentUser), "Contract assertion not met: currentUser != null");
+            }
 
             _lockService = lockService;
             _currentUser = currentUser;

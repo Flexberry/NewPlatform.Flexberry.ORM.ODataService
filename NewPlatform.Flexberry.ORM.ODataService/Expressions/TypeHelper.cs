@@ -1,13 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
-// Licensed under the MIT License.  See License.txt in the project root for license information.
-// Branch of https://github.com/OData/WebApi/blob/v5.7.0/OData/src/System.Web.OData/OData/TypeHelper.cs
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
