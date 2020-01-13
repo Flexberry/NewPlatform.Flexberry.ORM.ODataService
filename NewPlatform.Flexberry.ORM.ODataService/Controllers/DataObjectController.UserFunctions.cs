@@ -6,6 +6,7 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Net.Http;
+    using System.Reflection;
     using System.Web.Http;
     using System.Web.OData.Extensions;
     using System.Web.OData.Routing;
@@ -43,6 +44,28 @@
                 QueryOptions = CreateODataQueryOptions(typeof(DataObject));
                 return ExecuteUserFunction(new QueryParameters(this));
             }
+            catch (HttpResponseException ex)
+            {
+                if (HasOdataError(ex))
+                {
+                    return ResponseMessage(ex.Response);
+                }
+                else
+                {
+                    return ResponseMessage(InternalServerErrorMessage(ex));
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                if (HasOdataError(ex.InnerException))
+                {
+                    return ResponseMessage(((HttpResponseException)ex.InnerException)?.Response);
+                }
+                else
+                {
+                    return ResponseMessage(InternalServerErrorMessage(ex));
+                }
+            }
             catch (Exception ex)
             {
                 return ResponseMessage(InternalServerErrorMessage(ex));
@@ -66,15 +89,22 @@
 
             Function function = _functions.GetFunction(segment.FunctionName);
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            foreach (var parameterName in function.ParametersTypes.Keys)
+            foreach (string parameterName in function.ParametersTypes.Keys)
             {
-                var parameterValue = segment.GetParameterValue(parameterName);
-                if (parameterValue is ODataEnumValue)
+                try
                 {
-                    parameterValue = Enum.Parse(function.ParametersTypes[parameterName], (parameterValue as ODataEnumValue).Value);
-                }
+                    var parameterValue = segment.GetParameterValue(parameterName);
+                    if (parameterValue is ODataEnumValue enumParameterValue)
+                    {
+                        parameterValue = Enum.Parse(function.ParametersTypes[parameterName], enumParameterValue.Value);
+                    }
 
-                parameters.Add(parameterName, parameterValue);
+                    parameters.Add(parameterName, parameterValue);
+                }
+                catch (Exception ex)
+                {
+                    throw new ODataException($"Failed to convert parameter: {parameterName}", ex);
+                }
             }
 
             var result = function.Handler(queryParameters, parameters);

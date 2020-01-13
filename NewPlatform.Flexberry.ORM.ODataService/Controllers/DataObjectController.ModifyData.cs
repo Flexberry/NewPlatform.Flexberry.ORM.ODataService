@@ -12,27 +12,20 @@
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
     using System.Web.OData;
-    using System.Web.Script.Serialization;
-
+    using System.Web.OData.Extensions;
+    using System.Web.OData.Routing;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
-
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-
     using Newtonsoft.Json;
-
     using File = ICSSoft.STORMNET.FileType.File;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -201,8 +194,7 @@
 
                 Init();
 
-                var obj = (DataObject)Activator.CreateInstance(type);
-                obj.SetExistObjectPrimaryKey(key);
+                var obj = _dataObjectCache.CreateDataObject(type, key);
 
                 // Раз объект данных удаляется, то и все ассоциированные с ним файлы должны быть удалены.
                 // Запоминаем метаданные всех ассоциированных файлов, кроме файлов соответствующих файловым свойствам типа File
@@ -221,7 +213,17 @@
                 obj.SetStatus(ObjectStatus.Deleted);
 
                 if (ExecuteCallbackBeforeDelete(obj))
-                    _dataService.UpdateObject(obj);
+                {
+                    if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                    {
+                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        dataObjectsToUpdate.Add(obj);
+                    }
+                    else
+                    {
+                        _dataService.UpdateObject(obj);
+                    }
+                }
 
                 // При успешном удалении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
@@ -308,10 +310,10 @@
         {
             if (Request.Headers.Contains("Prefer"))
             {
-                var header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
+                KeyValuePair<string, IEnumerable<string>> header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
                 if (header.Value.ToString().ToLower().Contains("return=minimal"))
                 {
-                    var result = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
                     result.Headers.Add("Preference-Applied", "return=minimal");
                     return result;
                 }
@@ -335,9 +337,15 @@
 
             Stream stream;
 
-            string json = (string)Request.Properties[PostPatchHandler.RequestContent];
+            string requestContentKey = PostPatchHandler.RequestContent;
+            if (Request.Properties.ContainsKey(PostPatchHandler.PropertyKeyBatchRequest) && (bool)Request.Properties[PostPatchHandler.PropertyKeyBatchRequest] == true)
+            {
+                requestContentKey = PostPatchHandler.RequestContent + $"_{PostPatchHandler.PropertyKeyContentId}_{Request.Properties[PostPatchHandler.PropertyKeyContentId]}";
+            }
 
-            Dictionary<string, object> props = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
+            string json = (string)Request.Properties[requestContentKey];
+
+            Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             var keys = props.Keys.ToArray();
             var odataBindNullList = new List<string>();
             foreach (var key in keys)
@@ -366,7 +374,7 @@
                 }
             }
 
-            json = new JavaScriptSerializer().Serialize(props);
+            json = JsonConvert.SerializeObject(props);
             Request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             IContentNegotiator negotiator = (IContentNegotiator)Configuration.Services.GetService(typeof(IContentNegotiator));
@@ -450,8 +458,15 @@
 
                 // Список объектов для обновления без UnAltered.
                 var objsArrSmall = objsArr.Where(t => t.GetStatus() != ObjectStatus.UnAltered).ToArray();
-
-                _dataService.UpdateObjects(ref objsArrSmall);
+                if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                {
+                    List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                    dataObjectsToUpdate.Add(obj);
+                }
+                else
+                {
+                    _dataService.UpdateObjects(ref objsArrSmall);
+                }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
@@ -467,36 +482,66 @@
         /// <summary>
         /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
         /// </summary>
-        /// <param name="objType"> Тип объекта.</param>
-        /// <param name="keyValue"> Значение ключа.</param>>
-        /// <returns> Объект данных.</returns>
+        /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
+        /// <param name="keyValue">Значение ключа.</param>>
+        /// <returns>Объект данных.</returns>
         private DataObject ReturnDataObject(Type objType, object keyValue)
         {
-            var view = _model.GetDataObjectDefaultView(objType);
-
-            // Проверим существование объекта в базе.
-            var ldef = SQLWhereLanguageDef.LanguageDef;
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-            lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
-            DataObject[] dobjs = _dataService.LoadObjects(lcs);
-            if (dobjs.Length == 1)
+            if (objType == null)
             {
-                _newDataObjects.Add(dobjs[0], false);
-                return dobjs[0];
+                throw new ArgumentNullException(nameof(objType));
+            }
+
+            if (keyValue != null)
+            {
+                DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
+                var view = _model.GetDataObjectDefaultView(objType);
+
+                if (dataObjectFromCache != null)
+                {
+                    if (!_newDataObjects.ContainsKey(dataObjectFromCache))
+                    {
+                        _newDataObjects.Add(dataObjectFromCache, false);
+                    }
+
+                    // Если объект не новый и загружен только первичным ключом.
+                    if (!_newDataObjects[dataObjectFromCache]
+                        && dataObjectFromCache.GetLoadedProperties().Length == 1
+                        && dataObjectFromCache.CheckLoadedProperty(x => x.__PrimaryKey))
+                    {
+                        _dataService.LoadObject(view, dataObjectFromCache);
+                    }
+
+                    return dataObjectFromCache;
+                }
+
+                // Проверим существование объекта в базе.
+                LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
+                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
+                DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                if (dobjs.Length == 1)
+                {
+                    DataObject dataObject = dobjs[0];
+                    _newDataObjects.Add(dataObject, false);
+                    return dataObject;
+                }
+            }
+
+            // Значение ключа автоматически создаётся.
+            DataObject obj;
+
+            if (keyValue != null)
+            {
+                obj = _dataObjectCache.CreateDataObject(objType, keyValue);
             }
             else
             {
-                // Значение ключа автоматически создаётся.
-                var obj = (DataObject)Activator.CreateInstance(objType);
-
-                if (keyValue != null)
-                {
-                    obj.__PrimaryKey = keyValue;
-                }
-
-                _newDataObjects.Add(obj, true);
-                return obj;
+                obj = (DataObject)Activator.CreateInstance(objType);
+                _dataObjectCache.AddDataObject(obj);
             }
+
+            _newDataObjects.Add(obj, true);
+            return obj;
         }
 
         /// <summary>

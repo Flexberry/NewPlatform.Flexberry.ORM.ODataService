@@ -4,20 +4,20 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Exceptions;
 
-    using Xunit;
-
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+
+    using Newtonsoft.Json;
+
+    using Xunit;
 
     /// <summary>
     /// Класс тестов для тестирования логики перед операциями модификации данных OData-сервисом (вставка, обновление, удаление).
     /// </summary>
-    
     public class BeforeSaveTest : BaseODataServiceIntegratedTest
     {
         /// <summary>
@@ -86,7 +86,7 @@
 
                 // ------------------ Только создания объектов ------------------
                 // Подготовка тестовых данных в формате OData.
-                var controller = new Controllers.DataObjectController(args.DataService, args.Token.Model, args.Token.Events, args.Token.Functions);
+                var controller = new Controllers.DataObjectController(args.DataService, null, args.Token.Model, args.Token.Events, args.Token.Functions);
                 System.Web.OData.EdmEntityObject edmObj = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Медведь)), медв, 1, null);
                 var edmЛес1 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес1, 1, null);
                 var edmЛес2 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес2, 1, null);
@@ -115,14 +115,14 @@
 
                 // В ответе приходит объект с созданной сущностью.
                 // Преобразуем полученный объект в словарь.
-                Dictionary<string, object> receivedObjs = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonObjs);
+                Dictionary<string, object> receivedObjs = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonObjs);
 
                 // Проверяем созданный объект, вычитав с помощью DataService
                 DataObject createdObj = new Медведь { __PrimaryKey = медв.__PrimaryKey };
                 args.DataService.LoadObject(createdObj);
 
                 Assert.Equal(ObjectStatus.UnAltered, createdObj.GetStatus());
-                Assert.Equal(((Медведь)createdObj).Вес, receivedObjs["Вес"]);
+                Assert.Equal(((Медведь)createdObj).Вес, (int)(long)receivedObjs["Вес"]);
 
                 // Проверяем что созданы все зависимые объекты, вычитав с помощью DataService
                 var ldef = ICSSoft.STORMNET.FunctionalLanguage.SQLWhere.SQLWhereLanguageDef.LanguageDef;

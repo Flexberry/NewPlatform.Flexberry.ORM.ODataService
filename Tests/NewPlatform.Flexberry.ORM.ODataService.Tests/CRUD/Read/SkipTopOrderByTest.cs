@@ -1,17 +1,18 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
 
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.UserDataTypes;
     using ICSSoft.STORMNET.Windows.Forms;
+
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
-    using ICSSoft.STORMNET.UserDataTypes;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using Xunit;
 
@@ -51,11 +52,11 @@
                     string receivedJsonCountries = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedCountries = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonCountries);
+                    Dictionary<string, object> receivedCountries = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonCountries);
 
                     // Убедимся, что объекты получены и их нужное количество.
                     Assert.True(receivedCountries.ContainsKey("value"));
-                    Assert.Equal(((ArrayList)receivedCountries["value"]).Count, 5);
+                    Assert.Equal(((JArray)receivedCountries["value"]).Count, 5);
                 }
             });
         }
@@ -87,9 +88,12 @@
                 objs = new DataObject[] { медвежонок1, медвежонок2, медвежонок3, медвежонок4 };
                 args.DataService.UpdateObjects(ref objs);
 
-                string requestUrl;
                 // Проверка использования в фильтрации перечислений.
-                requestUrl = "http://localhost/odata/Медведьs?$filter=Папа ne null&$expand=Папа,Мама&$orderby=Мама/Вес desc,Папа/Вес desc";
+                string requestUrl = string.Format(
+                    "http://localhost/odata/{0}?$filter={1}&$expand={2}",
+                    args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                    "Папа ne null",
+                    "Папа,Мама&$orderby=Мама/Вес desc,Папа/Вес desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
@@ -101,16 +105,16 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(4, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(4, ((JArray)receivedDict["value"]).Count);
 
                     int[] expectedValues = { 48, 22, 58, 62 };
 
                     for (int i = 0; i < expectedValues.Length; i++)
                     {
-                        var медведь = ((ArrayList)receivedDict["value"])[i];
-                        Assert.Equal(expectedValues[i], (int)((Dictionary<string, object>)медведь)["Вес"]);
+                        var медведь = ((JArray)receivedDict["value"])[i];
+                        Assert.Equal(expectedValues[i], (int)(long)медведь.ToObject<Dictionary<string, object>>()["Вес"]);
                     }
                 }
 
@@ -126,16 +130,16 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(4, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(4, ((JArray)receivedDict["value"]).Count);
 
                     int[] expectedValues = { 22, 48, 62, 58 };
 
                     for (int i = 0; i < expectedValues.Length; i++)
                     {
-                        var медведь = ((ArrayList)receivedDict["value"])[i];
-                        Assert.Equal(expectedValues[i], (int)((Dictionary<string, object>)медведь)["Вес"]);
+                        var медведь = ((JArray)receivedDict["value"])[i];
+                        Assert.Equal(expectedValues[i], (int)(long)медведь.ToObject<Dictionary<string, object>>()["Вес"]);
                     }
                 }
 
@@ -163,10 +167,11 @@
                 var objs = new DataObject[] { лес1, лес2, лес3, лес4 };
                 args.DataService.UpdateObjects(ref objs);
 
-                string requestUrl;
-
                 // Проверка использования в фильтрации перечислений.
-                requestUrl = "http://localhost/odata/Лесs?$orderby=ДатаПоследнегоОсмотра desc";
+                string requestUrl = string.Format(
+                    "http://localhost/odata/{0}?$orderby={1}",
+                    args.Token.Model.GetEdmEntitySet(typeof(Лес)).Name,
+                    "ДатаПоследнегоОсмотра desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
@@ -178,16 +183,16 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(4, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(4, ((JArray)receivedDict["value"]).Count);
 
                     NullableDateTime[] expectedValues = { dt1, dt2, dt3, dt4 };
 
                     for (int i = 0; i < expectedValues.Length; i++)
                     {
-                        var лес = ((ArrayList)receivedDict["value"])[i];
-                        Assert.Equal(expectedValues[i], (NullableDateTime)new DateTimeOffset(DateTime.Parse((string)((Dictionary<string, object>)лес)["ДатаПоследнегоОсмотра"])).UtcDateTime);
+                        var лес = ((JArray)receivedDict["value"])[i];
+                        Assert.Equal(expectedValues[i], (NullableDateTime)new DateTimeOffset((DateTime)лес.ToObject<Dictionary<string, object>>()["ДатаПоследнегоОсмотра"]).UtcDateTime);
                     }
                 }
             });
@@ -218,10 +223,12 @@
                 var objs = new DataObject[] { медведь1, медведь2, медведь3, медведь4 };
                 args.DataService.UpdateObjects(ref objs);
 
-                string requestUrl;
-
                 // Проверка использования в фильтрации перечислений.
-                requestUrl = "http://localhost/odata/Медведьs?$expand=ЛесОбитания($select=ДатаПоследнегоОсмотра)&$orderby=ЛесОбитания/ДатаПоследнегоОсмотра desc";
+                string requestUrl = string.Format(
+                    "http://localhost/odata/{0}?$expand={1}&$orderby={2}",
+                    args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                    "ЛесОбитания($select=ДатаПоследнегоОсмотра)",
+                    "ЛесОбитания/ДатаПоследнегоОсмотра desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
@@ -233,17 +240,17 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(4, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(4, ((JArray)receivedDict["value"]).Count);
 
                     NullableDateTime[] expectedValues = { dt1, dt2, dt3, dt4 };
 
                     for (int i = 0; i < expectedValues.Length; i++)
                     {
-                        var медведь = ((ArrayList)receivedDict["value"])[i];
-                        var лес = ((Dictionary<string, object>)медведь)["ЛесОбитания"];
-                        Assert.Equal(expectedValues[i], (NullableDateTime)new DateTimeOffset(DateTime.Parse((string)((Dictionary<string, object>)лес)["ДатаПоследнегоОсмотра"])).UtcDateTime);
+                        var медведь = ((JArray)receivedDict["value"])[i];
+                        var лес = медведь.ToObject<Dictionary<string, JToken>>()["ЛесОбитания"];
+                        Assert.Equal(expectedValues[i], (NullableDateTime)new DateTimeOffset((DateTime)лес.ToObject<Dictionary<string, object>>()["ДатаПоследнегоОсмотра"]).UtcDateTime);
                     }
                 }
             });

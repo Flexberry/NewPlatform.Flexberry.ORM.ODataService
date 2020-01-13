@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.0.0</version>
+    <version>5.1.0-beta02</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -12,18 +12,25 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
-Added
+      Added
+      1. Handle httpResponseException with OdataError wrapped in targetInvocationException.
+      2. Support $batch request for transactional update data objects.
+      3. Support for limits on master details.
+      4. Support for limits on pseudodetails.
 
-1. Exception handling in user functions.
-2. Permissions for masters and details.
-3. Export to excel with parameters.
-4. The ability to export to an excel function odata.
+      Changed
+      1. JavaScriptSerializer replaced with Newtonsoft.Json.JsonConvert for better performance.
+      2. [BREAKINGCHANGE] Method MapODataServiceDataObjectRoute now requires HttpServer as parameter.
+      3. At creation of dynamic views of the master in them are added with primary keys.
+      4. Use common DataObjectCache for all sql queries per http request.
 
-Changed
+      Fixed
+      1. Fix error with POST request and header "Prefer".
+      2. Getting objects by primary key with using `$select` and `$expand` query options.
+      3. Loading masters with common DataObjectCache.
 
-1. Update dependencies.
     </releaseNotes>
-    <copyright>Copyright New Platform Ltd 2018</copyright>
+    <copyright>Copyright New Platform Ltd 2019</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Cors" version="5.2.3" />
@@ -38,7 +45,6 @@ Changed
       <dependency id="NewPlatform.Flexberry.ORM" version="5.0.0" />
       <dependency id="NewPlatform.Flexberry.UserSettingsService" version="3.0.0" />
       <dependency id="Newtonsoft.Json" version="8.0.3" />
-      <dependency id="Unity.AspNet.WebApi" version="5.0.13" />
     </dependencies>
   </metadata>
   <files>

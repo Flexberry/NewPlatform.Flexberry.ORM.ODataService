@@ -1,20 +1,23 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
+
     using ICSSoft.STORMNET;
-    using Xunit;
+
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using Xunit;
 
     /// <summary>
     /// Unit-test class for read data through OData service with using UTF8 requests.
     /// </summary>
-    
     public class UtfRequestsTest : BaseODataServiceIntegratedTest
     {
         /// <summary>
@@ -72,8 +75,8 @@
 
                         string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                         Dictionary<string, object> receivedDict =
-                            new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
-                        Assert.Equal(1, ((ArrayList) receivedDict["value"]).Count);
+                            JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                        Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                     }
                 }
             });

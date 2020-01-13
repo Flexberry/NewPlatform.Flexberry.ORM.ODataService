@@ -6,7 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+1. Handle httpResponseException with OdataError wrapped in targetInvocationException.
+
+### Changed
+
+1. JavaScriptSerializer replaced with Newtonsoft.Json.JsonConvert for better performance.
+
 ### Fixed
+
+1. Fix error with POST request and header "Prefer".
+2. Getting objects by primary key with using `$select` and `$expand` query options.
 
 ## [5.0.0] - 2018.12.14
 

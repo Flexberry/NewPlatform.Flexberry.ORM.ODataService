@@ -1,21 +1,20 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
 {
-    using Extensions;
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business.LINQProvider.Extensions;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
-    using Microsoft.Spatial;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web.Script.Serialization;
+
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     using Xunit;
 
     /// <summary>
@@ -44,9 +43,10 @@
                 КлассСМножествомТипов класс = new КлассСМножествомТипов() { PropertyEnum = Цифра.Семь, PropertyDateTime = date, PropertyGeography = "LINESTRING(0 0,1 1,1 2)".CreateGeography(), PropertyInt = 5};
                 var objs = new DataObject[] { класс };
                 args.DataService.UpdateObjects(ref objs);
-                string requestUrl;
-
-                requestUrl = "http://localhost/odata/КлассСМножествомТиповs?$filter=PropertyInt eq 5 and geo.intersects(geography1=PropertyGeography, geography2=geography'SRID=4326;LINESTRING(0 0,1 1,1 2)')";
+                string requestUrl = string.Format(
+                    "http://localhost/odata/{0}?$filter={1}",
+                    args.Token.Model.GetEdmEntitySet(typeof(КлассСМножествомТипов)).Name,
+                    "PropertyInt eq 5 and geo.intersects(geography1=PropertyGeography, geography2=geography'SRID=4326;LINESTRING(0 0,1 1,1 2)')");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
@@ -58,9 +58,9 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(1, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                 }
             });
 

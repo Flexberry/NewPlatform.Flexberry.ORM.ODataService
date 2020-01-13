@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
@@ -12,7 +11,6 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
-    using System.Web;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Results;
@@ -20,14 +18,14 @@
     using System.Web.OData.Extensions;
     using System.Web.OData.Query;
     using System.Web.OData.Routing;
-    using Handlers;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
     using ICSSoft.STORMNET.KeyGen;
+    using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.UserDataTypes;
+    using Microsoft.OData.Core;
     using Microsoft.OData.Core.UriParser.Semantic;
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
@@ -35,13 +33,11 @@
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using ODataPath = System.Web.OData.Routing.ODataPath;
     using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
-    using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Unity.Configuration;
-    using ICSSoft.STORMNET.Security;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -56,6 +52,11 @@
         /// Data service for all manipulations with data.
         /// </summary>
         private readonly IDataService _dataService;
+
+        /// <summary>
+        /// Data object cache for sync loading.
+        /// </summary>
+        private readonly DataObjectCache _dataObjectCache;
 
         /// <summary>
         /// The current EDM model.
@@ -94,14 +95,29 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="dataService">Data service for all manipulations with data.</param>
+        /// <param name="dataObjectCache">DataObject cache.</param>
+        /// <param name="model">EDM model.</param>
+        /// <param name="events">The container with registered events.</param>
+        /// <param name="functions">The container with OData Service functions.</param>
         public DataObjectController(
             IDataService dataService,
+            DataObjectCache dataObjectCache,
             DataObjectEdmModel model,
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
-            Contract.Requires<ArgumentNullException>(dataService != null);
-            _dataService = dataService;
+            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+
+            if (dataObjectCache != null)
+            {
+                _dataObjectCache = dataObjectCache;
+            }
+            else
+            {
+                _dataObjectCache = new DataObjectCache();
+                _dataObjectCache.StartCaching(false);
+            }
+
             _model = model;
             _events = events;
             _functions = functions;
@@ -178,7 +194,6 @@
             }
         }
 
-
         /// <summary>
         /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
         /// </summary>
@@ -223,6 +238,18 @@
             {
                 return InternalServerErrorMessage(ex);
             }
+        }
+
+        /// <summary>
+        /// Проверяет, содержит ли исключение OdataError.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>true - если содержит.</returns>
+        private bool HasOdataError(Exception exception)
+        {
+            HttpResponseException httpResponseException = exception as HttpResponseException;
+            ObjectContent content = httpResponseException?.Response?.Content as ObjectContent;
+            return content?.Value is ODataError;
         }
 
         /// <summary>
@@ -413,9 +440,27 @@
                 }
             }
 
+            Type masterType = EdmLibHelpers.GetClrType(entityType.ToEdmTypeReference(true), _model);
+            IDataObjectEdmModelBuilder builder = (_model as DataObjectEdmModel).EdmModelBuilder;
+
             foreach (var prop in entityType.Properties())
             {
-                string dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
+                string dataObjectPropName = null;
+                try
+                {
+                    dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
+                }
+                catch (KeyNotFoundException)
+                {
+                    // Check if prop value is the link from master to pseudodetail (pseudoproperty).
+                    if (builder.GetPseudoDetail(masterType, prop.Name) != null)
+                    {
+                        continue;
+                    }
+                    
+                    throw;
+                }
+
                 if (prop is EdmNavigationProperty)
                 {
                     if (expandedProperties.ContainsKey(prop.Name))
@@ -453,7 +498,7 @@
                                 {
                                     if (!DynamicView.ContainsPoperty(dynamicView.View, propPath))
                                     {
-                                        _dataService.LoadObject(dynamicView.View, (DataObject)master);
+                                        _dataService.LoadObject(dynamicView.View, (DataObject)master, false, true, _dataObjectCache);
                                     }
 
                                     edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem, dynamicView);
@@ -942,7 +987,8 @@
             View view = _model.GetDataObjectDefaultView(type);
             if (_dynamicView != null)
                 view = _dynamicView.View;
-            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, _dataService);
+            IEnumerable<View> resolvingViews;
+            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, _dataService, out resolvingViews);
             if (_lcsLoadingTypes.Count == 0)
                 _lcsLoadingTypes = _model.GetDerivedTypes(type).ToList();
 
@@ -958,7 +1004,7 @@
             LoadingCustomizationStruct lcs = new LoadingCustomizationStruct(null);
             if (expr != null)
             {
-                lcs = LinqToLcs.GetLcs(expr, view);
+                lcs = LinqToLcs.GetLcs(expr, view, resolvingViews);
             }
 
             lcs.View = view;
@@ -999,7 +1045,6 @@
             return LoadObject(type, view, key);
         }
 
-
         /// <summary>
         /// Возвращает объект DataObject для данного ключа.
         /// </summary>
@@ -1026,9 +1071,8 @@
         /// <returns> Объект данных.</returns>
         private DataObject LoadObject(Type objType, View view, object keyValue)
         {
-            var ldef = SQLWhereLanguageDef.LanguageDef;
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-            lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, _dynamicView.View);
+            lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
             int count = -1;
             DataObject[] dobjs = LoadObjects(lcs, out count);
             if (dobjs.Length > 0)
@@ -1063,7 +1107,7 @@
             {
                 if (!callGetObjectsCount)
                 {
-                    dobjs = _dataService.LoadObjects(lcs);
+                    dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
                 }
                 else
                 {

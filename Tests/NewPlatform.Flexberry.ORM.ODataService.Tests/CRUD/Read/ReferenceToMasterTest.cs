@@ -1,20 +1,23 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
+
     using ICSSoft.STORMNET;
-    using Xunit;
+
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using Xunit;
 
     /// <summary>
     /// Unit-test class for read data with reference to master through OData service.
     /// </summary>
-
     public class ReferenceToMasterTest : BaseODataServiceIntegratedTest
     {
         /// <summary>
@@ -57,17 +60,17 @@
 
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict =
-                        new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
-                    Assert.Equal(1, ((ArrayList) receivedDict["value"]).Count);
+                        JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
 
-                    var value = ((ArrayList) receivedDict["value"])[0];
-                    var журнал = ((ArrayList) ((Dictionary<string, object>) value)["Журнал"])[0];
-                    var авторЖурнала = ((Dictionary<string, object>) журнал)["Автор2"];
-                    var авторЖурналаPK = (string) ((Dictionary<string, object>) авторЖурнала)["__PrimaryKey"];
+                    var value = ((JArray)receivedDict["value"])[0];
+                    var журнал = ((JArray)value.ToObject<Dictionary<string, object>>()["Журнал"])[0];
+                    var авторЖурнала = журнал.ToObject<Dictionary<string, JToken>>()["Автор2"];
+                    var авторЖурналаPK = (string)авторЖурнала.ToObject<Dictionary<string, object>>()["__PrimaryKey"];
 
-                    var книга = ((ArrayList) ((Dictionary<string, object>) value)["Книга"])[0];
-                    var авторКниги = ((Dictionary<string, object>) книга)["Автор1"];
-                    var авторКнигиPK = (string) ((Dictionary<string, object>) авторКниги)["__PrimaryKey"];
+                    var книга = ((JArray)value.ToObject<Dictionary<string, object>>()["Книга"])[0];
+                    var авторКниги = книга.ToObject<Dictionary<string, JToken>>()["Автор1"];
+                    var авторКнигиPK = (string)авторКниги.ToObject<Dictionary<string, object>>()["__PrimaryKey"];
 
                     Assert.Equal(авторЖурналаPK, авторКнигиPK);
                 }
@@ -101,8 +104,8 @@
 
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict =
-                        new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
-                    Assert.Equal(1, ((ArrayList)receivedDict["value"]).Count);
+                        JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                 }
             });
         }
