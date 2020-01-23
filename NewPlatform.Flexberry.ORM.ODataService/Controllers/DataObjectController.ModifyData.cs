@@ -311,7 +311,7 @@
             if (Request.Headers.Contains("Prefer"))
             {
                 KeyValuePair<string, IEnumerable<string>> header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
-                if (header.Value.ToString().ToLower().Contains("return=minimal"))
+                if (header.Value != null && header.Value.ToString().ToLower().Contains("return=minimal"))
                 {
                     HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
                     result.Headers.Add("Preference-Applied", "return=minimal");
