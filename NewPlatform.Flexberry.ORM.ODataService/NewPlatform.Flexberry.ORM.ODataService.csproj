@@ -196,6 +196,7 @@
     <Compile Include="Events\Delegates.cs" />
     <Compile Include="Events\EventHandlerContainer.cs" />
     <Compile Include="Events\IEventHandlerContainer.cs" />
+    <Compile Include="Extensions\ODataRouteExtensions.cs" />
     <Compile Include="Formatter\CollectionDeserializationHelpers.cs" />
     <Compile Include="Formatter\DeserializationHelpers.cs" />
     <Compile Include="Formatter\ExtendedODataActionPayloadDeserializer.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="Functions\QueryParameters.cs" />
     <Compile Include="Functions\Function.cs" />
     <Compile Include="Functions\FunctionContainer.cs" />
+    <Compile Include="Extensions\ODataRouteHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

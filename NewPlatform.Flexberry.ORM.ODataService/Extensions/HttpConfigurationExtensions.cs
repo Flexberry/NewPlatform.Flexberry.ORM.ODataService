@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
@@ -25,15 +24,15 @@
     public static class HttpConfigurationExtensions
     {
         /// <summary>
-        /// Maps the OData service.
+        /// Maps the OData Service routes.
         /// </summary>
         /// <param name="config">The current HTTP configuration.</param>
         /// <param name="builder">The EDM model builder.</param>
         /// <param name="httpServer">HttpServer instance (GlobalConfiguration.DefaultServer).</param>
-        /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> be default).</param>
-        /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> be default).</param>
-        /// <returns>OData service registration token.</returns>
-        public static ManagementToken MapODataServiceDataObjectRoute(
+        /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> is default).</param>
+        /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> is default).</param>
+        /// <returns>A <see cref="ManagementToken"/> instance.</returns>
+        public static ManagementToken MapRoutes(
             this HttpConfiguration config,
             IDataObjectEdmModelBuilder builder,
             HttpServer httpServer,
@@ -90,6 +89,9 @@
             var routingConventions = DataObjectRoutingConventions.CreateDefault();
             var route = config.MapODataServiceRoute(routeName, routePrefix, model, pathHandler, routingConventions);
 
+            // Token.
+            ManagementToken token = route.CreateManagementToken(model);
+
             // Controllers.
             var registeredActivator = (IHttpControllerActivator)config.Services.GetService(typeof(IHttpControllerActivator));
             var fallbackActivator = registeredActivator ?? new DefaultHttpControllerActivator();
@@ -102,10 +104,6 @@
             config.Formatters.InsertRange(0, odataFormatters);
             config.Properties[typeof(CustomODataSerializerProvider)] = customODataSerializerProvider;
 
-            // Token.
-            var token = new ManagementToken(route, model);
-            config.SetODataServiceToken(token);
-
             // Handlers.
             if (config.MessageHandlers.FirstOrDefault(h => h is PostPatchHandler) == null)
             {
@@ -113,6 +111,26 @@
             }
 
             return token;
+        }
+
+        /// <summary>
+        /// Maps the OData Service routes.
+        /// </summary>
+        /// <param name="config">The current HTTP configuration.</param>
+        /// <param name="builder">The EDM model builder.</param>
+        /// <param name="httpServer">HttpServer instance (GlobalConfiguration.DefaultServer).</param>
+        /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> is default).</param>
+        /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> is default).</param>
+        /// <returns>A <see cref="ManagementToken"/> instance.</returns>
+        [Obsolete("Use MapDataObjectRoutes() method instead.")]
+        public static ManagementToken MapODataServiceDataObjectRoute(
+            this HttpConfiguration config,
+            IDataObjectEdmModelBuilder builder,
+            HttpServer httpServer,
+            string routeName = DataObjectRoutingConventions.DefaultRouteName,
+            string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix)
+        {
+            return MapRoutes(config, builder, httpServer, routeName, routePrefix);
         }
 
         /// <summary>
@@ -180,39 +198,6 @@
             IDataService dataService)
         {
             return httpConfiguration.MapODataServiceFileRoute(routeName, routeTemplate, uploadsDirectoryPath, null, dataService);
-        }
-
-        /// <summary>
-        /// Gets the OData Service token for current request.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Stored OData Service token.</returns>
-        /// <exception cref="InvalidOperationException">Thrown on errors in loading token from configuration.</exception>
-        public static ManagementToken GetODataServiceToken(this HttpRequestMessage request)
-        {
-            object savedToken;
-            if (!request.GetConfiguration().Properties.TryGetValue(request.GetRouteData().Route, out savedToken))
-            {
-                throw new InvalidOperationException("OData Service management token hasn't been set in the appropriate handler.");
-            }
-
-            var result = savedToken as ManagementToken;
-            if (result == null)
-            {
-                throw new InvalidOperationException("Something different has been saved instead of OData Service management token.");
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Sets the OData Service token to the configuration for internal purposes.
-        /// </summary>
-        /// <param name="config">The current HTTP configuration.</param>
-        /// <param name="token">The OData Service token.</param>
-        private static void SetODataServiceToken(this HttpConfiguration config, ManagementToken token)
-        {
-            config.Properties[token.Route] = token;
         }
     }
 }

@@ -6,6 +6,7 @@
     using System.Web.Http.Dependencies;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
+    using System.Web.OData.Routing;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
@@ -56,7 +57,7 @@
                     throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
                 }
 
-                ManagementToken token = request.GetODataServiceToken();
+                ManagementToken token = (request.GetRouteData().Route as ODataRoute).GetManagementToken();
 
                 DataObjectCache dataObjectCache = null;
                 if (request.Properties.ContainsKey(PostPatchHandler.PropertyKeyBatchRequest) && request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectCachePropertyKey))
