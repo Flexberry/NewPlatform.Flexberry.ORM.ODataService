@@ -83,7 +83,7 @@
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
-                    var token = config.MapRoutes(_builder, new HttpServer());
+                    var token = config.MapDataObjectRoute(_builder, new HttpServer());
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
                 }

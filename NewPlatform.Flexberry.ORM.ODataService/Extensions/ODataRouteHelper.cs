@@ -27,10 +27,9 @@
         /// Gets a <see cref="ManagementToken"/> instance previously registered as the OData route management token.
         /// </summary>
         /// <param name="route">The <see cref="ODataRoute"/> instance.</param>
-        /// <param name="isRequired">The flag indicating that OData route management token return is required.</param>
+        /// <param name="isRequired">The flag indicating that the OData route management token is required.</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
-        /// <exception cref="InvalidOperationException">Thrown on errors at management token retrieving.</exception>
-        /// <exception cref="NullReferenceException">Thrown if management token return is required but management token not exists.</exception>
+        /// <exception cref="InvalidOperationException">Thrown on errors at the OData route management token retrieving.</exception>
         internal static ManagementToken GetManagementToken(ODataRoute route, bool isRequired)
         {
             object o;
@@ -38,14 +37,25 @@
 
             var result = o as ManagementToken;
 
-            if (ok && result == null)
+            if (ok)
             {
-                throw new InvalidOperationException("Something different has been saved instead of management token.");
+                // A management token type check.
+                if (result == null)
+                {
+                    throw new InvalidOperationException("Something different has been saved instead of a management token.");
+                }
+
+                // The management token route value check.
+                if (result.Route != route)
+                {
+                    throw new InvalidOperationException("The management token route value not matches the 'route' parameter value.");
+                }
             }
 
+            // A management token instance is required but not exists check.
             if (isRequired && result == null)
             {
-                throw new NullReferenceException("Management token hasn't been set in the appropriate handler.");
+                throw new InvalidOperationException("A management token hasn't been set in the appropriate handler.");
             }
 
             return result;

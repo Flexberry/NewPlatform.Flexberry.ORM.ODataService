@@ -6,9 +6,9 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
-    using System.Web.OData.Batch;
     using System.Web.OData.Extensions;
     using System.Web.OData.Formatter;
+    using System.Web.OData.Routing;
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
@@ -24,7 +24,7 @@
     public static class HttpConfigurationExtensions
     {
         /// <summary>
-        /// Maps the OData Service routes.
+        /// Maps the OData Service DataObject route.
         /// </summary>
         /// <param name="config">The current HTTP configuration.</param>
         /// <param name="builder">The EDM model builder.</param>
@@ -32,7 +32,7 @@
         /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> is default).</param>
         /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> is default).</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
-        public static ManagementToken MapRoutes(
+        public static ManagementToken MapDataObjectRoute(
             this HttpConfiguration config,
             IDataObjectEdmModelBuilder builder,
             HttpServer httpServer,
@@ -70,7 +70,7 @@
             }
 
             // Model.
-            var model = builder.Build();
+            DataObjectEdmModel model = builder.Build();
 
             // Support batch requests.
             IDataService dataService = (IDataService)config.DependencyResolver.GetService(typeof(IDataService));
@@ -80,14 +80,11 @@
                 throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
             }
 
-            ODataBatchHandler batchHandler = new DataObjectODataBatchHandler(dataService, httpServer);
-            batchHandler.ODataRouteName = routeName;
-            config.Routes.MapHttpBatchRoute(routeName + "Batch", routePrefix + "/$batch", batchHandler);
-
             // Routing for DataObjects.
             var pathHandler = new ExtendedODataPathHandler();
             var routingConventions = DataObjectRoutingConventions.CreateDefault();
-            var route = config.MapODataServiceRoute(routeName, routePrefix, model, pathHandler, routingConventions);
+            var batchHandler = new DataObjectODataBatchHandler(dataService, httpServer);
+            ODataRoute route = config.MapODataServiceRoute(routeName, routePrefix, model, pathHandler, routingConventions, batchHandler);
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
@@ -102,7 +99,6 @@
             var extendedODataDeserializerProvider = new ExtendedODataDeserializerProvider();
             var odataFormatters = ODataMediaTypeFormatters.Create(customODataSerializerProvider, extendedODataDeserializerProvider);
             config.Formatters.InsertRange(0, odataFormatters);
-            config.Properties[typeof(CustomODataSerializerProvider)] = customODataSerializerProvider;
 
             // Handlers.
             if (config.MessageHandlers.FirstOrDefault(h => h is PostPatchHandler) == null)
@@ -114,7 +110,7 @@
         }
 
         /// <summary>
-        /// Maps the OData Service routes.
+        /// Maps the OData Service DataObject route.
         /// </summary>
         /// <param name="config">The current HTTP configuration.</param>
         /// <param name="builder">The EDM model builder.</param>
@@ -122,7 +118,7 @@
         /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> is default).</param>
         /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> is default).</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
-        [Obsolete("Use MapRoutes() method instead.")]
+        [Obsolete("Use MapDataObjectRoute() method instead.")]
         public static ManagementToken MapODataServiceDataObjectRoute(
             this HttpConfiguration config,
             IDataObjectEdmModelBuilder builder,
@@ -130,7 +126,7 @@
             string routeName = DataObjectRoutingConventions.DefaultRouteName,
             string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix)
         {
-            return MapRoutes(config, builder, httpServer, routeName, routePrefix);
+            return MapDataObjectRoute(config, builder, httpServer, routeName, routePrefix);
         }
 
         /// <summary>
