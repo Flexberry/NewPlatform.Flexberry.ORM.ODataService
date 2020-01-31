@@ -122,7 +122,7 @@
         /// <param name="routeName">The name of the route (<see cref="DataObjectRoutingConventions.DefaultRouteName"/> is default).</param>
         /// <param name="routePrefix">The route prefix (<see cref="DataObjectRoutingConventions.DefaultRoutePrefix"/> is default).</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
-        [Obsolete("Use MapDataObjectRoutes() method instead.")]
+        [Obsolete("Use MapRoutes() method instead.")]
         public static ManagementToken MapODataServiceDataObjectRoute(
             this HttpConfiguration config,
             IDataObjectEdmModelBuilder builder,
