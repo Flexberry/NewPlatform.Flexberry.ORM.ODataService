@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#ab179a705f9a1adcb1eaa744848c76509":[1,0,0,0,0,0,10,5,1,3],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_files_comparer.html":[1,0,0,0,0,0,10,5,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test.html":[1,0,0,0,0,0,10,21],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_lock_controller_test48df220aab40a32558fa34f72060b234.html":[1,0,0,0,0,0,10,21,0],
@@ -174,8 +175,8 @@ var NAVTREEINDEX2 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s.html":[1,0,0,0,0,0,11,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s.html#a64fc3f4c64b70eb2c0082056492bb49f":[1,0,0,0,0,0,11,0,0],
 "classes.html":[1,1],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_.html":[1,3,0,23],
 "functions_.html":[1,3,0,24],
 "functions_.html":[1,3,0,25],
@@ -197,8 +198,8 @@ var NAVTREEINDEX2 =
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -227,8 +228,8 @@ var NAVTREEINDEX2 =
 "functions_n.html":[1,3,0,13],
 "functions_o.html":[1,3,0,14],
 "functions_p.html":[1,3,0,15],
-"functions_prop.html":[1,3,3],
 "functions_prop.html":[1,3,3,0],
+"functions_prop.html":[1,3,3],
 "functions_prop_.html":[1,3,3,21],
 "functions_prop_.html":[1,3,3,22],
 "functions_prop_.html":[1,3,3,23],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "functions_prop_b.html":[1,3,3,2],
 "functions_prop_c.html":[1,3,3,3],
 "functions_prop_d.html":[1,3,3,4],
-"functions_prop_e.html":[1,3,3,5],
-"functions_prop_f.html":[1,3,3,6]
+"functions_prop_e.html":[1,3,3,5]
 };
