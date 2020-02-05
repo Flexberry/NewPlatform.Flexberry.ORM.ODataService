@@ -221,7 +221,8 @@
                     }
                     else
                     {
-                        _dataService.UpdateObject(obj);
+                        IDataService ds = GetDataService(obj.GetType());
+                        ds.UpdateObject(obj);
                     }
                 }
 
@@ -465,7 +466,8 @@
                 }
                 else
                 {
-                    _dataService.UpdateObjects(ref objsArrSmall);
+                    IDataService ds = GetDataService(obj.GetType());
+                    ds.UpdateObjects(ref objsArrSmall);
                 }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
@@ -509,21 +511,25 @@
                         && dataObjectFromCache.GetLoadedProperties().Length == 1
                         && dataObjectFromCache.CheckLoadedProperty(x => x.__PrimaryKey))
                     {
-                        _dataService.LoadObject(view, dataObjectFromCache);
+                        IDataService ds = GetDataService(objType);
+                        ds.LoadObject(view, dataObjectFromCache);
                     }
 
                     return dataObjectFromCache;
                 }
-
-                // Проверим существование объекта в базе.
-                LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
-                DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
-                if (dobjs.Length == 1)
+                else
                 {
-                    DataObject dataObject = dobjs[0];
-                    _newDataObjects.Add(dataObject, false);
-                    return dataObject;
+                    // Проверим существование объекта в базе.
+                    LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
+                    lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
+                    IDataService ds = GetDataService(objType);
+                    DataObject[] dobjs = ds.LoadObjects(lcs, _dataObjectCache);
+                    if (dobjs.Length == 1)
+                    {
+                        DataObject dataObject = dobjs[0];
+                        _newDataObjects.Add(dataObject, false);
+                        return dataObject;
+                    }
                 }
             }
 

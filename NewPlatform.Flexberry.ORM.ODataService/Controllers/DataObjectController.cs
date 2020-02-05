@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
@@ -267,7 +266,8 @@
             lcs.LoadingTypes = new[] { type };
             lcs.ReturnType = LcsReturnType.Objects;
 
-            return _dataService.GetObjectsCount(lcs);
+            IDataService ds = GetDataService(type);
+            return ds.GetObjectsCount(lcs);
         }
 
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
@@ -324,15 +324,10 @@
 
             par.DetailsInSeparateColumns = Convert.ToBoolean(queryParams.Get("detSeparateCols"));
             par.DetailsInSeparateRows = Convert.ToBoolean(queryParams.Get("detSeparateRows"));
-            MemoryStream result;
-            if (_model.ODataExportService != null)
-            {
-                result = _model.ODataExportService.CreateExportStream(_dataService, par, _objs, queryParams);
-            }
-            else
-            {
-                result = _model.ExportService.CreateExportStream(_dataService, par, _objs);
-            }
+            IDataService ds = GetDataService(view.DefineClassType);
+            var result = _model.ODataExportService != null
+                ? _model.ODataExportService.CreateExportStream(ds, par, _objs, queryParams)
+                : _model.ExportService.CreateExportStream(ds, par, _objs);
 
             HttpResponseMessage msg = Request.CreateResponse(HttpStatusCode.OK);
             RawOutputFormatter.PrepareHttpResponseMessage(ref msg, "application/ms-excel", _model, result.ToArray());
@@ -498,7 +493,8 @@
                                 {
                                     if (!DynamicView.ContainsPoperty(dynamicView.View, propPath))
                                     {
-                                        _dataService.LoadObject(dynamicView.View, (DataObject)master, false, true, _dataObjectCache);
+                                        IDataService ds = GetDataService(master.GetType());
+                                        ds.LoadObject(dynamicView.View, (DataObject)master, false, true, _dataObjectCache);
                                     }
 
                                     edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem, dynamicView);
@@ -988,7 +984,8 @@
             if (_dynamicView != null)
                 view = _dynamicView.View;
             IEnumerable<View> resolvingViews;
-            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, _dataService, out resolvingViews);
+            IDataService ds = GetDataService(type);
+            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, ds, out resolvingViews);
             if (_lcsLoadingTypes.Count == 0)
                 _lcsLoadingTypes = _model.GetDerivedTypes(type).ToList();
 
@@ -1016,6 +1013,16 @@
             }
 
             return lcs;
+        }
+
+        /// <summary>
+        /// Получить сервис данных для обрабатываемого типа.
+        /// </summary>
+        /// <param name="type">Обрабатываемый тип данных.</param>
+        /// <returns>Инстанция сервис данных.</returns>
+        protected virtual IDataService GetDataService(Type type)
+        {
+            return _dataService;
         }
 
         /// <summary>
@@ -1092,9 +1099,10 @@
         {
             foreach (var propType in Information.GetAllTypesFromView(lcs.View))
             {
-                if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
+                IDataService ds = GetDataService(propType);
+                if (!ds.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
                 {
-                    _dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Read, true);
+                    ds.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Read, true);
                 }
             }
 
@@ -1105,13 +1113,14 @@
                 doLoad = ExecuteCallbackBeforeGet(ref lcs);
             if (doLoad)
             {
+                IDataService ds = GetDataService(lcs.LoadingTypes.First());
                 if (!callGetObjectsCount)
                 {
-                    dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                    dobjs = ds.LoadObjects(lcs, _dataObjectCache);
                 }
                 else
                 {
-                    count = _dataService.GetObjectsCount(lcs);
+                    count = ds.GetObjectsCount(lcs);
                 }
             }
 
