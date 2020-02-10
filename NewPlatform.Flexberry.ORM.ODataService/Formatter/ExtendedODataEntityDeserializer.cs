@@ -4,16 +4,16 @@
     using System.Collections.Generic;
     using System.Web.OData;
     using System.Web.OData.Formatter.Deserialization;
-    using Microsoft.OData.Core;
     using Microsoft.OData.Edm;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using Expressions;
+    using Microsoft.OData;
 
     /// <summary>
     /// Десериализатор для чтения передаваемых данных OData.
     /// </summary>
-    public class ExtendedODataEntityDeserializer : ODataEntityDeserializer
+    public class ExtendedODataEntityDeserializer //-solo--: ODataEntityDeserializer
     {
         /// <summary>
         /// Строковая константа, которая используется для доступа свойствам запроса.
@@ -30,6 +30,7 @@
         /// </summary>
         public const string ReadException = "ExtendedODataEntityDeserializer_ReadException";
 
+        /*-solo-
         /// <summary>
         /// Конструктор.
         /// </summary>
@@ -169,5 +170,6 @@
                 }
             }
         }
+        */
     }
 }
