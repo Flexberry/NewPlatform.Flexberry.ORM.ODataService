@@ -3,19 +3,16 @@
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Web.Http;
-    using System.Web.OData.Properties;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-    using System.Web.OData.Formatter.Deserialization;
-    using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using System.Web.OData;
-    using System;
+    using System.Web.OData.Formatter.Deserialization;
+    using Microsoft.OData;
+    using Microsoft.OData.Edm;
+    using NewPlatform.Flexberry.ORM.ODataService.Expressions;
 
     internal static class DeserializationHelpers
     {
@@ -269,6 +266,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
                 return null;
             }
 
+            throw new NotImplementedException("-solo-");
+            /*-solo-
             ODataComplexValue complexValue = oDataValue as ODataComplexValue;
             if (complexValue != null)
             {
@@ -292,6 +291,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 
             typeKind = EdmTypeKind.Primitive;
             return oDataValue;
+            */
         }
 
         internal static Type GetPropertyType(object resource, string propertyName)
@@ -320,6 +320,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
             }
         }
 
+        /*-solo-
         private static object ConvertComplexValue(ODataComplexValue complexValue, ref IEdmTypeReference propertyType,
             ODataDeserializerProvider deserializerProvider, ODataDeserializerContext readContext)
         {
@@ -350,6 +351,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
             ODataEdmTypeDeserializer deserializer = deserializerProvider.GetEdmTypeDeserializer(edmComplexType);
             return deserializer.ReadInline(complexValue, propertyType, readContext);
         }
+        */
 
         private static bool CanSetProperty(object resource, string propertyName)
         {
