@@ -11,6 +11,12 @@
     /// <inheritdoc/>
     public class ExtendedODataDeserializerProvider : DefaultODataDeserializerProvider
     {
+        public ExtendedODataDeserializerProvider(IServiceProvider rootContainer)
+            : base(rootContainer)
+        {
+        }
+
+        /*-solo-
         /// <inheritdoc/>
         public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(Microsoft.OData.Edm.IEdmTypeReference edmType)
         {
@@ -36,5 +42,6 @@
 
             return new ExtendedODataEntityDeserializer(Instance);
         }
+        */
     }
 }
