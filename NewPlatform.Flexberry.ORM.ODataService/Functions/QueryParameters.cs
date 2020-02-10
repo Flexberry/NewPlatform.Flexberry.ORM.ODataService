@@ -4,8 +4,7 @@
     using System.Net.Http;
 
     using ICSSoft.STORMNET.Business;
-
-    using Microsoft.OData.Core;
+    using Microsoft.OData;
 
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
