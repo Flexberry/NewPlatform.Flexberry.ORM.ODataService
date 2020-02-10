@@ -10,7 +10,6 @@
     using System.Web.Http;
     using System.Web.OData.Properties;
     using System.Web.OData.Routing;
-    using Microsoft.OData.Core;
     using Microsoft.OData.Edm;
     using System.Web.OData.Formatter.Deserialization;
     using System;
@@ -18,7 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using ICSSoft.STORMNET;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using Microsoft.OData.Edm.Library;
+    using Microsoft.OData;
 
     /// <inheritdoc />
     public class ExtendedODataActionPayloadDeserializer : ODataDeserializer
@@ -40,6 +39,7 @@
         /// </summary>
         public ODataDeserializerProvider DeserializerProvider { get; private set; }
 
+        /*-solo-
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling",
             Justification = "The majority of types referenced by this method are EdmLib types this method needs to know about to operate correctly")]
@@ -294,6 +294,6 @@
 
             return obj;
         }
-
+        */
     }
 }
