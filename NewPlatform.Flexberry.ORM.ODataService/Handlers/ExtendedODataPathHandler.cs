@@ -2,31 +2,26 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
     using System.Net.Http;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.OData.Routing;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Core.UriParser;
-    using Microsoft.OData.Core.UriParser.Metadata;
-    using Microsoft.OData.Core.UriParser.TreeNodeKinds;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm;
+    using Microsoft.OData.UriParser;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-    using Semantic = Microsoft.OData.Core.UriParser.Semantic;
-    using SingleValueNode = Microsoft.OData.Core.UriParser.Semantic.SingleValueNode;
+
+    using ODataPath = System.Web.OData.Routing.ODataPath;
 
     /// <inheritdoc cref="DefaultODataPathHandler"/>
     public class ExtendedODataPathHandler : DefaultODataPathHandler
     {
-        private ODataUriResolverSetttings _resolverSettings = new ODataUriResolverSetttings();
+        private ODataUriResolverSettings _resolverSettings = new ODataUriResolverSettings();
 
         /// <inheritdoc cref="DefaultODataPathHandler"/>
-        public override ODataPath Parse(IEdmModel model, string serviceRoot, string odataPath)
+        public override ODataPath Parse(string serviceRoot, string odataPath, IServiceProvider requestContainer)
         {
+            var model = requestContainer.GetService(typeof(IEdmModel)) as IEdmModel;
             if (model == null)
             {
                 throw Error.ArgumentNull("model");
@@ -51,7 +46,7 @@
             IEdmModel model,
             string serviceRoot,
             string odataPath,
-            ODataUriResolverSetttings resolverSettings,
+            ODataUriResolverSettings resolverSettings,
             bool enableUriTemplateParsing)
         {
             ODataUriParser uriParser;
@@ -85,9 +80,9 @@
 
             uriParser.Resolver = resolverSettings.CreateResolver(model);
 
-            Semantic.ODataPath path;
+            Microsoft.OData.UriParser.ODataPath path;
             UnresolvedPathSegment unresolvedPathSegment = null;
-            Semantic.KeySegment id = null;
+            KeySegment id = null;
             try
             {
                 path = uriParser.ParsePath();
@@ -102,7 +97,7 @@
                 {
                     if (ex.UnparsedSegments.Count() == 0)
                     {
-                        path = new Semantic.ODataPath(ex.ParsedSegments);
+                        path = new Microsoft.OData.UriParser.ODataPath(ex.ParsedSegments);
                         unresolvedPathSegment = new UnresolvedPathSegment(ex.CurrentSegment);
                     }
                     else
@@ -120,13 +115,13 @@
                 }
             }
 
-            if (!enableUriTemplateParsing && path.LastSegment is Semantic.NavigationPropertyLinkSegment)
+            if (!enableUriTemplateParsing && path.LastSegment is NavigationPropertyLinkSegment)
             {
                 IEdmCollectionType lastSegmentEdmType = path.LastSegment.EdmType as IEdmCollectionType;
 
                 if (lastSegmentEdmType != null)
                 {
-                    Semantic.EntityIdSegment entityIdSegment = null;
+                    EntityIdSegment entityIdSegment = null;
                     bool exceptionThrown = false;
 
                     try
@@ -137,7 +132,7 @@
                         {
                             // Create another ODataUriParser to parse $id, which is absolute or relative.
                             ODataUriParser parser = new ODataUriParser(model, serviceRootUri, entityIdSegment.Id);
-                            id = parser.ParsePath().LastSegment as Semantic.KeySegment;
+                            id = parser.ParsePath().LastSegment as KeySegment;
                         }
                     }
                     catch (ODataException)
@@ -158,6 +153,8 @@
                 }
             }
 
+            throw new NotImplementedException("-solo-");
+            /*-solo-
             ODataPath webAPIPath = ODataPathSegmentTranslator.TranslateODataLibPathToWebApiPath(
                 path,
                 model,
@@ -168,7 +165,7 @@
 
             CheckNavigableProperty(webAPIPath, model);
             return webAPIPath;
-
+            */
         }
 
         private static void CheckNavigableProperty(ODataPath path, IEdmModel model)
@@ -185,7 +182,8 @@
 
             foreach (ODataPathSegment segment in path.Segments)
             {
-                NavigationPathSegment navigationPathSegment = segment as NavigationPathSegment;
+                // The NavigationPropertySegment type is the Microsoft.AspNet.OData v5.7.0 NavigationPathSegment type replacement.
+                NavigationPropertySegment navigationPathSegment = segment as NavigationPropertySegment;
 
                 if (navigationPathSegment != null)
                 {
@@ -200,7 +198,7 @@
         }
     }
 
-    internal class ODataUriResolverSetttings
+    internal class ODataUriResolverSettings
     {
         public bool CaseInsensitive { get; set; }
 
