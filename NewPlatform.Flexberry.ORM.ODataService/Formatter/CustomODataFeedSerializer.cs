@@ -8,15 +8,15 @@
     using System.Threading.Tasks;
     using System.Web.OData;
     using System.Web.OData.Formatter.Serialization;
-    using Microsoft.OData.Core;
+    //-solo--using Microsoft.OData.Core;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
+    //-solo-using Microsoft.OData.Edm.Library;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
 
     /// <summary>
     /// OData serializer for serializing a collection of <see cref="IEdmEntityType" />
     /// </summary>
-    internal class CustomODataFeedSerializer : ODataFeedSerializer
+    internal class CustomODataFeedSerializer //-solo-: ODataFeedSerializer
     {
         /// <summary>
         /// Name for count property in Request.
@@ -31,10 +31,11 @@
         /// </summary>
         /// <param name="serializerProvider">The <see cref="ODataSerializerProvider"/> to use to write nested entries.</param>
         public CustomODataFeedSerializer(CustomODataSerializerProvider serializerProvider)
-            : base(serializerProvider)
+            //-solo-: base(serializerProvider)
         {
         }
 
+        /*-solo-
         /// <summary>
         /// Create the <see cref="ODataFeed"/> to be written for the given feed instance.
         /// </summary>
@@ -72,5 +73,6 @@
 
             base.WriteObject(graph, type, messageWriter, writeContext);
         }
+        */
     }
 }
