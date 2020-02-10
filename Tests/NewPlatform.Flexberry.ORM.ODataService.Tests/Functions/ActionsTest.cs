@@ -10,9 +10,7 @@
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-
-    using Microsoft.OData.Core;
-
+    using Microsoft.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
