@@ -11,9 +11,6 @@
     using ICSSoft.STORMNET;
 
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Library.Expressions;
-    using Microsoft.OData.Edm.Library.Values;
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
@@ -204,8 +201,7 @@
                         string[] enumNames = Enum.GetNames(propertyType);
                         for (int i = 0; i < enumNames.Length; i++)
                         {
-                            int intValue = (int)enumValues.GetValue(i);
-                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmIntegerConstant(intValue)));
+                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], null));
                         }
 
                         _registeredEnums.Add(propertyType, edmEnumType);
@@ -617,7 +613,7 @@
 
                 edmAction = new EdmAction(DefaultNamespace, action.Name, returnEdmTypeReference);
                 edmAction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddActionImport(action.Name, edmAction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
+                entityContainer.AddActionImport(edmAction);
             }
 
             AddElement(edmAction);
@@ -672,7 +668,7 @@
 
                 edmFunction = new EdmFunction(DefaultNamespace, function.Name, returnEdmTypeReference, true, null, true);
                 edmFunction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
+                entityContainer.AddFunctionImport(edmFunction);
             }
 
             AddElement(edmFunction);
