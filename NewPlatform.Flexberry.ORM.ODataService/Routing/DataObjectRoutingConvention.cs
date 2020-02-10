@@ -4,10 +4,11 @@
     using System.Linq;
     using System.Net.Http;
     using System.Web.Http.Controllers;
-    using System.Web.OData.Routing;
     using System.Web.OData.Routing.Conventions;
+    using Microsoft.OData.Edm;
+    using Microsoft.OData.UriParser;
 
-    using Microsoft.OData.Edm.Library;
+    using ODataPath = System.Web.OData.Routing.ODataPath;
 
     /// <summary>
     /// Класс, осуществляющий выбор контроллера и действий для OData-запросов.
@@ -33,14 +34,16 @@
             }
 
             // Запросы типа odata или odata/$metadata должны обрабатываться стандартным образом.
-            MetadataPathSegment metadataPathSegment = odataPath.Segments.FirstOrDefault() as MetadataPathSegment;
+            // The MetadataSegment type is the Microsoft.AspNet.OData v5.7.0 MetadataPathSegment type replacement.
+            MetadataSegment metadataPathSegment = odataPath.Segments.FirstOrDefault() as MetadataSegment;
             if (odataPath.Segments.Count == 0 || metadataPathSegment != null)
             {
                 return base.SelectController(odataPath, request);
             }
 
             // Запросы типа odata или odata/$batch должны обрабатываться стандартным образом.
-            BatchPathSegment batchPathSegment = odataPath.Segments.FirstOrDefault() as BatchPathSegment;
+            // The BatchSegment type is the Microsoft.AspNet.OData v5.7.0 BatchPathSegment type replacement.
+            BatchSegment batchPathSegment = odataPath.Segments.FirstOrDefault() as BatchSegment;
             if (odataPath.Segments.Count == 0 || batchPathSegment != null)
             {
                 return base.SelectController(odataPath, request);
@@ -59,18 +62,21 @@
         /// <returns>Имя действия, которое будет выполнятся при запросе или <c>null</c>, если данная конвенция не может подобрать нужное действие.</returns>
         public override string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext, ILookup<string, HttpActionDescriptor> actionMap)
         {
-            if (odataPath.Segments.Count > 0 && odataPath.Segments[odataPath.Segments.Count - 1] is UnboundFunctionPathSegment)
+            // The OperationImportSegment type is the Microsoft.AspNet.OData v5.7.0 UnboundFunctionPathSegment type replacement.
+            if (odataPath.Segments.Count > 0 && odataPath.Segments[odataPath.Segments.Count - 1] is OperationImportSegment)
             {
                 return "GetODataFunctionsExecute";
             }
 
-            if (odataPath.Segments.Count > 0 && odataPath.Segments[odataPath.Segments.Count - 1] is UnboundActionPathSegment)
+            // The OperationSegment type is the Microsoft.AspNet.OData v5.7.0 UnboundActionPathSegment type replacement.
+            if (odataPath.Segments.Count > 0 && odataPath.Segments[odataPath.Segments.Count - 1] is OperationSegment)
             {
                 return "PostODataActionsExecute";
             }
 
-            if ((odataPath.Segments.Count > 1 && odataPath.Segments[odataPath.Segments.Count - 1] is NavigationPathSegment) ||
-                (odataPath.Segments.Count > 2 && odataPath.Segments[odataPath.Segments.Count - 2] is NavigationPathSegment))
+            // The NavigationPropertySegment type is the Microsoft.AspNet.OData v5.7.0 NavigationPathSegment type replacement.
+            if ((odataPath.Segments.Count > 1 && odataPath.Segments[odataPath.Segments.Count - 1] is NavigationPropertySegment) ||
+                (odataPath.Segments.Count > 2 && odataPath.Segments[odataPath.Segments.Count - 2] is NavigationPropertySegment))
             {
                 if (odataPath.EdmType is EdmCollectionType)
                     return "GetCollection";
@@ -104,7 +110,6 @@
                     return "DeleteString";
                 }
             }
-
 
             string ret = base.SelectAction(odataPath, controllerContext, actionMap);
             return ret;
