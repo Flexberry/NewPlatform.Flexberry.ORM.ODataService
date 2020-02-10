@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Net.Http;
     using System.Web.OData;
+    using System.Web.OData.Extensions;
     using System.Web.OData.Formatter.Serialization;
 
     using ICSSoft.STORMNET;
@@ -21,8 +22,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomODataSerializerProvider"/> class.
         /// </summary>
-        public CustomODataSerializerProvider()
-            : base()
+        public CustomODataSerializerProvider(IServiceProvider rootContainer)
+            : base(rootContainer)
         {
             _feedSerializer = new CustomODataFeedSerializer(this);
         }
@@ -38,7 +39,9 @@
         public override ODataEdmTypeSerializer GetEdmTypeSerializer(IEdmTypeReference edmType)
         {
             ODataEdmTypeSerializer serializer = base.GetEdmTypeSerializer(edmType);
-            if (serializer is ODataFeedSerializer)
+            throw new NotImplementedException("-solo-");
+            /*-solo-
+            if (serializer is System.Web.OData.Formatter.Serialization.ODataFeedSerializer)
             {
                 serializer = _feedSerializer;
             }
@@ -50,27 +53,30 @@
             }
 
             return serializer;
+            */
         }
 
         /// <summary>
-        /// Gets an <see cref="T:System.Web.OData.Formatter.Serialization.ODataSerializer"/> for the given <paramref name="model"/> and <paramref name="type"/>.
-        ///
+        /// Gets an <see cref="T:System.Web.OData.Formatter.Serialization.ODataSerializer"/> for the model associated with of the given <paramref name="request"/> and <paramref name="type"/>.
         /// </summary>
-        /// <param name="model">The EDM model associated with the request.</param><param name="type">The <see cref="T:System.Type"/> for which the serializer is being requested.</param><param name="request">The request for which the response is being serialized.</param>
+        /// <param name="type">The <see cref="T:System.Type"/> for which the serializer is being requested.</param>
+        /// <param name="request">The request for which the response is being serialized.</param>
         /// <returns>
         /// The <see cref="T:System.Web.OData.Formatter.Serialization.ODataSerializer"/> for the given type.
         /// </returns>
-        public override ODataSerializer GetODataPayloadSerializer(IEdmModel model, Type type, HttpRequestMessage request)
+        public override ODataSerializer GetODataPayloadSerializer(Type type, HttpRequestMessage request)
         {
             if (type == typeof(EnumerableQuery<IEdmEntityObject>))
             {
-                return _feedSerializer;
+                throw new NotImplementedException("-solo-");
+                //-solo-return _feedSerializer;
             }
 
-            ODataSerializer serializer = base.GetODataPayloadSerializer(model, type, request);
+            ODataSerializer serializer = base.GetODataPayloadSerializer(type, request);
 
             if (serializer == null)
             {
+                IEdmModel model = request.GetModel();
                 LogService.LogDebug($"'{type.Name}' ({nameof(IEdmModel)} type='{model.GetType().Name}') cannot be serialized using the '{nameof(CustomODataSerializerProvider)}'");
             }
 
