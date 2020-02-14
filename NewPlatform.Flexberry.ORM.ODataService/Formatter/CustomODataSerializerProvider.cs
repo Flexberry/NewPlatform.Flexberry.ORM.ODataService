@@ -39,7 +39,8 @@
         public override ODataEdmTypeSerializer GetEdmTypeSerializer(IEdmTypeReference edmType)
         {
             ODataEdmTypeSerializer serializer = base.GetEdmTypeSerializer(edmType);
-            throw new NotImplementedException("-solo-");
+            //throw new NotImplementedException("-solo-");
+            return serializer;
             /*-solo-
             if (serializer is System.Web.OData.Formatter.Serialization.ODataFeedSerializer)
             {

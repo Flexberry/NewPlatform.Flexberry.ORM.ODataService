@@ -3,10 +3,11 @@
     using System.Reflection;
     using System.Web.OData.Routing;
     using System.Web.OData.Routing.Conventions;
-    using Xunit;
 
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+    using Xunit;
 
     /// <summary>
     /// Unit test class for <see cref="PerRequestUpdateEdmModelHandler"/>.
@@ -24,7 +25,9 @@
             var pathHandler = new DefaultODataPathHandler();
             var model = new DataObjectEdmModel(new DataObjectEdmMetadata());
             var conventions = new IODataRoutingConvention[0];
-            var constraint = new ODataPathRouteConstraint(pathHandler, model, "name", conventions);
+            //-solo- var constraint = new ODataPathRouteConstraint(pathHandler, model, "name", conventions);
+            var constraint = new ODataPathRouteConstraint("name");
+            throw new System.NotImplementedException("-solo-");
             var route = new ODataRoute("prefix", constraint);
             var assemblies = new Assembly[0];
             var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies);

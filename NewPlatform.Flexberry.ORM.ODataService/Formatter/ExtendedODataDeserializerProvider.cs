@@ -15,6 +15,30 @@
             : base(rootContainer)
         {
         }
+        public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(Microsoft.OData.Edm.IEdmTypeReference edmType)
+        {
+            return base.GetEdmTypeDeserializer(edmType);
+        }
+        public override ODataDeserializer GetODataDeserializer(
+             //-solo-Microsoft.OData.Edm.IEdmModel model,
+             Type type,
+             System.Net.Http.HttpRequestMessage request)
+        {
+            if (type == typeof(Uri))
+            {
+                //-solo-return base.GetODataDeserializer(model, type, request);
+                return base.GetODataDeserializer(type, request);
+            }
+
+            if (type == typeof(ODataActionParameters) ||
+                type == typeof(ODataUntypedActionParameters))
+            {
+                return new ExtendedODataActionPayloadDeserializer(this);
+            }
+
+            throw new NotImplementedException("-solo-");
+            //-solo-return new ExtendedODataEntityDeserializer(Instance);
+        }
 
         /*-solo-
         /// <inheritdoc/>

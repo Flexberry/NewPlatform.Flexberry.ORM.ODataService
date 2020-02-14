@@ -86,6 +86,8 @@
             try
             {
                 path = uriParser.ParsePath();
+                //(path.LastSegment as OperationImportSegment).;
+                //uriParser.Container.
             }
             catch (ODataUnrecognizedPathException ex)
             {
@@ -97,8 +99,8 @@
                 {
                     if (ex.UnparsedSegments.Count() == 0)
                     {
-                        path = new Microsoft.OData.UriParser.ODataPath(ex.ParsedSegments);
                         unresolvedPathSegment = new UnresolvedPathSegment(ex.CurrentSegment);
+                        path = new Microsoft.OData.UriParser.ODataPath(ex.ParsedSegments.Concat(new UnresolvedPathSegment[] { unresolvedPathSegment }));
                     }
                     else
                     {
@@ -153,7 +155,14 @@
                 }
             }
 
-            throw new NotImplementedException("-solo-");
+            IEnumerable<ODataPathSegment> segments = ODataPathSegmentTranslator.Translate(
+                model, path, uriParser.ParameterAliasNodes);
+            ODataPath webAPIPath = new ODataPath(segments);
+
+            CheckNavigableProperty(webAPIPath, model);
+            return webAPIPath;
+
+            //throw new NotImplementedException("-solo-");
             /*-solo-
             ODataPath webAPIPath = ODataPathSegmentTranslator.TranslateODataLibPathToWebApiPath(
                 path,
