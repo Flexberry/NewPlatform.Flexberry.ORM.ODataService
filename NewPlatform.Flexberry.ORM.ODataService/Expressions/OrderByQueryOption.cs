@@ -8,8 +8,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Web.OData;
-    using System.Web.OData.Query;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Query;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
@@ -35,7 +35,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         /// Создает экземпляр NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption по экземпляру System.Web.OData.Query.OrderByQueryOption.
         /// </summary>
         /// <param name="orderByQueryOption">Экземпляр System.Web.OData.Query.OrderByQueryOption.</param>
-        public OrderByQueryOption(System.Web.OData.Query.OrderByQueryOption orderByQueryOption, Type contextElementClrType)
+        public OrderByQueryOption(Microsoft.AspNet.OData.Query.OrderByQueryOption orderByQueryOption, Type contextElementClrType)
         {
             Context = orderByQueryOption.Context;
             _contextElementClrType = contextElementClrType;

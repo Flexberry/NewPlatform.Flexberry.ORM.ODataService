@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web.OData;
-    using System.Web.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Serialization;
     //-solo--using Microsoft.OData.Core;
     using Microsoft.OData.Edm;
     //-solo-using Microsoft.OData.Edm.Library;

@@ -5,13 +5,13 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Net.Http;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData.Routing;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
 
-    using ODataPath = System.Web.OData.Routing.ODataPath;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
 
     /// <inheritdoc cref="DefaultODataPathHandler"/>
     public class ExtendedODataPathHandler : DefaultODataPathHandler

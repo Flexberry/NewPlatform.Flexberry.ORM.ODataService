@@ -8,10 +8,10 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Batch;
-    using System.Web.OData.Batch;
-    using System.Web.OData.Extensions;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using Microsoft.AspNet.OData.Batch;
+    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.OData;
 
     /// <summary>

@@ -3,9 +3,9 @@
     using System;
     using System.Linq;
     using System.Net.Http;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData.Extensions;
 
     using ICSSoft.STORMNET;
 

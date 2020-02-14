@@ -6,11 +6,11 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter.Serialization;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Routing.Conventions;
     using ICSSoft.STORMNET.Business;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.AspNet.OData.Routing.Conventions;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;

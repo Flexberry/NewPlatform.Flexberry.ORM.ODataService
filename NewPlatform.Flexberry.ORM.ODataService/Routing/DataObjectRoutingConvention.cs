@@ -4,11 +4,11 @@
     using System.Linq;
     using System.Net.Http;
     using System.Web.Http.Controllers;
-    using System.Web.OData.Routing.Conventions;
+    using Microsoft.AspNet.OData.Routing.Conventions;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
 
-    using ODataPath = System.Web.OData.Routing.ODataPath;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
 
     /// <summary>
     /// Класс, осуществляющий выбор контроллера и действий для OData-запросов.

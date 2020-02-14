@@ -13,11 +13,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Linq;
     using System.Reflection;
     using System.Web.Http.Dispatcher;
-    using System.Web.OData;
-    using System.Web.OData.Builder;
     using System.Xml.Linq;
     using Microsoft.OData.Edm;
     using Microsoft.Spatial;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Builder;
 
     /// <summary>
     /// Класс содержит вспомогательные методы для работы с EDM-моделью.

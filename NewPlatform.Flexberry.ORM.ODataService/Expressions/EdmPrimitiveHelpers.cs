@@ -9,9 +9,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Data.Linq;
     using System.Globalization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
     using System.Xml.Linq;
-    using ValidationException=System.ComponentModel.DataAnnotations.ValidationException;
+    //-solo-using Microsoft.AspNet.OData.Properties;
+    using ValidationException =System.ComponentModel.DataAnnotations.ValidationException;
 
     /// <summary>
     /// Вспомогательные методы для работы примитивными значениями.

@@ -1,8 +1,8 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Handlers
 {
     using System.Reflection;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Routing.Conventions;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.AspNet.OData.Routing.Conventions;
 
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -25,14 +25,15 @@
             var pathHandler = new DefaultODataPathHandler();
             var model = new DataObjectEdmModel(new DataObjectEdmMetadata());
             var conventions = new IODataRoutingConvention[0];
-            //-solo- var constraint = new ODataPathRouteConstraint(pathHandler, model, "name", conventions);
-            var constraint = new ODataPathRouteConstraint("name");
             throw new System.NotImplementedException("-solo-");
+            /*-solo-
+            var constraint = new ODataPathRouteConstraint(pathHandler, model, "name", conventions);
             var route = new ODataRoute("prefix", constraint);
             var assemblies = new Assembly[0];
             var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies);
 
             new PerRequestUpdateEdmModelHandler(new ManagementToken(route, model), modelBuilder);
+            */
         }
     }
 }

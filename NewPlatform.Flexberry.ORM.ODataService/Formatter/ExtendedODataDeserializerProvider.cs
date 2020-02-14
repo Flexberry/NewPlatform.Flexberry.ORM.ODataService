@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web.OData;
-    using System.Web.OData.Formatter.Deserialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
 
     /// <inheritdoc/>
     public class ExtendedODataDeserializerProvider : DefaultODataDeserializerProvider

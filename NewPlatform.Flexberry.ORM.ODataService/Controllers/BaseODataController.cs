@@ -1,7 +1,7 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
     using System.Web.Http.Controllers;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     /// <summary>
     /// Базовый класс для OData-контроллеров.

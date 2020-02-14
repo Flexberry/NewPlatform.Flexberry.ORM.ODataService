@@ -14,9 +14,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Web.Http.Dispatcher;
-    using System.Web.OData.Query;
     using System.Xml.Linq;
     using ICSSoft.STORMNET.Business.LINQProvider;
+    using Microsoft.AspNet.OData.Query;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;

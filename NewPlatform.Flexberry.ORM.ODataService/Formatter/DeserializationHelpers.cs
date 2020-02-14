@@ -8,8 +8,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
     using System.Collections.Generic;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Web.OData;
-    using System.Web.OData.Formatter.Deserialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;

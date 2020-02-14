@@ -4,16 +4,16 @@
     using System.Collections;
     using System.Reflection;
     using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
     using ICSSoft.STORMNET;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.OData.UriParser;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
 
     using Action = Functions.Action;
-    using ODataPath = System.Web.OData.Routing.ODataPath;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
 
     /// <summary>
     /// OData controller class.

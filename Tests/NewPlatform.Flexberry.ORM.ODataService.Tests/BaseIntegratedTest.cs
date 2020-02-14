@@ -9,7 +9,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Linq;
     using ICSSoft.STORMNET.Business;
     using Npgsql;
-    using Oracle.ManagedDataAccess.Client;
 
     public abstract class BaseIntegratedTest : IDisposable
     {
@@ -295,7 +294,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 return $"Pooling=false;{ConfigurationManager.ConnectionStrings["ConnectionStringMssql"]}";
             }
         }
-
+        
         private static string ConnectionStringOracle
         {
             get

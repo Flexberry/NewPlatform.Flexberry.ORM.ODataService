@@ -1,5 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -8,16 +9,15 @@
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Web.Http;
-    using System.Web.OData.Properties;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
+    //-solo-using Microsoft.AspNet.OData.Properties;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
-    using System.Web.OData.Formatter.Deserialization;
-    using System;
-    using System.Web.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using ICSSoft.STORMNET;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using Microsoft.OData;
 
     /// <inheritdoc />
     public class ExtendedODataActionPayloadDeserializer : ODataDeserializer

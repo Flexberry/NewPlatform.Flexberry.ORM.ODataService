@@ -5,11 +5,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Web.OData;
 
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
 
+    using Microsoft.AspNet.OData;
     using Microsoft.OData.Edm;
     using Microsoft.Spatial;
 

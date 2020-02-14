@@ -11,12 +11,12 @@
     using System.Web.Http;
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.FunctionalLanguage;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Files;

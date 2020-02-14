@@ -107,17 +107,20 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.OData, Version=7.1.0.10213, Culture=neutral, PublicKeyToken=95a54c5278ef8dd5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.OData-Debug.7.1.0-beta04\lib\net45\Microsoft.AspNet.OData.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.OData.Core, Version=7.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OData.Core.7.1.1\lib\portable-net45+win8+wpa81\Microsoft.OData.Core.dll</HintPath>
+    <Reference Include="Microsoft.OData.Core, Version=7.5.0.10212, Culture=neutral, PublicKeyToken=f0da9a90273b11ef, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OData.Core-Debug.7.5.0-beta01\lib\portable-net45+win+wpa81\Microsoft.OData.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.OData.Edm, Version=7.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OData.Edm.7.1.1\lib\portable-net45+win8+wpa81\Microsoft.OData.Edm.dll</HintPath>
+    <Reference Include="Microsoft.OData.Edm, Version=7.5.0.10212, Culture=neutral, PublicKeyToken=49f0520170834285, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OData.Edm-Debug.7.5.0-beta01\lib\portable-net45+win+wpa81\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Spatial, Version=7.5.0.20627, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Spatial.7.5.0\lib\portable-net45+win8+wpa81\Microsoft.Spatial.dll</HintPath>
@@ -137,7 +140,7 @@
       <HintPath>..\..\packages\NewPlatform.Flexberry.Caching.2.0.0-alpha02\lib\netstandard2.0\NewPlatform.Flexberry.Caching.dll</HintPath>
     </Reference>
     <Reference Include="NewPlatform.Flexberry.LockService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=90cf813b4f0caf3c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NewPlatform.Flexberry.LockService.3.0.0-alpha01\lib\netstandard2.0\NewPlatform.Flexberry.LockService.dll</HintPath>
+      <HintPath>..\..\packages\NewPlatform.Flexberry.LockService.3.0.0-alpha02\lib\netstandard2.0\NewPlatform.Flexberry.LockService.dll</HintPath>
     </Reference>
     <Reference Include="NewPlatform.Flexberry.LogService, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fd6943b998f5450d, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NewPlatform.Flexberry.LogService.2.0.0-alpha03\lib\netstandard2.0\NewPlatform.Flexberry.LogService.dll</HintPath>
@@ -258,9 +261,6 @@
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.OData, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.OData.6.0.0\lib\net45\System.Web.OData.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />

@@ -14,10 +14,6 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Results;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
-    using System.Web.OData.Routing;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
@@ -25,6 +21,10 @@
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.UserDataTypes;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.AspNet.OData.Routing;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
@@ -36,7 +36,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
 
-    using ODataPath = System.Web.OData.Routing.ODataPath;
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
     using OrderByQueryOption = Expressions.OrderByQueryOption;
 
     /// <summary>

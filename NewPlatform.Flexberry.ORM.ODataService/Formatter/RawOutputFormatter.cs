@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Formatting;
-    using System.Web.OData;
     using ICSSoft.STORMNET;
+    using Microsoft.AspNet.OData;
     using Microsoft.OData.Edm;
     using Model;
 
