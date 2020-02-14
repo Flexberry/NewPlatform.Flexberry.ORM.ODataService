@@ -4,6 +4,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Data.OracleClient;
     using System.Data.SqlClient;
     using System.Linq;
     using ICSSoft.STORMNET.Business;

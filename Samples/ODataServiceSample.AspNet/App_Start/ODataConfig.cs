@@ -62,6 +62,9 @@
             };
             var builder = new DefaultDataObjectEdmModelBuilder(assemblies);
 
+            // ToDo: PublishName attribute values without namespaces are not supported yet.
+            builder.TypeFilter = t => t.Name != "FlexberryAdvLimit";
+
             // Map OData Service
             var token = config.MapDataObjectRoute(builder, httpServer);
 

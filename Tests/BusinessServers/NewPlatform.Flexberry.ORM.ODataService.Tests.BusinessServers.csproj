@@ -92,6 +92,12 @@
     <Reference Include="NewPlatform.Flexberry.ORM.CurrentUserService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=087bc7ccdc1b0bb4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.Abstractions.6.0.0-alpha07\lib\netstandard2.0\NewPlatform.Flexberry.ORM.CurrentUserService.dll</HintPath>
     </Reference>
+    <Reference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c6a0c26547452df4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.GisMSSQLDataService.2.0.0-alpha01\lib\netstandard2.0\NewPlatform.Flexberry.ORM.GisMSSQLDataService.dll</HintPath>
+    </Reference>
+    <Reference Include="NewPlatform.Flexberry.ORM.GisPostgresDataService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c6a0c26547452df4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.GisPostgresDataService.2.0.0-alpha01\lib\netstandard2.0\NewPlatform.Flexberry.ORM.GisPostgresDataService.dll</HintPath>
+    </Reference>
     <Reference Include="NewPlatform.Flexberry.ORM.UnityFactory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6389c2e26f4059bc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.Abstractions.6.0.0-alpha07\lib\netstandard2.0\NewPlatform.Flexberry.ORM.UnityFactory.dll</HintPath>
     </Reference>

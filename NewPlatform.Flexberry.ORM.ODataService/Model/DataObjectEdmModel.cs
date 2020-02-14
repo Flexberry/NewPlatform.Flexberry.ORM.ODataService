@@ -201,7 +201,8 @@
                         string[] enumNames = Enum.GetNames(propertyType);
                         for (int i = 0; i < enumNames.Length; i++)
                         {
-                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], null));
+                            int intValue = (int)enumValues.GetValue(i);
+                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmEnumMemberValue(intValue)));
                         }
 
                         _registeredEnums.Add(propertyType, edmEnumType);
@@ -613,7 +614,8 @@
 
                 edmAction = new EdmAction(DefaultNamespace, action.Name, returnEdmTypeReference);
                 edmAction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddActionImport(edmAction);
+                //-solo- entityContainer.AddActionImport(action.Name, edmAction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
+                entityContainer.AddActionImport(edmAction); //-solo- is vodovoz variant, may be errory
             }
 
             AddElement(edmAction);
@@ -668,7 +670,8 @@
 
                 edmFunction = new EdmFunction(DefaultNamespace, function.Name, returnEdmTypeReference, true, null, true);
                 edmFunction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddFunctionImport(edmFunction);
+                //-solo- entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
+                entityContainer.AddFunctionImport(edmFunction); //-solo- is vodovoz variant, may be errory
             }
 
             AddElement(edmFunction);
