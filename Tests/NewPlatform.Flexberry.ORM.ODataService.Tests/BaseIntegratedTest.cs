@@ -1,18 +1,15 @@
 ﻿[assembly: Xunit.CollectionBehavior(DisableTestParallelization = true)]
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
-    using Xunit;
-    using ICSSoft.STORMNET.Business;
-    using Npgsql;
-    using Oracle.ManagedDataAccess.Client;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
+    using ICSSoft.STORMNET.Business;
+    using Npgsql;
+    using Oracle.ManagedDataAccess.Client;
+
     public abstract class BaseIntegratedTest : IDisposable
     {
         /// <summary>
@@ -20,14 +17,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// </summary>
         private readonly string _tempDbNamePrefix;
 
-        private string _databaseName;
-
-        private string _tmpUserNameOracle;
-
         /// <summary>
         /// The data services for temp databases (for <see cref="DataServices"/>).
         /// </summary>
         private readonly List<IDataService> _dataServices = new List<IDataService>();
+
+        private string _databaseName;
+
+        private string _tmpUserNameOracle;
 
         private bool _useGisDataService;
 
@@ -35,6 +32,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// Flag: Indicates whether "Dispose" has already been called.
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Deletes the temporary databases and perform other cleaning.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         protected virtual string MssqlScript
         {
@@ -51,12 +56,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 return Resources.PostgresScript;
             }
         }
+
         protected virtual string OracleScript
         {
             get
             {
-                //Тестирование в Oracle временно отлючено.
-                return null; //Resources.OracleScript;
+                // Тестирование в Oracle временно отлючено.
+                return null; // Resources.OracleScript;
             }
         }
 
@@ -70,7 +76,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 if (_disposed)
                     throw new ObjectDisposedException(null);
 
-
                 return _dataServices;
             }
         }
@@ -79,6 +84,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
+        /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
             _useGisDataService = useGisDataService;
@@ -86,23 +92,26 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 throw new ArgumentNullException();
             if (!(tempDbNamePrefix != string.Empty))
                 throw new ArgumentException();
-            if (!(tempDbNamePrefix.All(char.IsLetterOrDigit)))
+            if (!tempDbNamePrefix.All(char.IsLetterOrDigit))
                 throw new ArgumentException();
+
             _tempDbNamePrefix = tempDbNamePrefix;
             _databaseName = _tempDbNamePrefix + "_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + "_" + Guid.NewGuid().ToString("N");
+
             if (!string.IsNullOrWhiteSpace(PostgresScript))
             {
-                if (!(tempDbNamePrefix.Length <= 12))                // Max length is 63 (-18 -32).
+                if (!(tempDbNamePrefix.Length <= 12)) // Max length is 63 (-18 -32).
                     throw new ArgumentException();
-                if (!(char.IsLetter(tempDbNamePrefix[0])))           // Database names must have an alphabetic first character.
+                if (!char.IsLetter(tempDbNamePrefix[0])) // Database names must have an alphabetic first character.
                     throw new ArgumentException();
+
                 using (var conn = new NpgsqlConnection(ConnectionStringPostgres))
                 {
                     conn.Open();
                     using (var cmd = new NpgsqlCommand(string.Format("CREATE DATABASE \"{0}\" ENCODING = 'UTF8' CONNECTION LIMIT = -1;", _databaseName), conn))
                         cmd.ExecuteNonQuery();
-
                 }
+
                 using (var conn = new NpgsqlConnection($"{ConnectionStringPostgres};Database={_databaseName}"))
                 {
                     conn.Open();
@@ -113,9 +122,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     _dataServices.Add(CreatePostgresDataService($"{ConnectionStringPostgres};Database={_databaseName}"));
                 }
             }
+
             if (!string.IsNullOrWhiteSpace(MssqlScript))
             {
-                if (!(tempDbNamePrefix.Length <= 64))// Max is 128.
+                if (!(tempDbNamePrefix.Length <= 64)) // Max is 128.
                     throw new ArgumentException();
                 using (var connection = new SqlConnection(ConnectionStringMssql))
                 {
@@ -123,6 +133,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     using (var command = new SqlCommand($"CREATE DATABASE {_databaseName} COLLATE Cyrillic_General_CI_AS", connection))
                         command.ExecuteNonQuery();
                 }
+
                 using (var connection = new SqlConnection($"{ConnectionStringMssql};Database={_databaseName}"))
                 {
                     connection.Open();
@@ -131,12 +142,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         command.CommandTimeout = 180;
                         command.ExecuteNonQuery();
                     }
+
                     _dataServices.Add(CreateMssqlDataService($"{ConnectionStringMssql};Database={_databaseName}"));
                 }
             }
+
             if (!string.IsNullOrWhiteSpace(OracleScript))
             {
-                if (!(tempDbNamePrefix.Length <= 8))                // Max length is 30 (-18 -4).
+                if (!(tempDbNamePrefix.Length <= 8)) // Max length is 30 (-18 -4).
                     throw new ArgumentException();
 
                 using (var connection = new OracleConnection(ConnectionStringOracle))
@@ -156,6 +169,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         command.ExecuteNonQuery();
                     }
                 }
+
                 using (var connection = new OracleConnection($"{ConnectionStringOracleDataSource};User Id={_tmpUserNameOracle};Password={_tmpUserNameOracle};"))
                 {
                     connection.Open();
@@ -167,11 +181,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                             if (!string.IsNullOrWhiteSpace(command.CommandText))
                                 command.ExecuteNonQuery();
                         }
+
                         _dataServices.Add(CreateOracleDataService($"{ConnectionStringOracleDataSource};User Id={_tmpUserNameOracle};Password={_tmpUserNameOracle};"));
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -183,6 +197,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             if (_useGisDataService)
                 return new GisMSSQLDataService { CustomizationString = connectionString };
+
             return new MSSQLDataService { CustomizationString = connectionString };
         }
 
@@ -195,6 +210,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             if (_useGisDataService)
                 return new GisPostgresDataService { CustomizationString = connectionString };
+
             return new PostgresDataService { CustomizationString = connectionString };
         }
 
@@ -207,7 +223,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             return new OracleDataService { CustomizationString = connectionString };
         }
-
 
         /// <summary>
         /// Deletes the temporary databases and perform other cleaning.
@@ -231,6 +246,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                                 command.ExecuteNonQuery();
                         }
                     }
+
                     if (ds is MSSQLDataService || ds.GetType().IsSubclassOf(typeof(MSSQLDataService)))
                     {
                         using (var connection = new SqlConnection(ConnectionStringMssql))
@@ -240,6 +256,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                                 command.ExecuteNonQuery();
                         }
                     }
+
                     if (ds is OracleDataService || ds.GetType().IsSubclassOf(typeof(OracleDataService)))
                     {
                         using (var connection = new OracleConnection(ConnectionStringOracle))
@@ -258,14 +275,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             _disposed = true;
         }
 
-        /// <summary>
-        /// Deletes the temporary databases and perform other cleaning.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
         private static string ConnectionStringPostgres
         {
             get
@@ -275,6 +284,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 return $"Pooling=false;{ConfigurationManager.ConnectionStrings["ConnectionStringPostgres"]}";
             }
         }
+
         private static string ConnectionStringMssql
         {
             get
@@ -284,6 +294,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 return $"Pooling=false;{ConfigurationManager.ConnectionStrings["ConnectionStringMssql"]}";
             }
         }
+
         private static string ConnectionStringOracle
         {
             get
@@ -293,6 +304,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 return $"Pooling=false;{ConfigurationManager.ConnectionStrings["ConnectionStringOracle"]}";
             }
         }
+
         private static string ConnectionStringOracleDataSource
         {
             get
