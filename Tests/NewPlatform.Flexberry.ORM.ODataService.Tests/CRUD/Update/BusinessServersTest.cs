@@ -169,8 +169,8 @@
                         новаяБерлога.ToJson(Берлога.Views.БерлогаE, args.Token.Model),
                         новаяБерлога),
                 };
-
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -285,6 +285,7 @@
         private string CreateBatchBody(string boundary, string[] changesets)
         {
             var body = new StringBuilder($"--{boundary}");
+            body.AppendLine();
 
             string changesetBoundary = $"changeset_{Guid.NewGuid()}";
 
