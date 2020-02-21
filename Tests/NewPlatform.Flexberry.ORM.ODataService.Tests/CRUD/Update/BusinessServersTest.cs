@@ -1,8 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
@@ -134,6 +138,210 @@
                     Assert.Equal($"Берлога расположена в {лес1.Название}", receivedObjs[nameof(Берлога.ПолеБС)]);
                 }
             });
+        }
+
+        /// <summary>
+        /// Test to check the call business server of aggregator when adding detail through batch request with aggregator.
+        /// </summary>
+        [Fact]
+        public void CallAggregatorBSOnAddDetailTest()
+        {
+            ActODataService(async (args) =>
+            {
+                var медведь = new Медведь();
+                медведь.Берлога.Add(new Берлога());
+
+                args.DataService.UpdateObject(медведь);
+
+                var новаяБерлога = new Берлога();
+                медведь.Берлога.Add(новаяБерлога);
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        "{}",
+                        медведь),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}",
+                        новаяБерлога.ToJson(Берлога.Views.БерлогаE, args.Token.Model),
+                        новаяБерлога),
+                };
+
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
+
+                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+
+                    Assert.Equal(1, берлоги.Count(б => б.Заброшена));
+                    Assert.Equal(1, берлоги.Count(б => !б.Заброшена));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test to check the call business server of aggregator when updating detail through batch request with aggregator.
+        /// </summary>
+        [Fact]
+        public void CallAggregatorBSOnUpdateDetailTest()
+        {
+            ActODataService(async (args) =>
+            {
+                var медведь = new Медведь();
+                медведь.Берлога.Add(new Берлога() { Заброшена = true });
+                медведь.Берлога.Add(new Берлога() { Заброшена = true });
+
+                args.DataService.UpdateObject(медведь);
+
+                медведь.Берлога[0].Комфортность += 1;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        "{}",
+                        медведь),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}",
+                        медведь.Берлога[0].ToJson(Берлога.Views.БерлогаE, args.Token.Model),
+                        медведь.Берлога[0]),
+                };
+
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
+
+                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+                    var комфортнаяБерлога = берлоги.FirstOrDefault(б => б.Комфортность == 1);
+
+                    Assert.False(комфортнаяБерлога?.Заброшена);
+                    Assert.Equal(1, берлоги.Count(б => б.Заброшена));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test to check the call business server of aggregator when deleting detail through batch request with aggregator.
+        /// </summary>
+        [Fact]
+        public void CallAggregatorBSOnDeleteDetailTest()
+        {
+            ActODataService(async (args) =>
+            {
+                var медведь = new Медведь();
+                медведь.Берлога.Add(new Берлога());
+                медведь.Берлога.Add(new Берлога());
+
+                args.DataService.UpdateObject(медведь);
+
+                медведь.Берлога[0].SetStatus(ObjectStatus.Deleted);
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset($"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}", "{}", медведь),
+                    CreateChangeset($"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}", string.Empty, медведь.Берлога[0]),
+                };
+
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
+
+                    Assert.Equal(1, медведь.Берлога.GetAllObjects().Cast<Берлога>().First().Комфортность);
+                }
+            });
+        }
+
+        private HttpRequestMessage CreateBatchRequest(string url, string[] changesets)
+        {
+            string boundary = $"batch_{Guid.NewGuid()}";
+            string body = CreateBatchBody(boundary, changesets);
+
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri($"{url}/$batch"),
+                Method = new HttpMethod("POST"),
+                Content = new StringContent(body),
+            };
+
+            request.Content.Headers.ContentType.MediaType = "multipart/mixed";
+            request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("boundary", boundary));
+
+            return request;
+        }
+
+        private string CreateBatchBody(string boundary, string[] changesets)
+        {
+            var body = new StringBuilder($"--{boundary}");
+
+            string changesetBoundary = $"changeset_{Guid.NewGuid()}";
+
+            body.AppendLine($"Content-Type: multipart/mixed;boundary={changesetBoundary}");
+            body.AppendLine();
+
+            for (var i = 0; i < changesets.Length; i++)
+            {
+                body.AppendLine($"--{changesetBoundary}");
+                body.AppendLine($"Content-Type: application/http");
+                body.AppendLine($"Content-Transfer-Encoding: binary");
+                body.AppendLine($"Content-ID: {i + 1}");
+                body.AppendLine();
+
+                body.AppendLine(changesets[i]);
+
+                body.AppendLine($"--{changesetBoundary}--");
+            }
+
+            body.AppendLine($"--{boundary}--");
+            body.AppendLine();
+
+            return body.ToString();
+        }
+
+        private string CreateChangeset(string url, string body, DataObject dataObject)
+        {
+            var changeset = new StringBuilder();
+
+            changeset.AppendLine($"{GetMethodAndUrl(dataObject, url)} HTTP/1.1");
+            changeset.AppendLine($"Content-Type: application/json;type=entry");
+            changeset.AppendLine($"Prefer: return=representation");
+            changeset.AppendLine();
+
+            changeset.AppendLine(body);
+            changeset.AppendLine();
+
+            return changeset.ToString();
+        }
+
+        private string GetMethodAndUrl(DataObject dataObject, string url)
+        {
+            switch (dataObject.GetStatus())
+            {
+                case ObjectStatus.Created:
+                    return $"POST {url}";
+
+                case ObjectStatus.Altered:
+                case ObjectStatus.UnAltered:
+                    return $"PATCH {url}({dataObject.__PrimaryKey})";
+
+                case ObjectStatus.Deleted:
+                    return $"DELETE {url}({dataObject.__PrimaryKey})";
+
+                default:
+                    throw new InvalidOperationException();
+            }
         }
     }
 }
