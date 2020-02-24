@@ -200,6 +200,10 @@
 
                 медведь.Берлога[0].Комфортность += 1;
 
+                View view = new View() { DefineClassType = typeof(Берлога) };
+                view.AddProperty(Information.ExtractPropertyName<Берлога>(b => b.__PrimaryKey));
+                view.AddProperty(Information.ExtractPropertyName<Берлога>(b => b.Комфортность));
+
                 const string baseUrl = "http://localhost/odata";
 
                 string[] changesets = new[]
@@ -210,7 +214,7 @@
                         медведь),
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}",
-                        медведь.Берлога[0].ToJson(Берлога.Views.БерлогаE, args.Token.Model),
+                        медведь.Берлога[0].ToJson(view, args.Token.Model),
                         медведь.Берлога[0]),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);

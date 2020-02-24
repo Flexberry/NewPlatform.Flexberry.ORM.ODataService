@@ -627,8 +627,6 @@
 
                         EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
 
-                        // var aggregator = Information.GetAgregatePropertyName(objType);
-
                         // Обработка мастеров.
                         if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
                         {
