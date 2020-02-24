@@ -83,6 +83,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     }
 
                     последняяБерлога.Заброшена = false;
+                    updatedObjects.Add(последняяБерлога);
                 }
 
                 var разрушеннаяБерлога = берлоги.FirstOrDefault(б => б.GetStatus() == ObjectStatus.Deleted);

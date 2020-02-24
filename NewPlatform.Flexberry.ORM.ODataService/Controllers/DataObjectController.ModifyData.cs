@@ -762,6 +762,28 @@
                         }
                     }
                 }
+
+                string agregatorPropName = Information.GetAgregatePropertyName(objType);
+
+                if (!string.IsNullOrEmpty(agregatorPropName) && dataObjectPropName == agregatorPropName)
+                {
+                    DataObject agregator = (DataObject)Information.GetPropValueByName(obj, agregatorPropName);
+
+                    if (agregator != null)
+                    {
+                        DataObject existObject = dObjs.FirstOrDefault(o => o.__PrimaryKey.ToString() == agregator.__PrimaryKey.ToString());
+                        if (existObject == null)
+                        {
+                            dObjs.Add(agregator);
+
+                            if (!_newDataObjects.ContainsKey(agregator))
+                            {
+                                _newDataObjects.Add(agregator, false);
+                            }
+
+                        }
+                    }
+                }
             }
 
             return obj;
