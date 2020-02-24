@@ -212,16 +212,32 @@
                 // В данный момент ReferentialConstraints не создаются в модели.
                 obj.SetStatus(ObjectStatus.Deleted);
 
+                List<DataObject> objs = new List<DataObject>();
+
                 if (ExecuteCallbackBeforeDelete(obj))
                 {
+                    string agregatorPropertyName = Information.GetAgregatePropertyName(type);
+                    if (!string.IsNullOrEmpty(agregatorPropertyName))
+                    {
+                        DataObject agregator = (DataObject)Information.GetPropValueByName(obj, agregatorPropertyName);
+
+                        if (agregator != null)
+                        {
+                            objs.Add(agregator);
+                        }
+                    }
+
+                    objs.Add(obj);
+
                     if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
                     {
                         List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
-                        dataObjectsToUpdate.Add(obj);
+                        dataObjectsToUpdate.AddRange(objs);
                     }
                     else
                     {
-                        _dataService.UpdateObject(obj);
+                        DataObject[] dataObjects = objs.ToArray();
+                        _dataService.UpdateObjects(ref dataObjects);
                     }
                 }
 
@@ -461,7 +477,7 @@
                 if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
                 {
                     List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
-                    dataObjectsToUpdate.Add(obj);
+                    dataObjectsToUpdate.AddRange(objsArrSmall);
                 }
                 else
                 {
@@ -622,6 +638,23 @@
                                 DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
 
                                 Information.SetPropValueByName(obj, dataObjectPropName, master);
+
+                                string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
+                                if (dataObjectPropName == agregatorPropertyName)
+                                {
+                                    string detailPropertyName = Information.GetDetailArrayPropertyName(master.GetType(), objType);
+                                    DetailArray details = (DetailArray)Information.GetPropValueByName(master, detailPropertyName);
+
+                                    if (details != null)
+                                    {
+                                        DataObject existDetail = details.GetByKey(obj.__PrimaryKey);
+
+                                        if (existDetail == null)
+                                        {
+                                            details.AddObject(obj);
+                                        }
+                                    }
+                                }
                             }
                             else
                             {

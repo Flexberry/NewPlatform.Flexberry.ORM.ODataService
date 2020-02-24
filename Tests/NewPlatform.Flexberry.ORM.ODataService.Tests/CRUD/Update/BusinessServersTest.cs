@@ -213,8 +213,8 @@
                         медведь.Берлога[0].ToJson(Берлога.Views.БерлогаE, args.Token.Model),
                         медведь.Берлога[0]),
                 };
-
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -253,12 +253,14 @@
                     CreateChangeset($"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}", string.Empty, медведь.Берлога[0]),
                 };
 
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(CreateBatchRequest(baseUrl, changesets)))
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
+                    Assert.Equal(1, медведь.Берлога.Count);
                     Assert.Equal(1, медведь.Берлога.GetAllObjects().Cast<Берлога>().First().Комфортность);
                 }
             });
@@ -301,10 +303,9 @@
                 body.AppendLine();
 
                 body.AppendLine(changesets[i]);
-
-                body.AppendLine($"--{changesetBoundary}--");
             }
 
+            body.AppendLine($"--{changesetBoundary}--");
             body.AppendLine($"--{boundary}--");
             body.AppendLine();
 
@@ -321,7 +322,6 @@
             changeset.AppendLine();
 
             changeset.AppendLine(body);
-            changeset.AppendLine();
 
             return changeset.ToString();
         }
@@ -335,10 +335,10 @@
 
                 case ObjectStatus.Altered:
                 case ObjectStatus.UnAltered:
-                    return $"PATCH {url}({dataObject.__PrimaryKey})";
+                    return $"PATCH {url}({((KeyGuid)dataObject.__PrimaryKey).Guid})";
 
                 case ObjectStatus.Deleted:
-                    return $"DELETE {url}({dataObject.__PrimaryKey})";
+                    return $"DELETE {url}({((KeyGuid)dataObject.__PrimaryKey).Guid})";
 
                 default:
                     throw new InvalidOperationException();
