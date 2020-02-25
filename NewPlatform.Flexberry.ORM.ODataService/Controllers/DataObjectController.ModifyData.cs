@@ -633,7 +633,7 @@
                             if (value != null && value is EdmEntityObject)
                             {
                                 EdmEntityObject edmMaster = (EdmEntityObject)value;
-                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
+                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, true);
 
                                 Information.SetPropValueByName(obj, dataObjectPropName, master);
 
