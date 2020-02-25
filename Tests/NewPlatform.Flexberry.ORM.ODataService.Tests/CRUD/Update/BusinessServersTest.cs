@@ -7,7 +7,7 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
-
+    using System.Web.OData.Batch;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
@@ -172,7 +172,7 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.Created });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
@@ -199,10 +199,13 @@
                 args.DataService.UpdateObject(медведь);
 
                 медведь.Берлога[0].Комфортность += 1;
+                string testName = "Элитная берлога №1";
+                медведь.Берлога[0].Наименование = testName;
 
                 View view = new View() { DefineClassType = typeof(Берлога) };
                 view.AddProperty(Information.ExtractPropertyName<Берлога>(b => b.__PrimaryKey));
                 view.AddProperty(Information.ExtractPropertyName<Берлога>(b => b.Комфортность));
+                view.AddProperty(Information.ExtractPropertyName<Берлога>(b => b.Наименование));
 
                 const string baseUrl = "http://localhost/odata";
 
@@ -220,15 +223,18 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
                     var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
-                    var комфортнаяБерлога = берлоги.FirstOrDefault(б => б.Комфортность == 1);
 
-                    Assert.False(комфортнаяБерлога?.Заброшена);
-                    Assert.Equal(1, берлоги.Count(б => б.Заброшена));
+                    Assert.Equal(2, берлоги.Count());
+
+                    var комфортнаяБерлога = берлоги.FirstOrDefault(б => б.Комфортность == 1);
+                    Assert.NotNull(комфортнаяБерлога);
+
+                    Assert.Equal(testName, медведь.ЦветГлаз);
                 }
             });
         }
@@ -260,7 +266,7 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.NoContent });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
@@ -268,6 +274,20 @@
                     Assert.Equal(1, медведь.Берлога.GetAllObjects().Cast<Берлога>().First().Комфортность);
                 }
             });
+        }
+
+        private void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            int i = 0;
+            ODataBatchContent content = response.Content as ODataBatchContent;
+            foreach (ChangeSetResponseItem changeSetResponseItem in content.Responses)
+            {
+                foreach (HttpResponseMessage httpResponseMessage in changeSetResponseItem.Responses)
+                {
+                    Assert.Equal(statusCodes[i++], httpResponseMessage.StatusCode);
+                }
+            }
         }
 
         private HttpRequestMessage CreateBatchRequest(string url, string[] changesets)

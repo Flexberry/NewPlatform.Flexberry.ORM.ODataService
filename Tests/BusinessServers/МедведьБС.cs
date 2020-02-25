@@ -82,6 +82,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         }
                     }
 
+                    UpdatedObject.ЦветГлаз = последняяБерлога.Наименование;
                     последняяБерлога.Заброшена = false;
                     updatedObjects.Add(последняяБерлога);
                 }
