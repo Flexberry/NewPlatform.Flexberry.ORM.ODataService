@@ -23,6 +23,7 @@
       2. [BREAKINGCHANGE] Method MapODataServiceDataObjectRoute now requires HttpServer as parameter.
       3. At creation of dynamic views of the master in them are added with primary keys.
       4. Use common DataObjectCache for all sql queries per http request.
+      5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
 
       Fixed
       1. Fix error with POST request and header "Prefer".

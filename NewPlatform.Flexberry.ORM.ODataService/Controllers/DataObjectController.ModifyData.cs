@@ -633,7 +633,7 @@
                             if (value != null && value is EdmEntityObject)
                             {
                                 EdmEntityObject edmMaster = (EdmEntityObject)value;
-                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, true);
+                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
 
                                 Information.SetPropValueByName(obj, dataObjectPropName, master);
 
@@ -774,7 +774,16 @@
                         DataObject existObject = dObjs.FirstOrDefault(o => o.__PrimaryKey.ToString() == agregator.__PrimaryKey.ToString());
                         if (existObject == null)
                         {
-                            dObjs.Add(agregator);
+                            if (!endObject)
+                            {
+                                // Добавляем объект в начало списка.
+                                dObjs.Insert(0, agregator);
+                            }
+                            else
+                            {
+                                // Добавляем в конец списка.
+                                dObjs.Add(agregator);
+                            }
 
                             if (!_newDataObjects.ContainsKey(agregator))
                             {
