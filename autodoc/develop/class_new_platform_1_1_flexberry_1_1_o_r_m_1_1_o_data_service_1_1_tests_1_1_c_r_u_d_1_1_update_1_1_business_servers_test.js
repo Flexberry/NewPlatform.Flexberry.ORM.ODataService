@@ -1,4 +1,7 @@
 var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test =
 [
-    [ "BSTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test.html#a38d7b70847acd55303ad054cf95a7324", null ]
+    [ "BSTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test.html#a38d7b70847acd55303ad054cf95a7324", null ],
+    [ "CallAggregatorBSOnAddDetailTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test.html#a02e5d6cd3298a4f77e3803b6876375be", null ],
+    [ "CallAggregatorBSOnDeleteDetailTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test.html#a86d37f8d9971b05843d8705d3e8c7fde", null ],
+    [ "CallAggregatorBSOnUpdateDetailTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_business_servers_test.html#ac3c9d334eeb07563c99d731670484644", null ]
 ];
