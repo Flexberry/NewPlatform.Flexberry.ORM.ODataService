@@ -40,7 +40,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         public virtual ICSSoft.STORMNET.DataObject[] OnUpdateЛес(NewPlatform.Flexberry.ORM.ODataService.Tests.Лес UpdatedObject)
         {
             // *** Start programmer edit section *** (OnUpdateЛес)
-            UpdatedObject.ДатаПоследнегоОсмотра = ICSSoft.STORMNET.UserDataTypes.NullableDateTime.Now;
+
             return new ICSSoft.STORMNET.DataObject[] { UpdatedObject };
             // *** End programmer edit section *** (OnUpdateЛес)
         }
