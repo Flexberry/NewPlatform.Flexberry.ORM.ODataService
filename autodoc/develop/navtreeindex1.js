@@ -52,7 +52,8 @@ var NAVTREEINDEX1 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test.html":[1,0,0,0,0,0,10,0,0,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test.html#a9f15ecc5cc0e197f624a3dbee5096440":[1,0,0,0,0,0,10,0,0,0,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_change_master_in_b_s_test.html":[1,0,0,0,0,0,10,0,0,1],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_change_master_in_b_s_test.html#a18507ecf449c1e464c0193ea0273f04c":[1,0,0,0,0,0,10,0,0,1,0],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_change_master_in_b_s_test.html#a18507ecf449c1e464c0193ea0273f04c":[1,0,0,0,0,0,10,0,0,1,1],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_change_master_in_b_s_test.html#a23ef49cc268b7a83cf103505b8f44026":[1,0,0,0,0,0,10,0,0,1,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_gis_c_r_u_d_test.html":[1,0,0,0,0,0,10,0,3],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_gis_c_r_u_d_test.html#a8d803833e6ab9f1d13b7901f39e0f224":[1,0,0,0,0,0,10,0,3,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_gis_c_r_u_d_test.html#aa3d890635775046796343942ecabe0f5":[1,0,0,0,0,0,10,0,3,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#abcb14bc811f72d05b4f72f8f49a8e291":[1,0,0,0,0,0,10,5,0,7],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#acb918651dd386cf863390f0760f41a97":[1,0,0,0,0,0,10,5,0,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ad43ca2c0e06601ba9608ecece981821c":[1,0,0,0,0,0,10,5,0,4],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ae4fe3dab0cc628e142cf2858b728fa66":[1,0,0,0,0,0,10,5,0,3],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html":[1,0,0,0,0,0,10,5,1]
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ae4fe3dab0cc628e142cf2858b728fa66":[1,0,0,0,0,0,10,5,0,3]
 };

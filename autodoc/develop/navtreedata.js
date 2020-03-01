@@ -1,6 +1,6 @@
 var NAVTREE =
 [
-  [ "Flexberry ORM ODataService 5.1.0-beta05", "index.html", [
+  [ "Flexberry ORM ODataService 5.1.0-beta06", "index.html", [
     [ "Пространства имен", null, [
       [ "Пространства имен", "namespaces.html", "namespaces" ],
       [ "Члены пространств имен", "namespacemembers.html", [
@@ -27,8 +27,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ac3f286612eb796e15a8d4c622712aa77",
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html#a34c49e364be13a91ce4afcf643661b46",
-"functions_prop_c.html"
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary_collection.html",
+"functions_prop_A.html"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';
