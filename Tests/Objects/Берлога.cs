@@ -40,9 +40,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             "ЛесРасположения as \'Лес расположения\'",
             "ЛесРасположения.Название as \'Название\'",
             "Медведь as \'Медведь\'",
-            "ПолеБС"}, Hidden=new string[] {
+            "ПолеБС",
+            "Сертификат",
+            "СертификатСтрока"
+        }, Hidden=new string[] {
             "ЛесРасположения.Название",
-            "Медведь"})]
+            "Медведь",
+            "Сертификат",
+            "СертификатСтрока"})]
     [MasterViewDefineAttribute("БерлогаE", "ЛесРасположения", ICSSoft.STORMNET.LookupTypeEnum.Standard, "", "Название")]
     public class Берлога : ICSSoft.STORMNET.DataObject
     {
@@ -58,12 +63,67 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Лес fЛесРасположения;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fМедведь;
-        
+
         // *** Start programmer edit section *** (Берлога CustomMembers)
+
+        private ICSSoft.STORMNET.UserDataTypes.WebFile fСертификат;
+
+        private string fСертификатСтрока;
+
+        public virtual ICSSoft.STORMNET.UserDataTypes.WebFile Сертификат
+        {
+            get
+            {
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get start)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get start)
+                ICSSoft.STORMNET.UserDataTypes.WebFile result = this.fСертификат;
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get end)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set start)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set start)
+                this.fСертификат = value;
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set end)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set end)
+            }
+        }
+
+        public virtual string СертификатСтрока
+        {
+            get
+            {
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get start)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get start)
+                string result = this.fСертификатСтрока;
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get end)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set start)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set start)
+                this.fСертификатСтрока = value;
+                // *** Start programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set end)
+
+                // *** End programmer edit section *** (ImportDannykhFondaKapremontaKatalog.Fail Set end)
+            }
+        }
+
 
         // *** End programmer edit section *** (Берлога CustomMembers)
 
-        
+
         /// <summary>
         /// ПолеБС.
         /// </summary>
