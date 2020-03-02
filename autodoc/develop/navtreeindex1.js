@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a6cdfc2b4cb7589559bc9048ce1a96c42":[1,0,0,0,0,0,7,10,4],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ab4323119cd7b23b8baa8a242c060025a":[1,0,0,0,0,0,7,10,16],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#abaecd8f122b0af90509824e0b2d4bd75":[1,0,0,0,0,0,7,10,10],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#abd1df2aa290fa393574229a585d422e2":[1,0,0,0,0,0,7,10,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ac3f286612eb796e15a8d4c622712aa77":[1,0,0,0,0,0,7,10,15],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ad0a3ab416182ed5c25d15b49b06df3bd":[1,0,0,0,0,0,7,10,12],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ad26f0e1757b34f9157a5ae6651a82ec2":[1,0,0,0,0,0,7,10,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html":[1,0,0,0,0,0,10,5,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a30e8c57b235922c1837692d0d7b3aa63":[1,0,0,0,0,0,10,5,0,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a517c5294a452beac5abb8dbafd736da9":[1,0,0,0,0,0,10,5,0,6],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a757cdecf45edd8f24532079e1bfd2206":[1,0,0,0,0,0,10,5,0,5],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#abcb14bc811f72d05b4f72f8f49a8e291":[1,0,0,0,0,0,10,5,0,7],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#acb918651dd386cf863390f0760f41a97":[1,0,0,0,0,0,10,5,0,1],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ad43ca2c0e06601ba9608ecece981821c":[1,0,0,0,0,0,10,5,0,4],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ae4fe3dab0cc628e142cf2858b728fa66":[1,0,0,0,0,0,10,5,0,3]
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a757cdecf45edd8f24532079e1bfd2206":[1,0,0,0,0,0,10,5,0,5]
 };

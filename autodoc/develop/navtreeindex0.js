@@ -44,8 +44,12 @@ var NAVTREEINDEX0 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_lock_controller.html#a75b587dd0573baddba5792ef88449c11":[1,0,0,0,0,0,0,4,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_lock_controller.html#a8abb07fa09ad5a465b357808f068f26e":[1,0,0,0,0,0,0,4,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html":[1,0,0,0,0,0,12],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#a0857c18f2c52573e6b4caf59f73b0633":[1,0,0,0,0,0,12,5],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#a3737c34702cf2cf4388941d348bd65cb":[1,0,0,0,0,0,12,4],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#aabdffb1cd550de9277cbf2b8b0171f9d":[1,0,0,0,0,0,12,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#ad32a9a7cc461a43a02a938e69ef6c196":[1,0,0,0,0,0,12,0],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#aed949861f9e2e4e2e47c0a58003c8ec6":[1,0,0,0,0,0,12,2],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html#aee1e29f9a2b442155c3068f897f4adf0":[1,0,0,0,0,0,12,3],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option.html":[1,0,0,0,0,0,2,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option.html#a261cf898d8ef53411bd8e4b07e15df78":[1,0,0,0,0,0,2,0,3],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions_1_1_order_by_query_option.html#a9445835b187e29819b43866ab2127f04":[1,0,0,0,0,0,2,0,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX0 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a2140701152de0ebac950c1513da5a4c6":[1,0,0,0,0,0,7,10,11],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a278b2e9f501a9d6ba649b28b7b366639":[1,0,0,0,0,0,7,10,7],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a4743e0abb3edc420cf20c800439cbdf6":[1,0,0,0,0,0,7,10,14],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a4f6ba3a5b10d5384fb0a8e4f278e4a74":[1,0,0,0,0,0,7,10,0],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a6cdfc2b4cb7589559bc9048ce1a96c42":[1,0,0,0,0,0,7,10,4],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#ab4323119cd7b23b8baa8a242c060025a":[1,0,0,0,0,0,7,10,16],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#abaecd8f122b0af90509824e0b2d4bd75":[1,0,0,0,0,0,7,10,10],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#abd1df2aa290fa393574229a585d422e2":[1,0,0,0,0,0,7,10,1]
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a4f6ba3a5b10d5384fb0a8e4f278e4a74":[1,0,0,0,0,0,7,10,0]
 };
