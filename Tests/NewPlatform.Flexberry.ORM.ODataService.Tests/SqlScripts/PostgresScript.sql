@@ -342,6 +342,10 @@ CREATE TABLE Берлога (
 
  Медведь UUID NOT NULL,
 
+ Сертификат TEXT NULL,
+
+ СертификатСтрока TEXT NULL,
+
  PRIMARY KEY (primaryKey));
 
 
