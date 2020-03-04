@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_web_file_test =
+[
+    [ "WebFileAsStringShouldSave", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_web_file_test.html#afedcf351488aec0ffd86dabe00ddd65d", null ],
+    [ "WebFileShouldSave", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_web_file_test.html#ae92b7d71b8521f1dea717571c7615e0e", null ]
+];

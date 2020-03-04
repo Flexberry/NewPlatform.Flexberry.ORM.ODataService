@@ -6,5 +6,7 @@ var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_
     [ "ЛесРасположения", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#ab5e95e63c755dcfe90774fc4afb5569f", null ],
     [ "Медведь", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a9fcc4ec4257a7a081b6e99e59ff42090", null ],
     [ "Наименование", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a93b11d6b87412d7c113b6656fd849778", null ],
-    [ "ПолеБС", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a914c39e84a5b31d6c76e977059e9c685", null ]
+    [ "ПолеБС", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a914c39e84a5b31d6c76e977059e9c685", null ],
+    [ "Сертификат", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#afc48a9791fe5d5a21b627c20559cb998", null ],
+    [ "СертификатСтрока", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a051c8ea5ae88a4eb4a6a6e584ec82dc5", null ]
 ];

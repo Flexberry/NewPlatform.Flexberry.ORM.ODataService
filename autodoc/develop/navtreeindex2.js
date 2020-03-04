@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a30e8c57b235922c1837692d0d7b3aa63":[1,0,0,0,0,0,10,5,0,2],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a517c5294a452beac5abb8dbafd736da9":[1,0,0,0,0,0,10,5,0,6],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a757cdecf45edd8f24532079e1bfd2206":[1,0,0,0,0,0,10,5,0,5],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#abcb14bc811f72d05b4f72f8f49a8e291":[1,0,0,0,0,0,10,5,0,7],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#acb918651dd386cf863390f0760f41a97":[1,0,0,0,0,0,10,5,0,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#ad43ca2c0e06601ba9608ecece981821c":[1,0,0,0,0,0,10,5,0,4],
@@ -61,12 +64,14 @@ var NAVTREEINDEX2 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_12041e156162ee527dfd94168992bc17.html":[1,0,0,0,0,0,10,29],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_12041e156162ee527dfd94168992bc17.html#af233ca04fecfc4f4cef14432e50befbd":[1,0,0,0,0,0,10,29,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html":[1,0,0,0,0,0,10,28],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a051c8ea5ae88a4eb4a6a6e584ec82dc5":[1,0,0,0,0,0,10,28,8],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a5cfb4f5541309d78f3b6eaadbecf1998":[1,0,0,0,0,0,10,28,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a914c39e84a5b31d6c76e977059e9c685":[1,0,0,0,0,0,10,28,6],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a93b11d6b87412d7c113b6656fd849778":[1,0,0,0,0,0,10,28,5],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#a9fcc4ec4257a7a081b6e99e59ff42090":[1,0,0,0,0,0,10,28,4],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#ab5e95e63c755dcfe90774fc4afb5569f":[1,0,0,0,0,0,10,28,3],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#ae2cb4636a234cd105efa19131c6c6f5f":[1,0,0,0,0,0,10,28,2],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_5c05a375f691810843e57ea55f07e4c4.html#afc48a9791fe5d5a21b627c20559cb998":[1,0,0,0,0,0,10,28,7],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB5_xD1_9f1c86c37cba7873dc7a4ade29df6b2e.html":[1,0,0,0,0,0,10,28,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_80621d878b3d2574605f520cf1a208e5.html":[1,0,0,0,0,0,10,30,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f.html":[1,0,0,0,0,0,10,30],
@@ -208,8 +213,8 @@ var NAVTREEINDEX2 =
 "functions_d.html":[1,3,0,4],
 "functions_e.html":[1,3,0,5],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX2 =
 "functions_prop_.html":[1,3,3,22],
 "functions_prop_.html":[1,3,3,23],
 "functions_prop_.html":[1,3,3,24],
-"functions_prop_.html":[1,3,3,25],
-"functions_prop_.html":[1,3,3,26],
-"functions_prop_.html":[1,3,3,27],
-"functions_prop_.html":[1,3,3,28],
-"functions_prop_.html":[1,3,3,29],
-"functions_prop_.html":[1,3,3,30]
+"functions_prop_.html":[1,3,3,25]
 };
