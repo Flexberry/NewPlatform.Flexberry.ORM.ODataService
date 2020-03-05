@@ -93,6 +93,10 @@
                     return await CreateResponseMessageAsync(responses, request, cancellationToken);
                 }
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             finally
             {
                 foreach (ODataBatchRequestItem subRequest in subRequests)
@@ -281,8 +285,15 @@
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
             {
-                DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                dataService.UpdateObjects(ref dataObjects);
+                try
+                {
+                    DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
+                    dataService.UpdateObjects(ref dataObjects);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
     }
