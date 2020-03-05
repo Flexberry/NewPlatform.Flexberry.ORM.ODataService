@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976 =
+[
+    [ "CreateWithPseudoDetailDefinedTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a4a848f7515ef51f506dfaf7a662a2bb8", null ],
+    [ "TestBatchCreate", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a7f9d52b4af556359504a02bf934ce6b3", null ],
+    [ "TestCreate", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a911f43efba7b2714fa65137264b89037", null ]
+];
