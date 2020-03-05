@@ -215,7 +215,12 @@
                     {
                         if (isSyncMode == true)
                         {
-                            ExecuteChangeSet((ChangeSetRequestItem)request, responses, cancellation);
+                            Task task = ExecuteChangeSet((ChangeSetRequestItem)request, responses, cancellation);
+
+                            if (task.Exception != null)
+                            {
+                                throw task.Exception;
+                            }
                         }
                         else
                         {
