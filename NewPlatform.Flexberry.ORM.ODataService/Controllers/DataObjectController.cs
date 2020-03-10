@@ -809,7 +809,7 @@
         private IEdmObject EvaluateOdataPath()
         {
             // The EntitySetSegment type is the replacement of the Microsoft.AspNet.OData v5.7.0 EntitySetPathSegment type.
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().ToString());
+            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().Identifier);
             DetailArray detail = null;
             ODataPath odataPath = Request.ODataProperties().Path;
             Guid key = new Guid(odataPath.Segments[1].ToString());
@@ -1025,7 +1025,7 @@
         private void Init()
         {
             // The EntitySetSegment type is the replacement of the Microsoft.AspNet.OData v5.7.0 EntitySetPathSegment type.
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().ToString());
+            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().Identifier);
             QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
             if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
             {
