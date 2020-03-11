@@ -179,7 +179,9 @@
             try
             {
                 ODataPath odataPath = Request.ODataProperties().Path;
-                string key = odataPath.Segments[1].ToString().Trim().Replace("'", string.Empty);
+                var keySegment = odataPath.Segments[1] as KeySegment;
+                string key = keySegment.Keys.First().Value.ToString().Trim().Replace("'", string.Empty);
+                
                 Init();
                 var obj = LoadObject(type, key);
                 var result = Request.CreateResponse(
@@ -205,7 +207,8 @@
             try
             {
                 ODataPath odataPath = Request.ODataProperties().Path;
-                Guid key = new Guid(odataPath.Segments[1].ToString());
+                var keySegment = odataPath.Segments[1] as KeySegment;
+                Guid key = new Guid(keySegment.Keys.First().Value.ToString());
 
                 Init();
                 var obj = LoadObject(type, key);
@@ -812,7 +815,8 @@
             type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().Identifier);
             DetailArray detail = null;
             ODataPath odataPath = Request.ODataProperties().Path;
-            Guid key = new Guid(odataPath.Segments[1].ToString());
+            var keySegment = odataPath.Segments[1] as KeySegment;
+            Guid key = new Guid(keySegment.Keys.First().Value.ToString());
             IEdmEntityType entityType = null;
             var obj = LoadObject(type, key);
             if (obj == null)
@@ -862,7 +866,8 @@
                         break;
                     }
 
-                    key = new Guid(odataPath.Segments[i].ToString());
+                    keySegment = odataPath.Segments[i] as KeySegment;
+                    key = new Guid(keySegment.Keys.First().Value.ToString());
                     obj = detail.GetAllObjects().FirstOrDefault(o => ((KeyGuid)o.__PrimaryKey).Guid == key);
                     if (obj == null)
                     {
