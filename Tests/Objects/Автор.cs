@@ -13,8 +13,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System;
     using System.Xml;
     using ICSSoft.STORMNET;
-    
-    
+
+
     // *** Start programmer edit section *** (Using statements)
 
     // *** End programmer edit section *** (Using statements)
@@ -32,14 +32,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             "Имя as \'Имя\'"})]
     public class Автор : ICSSoft.STORMNET.DataObject
     {
-        
+
         private string fИмя;
-        
+
+        private TypeSavedAsString fCustomSerializedType;
+
         // *** Start programmer edit section *** (Автор CustomMembers)
 
         // *** End programmer edit section *** (Автор CustomMembers)
 
-        
+
         /// <summary>
         /// Имя.
         /// </summary>
@@ -71,13 +73,38 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** End programmer edit section *** (Автор.Имя Set end)
             }
         }
-        
+
+        public virtual TypeSavedAsString CustomSerializedType
+        {
+            get
+            {
+                // *** Start programmer edit section *** (File.FileContent Get start)
+
+                // *** End programmer edit section *** (File.FileContent Get start)
+                TypeSavedAsString result = this.fCustomSerializedType;
+                // *** Start programmer edit section *** (File.FileContent Get end)
+
+                // *** End programmer edit section *** (File.FileContent Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (File.FileContent Set start)
+
+                // *** End programmer edit section *** (File.FileContent Set start)
+                this.fCustomSerializedType = value;
+                // *** Start programmer edit section *** (File.FileContent Set end)
+
+                // *** End programmer edit section *** (File.FileContent Set end)
+            }
+        }
+
         /// <summary>
         /// Class views container.
         /// </summary>
         public class Views
         {
-            
+
             /// <summary>
             /// "View" view.
             /// </summary>
