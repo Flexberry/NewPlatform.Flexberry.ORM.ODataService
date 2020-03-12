@@ -6,9 +6,7 @@
     using System.Web.OData;
     using System.Web.OData.Extensions;
     using System.Web.OData.Formatter.Serialization;
-
     using ICSSoft.STORMNET;
-
     using Microsoft.OData.Edm;
 
     /// <summary>
@@ -22,6 +20,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomODataSerializerProvider"/> class.
         /// </summary>
+        /// <param name="rootContainer">The root container.</param>
         public CustomODataSerializerProvider(IServiceProvider rootContainer)
             : base(rootContainer)
         {
@@ -39,10 +38,9 @@
         public override ODataEdmTypeSerializer GetEdmTypeSerializer(IEdmTypeReference edmType)
         {
             ODataEdmTypeSerializer serializer = base.GetEdmTypeSerializer(edmType);
-            //throw new NotImplementedException("-solo-");
-            return serializer;
-            /*-solo-
-            if (serializer is System.Web.OData.Formatter.Serialization.ODataFeedSerializer)
+
+            // The ODataResourceSetSerializer type is the Microsoft.AspNet.OData v5.7.0 ODataFeedSerializer type replacement.
+            if (serializer is ODataResourceSetSerializer)
             {
                 serializer = _feedSerializer;
             }
@@ -54,7 +52,6 @@
             }
 
             return serializer;
-            */
         }
 
         /// <summary>
@@ -69,8 +66,7 @@
         {
             if (type == typeof(EnumerableQuery<IEdmEntityObject>))
             {
-                throw new NotImplementedException("-solo-");
-                //-solo-return _feedSerializer;
+                return _feedSerializer;
             }
 
             ODataSerializer serializer = base.GetODataPayloadSerializer(type, request);
