@@ -1,5 +1,6 @@
 var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_x82_xD0_xB5_xD0_xB9_xD0_xBB =
 [
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_be352fca9f89a69f2bc21993c026e2da.html", null ],
     [ "prop1", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_x82_xD0_xB5_xD0_xB9_xD0_xBB.html#a3cc9f0f749297c6db36c7789cb6add73", null ],
     [ "БазовыйКласс", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_x82_xD0_xB5_xD0_xB9_xD0_xBB.html#acb012037a7546f65bb3bb3694086ff8a", null ],
     [ "Детейл2", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_x82_xD0_xB5_xD0_xB9_xD0_xBB.html#aeabac119904f76f3f508cbff7ebbbbd8", null ]

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['savedetailwithinheritancetest',['SaveDetailWithInheritanceTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aefd395101f8b99e9bed34d8ec58cdb85',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD::Update::ModifyDataTest']]],
   ['selectaction',['SelectAction',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc',1,'NewPlatform::Flexberry::ORM::ODataService::Routing::DataObjectRoutingConvention']]],
   ['selectcontroller',['SelectController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a04310240045eeb54281ca095cb79da8c',1,'NewPlatform::Flexberry::ORM::ODataService::Routing::DataObjectRoutingConvention']]],
   ['selfhostbaseodataserviceintegratedtest',['SelfHostBaseODataServiceIntegratedTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_self_host_base_o_data_service_integrated_test.html#a9dce3dc29cd6707907ddc617bb0ecaf6',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::SelfHostBaseODataServiceIntegratedTest']]],

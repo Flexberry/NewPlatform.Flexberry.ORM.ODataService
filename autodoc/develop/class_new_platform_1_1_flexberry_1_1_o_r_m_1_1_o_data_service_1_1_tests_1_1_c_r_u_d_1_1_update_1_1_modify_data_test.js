@@ -9,5 +9,6 @@ var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_
     [ "PostNavigationPropertiesTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9a606c6c8aa163f738f0c0d5ba04751c", null ],
     [ "PostObjDateTimeNoPKTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aa9dc6e45843527e0efb5ec639cbdba7a", null ],
     [ "PostSimpleObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#ac58b2feb229e703bbcd3179f3c383747", null ],
+    [ "SaveDetailWithInheritanceTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aefd395101f8b99e9bed34d8ec58cdb85", null ],
     [ "UpdateCicleDeteilTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9ae46a051612244d474c9b12561c1793", null ]
 ];

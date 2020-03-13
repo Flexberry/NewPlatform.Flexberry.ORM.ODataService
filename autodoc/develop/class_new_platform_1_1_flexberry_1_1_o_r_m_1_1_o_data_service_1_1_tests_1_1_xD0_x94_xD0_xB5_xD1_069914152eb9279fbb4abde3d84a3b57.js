@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_069914152eb9279fbb4abde3d84a3b57 =
+[
+    [ "Views", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_fe20ed2a394f3e768b2de178a9508b33.html", null ],
+    [ "prop3", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_069914152eb9279fbb4abde3d84a3b57.html#a0a7f4d427a6d551bdb2e24afe4df8ddd", null ]
+];

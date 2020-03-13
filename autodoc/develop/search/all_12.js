@@ -2,6 +2,7 @@ var searchData=
 [
   ['http',['Http',['../namespace_system_1_1_web_1_1_http.html',1,'System::Web']]],
   ['properties',['Properties',['../namespace_system_1_1_web_1_1_http_1_1_properties.html',1,'System::Web::Http']]],
+  ['savedetailwithinheritancetest',['SaveDetailWithInheritanceTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aefd395101f8b99e9bed34d8ec58cdb85',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD::Update::ModifyDataTest']]],
   ['selectaction',['SelectAction',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc',1,'NewPlatform::Flexberry::ORM::ODataService::Routing::DataObjectRoutingConvention']]],
   ['selectaudit',['SelectAudit',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_00b6770f6f0593a9770b5861f7547e1d.html#a67ee60311e908566bd0982193dc5fcb3',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Медведь::AuditSettings']]],
   ['selectauditviewname',['SelectAuditViewName',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB5_xD0_00b6770f6f0593a9770b5861f7547e1d.html#a103738e0d38aad8eeadc4e65d67d506a',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Медведь::AuditSettings']]],
