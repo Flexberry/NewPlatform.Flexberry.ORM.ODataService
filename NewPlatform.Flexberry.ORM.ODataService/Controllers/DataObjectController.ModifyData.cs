@@ -655,7 +655,8 @@
                         if (value is EdmEntityObject edmMaster)
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
-                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
+                            bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
+                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
 
                             Information.SetPropValueByName(obj, dataObjectPropName, master);
 
