@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a6c24d377642fbc87ce169e551d87310e":[1,0,0,0,0,0,10,20,4],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_handlers_1_1_per_req878554f94894360d0d01fe20b2de308b.html":[1,0,0,0,0,0,10,4,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_handlers_1_1_per_req878554f94894360d0d01fe20b2de308b.html#a2a17021d731cba7c26c69d63c8579542":[1,0,0,0,0,0,10,4,0,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_objbe0b0f3013754552014f0ceba8e1d1f7.html":[1,0,0,0,0,0,10,5,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "functions_func_w.html":[1,3,1,19],
 "functions_g.html":[1,3,0,7],
 "functions_h.html":[1,3,0,8],
-"functions_i.html":[1,3,0,9],
-"functions_k.html":[1,3,0,10]
+"functions_i.html":[1,3,0,9]
 };

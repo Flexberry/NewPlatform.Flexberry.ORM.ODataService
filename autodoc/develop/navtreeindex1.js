@@ -56,7 +56,8 @@ var NAVTREEINDEX1 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html":[1,0,0,0,0,0,10,0,0,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a4a848f7515ef51f506dfaf7a662a2bb8":[1,0,0,0,0,0,10,0,0,2,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a7f9d52b4af556359504a02bf934ce6b3":[1,0,0,0,0,0,10,0,0,2,1],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a911f43efba7b2714fa65137264b89037":[1,0,0,0,0,0,10,0,0,2,2],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a911f43efba7b2714fa65137264b89037":[1,0,0,0,0,0,10,0,0,2,3],
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_169efcc378eb8c4ba5e9c76a43f715976.html#a9dfe05edc0479835d08d9c9b6a736d9d":[1,0,0,0,0,0,10,0,0,2,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test.html":[1,0,0,0,0,0,10,0,0,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_business_servers_test.html#a9f15ecc5cc0e197f624a3dbee5096440":[1,0,0,0,0,0,10,0,0,0,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_create_1_1_change_master_in_b_s_test.html":[1,0,0,0,0,0,10,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a2b4563fc99a0dc7eb39232bcbc9c3ab9":[1,0,0,0,0,0,10,20,1],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a35361b40b27100b4b410169c90bd295e":[1,0,0,0,0,0,10,20,0],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a3730cbbe28bf3eb97ad0c8e91236ae9d":[1,0,0,0,0,0,10,20,5],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a653fca5f77a8e8fec8f3a08390ddfe43":[1,0,0,0,0,0,10,20,3],
-"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a6c24d377642fbc87ce169e551d87310e":[1,0,0,0,0,0,10,20,4]
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a653fca5f77a8e8fec8f3a08390ddfe43":[1,0,0,0,0,0,10,20,3]
 };
