@@ -191,7 +191,7 @@
 
             foreach (ODataPathSegment segment in path.Segments)
             {
-                // The NavigationPropertySegment type is the Microsoft.AspNet.OData v5.7.0 NavigationPathSegment type replacement.
+                // The NavigationPropertySegment type represents the Microsoft.AspNet.OData v5.7.0 NavigationPathSegment type here.
                 NavigationPropertySegment navigationPathSegment = segment as NavigationPropertySegment;
 
                 if (navigationPathSegment != null)
