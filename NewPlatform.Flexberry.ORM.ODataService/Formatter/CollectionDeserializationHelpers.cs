@@ -9,8 +9,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Web.Http;
-    //-solo-using Microsoft.AspNet.OData.Properties;
     using Microsoft.AspNet.OData;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;

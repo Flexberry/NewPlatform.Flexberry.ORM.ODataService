@@ -8,6 +8,7 @@
     using System.Web.Http.Routing;
     using ICSSoft.STORMNET.Business;
     using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
     using Microsoft.AspNet.OData.Formatter.Serialization;
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNet.OData.Routing.Conventions;
@@ -91,7 +92,8 @@
                 .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
                 .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
                 .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
-                .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp)));
+                .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
+                .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp)));
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);

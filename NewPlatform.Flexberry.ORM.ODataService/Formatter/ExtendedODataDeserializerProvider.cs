@@ -1,10 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Formatter.Deserialization;
 
@@ -14,58 +10,34 @@
         public ExtendedODataDeserializerProvider(IServiceProvider rootContainer)
             : base(rootContainer)
         {
+            _instance = new DefaultODataDeserializerProvider(rootContainer);
         }
+
+        /// <inheritdoc/>
         public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(Microsoft.OData.Edm.IEdmTypeReference edmType)
         {
-            return base.GetEdmTypeDeserializer(edmType);
+            return _instance.GetEdmTypeDeserializer(edmType);
         }
+
+        /// <inheritdoc/>
         public override ODataDeserializer GetODataDeserializer(
-             //-solo-Microsoft.OData.Edm.IEdmModel model,
              Type type,
              System.Net.Http.HttpRequestMessage request)
         {
             if (type == typeof(Uri))
             {
-                //-solo-return base.GetODataDeserializer(model, type, request);
                 return base.GetODataDeserializer(type, request);
             }
 
             if (type == typeof(ODataActionParameters) ||
                 type == typeof(ODataUntypedActionParameters))
             {
-                return new ExtendedODataActionPayloadDeserializer(this);
+                return new ExtendedODataActionPayloadDeserializer(_instance);
             }
 
-            throw new NotImplementedException("-solo-");
-            //-solo-return new ExtendedODataEntityDeserializer(Instance);
+            return new ExtendedODataEntityDeserializer(_instance);
         }
 
-        /*-solo-
-        /// <inheritdoc/>
-        public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(Microsoft.OData.Edm.IEdmTypeReference edmType)
-        {
-            return Instance.GetEdmTypeDeserializer(edmType);
-        }
-
-        /// <inheritdoc/>
-        public override ODataDeserializer GetODataDeserializer(
-             Microsoft.OData.Edm.IEdmModel model,
-             Type type,
-             System.Net.Http.HttpRequestMessage request)
-        {
-            if (type == typeof(Uri))
-            {
-                return base.GetODataDeserializer(model, type, request);
-            }
-
-            if (type == typeof(ODataActionParameters) ||
-                type == typeof(ODataUntypedActionParameters))
-            {
-                return new ExtendedODataActionPayloadDeserializer(Instance);
-            }
-
-            return new ExtendedODataEntityDeserializer(Instance);
-        }
-        */
+        private readonly DefaultODataDeserializerProvider _instance;
     }
 }
