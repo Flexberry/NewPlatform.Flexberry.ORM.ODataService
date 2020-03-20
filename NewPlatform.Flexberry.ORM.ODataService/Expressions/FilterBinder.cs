@@ -618,10 +618,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     //-solo-case QueryNodeKind.EntityCollectionCast:
                     //-solo-return BindEntityCollectionCastNode(node as EntityCollectionCastNode);
 
-                    case QueryNodeKind.CollectionFunctionCall:
-                    //-solo-case QueryNodeKind.EntityCollectionFunctionCall:
-                    case QueryNodeKind.CollectionOpenPropertyAccess:
-                    //-solo-case QueryNodeKind.CollectionPropertyCast:
                     // Unused or have unknown uses.
                     default:
                         throw Error.NotSupported(SRResources.QueryNodeBindingNotSupported, node.Kind, typeof(FilterBinder).Name);
@@ -640,8 +636,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     case QueryNodeKind.Convert:
                         return BindConvertNode(node as ConvertNode);
 
-                    //-solo-case QueryNodeKind.EntityRangeVariableReference:
-                    //-solo-return BindRangeVariable((node as EntityRangeVariableReferenceNode).RangeVariable);
+                    // The QueryNodeKind.ResourceRangeVariableReference enum value represents the Microsoft OData v5.7.0 QueryNodeKind.EntityRangeVariableReference enum value here.
+                    case QueryNodeKind.ResourceRangeVariableReference:
+                        return BindRangeVariable((node as ResourceRangeVariableReferenceNode).RangeVariable);
 
                     //-solo-case QueryNodeKind.NonentityRangeVariableReference:
                     //-solo-return BindRangeVariable((node as NonentityRangeVariableReferenceNode).RangeVariable);
@@ -674,12 +671,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     //-solo-case QueryNodeKind.SingleEntityFunctionCall:
                     //-solo-return BindSingleEntityFunctionCallNode(node as SingleEntityFunctionCallNode);
 
-                    case QueryNodeKind.NamedFunctionParameter:
-                    case QueryNodeKind.ParameterAlias:
-                    case QueryNodeKind.EntitySet:
-                    case QueryNodeKind.KeyLookup:
-                    case QueryNodeKind.SearchTerm:
-                    //-solo-case QueryNodeKind.SingleValueCast:
                     // Unused or have unknown uses.
                     default:
                         throw Error.NotSupported(SRResources.QueryNodeBindingNotSupported, node.Kind, typeof(FilterBinder).Name);
@@ -2083,8 +2074,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             var firstNode = anyNode.Source as CollectionNavigationNode;
             if (firstNode != null)
             {
-                throw new NotImplementedException("-solo-");
-                /*-solo-
                 // Check if firstNode.NavigationProperty value is the link from master to pseudodetail (pseudoproperty).
                 {
                     Type masterType = EdmLibHelpers.GetClrType(firstNode.NavigationProperty.DeclaringType.ToEdmTypeReference(true), _model);
@@ -2095,7 +2084,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     }
                 }
 
-                var it = firstNode.Source as EntityRangeVariableReferenceNode;
+                // The ResourceRangeVariableReferenceNode type represents the Microsoft OData v5.7.0 EntityRangeVariableReferenceNode type here.
+                var it = firstNode.Source as ResourceRangeVariableReferenceNode;
                 if (it != null && it.Name == "$it")
                 {
                     var binaryNode = anyNode.Body as BinaryOperatorNode;
@@ -2131,7 +2121,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                         }
                     }
                 }
-                */
             }
         }
 

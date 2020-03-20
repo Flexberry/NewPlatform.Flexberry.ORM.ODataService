@@ -5,13 +5,11 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.Data.Linq;
     using System.Globalization;
-    using System.Web.Http;
     using System.Xml.Linq;
-    //-solo-using Microsoft.AspNet.OData.Properties;
-    using ValidationException =System.ComponentModel.DataAnnotations.ValidationException;
+
+    using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
     /// <summary>
     /// Вспомогательные методы для работы примитивными значениями.
