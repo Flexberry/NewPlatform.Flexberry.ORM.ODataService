@@ -161,20 +161,6 @@
 
             CheckNavigableProperty(webAPIPath, model);
             return webAPIPath;
-
-            //throw new NotImplementedException("-solo-");
-            /*-solo-
-            ODataPath webAPIPath = ODataPathSegmentTranslator.TranslateODataLibPathToWebApiPath(
-                path,
-                model,
-                unresolvedPathSegment,
-                id,
-                enableUriTemplateParsing,
-                uriParser.ParameterAliasNodes);
-
-            CheckNavigableProperty(webAPIPath, model);
-            return webAPIPath;
-            */
         }
 
         private static void CheckNavigableProperty(ODataPath path, IEdmModel model)
@@ -191,7 +177,7 @@
 
             foreach (ODataPathSegment segment in path.Segments)
             {
-                // The NavigationPropertySegment type is the Microsoft.AspNet.OData v5.7.0 NavigationPathSegment type replacement.
+                // The NavigationPropertySegment type represents the Microsoft OData v5.7.0 NavigationPathSegment type here.
                 NavigationPropertySegment navigationPathSegment = segment as NavigationPropertySegment;
 
                 if (navigationPathSegment != null)

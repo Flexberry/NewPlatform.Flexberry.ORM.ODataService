@@ -86,10 +86,10 @@
             queryParameters.Request = Request;
             ODataPath odataPath = Request.ODataProperties().Path;
 
-            // The OperationImportSegment type is the Microsoft.AspNet.OData v5.7.0 UnboundFunctionPathSegment type replacement.
+            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment type here.
             OperationImportSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationImportSegment;
 
-            // The OperationImportSegment.Identifier property is the replacement of the Microsoft.AspNet.OData v5.7.0 UnboundFunctionPathSegment.FunctionName property.
+            // The OperationImportSegment.Identifier property represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment.FunctionName property here.
             if (segment == null || !_functions.IsRegistered(segment.Identifier))
                 return SetResult("Function not found");
 

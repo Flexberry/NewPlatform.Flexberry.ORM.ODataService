@@ -70,10 +70,10 @@
         {
             ODataPath odataPath = Request.ODataProperties().Path;
 
-            // The OperationSegment type is the Microsoft.AspNet.OData v5.7.0 UnboundActionPathSegment type replacement.
-            OperationSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationSegment;
+            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundActionPathSegment here.
+            OperationImportSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationImportSegment;
 
-            // The OperationSegment.Identifier property is the replacement of the Microsoft.AspNet.OData v5.7.0 UnboundActionPathSegment.ActionName property.
+            // The OperationImportSegment.Identifier property represents the Microsoft OData v5.7.0 UnboundActionPathSegment.ActionName property here.
             if (segment == null || !_functions.IsRegistered(segment.Identifier))
             {
                 return SetResult("Action not found");
