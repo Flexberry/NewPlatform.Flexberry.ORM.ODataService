@@ -87,8 +87,8 @@
 
             if (controllerContext.Request.Method.Method == "GET" && odataPath.PathTemplate == "~/entityset/key")
             {
-                Guid guid;
-                if (Guid.TryParse(odataPath.Segments[1].ToString(), out guid))
+                var keySegment = odataPath.Segments[1] as KeySegment;
+                if (keySegment.Keys.First().Value is Guid)
                 {
                     return "GetGuid";
                 }
@@ -100,8 +100,8 @@
 
             if (controllerContext.Request.Method.Method == "DELETE" && odataPath.PathTemplate == "~/entityset/key")
             {
-                Guid guid;
-                if (Guid.TryParse(odataPath.Segments[1].ToString(), out guid))
+                var keySegment = odataPath.Segments[1] as KeySegment;
+                if (keySegment.Keys.First().Value is Guid)
                 {
                     return "DeleteGuid";
                 }
