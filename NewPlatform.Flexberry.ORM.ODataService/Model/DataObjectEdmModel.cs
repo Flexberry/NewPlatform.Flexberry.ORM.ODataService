@@ -614,8 +614,9 @@
 
                 edmAction = new EdmAction(DefaultNamespace, action.Name, returnEdmTypeReference);
                 edmAction.AddParameter("bindingParameter", returnEdmTypeReference);
-                //-solo- entityContainer.AddActionImport(action.Name, edmAction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
-                entityContainer.AddActionImport(edmAction); //-solo- is vodovoz variant, may be errory
+
+                // The EdmPathExpression type represents the Microsoft OData v5.7.0 EdmEntitySetReferenceExpression type here.
+                entityContainer.AddActionImport(action.Name, edmAction, new EdmPathExpression(GetEdmEntitySet(returnEntityType).Name));
             }
 
             AddElement(edmAction);
@@ -670,8 +671,9 @@
 
                 edmFunction = new EdmFunction(DefaultNamespace, function.Name, returnEdmTypeReference, true, null, true);
                 edmFunction.AddParameter("bindingParameter", returnEdmTypeReference);
-                //-solo- entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
-                entityContainer.AddFunctionImport(edmFunction); //-solo- is vodovoz variant, may be errory
+
+                // The EdmPathExpression type represents the Microsoft OData v5.7.0 EdmEntitySetReferenceExpression type here.
+                entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmPathExpression(GetEdmEntitySet(returnEntityType).Name));
             }
 
             AddElement(edmFunction);
