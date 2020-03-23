@@ -58,5 +58,93 @@
                 }
             });
         }
+
+        /// <summary>
+        /// Tests filtering data by master of master field.
+        /// </summary>
+        [Fact]
+        public void TestFilterByMasterOfMasterField()
+        {
+            ActODataService(args =>
+            {
+                var страна1 = new Страна { Название = "Россия" };
+                var страна2 = new Страна { Название = "Китай" };
+                var медведь1 = new Медведь { СтранаРождения = страна1, Вес = 300 };
+                var медведь2 = new Медведь { СтранаРождения = страна2, Вес = 301 };
+                var медведь3 = new Медведь { СтранаРождения = страна1, Вес = 302 };
+                var берлога1 = new Берлога { Медведь = медведь1, Комфортность = 1 };
+                var берлога2 = new Берлога { Медведь = медведь2, Комфортность = 2 };
+                var берлога3 = new Берлога { Медведь = медведь3, Комфортность = 3 };
+
+                var objs = new DataObject[]
+                {
+                    страна1,
+                    страна2,
+                    медведь1,
+                    медведь2,
+                    медведь3,
+                    берлога1,
+                    берлога2,
+                    берлога3
+                };
+                args.DataService.UpdateObjects(ref objs);
+
+                // так норм
+                string requestUrl =
+                    $"http://localhost/odata/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}?$filter=Медведь/СтранаРождения/Название eq 'Россия'&$select= __PrimaryKey,Комфортность";
+
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    var receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.Equal(2, ((JArray)receivedDict["value"]).Count);
+                }
+
+                // так норм
+                requestUrl =
+                    $"http://localhost/odata/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}?$filter=Медведь/СтранаРождения/__PrimaryKey eq {PKHelper.GetGuidByObject(страна1)?.ToString("D")}";
+
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    var receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.Equal(2, ((JArray)receivedDict["value"]).Count);
+                }
+
+                // и так норм
+                requestUrl =
+                    $"http://localhost/odata/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}?$filter=Медведь/СтранаРождения/__PrimaryKey eq {PKHelper.GetGuidByObject(страна1)?.ToString("D")}&$select= __PrimaryKey,Комфортность,Медведь";
+
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    var receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.Equal(2, ((JArray)receivedDict["value"]).Count);
+                }
+
+                // а так упадет
+                requestUrl =
+                    $"http://localhost/odata/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}?$filter=Медведь/СтранаРождения/__PrimaryKey eq {PKHelper.GetGuidByObject(страна1)?.ToString("D")}&$select= __PrimaryKey,Комфортность";
+
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    var receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.Equal(2, ((JArray)receivedDict["value"]).Count);
+                }
+            });
+        }
     }
 }
