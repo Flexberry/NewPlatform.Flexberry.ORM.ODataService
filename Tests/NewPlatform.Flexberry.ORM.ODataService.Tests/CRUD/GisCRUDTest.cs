@@ -6,6 +6,7 @@
     using System.Net.Http;
 
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider.Extensions;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
@@ -37,6 +38,10 @@
         {
             ActODataService(args =>
             {
+                // Oracle не поддерживает географию.
+                if (args.DataService is OracleDataService)
+                    return;
+
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 DateTime date = new DateTimeOffset(DateTime.Now).UtcDateTime;
@@ -74,6 +79,10 @@
         {
             ActODataService(args =>
             {
+                // Oracle не поддерживает географию.
+                if (args.DataService is OracleDataService)
+                    return;
+
                 // Создаем объект данных.
                 КлассСМножествомТипов класс = new КлассСМножествомТипов()
                 {
