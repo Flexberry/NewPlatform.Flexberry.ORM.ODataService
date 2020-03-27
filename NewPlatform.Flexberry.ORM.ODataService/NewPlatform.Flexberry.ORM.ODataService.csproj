@@ -250,12 +250,6 @@
     <Compile Include="Extensions\HttpConfigurationExtensions.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Files\FileDescription.cs" />
-    <Compile Include="Files\FileUploadStreamProvider.cs" />
-    <Compile Include="Files\Providers\BaseDataObjectFileProvider.cs" />
-    <Compile Include="Files\Providers\DataObjectFileProvider.cs" />
-    <Compile Include="Files\Providers\IDataObjectFileProvider.cs" />
-    <Compile Include="Files\Providers\DataObjectWebFileProvider.cs" />
     <Compile Include="Formatter\CustomEnableQueryAttribute.cs" />
     <Compile Include="Formatter\CustomODataFeedSerializer.cs" />
     <Compile Include="Formatter\CustomODataSerializerProvider.cs" />
@@ -303,6 +297,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SRResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewPlatform.Flexberry.ORM.ODataService.Files\NewPlatform.Flexberry.ORM.ODataService.Files.csproj">
+      <Project>{22faa967-ea69-4ae9-9a07-ecee6c499bbb}</Project>
+      <Name>NewPlatform.Flexberry.ORM.ODataService.Files</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
