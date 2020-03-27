@@ -1,11 +1,10 @@
-﻿using System.Web;
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
     using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Web;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
