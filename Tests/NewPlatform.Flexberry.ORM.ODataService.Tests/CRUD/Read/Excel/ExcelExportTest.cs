@@ -1,4 +1,6 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
+﻿using System.Web;
+
+namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
     using System;
     using System.Linq;
@@ -49,7 +51,7 @@
         /// <summary>
         /// Performs export testing from Excel.
         /// </summary>
-        [Fact(Skip = "Исправить")]
+        [Fact]
         public void ExportInvalidColumnNameTest()
         {
             ActODataService(args =>
@@ -65,11 +67,16 @@
                 args.DataService.UpdateObjects(ref countries);
 
                 // The request URL to the OData service is generated.
-                const string invalidColsOrder = "Название/Название, понятное название";
+                const string propertyName = "Наз,вание";
+                const string caption = "Название, понятное/// название";
+                string encodeInvalidColsOrder = string.Format(
+                    "{0}/{1}",
+                    HttpUtility.UrlEncode(propertyName),
+                    HttpUtility.UrlEncode(caption));
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?{1}",
                     args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name,
-                    $"exportExcel=true&colsOrder={WebUtility.UrlEncode(invalidColsOrder)}&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
+                    $"exportExcel=true&colsOrder={WebUtility.UrlEncode(encodeInvalidColsOrder)}&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
