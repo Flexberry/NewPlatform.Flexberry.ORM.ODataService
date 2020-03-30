@@ -296,12 +296,11 @@
             foreach (string column in colsOrder)
             {
                 var columnInfo = column.Split(new char[] { '/' }, 2);
-                string[] decodeColumnInfo = new string[2];
-                decodeColumnInfo[0] = HttpUtility.UrlDecode(columnInfo[0]);
-                decodeColumnInfo[1] = HttpUtility.UrlDecode(columnInfo[1]);
+                var decodeColumnInfo0 = HttpUtility.UrlDecode(columnInfo[0]);
+                var decodeColumnInfo1 = HttpUtility.UrlDecode(columnInfo[1]);
 
-                par.PropertiesOrder.Add(decodeColumnInfo[0]);
-                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = decodeColumnInfo[0], Caption = decodeColumnInfo[1] });
+                par.PropertiesOrder.Add(decodeColumnInfo0);
+                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = decodeColumnInfo0, Caption = decodeColumnInfo1 });
             }
 
             for (int i = 0; i < view.Details.Length; i++)
