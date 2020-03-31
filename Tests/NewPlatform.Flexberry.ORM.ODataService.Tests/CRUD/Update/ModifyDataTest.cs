@@ -941,5 +941,65 @@
                 }
             });
         }
+
+        /// <summary>
+        /// Test update details with Aggregator.
+        /// </summary>
+        [Fact]
+        public void UpdateDetailWithAggregatorTest()
+        {
+            ActODataService(async (args) =>
+            {
+
+                string[] берлогаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Берлога>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Берлога>(x => x.Наименование),
+                };
+                string[] медвPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Медведь>(x => x.МедведьСтрокой),
+                };
+                var берлогаDynamicView = new View(new ViewAttribute("берлогаDynamicView", берлогаPropertiesNames), typeof(Берлога));
+                var медвDynamicView = new View(new ViewAttribute("медвDynamicView", медвPropertiesNames), typeof(Медведь));
+
+                var медведь = new Медведь() { МедведьСтрокой = "Медведь" };
+
+                var берлога = new Берлога() { Наименование = "берлога" };
+                медведь.Берлога.Add(берлога);
+
+                args.DataService.UpdateObject(медведь);
+
+                медведь.МедведьСтрокой = "Новый медведь";
+                берлога.Наименование = "Новая берлога";
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        медведь.ToJson(медвDynamicView, args.Token.Model),
+                        медведь),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}",
+                        берлога.ToJson(берлогаDynamicView, args.Token.Model),
+                        берлога),
+                };
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
+
+                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+
+                    Assert.Equal(медведь.МедведьСтрокой, "Новый медведь");
+                    Assert.Equal(1, берлоги.Count(б => б.Наименование == "Новая берлога"));
+                }
+            });
+        }
     }
 }
