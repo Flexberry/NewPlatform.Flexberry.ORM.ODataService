@@ -28,7 +28,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a6cdfc2b4cb7589559bc9048ce1a96c42",
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html#a6c24d377642fbc87ce169e551d87310e",
-"functions_k.html"
+"functions_func_v.html"
 ];
 
 var SYNCONMSG = 'нажмите на выключить для синхронизации панелей';

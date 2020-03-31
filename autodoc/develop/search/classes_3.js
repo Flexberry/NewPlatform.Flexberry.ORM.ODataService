@@ -28,5 +28,6 @@ var searchData=
   ['detailarrayofЖурнал',['DetailArrayOfЖурнал',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_cfd26d7d2c1ea826c8bc7eb13b927a84.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['detailarrayofКнига',['DetailArrayOfКнига',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_d703ffc3cf811108b5295c94eaebd079.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['driver',['Driver',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_driver.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
-  ['dummyofflinemanager',['DummyOfflineManager',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_dummy_offline_manager.html',1,'NewPlatform::Flexberry::ORM::ODataService::Offline']]]
+  ['dummyofflinemanager',['DummyOfflineManager',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_dummy_offline_manager.html',1,'NewPlatform::Flexberry::ORM::ODataService::Offline']]],
+  ['dynamicviewtests',['DynamicViewTests',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Model']]]
 ];

@@ -1,0 +1,7 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests =
+[
+    [ "GetPropertiesHierarchyObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests.html#a933a036587a104c3308286f8eaef69a8", null ],
+    [ "GetPropertiesNoEditViewTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests.html#a2c7365e9f76c8b3f2e34b94bc7c6b110", null ],
+    [ "GetPropertiesNotStoredPropertyTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests.html#a3116bf3a3202733ec618720e4b11cdc8", null ],
+    [ "GetPropertiesNoViewsTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model_1_1_dynamic_view_tests.html#a9fd50d401e5db0054cad3235afb16694", null ]
+];
