@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['filecontroller',['FileController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_file_controller.html',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers']]],
+  ['filecontroller',['FileController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html',1,'NewPlatform::Flexberry::ORM::ODataService::WebApi::Controllers']]],
   ['filecontrollertest',['FileControllerTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_controller_test.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Files']]],
   ['filedescription',['FileDescription',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html',1,'NewPlatform::Flexberry::ORM::ODataService::Files']]],
   ['filedescriptiontest',['FileDescriptionTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_files_1_1_file_description_test.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Files']]],

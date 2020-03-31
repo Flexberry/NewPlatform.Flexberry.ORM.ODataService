@@ -1,6 +1,7 @@
 var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service =
 [
     [ "Controllers", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers" ],
+    [ "Cors", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_cors.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_cors" ],
     [ "Events", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events" ],
     [ "Expressions", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_expressions" ],
     [ "Files", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files" ],
@@ -12,7 +13,7 @@ var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service =
     [ "Routing", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing" ],
     [ "Tests", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests" ],
     [ "UserSettingsService", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service" ],
+    [ "WebApi", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api" ],
     [ "DataObjectControllerActivator", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator" ],
-    [ "GenericCorsPolicyProvider", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_generic_cors_policy_provider.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_generic_cors_policy_provider" ],
     [ "ManagementToken", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_management_token.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_management_token" ]
 ];

@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>Flexberry ORM ODataService 5.1.0-beta15: Класс NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Flexberry ORM ODataService 5.1.0-beta15
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Титульная&#160;страница</span></a></li>
+      <li><a href="namespaces.html"><span>Пространства&#160;имен</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Классы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Классы</span></a></li>
+      <li><a href="classes.html"><span>Алфавитный&#160;указатель&#160;классов</span></a></li>
+      <li><a href="hierarchy.html"><span>Иерархия&#160;классов</span></a></li>
+      <li><a href="functions.html"><span>Члены&#160;классов</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-static-methods">Открытые статические члены</a> &#124;
+<a href="#properties">Свойства</a> &#124;
+<a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle">
+<div class="title">Класс NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>WebApi-контроллер, предназначенный для загрузки файлов на сервер и скачивания ранее загруженных файлов.  
+ <a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#details">Подробнее...</a></p>
+<div class="dynheader">
+Граф наследования:NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.png" usemap="#NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController_map" alt=""/>
+  <map id="NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController_map" name="NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController_map">
+<area href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller.html" title="Базовый класс для WebApi-контроллеров. " alt="NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.BaseApiController" shape="rect" coords="0,56,480,80"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:a09e0058bf4076af24b8244c27472a06e"><td class="memItemLeft" align="right" valign="top">HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a09e0058bf4076af24b8244c27472a06e">Get</a> ([FromUri] <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> fileDescription=null, [FromUri] bool getPreview=false)</td></tr>
+<tr class="memdesc:a09e0058bf4076af24b8244c27472a06e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет скачивание файлов с сервера. В зависимости от значения флага <em>getPreview</em>  возвращается либо содержимое файла, либо файл в виде приложения.  <a href="#a09e0058bf4076af24b8244c27472a06e">Подробнее...</a><br /></td></tr>
+<tr class="separator:a09e0058bf4076af24b8244c27472a06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d23215bbb65762de46cbf49168c64c9"><td class="memItemLeft" align="right" valign="top">Task&lt; <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a6d23215bbb65762de46cbf49168c64c9">Post</a> ()</td></tr>
+<tr class="memdesc:a6d23215bbb65762de46cbf49168c64c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет загрузку файлов на сервер.  <a href="#a6d23215bbb65762de46cbf49168c64c9">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6d23215bbb65762de46cbf49168c64c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Открытые статические члены</h2></td></tr>
+<tr class="memitem:abea631b08093809f5a6a5dc1ffb79a99"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#abea631b08093809f5a6a5dc1ffb79a99">GetFileUploadDirectoryPath</a> (string fileUploadKey)</td></tr>
+<tr class="memdesc:abea631b08093809f5a6a5dc1ffb79a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает путь к подкаталогу с заданным именем внутри каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>.  <a href="#abea631b08093809f5a6a5dc1ffb79a99">Подробнее...</a><br /></td></tr>
+<tr class="separator:abea631b08093809f5a6a5dc1ffb79a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a987b200ab03019a7f3498677a5f8840c"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a987b200ab03019a7f3498677a5f8840c">CreateFileUploadDirectory</a> (string fileUploadKey)</td></tr>
+<tr class="memdesc:a987b200ab03019a7f3498677a5f8840c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет создание подкаталога с заданным именем в каталоге <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>.  <a href="#a987b200ab03019a7f3498677a5f8840c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a987b200ab03019a7f3498677a5f8840c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36500170642970b35c92fd99f950d3a2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a36500170642970b35c92fd99f950d3a2">RemoveFileUploadDirectory</a> (string fileUploadKey)</td></tr>
+<tr class="memdesc:a36500170642970b35c92fd99f950d3a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление подкаталога с заданным именем из каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>.  <a href="#a36500170642970b35c92fd99f950d3a2">Подробнее...</a><br /></td></tr>
+<tr class="separator:a36500170642970b35c92fd99f950d3a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d7e219c7825c2fc643b18a42c0a64fb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a7d7e219c7825c2fc643b18a42c0a64fb">RemoveFileUploadDirectories</a> (List&lt; <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> &gt; removingFileDescriptions)</td></tr>
+<tr class="memdesc:a7d7e219c7825c2fc643b18a42c0a64fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет удаление подкаталогов, соответствующих загруженным файлам, из каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>.  <a href="#a7d7e219c7825c2fc643b18a42c0a64fb">Подробнее...</a><br /></td></tr>
+<tr class="separator:a7d7e219c7825c2fc643b18a42c0a64fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a905ff2402fedee46560d30d60ae8ab24"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a905ff2402fedee46560d30d60ae8ab24">HasDataObjectFileProvider</a> (Type dataObjectFilePropertyType)</td></tr>
+<tr class="memdesc:a905ff2402fedee46560d30d60ae8ab24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проверяет имеется ли в контроллере зарегистрированный провайдер для заданного типа файловых свойств объектов данных.  <a href="#a905ff2402fedee46560d30d60ae8ab24">Подробнее...</a><br /></td></tr>
+<tr class="separator:a905ff2402fedee46560d30d60ae8ab24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5392c40f479eb7e40c09da816b5ecb9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#aa5392c40f479eb7e40c09da816b5ecb9">RegisterDataObjectFileProvider</a> (<a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html">IDataObjectFileProvider</a> dataObjectFileProvider)</td></tr>
+<tr class="memdesc:aa5392c40f479eb7e40c09da816b5ecb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет регистрацию провайдера файловых свойств для объекта данных.  <a href="#aa5392c40f479eb7e40c09da816b5ecb9">Подробнее...</a><br /></td></tr>
+<tr class="separator:aa5392c40f479eb7e40c09da816b5ecb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3317ccc7402992d4956e04f539208be2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html">IDataObjectFileProvider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a3317ccc7402992d4956e04f539208be2">GetDataObjectFileProvider</a> (Type dataObjectFilePropertyType)</td></tr>
+<tr class="memdesc:a3317ccc7402992d4956e04f539208be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает зарегистрированный провайдер для заданного типа файловых свойств объектов данных.  <a href="#a3317ccc7402992d4956e04f539208be2">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3317ccc7402992d4956e04f539208be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f27dcc69769ff5a983eeb4b30f401cb"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a8f27dcc69769ff5a983eeb4b30f401cb">GetDataObjectFileDescriptions</a> (DataObject dataObject, List&lt; Type &gt; excludedFilePropertiesTypes=null)</td></tr>
+<tr class="memdesc:a8f27dcc69769ff5a983eeb4b30f401cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение списка метаданных с описанием файловых свойств объекта данных, соответствующих всем типам файловых свойств, для которых есть зарегистрированные провайдеры.  <a href="#a8f27dcc69769ff5a983eeb4b30f401cb">Подробнее...</a><br /></td></tr>
+<tr class="separator:a8f27dcc69769ff5a983eeb4b30f401cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86c99a010872eea295eca7cd36d4f9a6"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a86c99a010872eea295eca7cd36d4f9a6">GetBase64StringFileData</a> (string contentType, Stream stream)</td></tr>
+<tr class="memdesc:a86c99a010872eea295eca7cd36d4f9a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение данных файла в виде Base64String.  <a href="#a86c99a010872eea295eca7cd36d4f9a6">Подробнее...</a><br /></td></tr>
+<tr class="separator:a86c99a010872eea295eca7cd36d4f9a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ef11c21b471d11dbdfb0696bb89e248"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a2ef11c21b471d11dbdfb0696bb89e248">GetBase64StringFileData</a> (string filePath)</td></tr>
+<tr class="memdesc:a2ef11c21b471d11dbdfb0696bb89e248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет получение данных файла в виде Base64String.  <a href="#a2ef11c21b471d11dbdfb0696bb89e248">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2ef11c21b471d11dbdfb0696bb89e248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Свойства</h2></td></tr>
+<tr class="memitem:afb2218206f64f6e78441b0d882182bd1"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afb2218206f64f6e78441b0d882182bd1">RouteName</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:afb2218206f64f6e78441b0d882182bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает или задает URL, по которому доступен контроллер.  <a href="#afb2218206f64f6e78441b0d882182bd1">Подробнее...</a><br /></td></tr>
+<tr class="separator:afb2218206f64f6e78441b0d882182bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdbbc1e3512542c8dd444806a8e125a4"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4">UploadsDirectoryPath</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:afdbbc1e3512542c8dd444806a8e125a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает или задает путь до каталога, предназначенного для хранения загруженных файлов.  <a href="#afdbbc1e3512542c8dd444806a8e125a4">Подробнее...</a><br /></td></tr>
+<tr class="separator:afdbbc1e3512542c8dd444806a8e125a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06bc9c219c9bfa4733fb261aebf368e5"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a06bc9c219c9bfa4733fb261aebf368e5">BaseUrl</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a06bc9c219c9bfa4733fb261aebf368e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получает или задает URL, по которому доступен контроллер.  <a href="#a06bc9c219c9bfa4733fb261aebf368e5">Подробнее...</a><br /></td></tr>
+<tr class="separator:a06bc9c219c9bfa4733fb261aebf368e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Дополнительные унаследованные члены</h2></td></tr>
+<tr class="inherit_header pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller')"><img src="closed.png" alt="-"/>&#160;Защищенные члены унаследованные от <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller.html">NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.BaseApiController</a></td></tr>
+<tr class="memitem:a30fe2a9ffef994fa2ee4bc7cab10193c inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller.html#a30fe2a9ffef994fa2ee4bc7cab10193c">Initialize</a> (HttpControllerContext controllerContext)</td></tr>
+<tr class="memdesc:a30fe2a9ffef994fa2ee4bc7cab10193c inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller"><td class="mdescLeft">&#160;</td><td class="mdescRight">Осуществляет инициализацию, которая должна выполниться до начала обработки какого-либо запроса.  <a href="#a30fe2a9ffef994fa2ee4bc7cab10193c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a30fe2a9ffef994fa2ee4bc7cab10193c inherit pro_methods_class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><p>WebApi-контроллер, предназначенный для загрузки файлов на сервер и скачивания ранее загруженных файлов. </p>
+</div><h2 class="groupheader">Методы</h2>
+<a class="anchor" id="a987b200ab03019a7f3498677a5f8840c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.CreateFileUploadDirectory </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>fileUploadKey</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет создание подкаталога с заданным именем в каталоге <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileUploadKey</td><td>Ключ загрузки файла (используется как имя создаваемого подкаталога).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Путь к созданному подкаталогу.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a09e0058bf4076af24b8244c27472a06e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.Get </td>
+          <td>(</td>
+          <td class="paramtype">[FromUri] <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&#160;</td>
+          <td class="paramname"><em>fileDescription</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[FromUri] bool&#160;</td>
+          <td class="paramname"><em>getPreview</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет скачивание файлов с сервера. В зависимости от значения флага <em>getPreview</em>  возвращается либо содержимое файла, либо файл в виде приложения. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileDescription</td><td>Описание запрашиваемого файла.</td></tr>
+    <tr><td class="paramname">getPreview</td><td>Параметр, определяющий, требуется ли файл просто для предпросмотра (если значение <code>true</code>), либо требуется его скачать и сохранить.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Описание загруженного файла.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a86c99a010872eea295eca7cd36d4f9a6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.GetBase64StringFileData </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>contentType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>stream</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение данных файла в виде Base64String. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">contentType</td><td>MIME-тип данных.</td></tr>
+    <tr><td class="paramname">stream</td><td>Поток байтов файла.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Данные файла в виде Base64String.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2ef11c21b471d11dbdfb0696bb89e248"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.GetBase64StringFileData </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение данных файла в виде Base64String. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Путь к файлу.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Данные файла в виде Base64String.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8f27dcc69769ff5a983eeb4b30f401cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&gt; NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.GetDataObjectFileDescriptions </td>
+          <td>(</td>
+          <td class="paramtype">DataObject&#160;</td>
+          <td class="paramname"><em>dataObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; Type &gt;&#160;</td>
+          <td class="paramname"><em>excludedFilePropertiesTypes</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет получение списка метаданных с описанием файловых свойств объекта данных, соответствующих всем типам файловых свойств, для которых есть зарегистрированные провайдеры. </p>
+<p>При необходимости будет произведена дочитка объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObject</td><td>Объект данных, содержащий файловые свойства. </td></tr>
+    <tr><td class="paramname">excludedFilePropertiesTypes</td><td>Список типов файловых свойств объекта данных, для которых не требуется получение метаданных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Список метаданных с описанием файловых свойств объекта данных, соответствующих всем типам файловых свойств, для которых есть зарегистрированные провайдеры. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3317ccc7402992d4956e04f539208be2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html">IDataObjectFileProvider</a> NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.GetDataObjectFileProvider </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает зарегистрированный провайдер для заданного типа файловых свойств объектов данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObjectFilePropertyType</td><td>Тип файловыйх свойств объектов данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Провайдер файловых свойств объектов данных. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abea631b08093809f5a6a5dc1ffb79a99"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.GetFileUploadDirectoryPath </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>fileUploadKey</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает путь к подкаталогу с заданным именем внутри каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileUploadKey</td><td>Ключ загрузки файла (используется как имя подкаталога).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Путь к подкаталогу.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a905ff2402fedee46560d30d60ae8ab24"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.HasDataObjectFileProvider </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>dataObjectFilePropertyType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проверяет имеется ли в контроллере зарегистрированный провайдер для заданного типа файловых свойств объектов данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObjectFilePropertyType</td><td>Тип файловыйх свойств объектов данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Флаг: <code>true</code>, если для файловых свойств указанного типа зарегистрирован провайдер, <code>false</code> в противном случае. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6d23215bbb65762de46cbf49168c64c9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Task&lt;<a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a>&gt; NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.Post </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет загрузку файлов на сервер. </p>
+<p>Файлы загружаются в файловую систему, в каталог <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>/{UploadedFileKey}, где UploadedFileGuid - Guid, идентифицирующий загруженный файл. </p>
+<dl class="section return"><dt>Возвращает</dt><dd>Описание загруженного файла. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa5392c40f479eb7e40c09da816b5ecb9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.RegisterDataObjectFileProvider </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_i_data_object_file_provider.html">IDataObjectFileProvider</a>&#160;</td>
+          <td class="paramname"><em>dataObjectFileProvider</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет регистрацию провайдера файловых свойств для объекта данных. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataObjectFileProvider</td><td>Провайдер файловых свойств для объекта данных. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7d7e219c7825c2fc643b18a42c0a64fb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.RemoveFileUploadDirectories </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html">FileDescription</a> &gt;&#160;</td>
+          <td class="paramname"><em>removingFileDescriptions</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление подкаталогов, соответствующих загруженным файлам, из каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">removingFileDescriptions</td><td>Метаданные файлов, которые требуется удалить. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a36500170642970b35c92fd99f950d3a2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.RemoveFileUploadDirectory </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>fileUploadKey</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Осуществляет удаление подкаталога с заданным именем из каталога <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#afdbbc1e3512542c8dd444806a8e125a4" title="Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. ">UploadsDirectoryPath</a>. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileUploadKey</td><td>Ключ загрузки файла (используется как имя удаляемого подкаталога).</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Полный список свойств</h2>
+<a class="anchor" id="a06bc9c219c9bfa4733fb261aebf368e5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.BaseUrl</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает или задает URL, по которому доступен контроллер. </p>
+
+</div>
+</div>
+<a class="anchor" id="afb2218206f64f6e78441b0d882182bd1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.RouteName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает или задает URL, по которому доступен контроллер. </p>
+
+</div>
+</div>
+<a class="anchor" id="afdbbc1e3512542c8dd444806a8e125a4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.FileController.UploadsDirectoryPath</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получает или задает путь до каталога, предназначенного для хранения загруженных файлов. </p>
+<p>Инициализируется при назначении роута, соответствующего этому контролеру. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_new_platform.html">NewPlatform</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry.html">Flexberry</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m.html">ORM</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html">ODataService</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api.html">WebApi</a></li><li class="navelem"><a class="el" href="namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers.html">Controllers</a></li><li class="navelem"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html">FileController</a></li>
+    <li class="footer">Создано системой
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
+  </ul>
+</div>
+</body>
+</html>

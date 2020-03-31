@@ -1,0 +1,4 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller =
+[
+    [ "Initialize", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller.html#a30fe2a9ffef994fa2ee4bc7cab10193c", null ]
+];

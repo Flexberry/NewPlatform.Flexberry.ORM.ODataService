@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['baseapicontroller',['BaseApiController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_api_controller.html',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers']]],
+  ['baseapicontroller',['BaseApiController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_base_api_controller.html',1,'NewPlatform::Flexberry::ORM::ODataService::WebApi::Controllers']]],
   ['basedataobjectfileprovider',['BaseDataObjectFileProvider',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html',1,'NewPlatform::Flexberry::ORM::ODataService::Files::Providers']]],
   ['basedataobjectfileprovider',['BaseDataObjectFileProvider',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers_1_1_base_data_object_file_provider.html#afde1711100861a52c664120834758196',1,'NewPlatform::Flexberry::ORM::ODataService::Files::Providers::BaseDataObjectFileProvider']]],
   ['baseintegratedtest',['BaseIntegratedTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_integrated_test.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
@@ -8,7 +8,7 @@ var searchData=
   ['baseodatacontroller',['BaseODataController',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_base_o_data_controller.html',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers']]],
   ['baseodataserviceintegratedtest',['BaseODataServiceIntegratedTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_base_o_data_service_integrated_test.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['baseofflinemanager',['BaseOfflineManager',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline_1_1_base_offline_manager.html',1,'NewPlatform::Flexberry::ORM::ODataService::Offline']]],
-  ['baseurl',['BaseUrl',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_file_controller.html#a4e5ee582e9abb8e04a376b37dd9f9cf7',1,'NewPlatform::Flexberry::ORM::ODataService::Controllers::FileController']]],
+  ['baseurl',['BaseUrl',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_file_controller.html#a06bc9c219c9bfa4733fb261aebf368e5',1,'NewPlatform::Flexberry::ORM::ODataService::WebApi::Controllers::FileController']]],
   ['beforecreate',['BeforeCreate',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_events_1_1_before_save_test.html#ad7ce4076ff3ce549e6af163e62d30ffb',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Events::BeforeSaveTest']]],
   ['beforedelete',['BeforeDelete',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_events_1_1_before_save_test.html#ad95d5a0549b7b8d6c70b2e34afa11884',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Events::BeforeSaveTest']]],
   ['beforeget',['BeforeGet',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_events_1_1_before_get_test.html#a33c5c3b62c66e3abeb57c0eadd54c49e',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Events::BeforeGetTest']]],
