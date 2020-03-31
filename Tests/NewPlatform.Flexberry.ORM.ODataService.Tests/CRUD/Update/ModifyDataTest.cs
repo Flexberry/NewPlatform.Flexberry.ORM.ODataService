@@ -959,19 +959,19 @@
                 string[] медвPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
-                    Information.ExtractPropertyPath<Медведь>(x => x.МедведьСтрокой),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ЦветГлаз),
                 };
                 var берлогаDynamicView = new View(new ViewAttribute("берлогаDynamicView", берлогаPropertiesNames), typeof(Берлога));
                 var медвDynamicView = new View(new ViewAttribute("медвDynamicView", медвPropertiesNames), typeof(Медведь));
 
-                var медведь = new Медведь() { МедведьСтрокой = "Медведь" };
+                var медведь = new Медведь() { ЦветГлаз = "Медвежий" };
 
                 var берлога = new Берлога() { Наименование = "берлога" };
                 медведь.Берлога.Add(берлога);
 
                 args.DataService.UpdateObject(медведь);
 
-                медведь.МедведьСтрокой = "Новый медведь";
+                медведь.ЦветГлаз = "Новый медвежий";
                 берлога.Наименование = "Новая берлога";
 
                 const string baseUrl = "http://localhost/odata";
@@ -996,7 +996,7 @@
 
                     var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
 
-                    Assert.Equal(медведь.МедведьСтрокой, "Новый медведь");
+                    Assert.Equal(медведь.ЦветГлаз, "Новый медвежий");
                     Assert.Equal(1, берлоги.Count(б => б.Наименование == "Новая берлога"));
                 }
             });
