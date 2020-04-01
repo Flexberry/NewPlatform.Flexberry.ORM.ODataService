@@ -794,16 +794,22 @@
                     DataObject existObject = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
                     if (existObject == null)
                     {
-                        if (!endObject)
+                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        DataObject existObjectToUpdate = dataObjectsToUpdate.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
+                        if (existObjectToUpdate == null)
                         {
-                            // Добавляем объект в начало списка.
-                            dObjs.Insert(0, agregator);
+                            if (!endObject)
+                            {
+                                // Добавляем объект в начало списка.
+                                dObjs.Insert(0, agregator);
+                            }
+                            else
+                            {
+                                // Добавляем в конец списка.
+                                dObjs.Add(agregator);
+                            }
                         }
-                        else
-                        {
-                            // Добавляем в конец списка.
-                            dObjs.Add(agregator);
-                        }
+
                     }
                 }
             }

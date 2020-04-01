@@ -959,22 +959,35 @@
                 string[] медвPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
-                    Information.ExtractPropertyPath<Медведь>(x => x.ЦветГлаз),
+                    Information.ExtractPropertyPath<Медведь>(x => x.Вес),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ПорядковыйНомер),
                 };
                 var берлогаDynamicView = new View(new ViewAttribute("берлогаDynamicView", берлогаPropertiesNames), typeof(Берлога));
                 var медвDynamicView = new View(new ViewAttribute("медвDynamicView", медвPropertiesNames), typeof(Медведь));
 
-                var медведь = new Медведь() { ЦветГлаз = "Медвежий" };
-
+                var медведь = new Медведь() { Вес = 50 };
                 var берлога = new Берлога() { Наименование = "берлога" };
                 медведь.Берлога.Add(берлога);
 
                 args.DataService.UpdateObject(медведь);
 
-                медведь.ЦветГлаз = "Новый медвежий";
+                медведь.Вес = 100;
+                медведь.ПорядковыйНомер = 100;
                 берлога.Наименование = "Новая берлога";
 
                 const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataБерлога = берлога.ToJson(берлогаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonБерлога = DataObjectDictionary.Parse(requestJsonDataБерлога, берлогаDynamicView, args.Token.Model);
+
+                objJsonБерлога.Add(
+                    $"{nameof(Берлога.Медведь)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                        ((KeyGuid)медведь.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataБерлога = objJsonБерлога.Serialize();
 
                 string[] changesets = new[]
                 {
@@ -984,9 +997,10 @@
                         медведь),
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name}",
-                        берлога.ToJson(берлогаDynamicView, args.Token.Model),
+                        requestJsonDataБерлога,
                         берлога),
                 };
+
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
@@ -996,7 +1010,8 @@
 
                     var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
 
-                    Assert.Equal(медведь.ЦветГлаз, "Новый медвежий");
+                    Assert.Equal(100, медведь.Вес);
+                    Assert.Equal(100, медведь.ПорядковыйНомер);
                     Assert.Equal(1, берлоги.Count(б => б.Наименование == "Новая берлога"));
                 }
             });
