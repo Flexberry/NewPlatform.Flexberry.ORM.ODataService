@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a30e8c57b235922c1837692d0d7b3aa63":[1,0,0,0,0,0,11,5,0,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a517c5294a452beac5abb8dbafd736da9":[1,0,0,0,0,0,11,5,0,6],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#a757cdecf45edd8f24532079e1bfd2206":[1,0,0,0,0,0,11,5,0,5],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_helpers_1_1_data_object_dictionary.html#abcb14bc811f72d05b4f72f8f49a8e291":[1,0,0,0,0,0,11,5,0,7],
@@ -208,8 +209,8 @@ var NAVTREEINDEX2 =
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_lock_controller.html#aaea4fdb540de43ee158b818fc2929808":[1,0,0,0,0,0,13,0,2,2],
 "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api_1_1_controllers_1_1_lock_controller.html#ab3e22a8fd77a9069398a51c5c7c44e08":[1,0,0,0,0,0,13,0,2,0],
 "classes.html":[1,1],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_.html":[1,3,0,23],
 "functions_.html":[1,3,0,24],
 "functions_.html":[1,3,0,25],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "functions_func_p.html":[1,3,1,13],
 "functions_func_r.html":[1,3,1,14],
 "functions_func_s.html":[1,3,1,15],
-"functions_func_t.html":[1,3,1,16],
-"functions_func_u.html":[1,3,1,17]
+"functions_func_t.html":[1,3,1,16]
 };
