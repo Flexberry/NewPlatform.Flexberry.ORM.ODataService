@@ -61,7 +61,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             "ЛесОбитания.Название as \'Название\'",
             "ПолеБС",
             "СтранаРождения",
-            "СтранаРождения.Название"})]
+            "СтранаРождения.Название",
+            "ВычислимоеПолеБезDataServiceExpression"})]
     [AssociatedDetailViewAttribute("МедведьE", "Берлога", "БерлогаE", true, "", "Берлога", true, new string[] {
             ""})]
     [View("МедведьL", new string[] {
