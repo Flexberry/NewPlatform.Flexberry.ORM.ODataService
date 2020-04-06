@@ -794,8 +794,14 @@
                     DataObject existObject = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
                     if (existObject == null)
                     {
-                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
-                        DataObject existObjectToUpdate = dataObjectsToUpdate.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
+                        DataObject existObjectToUpdate = null;
+                        bool keyExsist = Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey);
+                        if (keyExsist)
+                        {
+                            List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                            existObjectToUpdate = dataObjectsToUpdate.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
+                        }
+
                         if (existObjectToUpdate == null)
                         {
                             if (!endObject)

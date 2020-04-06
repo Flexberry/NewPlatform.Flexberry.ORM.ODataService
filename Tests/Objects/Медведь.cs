@@ -365,7 +365,30 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** End programmer edit section *** (Медведь.ВычислимоеПоле Set)
             }
         }
-        
+
+        /// <summary>
+        /// ВычислимоеПолеБезDataServiceExpression.
+        /// </summary>
+        // *** Start programmer edit section *** (Медведь.ВычислимоеПолеБезDataServiceExpression CustomAttributes)
+
+        // *** End programmer edit section *** (Медведь.ВычислимоеПолеБезDataServiceExpression CustomAttributes)
+        [ICSSoft.STORMNET.NotStored()]
+        public virtual int ВычислимоеПолеБезDataServiceExpression
+        {
+            get
+            {
+                // *** Start programmer edit section *** (Медведь.ВычислимоеПоле Get)
+                return 0;
+                // *** End programmer edit section *** (Медведь.ВычислимоеПоле Get)
+            }
+            set
+            {
+                // *** Start programmer edit section *** (Медведь.ВычислимоеПоле Set)
+
+                // *** End programmer edit section *** (Медведь.ВычислимоеПоле Set)
+            }
+        }
+
         /// <summary>
         /// Время создания объекта.
         /// </summary>

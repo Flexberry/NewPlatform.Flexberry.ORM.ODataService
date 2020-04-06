@@ -961,6 +961,7 @@
                     Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
                     Information.ExtractPropertyPath<Медведь>(x => x.Вес),
                     Information.ExtractPropertyPath<Медведь>(x => x.ПорядковыйНомер),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ВычислимоеПолеБезDataServiceExpression),
                 };
                 var берлогаDynamicView = new View(new ViewAttribute("берлогаDynamicView", берлогаPropertiesNames), typeof(Берлога));
                 var медвDynamicView = new View(new ViewAttribute("медвDynamicView", медвPropertiesNames), typeof(Медведь));
