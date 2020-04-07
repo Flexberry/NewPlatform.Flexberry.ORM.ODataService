@@ -930,6 +930,7 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
                 {
+                    Assert.True(false);
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
                     args.DataService.LoadObject(БазовыйКласс.Views.БазовыйКлассE, базовыйКласс);
