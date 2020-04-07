@@ -90,7 +90,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 throw new ArgumentException();
             _tempDbNamePrefix = tempDbNamePrefix;
             _databaseName = _tempDbNamePrefix + "_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + "_" + Guid.NewGuid().ToString("N");
-            
+
+            Console.WriteLine(ConnectionStringPostgres);
+            Console.WriteLine(PostgresScript.Length);
+
             if (!string.IsNullOrWhiteSpace(PostgresScript) && ConnectionStringPostgres != poolingFalseConst)
             {
                 if (!(tempDbNamePrefix.Length <= 12)) // Max length is 63 (-18 -32).
@@ -280,8 +283,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine(ex);
                 }
             }
 
