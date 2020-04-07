@@ -76,6 +76,9 @@
                     "http://localhost/odata/{0}?{1}",
                     args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name,
                     $"exportExcel=true&colsOrder={WebUtility.UrlEncode(encodeInvalidColsOrder)}&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
+
+                Assert.True(false);
+
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
