@@ -515,7 +515,7 @@
                 if (dataObjectFromCache != null)
                 {
                     // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
-                    if (dataObjectFromCache.GetStatus(false) != ObjectStatus.Created
+                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
                         && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
