@@ -176,9 +176,6 @@
     <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Container.5.8.6\lib\net45\Unity.Container.dll</HintPath>
     </Reference>
-    <Reference Include="UserSettingsService, Version=1.1.0.0, Culture=neutral, PublicKeyToken=2169f05da5d7fddc, processorArchitecture=MSIL">
-      <HintPath>..\packages\NewPlatform.Flexberry.UserSettingsService.3.0.0\lib\net45\UserSettingsService.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch\DataObjectODataBatchHandler.cs" />
