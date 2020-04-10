@@ -28,6 +28,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** End programmer edit section *** (Кошка CustomAttributes)
     [AutoAltered()]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
+    [View("КошкаE", new string[] {
+            "Кличка",
+            "ДатаРождения",
+            "Тип",
+            "ПородаСтрокой",
+            "Агрессивная",
+            "КоличествоУсовСлева",
+            "КоличествоУсовСправа",
+            "КошкаСтрокой",
+            "Порода.Название",
+            "Порода.ТипПороды.Название"})]
     public class Кошка : ICSSoft.STORMNET.DataObject
     {
         
@@ -363,6 +374,24 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Кошка.Лапа Set end)
 
                 // *** End programmer edit section *** (Кошка.Лапа Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Class views container.
+        /// </summary>
+        public class Views
+        {
+            
+            /// <summary>
+            /// "КошкаE" view.
+            /// </summary>
+            public static ICSSoft.STORMNET.View КошкаE
+            {
+                get
+                {
+                    return ICSSoft.STORMNET.Information.GetView("КошкаE", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Кошка));
+                }
             }
         }
     }
