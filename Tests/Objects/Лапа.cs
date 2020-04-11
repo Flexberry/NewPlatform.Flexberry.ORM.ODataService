@@ -28,6 +28,19 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** End programmer edit section *** (Лапа CustomAttributes)
     [AutoAltered()]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
+    [View("ЛапаE", new string[] {
+            "Цвет",
+            "Размер",
+            "ДатаРождения",
+            "БылиЛиПереломы",
+            "Сторона",
+            "Номер",
+            "РазмерСтрокой",
+            "РазмерDouble",
+            "РазмерFloat",
+            "РазмерDecimal",
+            "РазмерChar",
+            "Кошка.Кличка"})]
     public class Лапа : ICSSoft.STORMNET.DataObject
     {
         
@@ -260,7 +273,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             get
             {
                 // *** Start programmer edit section *** (Лапа.РазмерСтрокой Get)
-
                 return null;
                 // *** End programmer edit section *** (Лапа.РазмерСтрокой Get)
             }
@@ -377,7 +389,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             get
             {
                 // *** Start programmer edit section *** (Лапа.РазмерChar Get)
-
                 return ' ';
                 // *** End programmer edit section *** (Лапа.РазмерChar Get)
             }
@@ -485,6 +496,24 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Лапа.Кошка Set end)
 
                 // *** End programmer edit section *** (Лапа.Кошка Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Class views container.
+        /// </summary>
+        public class Views
+        {
+            
+            /// <summary>
+            /// "ЛапаE" view.
+            /// </summary>
+            public static ICSSoft.STORMNET.View ЛапаE
+            {
+                get
+                {
+                    return ICSSoft.STORMNET.Information.GetView("ЛапаE", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Лапа));
+                }
             }
         }
     }

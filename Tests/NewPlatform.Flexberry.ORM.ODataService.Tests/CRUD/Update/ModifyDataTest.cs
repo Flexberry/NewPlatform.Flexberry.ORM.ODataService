@@ -1029,7 +1029,7 @@
             ActODataService(async (args) =>
             {
                 // Arrange.
-                DateTime date = DateTime.Parse("2010-01-01");
+                DateTime date = new DateTime(2010, 10, 10, 10, 10, 10, DateTimeKind.Local);
                 var порода = new Порода() { Название = "Первая" };
                 var кошка = new Кошка() { Кличка = "50", Порода = порода };
                 var лапа = new Лапа() { Размер = 50 };
@@ -1094,10 +1094,6 @@
 
                 string[] changesets = new[]
                 {
-                    //CreateChangeset(
-                    //    $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
-                    //    кошка.ToJson(кошкаDynamicView, args.Token.Model),
-                    //    кошка),
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
                         requestJsonDataЛапа,
@@ -1114,6 +1110,7 @@
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
                     кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+                    лапаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Лапа>(x => x.Перелом), переломDynamicView, true);
 
                     args.DataService.LoadObject(кошкаDynamicView, кошка);
 
@@ -1123,7 +1120,7 @@
 
                     Assert.Equal("50", кошка.Кличка);
                     Assert.Equal(1, лапы.Count(б => б.Размер == 100));
-                    Assert.Equal(1, переломы.Count(б => б.Дата == date));
+                    Assert.Equal(1, переломы.Count(б => б.Дата == date.ToUniversalTime()));
                 }
             });
         }
