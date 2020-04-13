@@ -510,7 +510,13 @@
             if (keyValue != null)
             {
                 DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
-                View view = _model.GetDataObjectDefaultView(objType);
+                View view = _model.GetDataObjectDefaultView(objType).Clone();
+                view.Name = "ViewForLoad";
+                IEnumerable<PropertyInView> masterProps = view.Properties.Where(p => p.Name.Contains('.'));
+                foreach (PropertyInView masterProp in masterProps)
+                {
+                    view.RemoveProperty(masterProp.Name);
+                }
 
                 if (dataObjectFromCache != null)
                 {
