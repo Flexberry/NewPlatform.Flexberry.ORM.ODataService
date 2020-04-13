@@ -518,27 +518,6 @@
                     if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
                         View reloadView = view.Clone();
-                        reloadView.Name = "ViewForLoad";
-                        IEnumerable<PropertyInView> notStoredProps = reloadView.Properties.Where(p => !Information.IsStoredProperty(reloadView.DefineClassType, p.Name));
-                        foreach (PropertyInView notStoredProp in notStoredProps)
-                        {
-                            string expression = Information.GetPropertyExpression(reloadView.DefineClassType, notStoredProp.Name, _dataService.GetType());
-                            if (!string.IsNullOrEmpty(expression))
-                            {
-                                int lastDotIndex = notStoredProp.Name.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
-                                string notStoredPropOwner = lastDotIndex != -1
-                                    ? notStoredProp.Name.Substring(0, lastDotIndex + 1)
-                                    : string.Empty;
-                                var propertiesInExpression = Information.GetPropertiesInExpression(expression, notStoredPropOwner);
-                                reloadView.AddProperties(propertiesInExpression);
-                            }
-                        }
-
-                        IEnumerable<PropertyInView> masterProps = reloadView.Properties.Where(p => p.Name.Contains('.'));
-                        foreach (PropertyInView masterProp in masterProps)
-                        {
-                            reloadView.RemoveProperty(masterProp.Name);
-                        }
 
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
                         // TODO: удалить эту проверку после стабилизации версии 5.1.0.
