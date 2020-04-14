@@ -655,13 +655,28 @@
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
                             bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
-                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
 
-                            Information.SetPropValueByName(obj, dataObjectPropName, master);
+                            // Если агрегатор или мастер был уже установлен и новое значение равно старому, то снова не перечитываем его и не меняем.
+                            object masterKeyValue;
+                            IEdmProperty masterKeyProperty = entityType.Properties().ToList().FirstOrDefault(masterProp => masterProp.Name == _model.KeyPropertyName);
+                            edmMaster.TryGetPropertyValue(keyProperty.Name, out masterKeyValue);
+
+                            DataObject master = (DataObject)Information.GetPropValueByName(obj, dataObjectPropName);
+                            DataObject newMaster = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
+
+                            if (master != null)
+                            {
+                                masterKeyValue = Information.TranslateValueToPrimaryKeyType(master.GetType(), masterKeyValue);
+                            }
+
+                            if (master == null || !master.__PrimaryKey.Equals(masterKeyValue))
+                            {
+                                Information.SetPropValueByName(obj, dataObjectPropName, newMaster);
+                            }
 
                             if (dataObjectPropName == agregatorPropertyName)
                             {
-                                Type agregatorType = master.GetType();
+                                Type agregatorType = newMaster.GetType();
                                 string detailPropertyName = Information.GetDetailArrayPropertyName(agregatorType, objType);
 
                                 Type parentType = objType.BaseType;
@@ -673,7 +688,7 @@
 
                                 if (detailPropertyName != null)
                                 {
-                                    DetailArray details = (DetailArray)Information.GetPropValueByName(master, detailPropertyName);
+                                    DetailArray details = (DetailArray)Information.GetPropValueByName(newMaster, detailPropertyName);
 
                                     if (details != null)
                                     {
@@ -682,6 +697,7 @@
                                         if (existDetail == null)
                                         {
                                             details.AddObject(obj);
+                                            newMaster.AddLoadedProperties(detailPropertyName);
                                         }
                                     }
                                 }
