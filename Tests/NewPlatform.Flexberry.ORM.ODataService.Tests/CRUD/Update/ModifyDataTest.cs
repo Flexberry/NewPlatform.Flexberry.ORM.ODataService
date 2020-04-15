@@ -903,7 +903,7 @@
             ActODataService(async (args) =>
             {
                 var базовыйКласс = new БазовыйКласс() { Свойство1 = "sv1" };
-                var детейл = new ДетейлНаследник() { prop1 = 1};
+                var детейл = new ДетейлНаследник() { prop1 = 1 };
                 базовыйКласс.Детейл.Add(детейл);
 
                 args.DataService.UpdateObject(базовыйКласс);
@@ -928,7 +928,7 @@
                         детейл),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
