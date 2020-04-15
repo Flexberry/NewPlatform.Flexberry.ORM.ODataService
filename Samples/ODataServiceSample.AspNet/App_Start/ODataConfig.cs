@@ -15,7 +15,6 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
     using Unity;
     using Unity.AspNet.WebApi;
@@ -62,6 +61,9 @@
                 typeof(Lock).Assembly,
             };
             var builder = new DefaultDataObjectEdmModelBuilder(assemblies);
+
+            // ToDo: PublishName attribute values without namespaces are not supported yet.
+            builder.TypeFilter = t => t.Name != "FlexberryAdvLimit";
 
             // Map OData Service
             var token = config.MapDataObjectRoute(builder, httpServer);
