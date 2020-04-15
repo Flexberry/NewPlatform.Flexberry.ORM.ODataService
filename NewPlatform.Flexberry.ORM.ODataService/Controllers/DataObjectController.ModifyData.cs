@@ -515,17 +515,16 @@
                 if (dataObjectFromCache != null)
                 {
                     // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
-                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
+                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
+                        && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
-                        View reloadView = view.Clone();
-
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
                         // TODO: удалить эту проверку после стабилизации версии 5.1.0.
                         string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
-                        IEnumerable<PropertyInView> ownProps = reloadView.Properties.Where(p => !p.Name.Contains('.'));
+                        IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(reloadView, dataObjectFromCache, false, true, _dataObjectCache);
+                            _dataService.LoadObject(view, dataObjectFromCache);
                         }
                     }
 
@@ -649,24 +648,9 @@
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
                             bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
+                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
 
-                            // Если агрегатор или мастер был уже установлен и новое значение равно старому, то снова не перечитываем его и не меняем.
-                            object masterKeyValue;
-                            IEdmProperty masterKeyProperty = entityType.Properties().ToList().FirstOrDefault(masterProp => masterProp.Name == _model.KeyPropertyName);
-                            edmMaster.TryGetPropertyValue(keyProperty.Name, out masterKeyValue);
-
-                            DataObject master = (DataObject)Information.GetPropValueByName(obj, dataObjectPropName);
-
-                            if (master != null)
-                            {
-                                masterKeyValue = Information.TranslateValueToPrimaryKeyType(master.GetType(), masterKeyValue);
-                            }
-
-                            if (master == null || !master.__PrimaryKey.Equals(masterKeyValue))
-                            {
-                                master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
-                                Information.SetPropValueByName(obj, dataObjectPropName, master);
-                            }
+                            Information.SetPropValueByName(obj, dataObjectPropName, master);
 
                             if (dataObjectPropName == agregatorPropertyName)
                             {
@@ -691,7 +675,6 @@
                                         if (existDetail == null)
                                         {
                                             details.AddObject(obj);
-                                            master.AddLoadedProperties(detailPropertyName);
                                         }
                                     }
                                 }
