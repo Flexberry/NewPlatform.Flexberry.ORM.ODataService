@@ -524,7 +524,7 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache);
+                            _dataService.LoadObject(view, dataObjectFromCache, true, true, _dataObjectCache);
                         }
                     }
 
@@ -615,7 +615,12 @@
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
             string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
             IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
-            IEnumerable<IEdmProperty> changedProps = entityProps.Where(ep => changedPropNames.Contains(ep.Name)).ToList();
+
+            // Обрабатываем агрегатор первым.
+            List<IEdmProperty> changedProps = entityProps
+                .Where(ep => changedPropNames.Contains(ep.Name))
+                .OrderBy(ep => ep.Name != agregatorPropertyName)
+                .ToList();
             foreach (var prop in changedProps)
             {
                 string dataObjectPropName;
