@@ -81,6 +81,12 @@
     <Reference Include="ICSSoft.STORMNET.UserDataTypes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bc478021255def29, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NewPlatform.Flexberry.ORM.Abstractions.6.0.0-alpha08\lib\netstandard2.0\ICSSoft.STORMNET.UserDataTypes.dll</HintPath>
     </Reference>
+    <Reference Include="IIS.Caseberry.Logging.BusinessServers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2064285e6f5eb4a5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NewPlatform.Flexberry.LogService.Objects.4.0.0-alpha01\lib\netstandard2.0\IIS.Caseberry.Logging.BusinessServers.dll</HintPath>
+    </Reference>
+    <Reference Include="IIS.Caseberry.Logging.Objects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e89274d6fcfab3e9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NewPlatform.Flexberry.LogService.Objects.4.0.0-alpha01\lib\netstandard2.0\IIS.Caseberry.Logging.Objects.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>

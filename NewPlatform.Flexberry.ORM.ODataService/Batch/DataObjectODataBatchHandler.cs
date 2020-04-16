@@ -8,10 +8,11 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Batch;
-    using System.Web.OData.Batch;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using Microsoft.OData.Core;
+    using Microsoft.AspNet.OData.Batch;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.OData;
 
     /// <summary>
     /// Batch handler for DataService.
@@ -101,16 +102,15 @@
                 throw new ArgumentNullException(nameof(request));
             }
 
-            ODataMessageReaderSettings oDataReaderSettings = new ODataMessageReaderSettings
-            {
-                DisableMessageStreamDisposal = true,
-                MessageQuotas = MessageQuotas,
-                BaseUri = GetBaseUri(request)
-            };
+            var requestContainer = request.GetRequestContainer();
+            ODataMessageReaderSettings oDataReaderSettings = requestContainer.GetService(typeof(ODataMessageReaderSettings)) as ODataMessageReaderSettings;
+
+            oDataReaderSettings.MessageQuotas = MessageQuotas;
+            oDataReaderSettings.BaseUri = GetBaseUri(request);
 
             ODataMessageReader reader = isSyncMode
-                ? request.Content.GetODataMessageReaderAsync(oDataReaderSettings, cancellationToken).Result
-                : await request.Content.GetODataMessageReaderAsync(oDataReaderSettings, cancellationToken);
+                ? request.Content.GetODataMessageReaderAsync(requestContainer, cancellationToken).Result
+                : await request.Content.GetODataMessageReaderAsync(requestContainer, cancellationToken);
 
             request.RegisterForDispose(reader);
 

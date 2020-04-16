@@ -1,14 +1,22 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter;
-    using System.Web.OData.Routing;
+    using System.Web.Http.Routing;
     using ICSSoft.STORMNET.Business;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
+    using Microsoft.AspNet.OData.Formatter.Serialization;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.AspNet.OData.Routing.Conventions;
+    using Microsoft.OData;
+    using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
+    using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -70,7 +78,7 @@
             // Model.
             DataObjectEdmModel model = builder.Build();
 
-            // Support batch requests.
+            // Batch requests support.
             IDataService dataService = (IDataService)config.DependencyResolver.GetService(typeof(IDataService));
 
             if (dataService == null)
@@ -78,11 +86,16 @@
                 throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
             }
 
-            // Routing for DataObjects.
+            // Routing for DataObjects with $batch endpoint and custom formatters.
             var pathHandler = new ExtendedODataPathHandler();
             var routingConventions = DataObjectRoutingConventions.CreateDefault();
             var batchHandler = new DataObjectODataBatchHandler(dataService, httpServer, isSyncBatchUpdate);
-            ODataRoute route = config.MapODataServiceRoute(routeName, routePrefix, model, pathHandler, routingConventions, batchHandler);
+            ODataRoute route = config.MapODataServiceRoute(routeName, routePrefix, cb => cb
+                .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
+                .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
+                .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
+                .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
+                .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp)));
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
@@ -91,12 +104,6 @@
             var registeredActivator = (IHttpControllerActivator)config.Services.GetService(typeof(IHttpControllerActivator));
             var fallbackActivator = registeredActivator ?? new DefaultHttpControllerActivator();
             config.Services.Replace(typeof(IHttpControllerActivator), new DataObjectControllerActivator(fallbackActivator));
-
-            // Formatters.
-            var customODataSerializerProvider = new CustomODataSerializerProvider();
-            var extendedODataDeserializerProvider = new ExtendedODataDeserializerProvider();
-            var odataFormatters = ODataMediaTypeFormatters.Create(customODataSerializerProvider, extendedODataDeserializerProvider);
-            config.Formatters.InsertRange(0, odataFormatters);
 
             // Handlers.
             if (config.MessageHandlers.FirstOrDefault(h => h is PostPatchHandler) == null)

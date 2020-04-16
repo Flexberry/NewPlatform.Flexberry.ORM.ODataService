@@ -15,6 +15,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
     using Unity;
     using Unity.AspNet.WebApi;
