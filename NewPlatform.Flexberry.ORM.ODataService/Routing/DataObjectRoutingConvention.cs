@@ -62,18 +62,21 @@
         /// <returns>Имя действия, которое будет выполнятся при запросе или <c>null</c>, если данная конвенция не может подобрать нужное действие.</returns>
         public override string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext, ILookup<string, HttpActionDescriptor> actionMap)
         {
-            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment, UnboundActionPathSegment types here.
-            var operationImportSegment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationImportSegment;
-            if (odataPath.Segments.Count > 0 && operationImportSegment != null)
+            if (odataPath.Segments.Any())
             {
-                return operationImportSegment.OperationImports.First().IsFunctionImport() ? "GetODataFunctionsExecute" : "PostODataActionsExecute";
-            }
+                ODataPathSegment pathSegment = odataPath.Segments[odataPath.Segments.Count - 1];
 
-            // OperationSegment type represents the Microsoft OData v5.7.0 BoundFunctionPathSegment, BoundActionPathSegment types here.
-            var operationSegment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationSegment;
-            if (odataPath.Segments.Count > 0 && operationSegment != null)
-            {
-                return operationSegment.Operations.First().IsFunction() ? "GetODataFunctionsExecute" : "PostODataActionsExecute";
+                // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment, UnboundActionPathSegment types here.
+                if (pathSegment is OperationImportSegment operationImportSegment)
+                {
+                    return operationImportSegment.OperationImports.First().IsFunctionImport() ? "GetODataFunctionsExecute" : "PostODataActionsExecute";
+                }
+
+                // OperationSegment type represents the Microsoft OData v5.7.0 BoundFunctionPathSegment, BoundActionPathSegment types here.
+                if (pathSegment is OperationSegment operationSegment)
+                {
+                    return operationSegment.Operations.First().IsFunction() ? "GetODataFunctionsExecute" : "PostODataActionsExecute";
+                }
             }
 
             // The NavigationPropertySegment type represents the Microsoft OData v5.7.0 NavigationPathSegment type here.
