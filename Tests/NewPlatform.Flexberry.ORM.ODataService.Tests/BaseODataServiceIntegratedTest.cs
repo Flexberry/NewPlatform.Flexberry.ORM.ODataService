@@ -1,25 +1,23 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
-    using System.Web;
     using System.Web.Http;
     using System.Web.Http.Cors;
     using System.Web.OData.Batch;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.KeyGen;
 
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
 
     using Unity;
     using Unity.AspNet.WebApi;
@@ -71,6 +69,19 @@
         }
 
         /// <summary>
+        /// Метод вызываемый после возникновения исключения.
+        /// </summary>
+        /// <param name="e">Исключение, которое возникло внутри ODataService.</param>
+        /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
+        /// <returns>Исключение, которое будет отправлено клиенту.</returns>
+        public static Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
+        {
+            Assert.Null(e);
+            code = HttpStatusCode.InternalServerError;
+            return e;
+        }
+
+        /// <summary>
         /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
         /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.
         /// </summary>
@@ -101,18 +112,13 @@
                         dataService);
 
                     var token = config.MapODataServiceDataObjectRoute(_builder, server, "odata", "odata", true);
+                    token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
                 }
             }
         }
 
-        /*
-        private bool PropertyFilter(PropertyInfo propertyInfo)
-        {
-            return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
-        }
-        */
         protected void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -145,6 +151,30 @@
             return request;
         }
 
+        /// <summary>
+        /// Проверка наличия поддержки Gis текущей реализацией <see cref="IDataService"/>.
+        /// </summary>
+        /// <param name="dataService">Сервис данных.</param>
+        /// <returns>Значение true, если текущая реализация <see cref="IDataService"/> поддерживает Gis.</returns>
+        protected bool GisIsAvailable(IDataService dataService)
+        {
+            return dataService is GisPostgresDataService || dataService is GisMSSQLDataService;
+        }
+
+        protected string CreateChangeset(string url, string body, DataObject dataObject)
+        {
+            var changeset = new StringBuilder();
+
+            changeset.AppendLine($"{GetMethodAndUrl(dataObject, url)} HTTP/1.1");
+            changeset.AppendLine($"Content-Type: application/json;type=entry");
+            changeset.AppendLine($"Prefer: return=representation");
+            changeset.AppendLine();
+
+            changeset.AppendLine(body);
+
+            return changeset.ToString();
+        }
+
         private string CreateBatchBody(string boundary, string[] changesets)
         {
             var body = new StringBuilder($"--{boundary}");
@@ -173,20 +203,6 @@
             return body.ToString();
         }
 
-        protected string CreateChangeset(string url, string body, DataObject dataObject)
-        {
-            var changeset = new StringBuilder();
-
-            changeset.AppendLine($"{GetMethodAndUrl(dataObject, url)} HTTP/1.1");
-            changeset.AppendLine($"Content-Type: application/json;type=entry");
-            changeset.AppendLine($"Prefer: return=representation");
-            changeset.AppendLine();
-
-            changeset.AppendLine(body);
-
-            return changeset.ToString();
-        }
-
         private string GetMethodAndUrl(DataObject dataObject, string url)
         {
             switch (dataObject.GetStatus())
@@ -205,5 +221,12 @@
                     throw new InvalidOperationException();
             }
         }
+
+        /*
+        private bool PropertyFilter(PropertyInfo propertyInfo)
+        {
+            return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
+        }
+        */
     }
 }

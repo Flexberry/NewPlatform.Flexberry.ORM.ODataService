@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 2. Support $batch request for transactional update data objects.
 3. Support for limits on master details.
 4. Support for limits on pseudodetails.
+5. Decode Excel export column name. 
 
 ### Changed
 
@@ -19,7 +20,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 4. Use common DataObjectCache for all sql queries per http request.
 5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
 6. Refactor `DataObjectControllerActivator` to simplify overriding DOC initialization.
-7. Update ORM.
+7. Mapping only selected properties on getting objects.
+8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions .
+9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers .
+10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors .
+11. Update ORM.
 
 ### Fixed
 
