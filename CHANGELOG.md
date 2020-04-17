@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions .
 9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers .
 10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors .
+11. Update ORM.
 
 ### Fixed
 
