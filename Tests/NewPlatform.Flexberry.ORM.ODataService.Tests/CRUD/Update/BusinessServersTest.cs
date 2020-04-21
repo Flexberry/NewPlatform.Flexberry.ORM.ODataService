@@ -1,13 +1,10 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Web.OData.Batch;
+
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
