@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.1.0-beta17</version>
+    <version>6.0.0-alpha01</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -12,38 +12,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
-      Added
-      1. Handle httpResponseException with OdataError wrapped in targetInvocationException.
-      2. Support $batch request for transactional update data objects.
-      3. Support for limits on master details.
-      4. Support for limits on pseudodetails.
-      5. Decode Excel export column name.
-      6. HttpConfiguretion MapDataObjectRoute() extension method. 
-
       Changed
-      1. JavaScriptSerializer replaced with Newtonsoft.Json.JsonConvert for better performance.
-      2. [BREAKINGCHANGE] Method MapODataServiceDataObjectRoute now requires HttpServer as parameter.
-      3. At creation of dynamic views of the master in them are added with primary keys.
-      4. Use common DataObjectCache for all sql queries per http request.
-      5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
-      6. Refactor `DataObjectControllerActivator` to simplify overriding DOC initialization.
-      7. Mapping only selected properties on getting objects.
-      8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions .
-      9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers .
-      10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors .
-      11. [BREAKINGCHANGE] HttpConfiguration MapODataServiceDataObjectRoute extension method is marked obsolete.
-      12. Code unification with Microsoft.AspNetCore.OData .
-
-      Fixed
-      1. Fix error with POST request and header "Prefer".
-      2. Getting objects by primary key with using `$select` and `$expand` query options.
-      3. Loading masters with common DataObjectCache.
-      4. Naming of details when exporting data to Excel.
-      5. Call BS for agregator when details changed in batch requests.
-      6. WebFile type support in batch requests.
-      7. Fix error on creation DataObject with pseudodetail field defined.
-      8. Loading masters with not stored property in batch requests.
-      9. Using ObjectStatus instead of private collection to determine if object is created.
+      1. Update to Microsoft .NET Framework 4.6.1
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2020</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
@@ -63,13 +33,13 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.xml" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" />
   </files>
 </package>
