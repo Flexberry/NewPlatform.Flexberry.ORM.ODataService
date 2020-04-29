@@ -782,7 +782,17 @@
                 updatedSettings.HandleNullPropagation = HandleNullPropagationOptionHelper.GetDefaultHandleNullPropagationOption(query);
             }
 
-            FilterBinder binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+            FilterBinder binder;
+            try
+            {
+                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogDebug($"Failed to transform: {QueryOptions.Context.Path}", ex);
+                throw;
+            }
+
             _filterDetailProperties = binder.FilterDetailProperties;
             if (binder.IsOfTypesList.Count > 0)
             {
@@ -1031,9 +1041,18 @@
         {
             type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetPathSegment>().First().ToString());
             QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
-            if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
+            try
             {
-                Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                var selectExpandClause = QueryOptions.SelectExpand?.SelectExpandClause;
+                if (selectExpandClause != null)
+                {
+                    Request.ODataProperties().SelectExpandClause = selectExpandClause;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.LogDebug($"Failed to get {nameof(SelectExpandQueryOption.SelectExpandClause)}: {QueryOptions.Context.Path}", e);
+                throw;
             }
 
             CreateDynamicView();
