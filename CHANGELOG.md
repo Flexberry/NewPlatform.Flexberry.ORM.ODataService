@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [5.1.0] - 2020.05.03
+
+### Added
+
 1. Handle httpResponseException with OdataError wrapped in targetInvocationException.
 2. Support $batch request for transactional update data objects.
 3. Support for limits on master details.
@@ -22,11 +30,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
 6. Refactor `DataObjectControllerActivator` to simplify overriding DOC initialization.
 7. Mapping only selected properties on getting objects.
-8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions .
-9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers .
-10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors .
+8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions.
+9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.
+10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors.
 11. [BREAKINGCHANGE] HttpConfiguration MapODataServiceDataObjectRoute extension method is marked obsolete.
-12. Code unification with Microsoft.AspNetCore.OData .
+12. Code unification with Microsoft.AspNetCore.OData.
 
 ### Fixed
 
