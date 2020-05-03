@@ -515,7 +515,7 @@
                 if (dataObjectFromCache != null)
                 {
                     // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
-                    if (dataObjectFromCache.GetStatus(false) != ObjectStatus.Created
+                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
                         && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
@@ -524,7 +524,7 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache);
+                            _dataService.LoadObject(view, dataObjectFromCache, true, true, _dataObjectCache);
                         }
                     }
 
@@ -615,7 +615,12 @@
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
             string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
             IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
-            IEnumerable<IEdmProperty> changedProps = entityProps.Where(ep => changedPropNames.Contains(ep.Name)).ToList();
+
+            // Обрабатываем агрегатор первым.
+            List<IEdmProperty> changedProps = entityProps
+                .Where(ep => changedPropNames.Contains(ep.Name))
+                .OrderBy(ep => ep.Name != agregatorPropertyName)
+                .ToList();
             foreach (var prop in changedProps)
             {
                 string dataObjectPropName;

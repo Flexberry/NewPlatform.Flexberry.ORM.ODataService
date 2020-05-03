@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.1.0-beta17</version>
+    <version>5.1.0</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -44,6 +44,7 @@
       7. Fix error on creation DataObject with pseudodetail field defined.
       8. Loading masters with not stored property in batch requests.
       9. Using ObjectStatus instead of private collection to determine if object is created.
+      10. Update second level details by batch update.
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2020</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
