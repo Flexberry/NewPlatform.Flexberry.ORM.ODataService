@@ -19,7 +19,7 @@
         [Fact]
         public void WebFileAsStringShouldSave()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога());

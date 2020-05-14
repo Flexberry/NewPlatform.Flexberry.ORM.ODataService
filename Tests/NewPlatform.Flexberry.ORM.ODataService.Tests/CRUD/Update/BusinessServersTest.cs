@@ -146,7 +146,7 @@
         [Fact]
         public void CallAggregatorBSOnAddDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога());
@@ -190,7 +190,7 @@
         [Fact]
         public void CallAggregatorBSOnUpdateDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога() { Заброшена = true });
@@ -245,7 +245,7 @@
         [Fact]
         public void CallAggregatorBSOnDeleteDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога());
