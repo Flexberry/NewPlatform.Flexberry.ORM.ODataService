@@ -58,7 +58,7 @@
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлога = медведь.Берлога.GetAllObjects().Cast<Берлога>().FirstOrDefault();
+                    var берлога = медведь.Берлога.Cast<Берлога>().FirstOrDefault();
 
                     Assert.NotNull(берлога);
                     Assert.Equal(сертификатСтрока, берлога.СертификатСтрока);
@@ -123,7 +123,7 @@
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлога2 = медведь.Берлога.GetAllObjects().Cast<Берлога>().FirstOrDefault();
+                    var берлога2 = медведь.Берлога.Cast<Берлога>().FirstOrDefault();
 
                     Assert.NotNull(берлога2);
                     Assert.NotNull(берлога2.Сертификат);

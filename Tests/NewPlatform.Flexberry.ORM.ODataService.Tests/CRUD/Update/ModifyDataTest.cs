@@ -1011,7 +1011,7 @@
 
                     args.DataService.LoadObject(кошкаDynamicView, кошка);
 
-                    var лапы = кошка.Лапа.GetAllObjects().Cast<Лапа>();
+                    var лапы = кошка.Лапа.Cast<Лапа>();
 
                     Assert.Equal("100", кошка.Кличка);
                     Assert.Equal(ТипКошки.Дикая, кошка.Тип);
@@ -1114,7 +1114,7 @@
 
                     args.DataService.LoadObject(кошкаDynamicView, кошка);
 
-                    var лапы = кошка.Лапа.GetAllObjects().Cast<Лапа>();
+                    var лапы = кошка.Лапа.Cast<Лапа>();
 
                     var переломы = лапы.FirstOrDefault().Перелом.Cast<Перелом>();
 
@@ -1211,7 +1211,7 @@
 
                     args.DataService.LoadObject(кошкаDynamicView, кошка);
 
-                    var лапы = кошка.Лапа.GetAllObjects().Cast<Лапа>();
+                    var лапы = кошка.Лапа.Cast<Лапа>();
 
                     Assert.Equal(2, лапы.Count());
                     Assert.Equal(1, лапы.Count(x => x.Размер == 2000));

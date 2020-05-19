@@ -176,7 +176,7 @@
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+                    var берлоги = медведь.Берлога.Cast<Берлога>();
 
                     Assert.Equal(1, берлоги.Count(б => б.Заброшена));
                     Assert.Equal(1, берлоги.Count(б => !б.Заброшена));
@@ -227,7 +227,7 @@
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+                    var берлоги = медведь.Берлога.Cast<Берлога>();
 
                     Assert.Equal(2, берлоги.Count());
 
@@ -271,7 +271,7 @@
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
                     Assert.Equal(1, медведь.Берлога.Count);
-                    Assert.Equal(1, медведь.Берлога.GetAllObjects().Cast<Берлога>().First().Комфортность);
+                    Assert.Equal(1, медведь.Берлога.Cast<Берлога>().First().Комфортность);
                 }
             });
         }
