@@ -525,7 +525,7 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache, false, true, _dataObjectCache);
+                            _dataService.LoadObject(view, dataObjectFromCache, true, true, _dataObjectCache);
                         }
                     }
 
@@ -548,7 +548,7 @@
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
-                    if (lightViewDetails.Length > 0)
+                    if (lightViewDetails.Any())
                     {
                         // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
                         _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, _dataObjectCache);
