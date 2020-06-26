@@ -1,0 +1,538 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NewPlatform.Flexberry.ORM.ODataServiceCore.Files</name>
+    </assembly>
+    <members>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor">
+            <summary>
+            The default <see cref="T:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor"/> implementation.
+            </summary>
+        </member>
+        <member name="F:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.uploadsDirectoryPath">
+            <summary>
+            The file uploads directory path.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.DataObjectFileProviders">
+            <inheritdoc/>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.RouteUrl">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.#ctor(System.Uri,System.String,System.String,System.Collections.Generic.List{NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor"/> class.
+            </summary>
+            <param name="baseUrl">The file service base URL.</param>
+            <param name="routeUrl">The file route URL.</param>
+            <param name="uploadsDirectoryPath">The file uploads directory path.</param>
+            <param name="dataObjectFileProviders">The user defined set of data object file providers.</param>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.CreateFileUploadDirectory(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.GetDataObjectFileProvider(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.GetFileUploadDirectoryPath(System.String)">
+            <summary>
+            Получает путь к подкаталогу с заданным именем внутри каталога файлового хранилища.
+            </summary>
+            <param name="fileUploadKey">Ключ загрузки файла (используется как имя подкаталога).</param>
+            <returns>Путь к подкаталогу.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.HasDataObjectFileProvider(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.RemoveFileUploadDirectory(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.RemoveFileUploadDirectories(System.Collections.Generic.List{NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription})">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.DefaultDataObjectFileAccessor.RegisterDataObjectFileProvider(NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider)">
+            <summary>
+            Осуществляет регистрацию провайдера файловых свойств для объекта данных.
+            </summary>
+            <param name="dataObjectFileProvider">
+            Провайдер файловых свойств для объекта данных.
+            </param>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription">
+            <summary>
+            Метаданные файлов, связываемых с объектами данных.
+            </summary>
+        </member>
+        <member name="F:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription._jsonProperties">
+            <summary>
+            Свойства, помеченные атрибутом <see cref="T:Newtonsoft.Json.JsonPropertyAttribute"/>,
+            соответствующие заданным значениям <see cref="P:Newtonsoft.Json.JsonPropertyAttribute.PropertyName"/>.
+            </summary>
+        </member>
+        <member name="F:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription._jsonPropertiesNames">
+            <summary>
+            Имена свойств класса, помеченных атрибутом <see cref="T:Newtonsoft.Json.JsonPropertyAttribute"/>,
+            соответствующие заданным значениям <see cref="P:Newtonsoft.Json.JsonPropertyAttribute.PropertyName"/>.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileBaseUrl">
+            <summary>
+            Получает или задает базовую часть URL-а, по которому будут осуществляться запросы на скачивание/удаление файла.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileUrl">
+            <summary>
+            Получает или задает URL, по которому будут осуществляться запросы на скачивание/удаление файла.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.PreviewUrl">
+            <summary>
+            Получает или задает URL, по которому будут осуществляться запросы на скачивание preview-изображения файла (в виде Base64String).
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileName">
+            <summary>
+            Получает или задает имя файла.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileSize">
+            <summary>
+            Получает или задает размер файла в байтах.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileMimeType">
+            <summary>
+            Получает или задает MIME-тип, соответствующий файлу.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FileUploadKey">
+            <summary>
+            Получает или задает ключ файла, по которому он был загружен в файловую систему.
+            </summary>
+            <remarks>
+            Этим ключом именуется каталог, в который был загружен файл.
+            </remarks>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.EntityTypeName">
+            <summary>
+            Получает или задает имя типа объекта данных, с которым связан файл.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.EntityPropertyName">
+            <summary>
+            Получает или задет имя свойства в объекте данных, с которым связан файл.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.EntityPrimaryKey">
+            <summary>
+            Получает или задает первичный ключ объекта данных, с которым связан файл.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.#ctor">
+            <summary>
+            Инициализирует метаданные файла, связываемого с объектами данных.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.#ctor(System.String)">
+            <summary>
+            Инициализирует метаданные файла, связываемого с объектами данных.
+            </summary>
+            <param name="fileBaseUrl">Базовая часть URL-а, по которому будут осуществляться запросы на скачивание/удаление файла.</param>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует метаданные файла, связываемого с объектами данных.
+            </summary>
+            <param name="fileBaseUrl">Базовая часть URL-а, по которому будут осуществляться запросы на скачивание/удаление файла.</param>
+            <param name="filePath">Путь к файлу.</param>
+            <returns>Метаданные о файле.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">Выбрасывается, если по заданному пути отсутствует какой-либо файл.</exception>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.FromJson(System.String)">
+            <summary>
+            Осуществляет десериализацию метаданных о файле из JSON-строки.
+            </summary>
+            <param name="jsonFileDescription">Строка, содержащая метаданные о файле в формате JSON.</param>
+            <returns>
+            Десериализованные метаданные о файле.
+            </returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription.ToJson">
+            <summary>
+            Осуществляет сериализацию метаданных о файле в JSON-строку.
+            </summary>
+            <returns>
+            Сериализованные метаданные о файле.
+            </returns>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor">
+            <summary>
+            Provides an abstraction for access to the file properties of a data object.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.DataObjectFileProviders">
+            <summary>
+            Список зарегистрированных провайдеров файловых свойств объектов данных.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.RouteUrl">
+            <summary>
+            The file route URL.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.CreateFileUploadDirectory(System.String)">
+            <summary>
+            Осуществляет создание подкаталога с заданным именем в каталоге файлового хранилища.
+            </summary>
+            <param name="fileUploadKey">Ключ загрузки файла (используется как имя создаваемого подкаталога).</param>
+            <returns>Путь к созданному подкаталогу.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.GetDataObjectFileProvider(System.Type)">
+            <summary>
+            Получает зарегистрированный провайдер для заданного типа файловых свойств объектов данных.
+            </summary>
+            <param name="dataObjectFilePropertyType">Тип файловыйх свойств объектов данных.</param>
+            <returns>Провайдер файловых свойств объектов данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.HasDataObjectFileProvider(System.Type)">
+            <summary>
+            Проверяет, имеется ли зарегистрированный провайдер для заданного типа файловых свойств объектов данных.
+            </summary>
+            <param name="dataObjectFilePropertyType">Тип файловыйх свойств объектов данных.</param>
+            <returns>Флаг: <c>true</c>, если для файловых свойств указанного типа зарегистрирован провайдер, <c>false</c> в противном случае.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.RemoveFileUploadDirectory(System.String)">
+            <summary>
+            Осуществляет удаление подкаталога с заданным именем из каталога файлового хранилища.
+            </summary>
+            <param name="fileUploadKey">Ключ загрузки файла (используется как имя удаляемого подкаталога).</param>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.IDataObjectFileAccessor.RemoveFileUploadDirectories(System.Collections.Generic.List{NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription})">
+            <summary>
+            Осуществляет удаление подкаталогов, соответствующих загруженным файлам, из каталога файлового хранилища.
+            </summary>
+            <param name="removingFileDescriptions">Метаданные файлов, которые требуется удалить.</param>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.MimeTypeUtils">
+            <summary>
+            MIME type utilities.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.MimeTypeUtils.GetFileMimeType(System.String)">
+            <summary>
+            Given a file path, determine the MIME type.
+            </summary>
+            <param name="subpath">A file path.</param>
+            <returns>The MIME type.</returns>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider">
+            <summary>
+            Базовый провайдер для файловых свойств объектов данных.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.FileBaseUrl">
+            <inheritdoc/>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.FilePropertyType">
+            <inheritdoc/>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.UploadsDirectoryPath">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.#ctor">
+            <summary>
+            Конструктор классa <see cref="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider"/>.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileDescription(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileDescription(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileDescriptions(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileMimeType(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileMimeType(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileName(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileName(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileProperty(ICSSoft.STORMNET.Business.IDataService,NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileProperty(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileProperties(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileSize(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileSize(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileStream(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileStream(ICSSoft.STORMNET.Business.IDataService,NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.GetFileStream(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.RemoveFile(NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.RemoveFile(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.BaseDataObjectFileProvider.RemoveFile(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider">
+            <summary>
+            Провайдер для файловых свойств объектов данных типа <see cref="T:ICSSoft.STORMNET.FileType.File"/>.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.#ctor">
+            <summary>
+            Конструктор класса <see cref="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider"/>.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.FilePropertyType">
+            <summary>
+            Тип файловых свойств объектов данных, обрабатываемых провайдером (<see cref="T:ICSSoft.STORMNET.FileType.File"/>).
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.GetFileProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.GetFileName(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.GetFileSize(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectFileProvider.GetFileStream(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider">
+            <summary>
+            Провайдер для свойства объектов данных типа <see cref="T:ICSSoft.STORMNET.UserDataTypes.WebFile"/>.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.#ctor">
+            <summary>
+            Конструктор класса <see cref="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider"/>.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.FilePropertyType">
+            <summary>
+            Тип файловых свойств объектов данных, обрабатываемых провайдером (<see cref="T:ICSSoft.STORMNET.UserDataTypes.WebFile"/>).
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.GetFileDescription(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.GetFileProperty(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.GetFileName(System.Object)">
+            <inheritdoc/>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.GetFileSize(System.Object)" -->
+        <!-- Badly formed XML comment ignored for member "M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.DataObjectWebFileProvider.GetFileStream(System.Object)" -->
+        <member name="T:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider">
+            <summary>
+            Интерфейс для провайдеров файловых свойств объектов данных.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FileBaseUrl">
+            <summary>
+            Получат или задает базовую часть URL-а для ссылок на скачивание / удаление файлов.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType">
+            <summary>
+            Получает тип файловых свойств объектов данных, обрабатываемых провайдером.
+            </summary>
+        </member>
+        <member name="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.UploadsDirectoryPath">
+            <summary>
+            Получает или задает путь к каталогу, в котором должны храниться файлы, загруженные на сервер при помощи провайдера.
+            </summary>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescription(System.Object)">
+            <summary>
+            Осуществляет получение метаданных с описанием файлового свойства объекта данных.
+            </summary>
+            <param name="fileProperty">Файловое свойство объекта данных, для которого требуется получить метаданные файла.</param>
+            <returns>Метаданные с описанием файлового свойства объекта данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescription(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>
+            Осуществляет получение метаданных с описанием файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных</param>
+            <returns>Метаданные с описанием файлового свойства объекта данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileDescriptions(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject)">
+            <summary>
+            Осуществляет получение списка метаданных с описанием файловых свойств объекта данных, соответствующих типу <see cref="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType"/>.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловые свойства.</param>
+            <returns>Список метаданных с описанием файловых свойств объекта данных, соответствующих типу <see cref="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType"/>.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileMimeType(System.Object)">
+            <summary>
+            Осуществляет получение MIME-типа для файлового свойства объекта данных.
+            </summary>
+            <param name="fileProperty">Файловое свойство объекта данных, для которого требуется получить MIME-тип.</param>
+            <returns>MIME-тип файла, соответствующего заданному файловому свойству.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileMimeType(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>
+            Осуществляет получение MIME-типа для файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство, для которого требуется получить MIME-тип.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных.</param>
+            <returns>MIME-тип файла, соответствующего заданному файловому свойству.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileName(System.Object)">
+            <summary>
+            Осуществляет получение имени файла для файлового свойства объекта данных.
+            </summary>
+            <param name="fileProperty">Файловое свойство объекта данных, для которого требуется получить имя файла.</param>
+            <returns>Имя файла.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileName(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>
+            Осуществляет получение имени файла для файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство, для которого требуется получить имя.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных.</param>
+            <returns>Имя файла.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty(System.String)">
+            <summary>
+            Осуществляет получение файлового свойства из файла, расположенного по заданному пути.
+            </summary>
+            <param name="filePath">Путь к файлу.</param>
+            <returns>Значение файлового свойства объекта данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty(ICSSoft.STORMNET.Business.IDataService,NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <summary>
+            Осуществляет получение файлового свойства объекта данных, по его метаданным.
+            </summary>
+            <remarks>При необходимости будет  вычитан объект данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="fileDescription">Метаданные с описанием файлового свойства объекта данных.</param>
+            <returns>Значение файлового свойства объекта данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperty(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>    
+            Осуществляет получение файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных.</param>
+            <returns>Значение файлового свойства объекта данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileProperties(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject)">
+            <summary>
+            Осуществляет получение списка файловых свойств объекта данных, соответствующих типу <see cref="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType"/>.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловые свойства.</param>
+            <returns>Список файловых свойств объекта данных, соответствующих типу <see cref="P:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.FilePropertyType"/>.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileSize(System.Object)">
+            <summary>
+            Осуществляет получение размера файла, связанного с объектом данных, в байтах.
+            </summary>
+            <param name="fileProperty">Значение файлового свойства объекта данных, для которого требуется получить размер файла.</param>
+            <returns>Размер файла в байтах.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileSize(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>    
+            Осуществляет получение размера файла, связанного с объектом данных, в байтах.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных, для которого требуется получить размер файла.</param>
+            <returns>Размер файла в байтах.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream(System.Object)">
+            <summary>
+            Осуществляет получение потока данных для файлового свойства объекта данных.
+            </summary>
+            <param name="fileProperty">Значение файлового свойства объекта данных, для которого требуется получить поток данных.</param>
+            <returns>Поток данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream(ICSSoft.STORMNET.Business.IDataService,NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <summary>
+            Осуществляет получение потока данных для файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет  вычитан объект данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="fileDescription">Метаданные с описанием файлового свойства объекта данных, для которого требуется получить поток данных.</param>
+            <returns>Поток данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.GetFileStream(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>
+            Осуществляет получение потока данных для файлового свойства объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство, для которого требуется получить поток данных.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных.</param>
+            <returns>Поток данных.</returns>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile(NewPlatform.Flexberry.ORM.ODataService.Files.FileDescription)">
+            <summary>
+            Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.
+            </summary>
+            <param name="fileDescription">Метаданные удаляемого файла.</param>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile(System.Object)">
+            <summary>
+            Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.
+            </summary>
+            <param name="fileProperty">Значение файлового свойства объекта данных, для которого требуется выполнить удаление.</param>
+        </member>
+        <member name="M:NewPlatform.Flexberry.ORM.ODataService.Files.Providers.IDataObjectFileProvider.RemoveFile(ICSSoft.STORMNET.Business.IDataService,ICSSoft.STORMNET.DataObject,System.String)">
+            <summary>
+            Осуществляет удаление из файловой системы файла, соответствующего файловому свойству объекта данных.
+            </summary>
+            <remarks>При необходимости будет произведена дочитка объекта данных.</remarks>
+            <param name="dataService">Сервис данных для операций с БД.</param>
+            <param name="dataObject">Объект данных, содержащий файловое свойство.</param>
+            <param name="dataObjectFilePropertyName">Имя файлового свойства в объекте данных.</param>
+        </member>
+    </members>
+</doc>
