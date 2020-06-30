@@ -181,7 +181,7 @@
         private void BuildOwnProperties(EdmEntityType edmEntityType, Type dataObjectType)
         {
             var settings = _metadata[dataObjectType];
-            var keyPropertyType = settings.KeyType == null ? null : EdmTypeMap.GetEdmPrimitiveType(settings.KeyType);
+            var keyPropertyType = settings.KeyType == null ? null : EdmTypeMap.GetEdmPrimitiveType(settings.KeyType, EdmModelBuilder?.AdditionalMapping);
             IEnumerable<PropertyInfo> ownProperties = settings.OwnProperties;
             foreach (var propertyInfo in ownProperties)
             {
@@ -216,7 +216,7 @@
                     this.SetAnnotationValue(edmProp, new ClrPropertyInfoAnnotation(propertyInfo));
                 }
 
-                IEdmPrimitiveType edmPrimitiveType = EdmTypeMap.GetEdmPrimitiveType(propertyType);
+                IEdmPrimitiveType edmPrimitiveType = EdmTypeMap.GetEdmPrimitiveType(propertyType, EdmModelBuilder?.AdditionalMapping);
                 if (edmPrimitiveType != null)
                 {
                     EdmStructuralProperty edmProp = edmEntityType.AddStructuralProperty(GetEntityPropertyName(propertyInfo), edmPrimitiveType.PrimitiveKind);
@@ -680,7 +680,7 @@
             {
                 Type paramType = function.ParametersTypes[parameter];
                 IEdmEnumType enumType = GetEdmEnumType(paramType);
-                var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(paramType);
+                var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(paramType, EdmModelBuilder?.AdditionalMapping);
                 if (edmParameterType != null)
                 {
                     edmFunction.AddParameter(parameter, new EdmPrimitiveTypeReference(edmParameterType, false));
@@ -802,7 +802,7 @@
 
         private IEdmTypeReference GetNotEntityTypeReference(Type clrType)
         {
-            IEdmType edmType = EdmTypeMap.GetEdmPrimitiveType(clrType);
+            IEdmType edmType = EdmTypeMap.GetEdmPrimitiveType(clrType, EdmModelBuilder?.AdditionalMapping);
             if (edmType != null)
             {
                 return new EdmPrimitiveTypeReference(edmType as IEdmPrimitiveType, false);
@@ -840,10 +840,10 @@
         private void RegisterGeoIntersectsFunction()
         {
             EdmFunction edmFunction;
-            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool));
+            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool), EdmModelBuilder?.AdditionalMapping);
             edmFunction = new EdmFunction("geo", "intersects", new EdmPrimitiveTypeReference(edmReturnType, false), false, null, true);
             AddElement(edmFunction);
-            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geography));
+            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geography), EdmModelBuilder?.AdditionalMapping);
             edmFunction.AddParameter("geography1", new EdmPrimitiveTypeReference(edmParameterType, false));
             edmFunction.AddParameter("geography2", new EdmPrimitiveTypeReference(edmParameterType, false));
         }
@@ -851,10 +851,10 @@
         private void RegisterGeomIntersectsFunction()
         {
             EdmFunction edmFunction;
-            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool));
+            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool), EdmModelBuilder?.AdditionalMapping);
             edmFunction = new EdmFunction("geom", "intersects", new EdmPrimitiveTypeReference(edmReturnType, false), false, null, true);
             AddElement(edmFunction);
-            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geometry));
+            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geometry), EdmModelBuilder?.AdditionalMapping);
             edmFunction.AddParameter("geometry1", new EdmPrimitiveTypeReference(edmParameterType, false));
             edmFunction.AddParameter("geometry2", new EdmPrimitiveTypeReference(edmParameterType, false));
         }
