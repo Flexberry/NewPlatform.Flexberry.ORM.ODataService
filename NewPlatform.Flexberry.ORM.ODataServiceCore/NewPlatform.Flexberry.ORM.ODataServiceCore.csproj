@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\projects\flexberry\solo12\NewPlatform.Flexberry.ORM.ODataService\NewPlatform.Flexberry.ORM.ODataServiceCore\NewPlatform.Flexberry.ORM.ODataServiceCore.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\NewPlatform.Flexberry.ORM.ODataServiceCore.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
