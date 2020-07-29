@@ -360,7 +360,8 @@
 
             string json = (string)Request.Properties[requestContentKey];
 
-            Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            Dictionary<string, object> props =
+                JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings() { FloatParseHandling = FloatParseHandling.Decimal });
             var keys = props.Keys.ToArray();
             var odataBindNullList = new List<string>();
             foreach (var key in keys)
