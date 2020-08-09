@@ -101,7 +101,9 @@
                     object detailPrimaryKey = detail.__PrimaryKey;
                     DataObject detailFromCache = dataObjectCache.GetLivingDataObject(detail.GetType(), detailPrimaryKey);
 
-                    agregator.AddDetail(detailFromCache ?? detail);
+                    DataObject detailForAdd = detailFromCache ?? detail;
+                    agregator.AddDetail(detailForAdd);
+                    agregator.GetDataCopy().AddDetail(detailForAdd.GetDataCopy());
 
                     if (detailFromCache == null)
                     {
