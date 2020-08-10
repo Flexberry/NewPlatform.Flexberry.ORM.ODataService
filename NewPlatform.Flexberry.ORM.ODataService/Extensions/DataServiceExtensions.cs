@@ -102,14 +102,18 @@
                     DataObject detailFromCache = dataObjectCache.GetLivingDataObject(detail.GetType(), detailPrimaryKey);
 
                     DataObject detailForAdd = detailFromCache ?? detail;
-                    agregator.AddDetail(detailForAdd);
 
-                    DataObject agregatorDataCopy = agregator.GetDataCopy();
-                    DataObject detailDataCopy = detailForAdd.GetDataCopy();
-
-                    if (agregatorDataCopy != null && detailDataCopy != null)
+                    if (detailForAdd != null)
                     {
-                        agregatorDataCopy.AddDetail(detailDataCopy);
+                        agregator.AddDetail(detailForAdd);
+
+                        DataObject agregatorDataCopy = agregator.GetDataCopy();
+                        DataObject detailDataCopy = detailForAdd.GetDataCopy();
+
+                        if (agregatorDataCopy != null && detailDataCopy != null)
+                        {
+                            agregatorDataCopy.AddDetail(detailDataCopy);
+                        }
                     }
 
                     if (detailFromCache == null)
