@@ -103,7 +103,14 @@
 
                     DataObject detailForAdd = detailFromCache ?? detail;
                     agregator.AddDetail(detailForAdd);
-                    agregator.GetDataCopy().AddDetail(detailForAdd.GetDataCopy());
+
+                    DataObject agregatorDataCopy = agregator.GetDataCopy();
+                    DataObject detailDataCopy = detailForAdd.GetDataCopy();
+
+                    if (agregatorDataCopy != null && detailDataCopy != null)
+                    {
+                        agregatorDataCopy.AddDetail(detailDataCopy);
+                    }
 
                     if (detailFromCache == null)
                     {
