@@ -53,6 +53,11 @@
                 throw new ArgumentNullException(nameof(agregators));
             }
 
+            if (agregators.Length == 0)
+            {
+                return;
+            }
+
             // Обрабатываем все детейлы, которые указаны в представлении.
             DetailInView[] detailsInView = view.Details;
             foreach (DetailInView detailInView in detailsInView)
@@ -123,9 +128,12 @@
                 }
 
                 // Детейлы второго и последующих уровней нужно обработать аналогичным образом.
-                foreach (DetailInView secondDetailInView in secondDetailsInView)
+                if (details != null && details.Length > 0)
                 {
-                    dataService.SafeLoadDetails(secondDetailInView.View, details, dataObjectCache);
+                    foreach (DetailInView secondDetailInView in secondDetailsInView)
+                    {
+                        dataService.SafeLoadDetails(secondDetailInView.View, details, dataObjectCache);
+                    }
                 }
             }
         }
