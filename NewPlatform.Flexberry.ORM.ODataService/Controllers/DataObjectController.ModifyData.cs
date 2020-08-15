@@ -19,6 +19,7 @@
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
