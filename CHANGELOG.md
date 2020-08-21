@@ -10,6 +10,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.1.1] - 2020.08.21
+
+### Added
+
+1. The maximum number of top level query operations and changesets allowed in a single batch parameter, set default as 1000.
+
+### Fixed
+
+1. Update and delete details by batch update.
+2. Exponential format for numeric values serialization issue.
+3. SafeLoadDetails add details DataCopy to DataCopy DetailArray.
+4. Load emty agregators in SafeLoadDetails.
+
 ## [5.1.0] - 2020.05.03
 
 ### Added
