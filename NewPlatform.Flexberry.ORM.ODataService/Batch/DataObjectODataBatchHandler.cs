@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -12,6 +13,7 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using Microsoft.OData.Core;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
 
     /// <summary>
     /// Batch handler for DataService.
@@ -27,6 +29,11 @@
         /// Request Properties collection key for DataObjectCache instance.
         /// </summary>
         public const string DataObjectCachePropertyKey = "DataObjectCache";
+
+        /// <summary>
+        /// The container with registered events.
+        /// </summary>
+        private IEventHandlerContainer _events;
 
         /// <summary>
         /// if set to true then use synchronous mode for call subrequests.
@@ -50,6 +57,15 @@
             this.dataService = dataService;
 
             this.isSyncMode = isSyncMode ?? Type.GetType("Mono.Runtime") != null;
+        }
+
+        /// <summary>
+        /// Initializes the container with registered events.
+        /// </summary>
+        /// <param name="events">The container with registered events.</param>
+        public void InitializeEvents(IEventHandlerContainer events)
+        {
+            _events = events;
         }
 
         /// <inheritdoc />
@@ -81,6 +97,15 @@
             }
             catch (Exception ex)
             {
+                HttpStatusCode code = HttpStatusCode.InternalServerError;
+                Exception originalEx = ex;
+                ex = ExecuteCallbackAfterInternalServerError(ex, ref code);
+
+                if (ex == null)
+                {
+                    ex = new Exception("Exception is null.");
+                }
+
                 throw ex;
             }
             finally
@@ -238,11 +263,37 @@
                 }
                 catch (Exception ex)
                 {
+                    // TODO: Сделать также как в DataObjectController - предоставить возможность переопределить код ошибки.
+                    HttpStatusCode code = HttpStatusCode.InternalServerError;
+                    Exception originalEx = ex;
+                    ex = ExecuteCallbackAfterInternalServerError(ex, ref code);
+
+                    if (ex == null)
+                    {
+                        ex = new Exception("Exception is null.");
+                    }
+
                     throw ex;
                 }
             }
 
             return changeSetResponse;
+        }
+
+        /// <summary>
+        /// Вызов делегата после возникновения исключения.
+        /// </summary>
+        /// <param name="ex">Исключение, которое возникло внутри ODataService.</param>
+        /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
+        /// <returns>Исключение, которое будет отправлено клиенту.</returns>
+        internal Exception ExecuteCallbackAfterInternalServerError(Exception ex, ref HttpStatusCode code)
+        {
+            if (_events.CallbackAfterInternalServerError == null)
+            {
+                return ex;
+            }
+
+            return _events.CallbackAfterInternalServerError(ex, ref code);
         }
     }
 }

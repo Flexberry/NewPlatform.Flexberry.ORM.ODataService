@@ -1219,5 +1219,88 @@
                 }
             });
         }
+
+        /// <summary>
+        /// Test batch update error handling when business server throws exception.
+        /// </summary>
+        [Fact]
+        public void BatchUpdateErrorHandlingTest()
+        {
+            ActODataService(args =>
+            {
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.Кличка = "100";
+                кошка.Тип = ТипКошки.Дикая;
+
+                // Этот размер лапы указан в CatsBS как недопустимый размер, будет сгенерировано исключение.
+                лапа.Размер = 100899;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        кошка.ToJson(кошкаDynamicView, args.Token.Model),
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                };
+
+                int exceptionHandled = 0;
+
+                args.Token.Events.CallbackAfterInternalServerError = (Exception e, ref HttpStatusCode code) =>
+                {
+                    if (e.Message == "Недопустимый размер кошачьей лапы!")
+                    {
+                        exceptionHandled++;
+                    }
+
+                    return e;
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+                    Assert.Equal(1, exceptionHandled);
+                }
+            });
+        }
     }
 }
