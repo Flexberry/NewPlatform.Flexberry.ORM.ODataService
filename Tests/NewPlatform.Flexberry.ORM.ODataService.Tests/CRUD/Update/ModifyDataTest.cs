@@ -1309,5 +1309,45 @@
                 }
             });
         }
+
+        /// <summary>
+        /// Test update agregator with inheritance details.
+        /// </summary>
+        [Fact]
+        public void UpdateAgregatorWithInheritanceDetailsTest()
+        {
+            ActODataService(args =>
+            {
+                var son = new Son() { Name = "Yakov", SuspendersColor = "Brown" };
+                var daughter = new Daughter() { Name = "Yana", DressColor = "Red" };
+                var person = new Person() { Name = "Yan" };
+                person.Childrens.AddRange(son, daughter);
+
+                args.DataService.UpdateObject(person);
+
+                person.Name = "Yan Yakovlevich";
+
+                // Преобразуем объект данных в JSON-строку.
+                string[] personPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Person>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Person>(x => x.Name)
+                };
+
+                var personDynamicView = new View(new ViewAttribute("personDynamicView", personPropertiesNames), typeof(Person));
+
+                string requestJsonData = person.ToJson(personDynamicView, args.Token.Model);
+
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Person)).Name);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, requestJsonData).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+                }
+            });
+        }
     }
 }
