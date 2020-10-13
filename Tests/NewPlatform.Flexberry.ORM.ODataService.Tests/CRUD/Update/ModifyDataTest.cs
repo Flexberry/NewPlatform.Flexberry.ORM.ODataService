@@ -1284,14 +1284,21 @@
 
                 int exceptionHandled = 0;
 
-                args.Token.Events.CallbackAfterInternalServerError = (Exception e, ref HttpStatusCode code) =>
+                args.Token.Events.CallbackAfterInternalServerError = (Exception exception, ref HttpStatusCode code) =>
                 {
-                    if (e.Message == "Недопустимый размер кошачьей лапы!")
+                    Exception currentException = exception;
+
+                    while (currentException != null)
                     {
-                        exceptionHandled++;
+                        if (currentException.Message == "Недопустимый размер кошачьей лапы!")
+                        {
+                            exceptionHandled++;
+                        }
+
+                        currentException = currentException.InnerException;
                     }
 
-                    return e;
+                    return exception;
                 };
 
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);

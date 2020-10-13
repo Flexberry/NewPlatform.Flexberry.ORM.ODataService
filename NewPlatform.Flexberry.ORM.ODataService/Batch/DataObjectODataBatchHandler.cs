@@ -13,6 +13,7 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using Microsoft.OData.Core;
+    using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
 
     /// <summary>
@@ -97,16 +98,7 @@
             }
             catch (Exception ex)
             {
-                HttpStatusCode code = HttpStatusCode.InternalServerError;
-                Exception originalEx = ex;
-                ex = ExecuteCallbackAfterInternalServerError(ex, ref code);
-
-                if (ex == null)
-                {
-                    ex = new Exception("Exception is null.");
-                }
-
-                throw ex;
+                return DataObjectController.InternalServerErrorMessage(ex, _events, request);
             }
             finally
             {
@@ -263,37 +255,11 @@
                 }
                 catch (Exception ex)
                 {
-                    // TODO: Сделать также как в DataObjectController - предоставить возможность переопределить код ошибки.
-                    HttpStatusCode code = HttpStatusCode.InternalServerError;
-                    Exception originalEx = ex;
-                    ex = ExecuteCallbackAfterInternalServerError(ex, ref code);
-
-                    if (ex == null)
-                    {
-                        ex = new Exception("Exception is null.");
-                    }
-
-                    throw ex;
+                    throw;
                 }
             }
 
             return changeSetResponse;
-        }
-
-        /// <summary>
-        /// Вызов делегата после возникновения исключения.
-        /// </summary>
-        /// <param name="ex">Исключение, которое возникло внутри ODataService.</param>
-        /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
-        /// <returns>Исключение, которое будет отправлено клиенту.</returns>
-        internal Exception ExecuteCallbackAfterInternalServerError(Exception ex, ref HttpStatusCode code)
-        {
-            if (_events.CallbackAfterInternalServerError == null)
-            {
-                return ex;
-            }
-
-            return _events.CallbackAfterInternalServerError(ex, ref code);
         }
     }
 }
