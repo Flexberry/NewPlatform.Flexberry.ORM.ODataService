@@ -22,6 +22,7 @@
 
       Fixed
       1. Batch update InternalServerError event handling.
+      2. SafeLoadDetails for models with TypeUsage.
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2020</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
