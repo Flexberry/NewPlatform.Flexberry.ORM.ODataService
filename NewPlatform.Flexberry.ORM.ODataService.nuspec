@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.2.0-alpha02</version>
+    <version>5.2.0-beta01</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -13,11 +13,15 @@
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
       Added
-      1. Microsoft .NET Framework 4.6.1 compiled assemblies
+      1. Microsoft .NET Framework 4.6.1 compiled assemblies.
+      2. Batch update MessageQuotas.MaxOperationsPerChangeset and MessageQuotas.MaxReceivedMessageSize parameters.
 
       Changed
       1. Removing files through file providers.
       2. Add additional edm mapping into model builder.
+
+      Fixed
+      1. Batch update InternalServerError event handling.
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2020</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
