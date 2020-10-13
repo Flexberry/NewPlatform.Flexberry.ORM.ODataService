@@ -151,9 +151,13 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Car.cs" />
+    <Compile Include="Child.cs" />
+    <Compile Include="Daughter.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="GUIDToStringGenerator.cs" />
     <Compile Include="Master.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Son.cs" />
     <Compile Include="TestDetailWithCicle.cs" />
     <Compile Include="TestMaster.cs" />
     <Compile Include="tTip.cs" />
