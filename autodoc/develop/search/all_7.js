@@ -62,5 +62,6 @@ var searchData=
   ['getvalue',['GetValue',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_model_1_1_pseudo_detail_property_info.html#a278b2e9f501a9d6ba649b28b7b366639',1,'NewPlatform::Flexberry::ORM::ODataService::Model::PseudoDetailPropertyInfo']]],
   ['giscrudtest',['GisCRUDTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_gis_c_r_u_d_test.html#aa3d890635775046796343942ecabe0f5',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD::GisCRUDTest']]],
   ['giscrudtest',['GisCRUDTest',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_gis_c_r_u_d_test.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD']]],
+  ['global',['Global',['../class_o_data_service_sample_1_1_asp_net_1_1_global.html',1,'ODataServiceSample::AspNet']]],
   ['guidtostringgenerator',['GUIDToStringGenerator',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_g_u_i_d_to_string_generator.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]]
 ];

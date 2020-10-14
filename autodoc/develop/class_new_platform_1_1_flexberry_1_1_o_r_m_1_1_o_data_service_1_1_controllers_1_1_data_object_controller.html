@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Flexberry ORM ODataService 5.1.0-beta16: Класс NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController</title>
+<title>Flexberry ORM ODataService 5.2.0-beta01: Класс NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Flexberry ORM ODataService 5.1.0-beta16
+   <div id="projectname">Flexberry ORM ODataService 5.2.0-beta01
    </div>
   </td>
  </tr>
@@ -107,6 +107,7 @@ $(document).ready(function(){initNavTree('class_new_platform_1_1_flexberry_1_1_o
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Открытые члены</a> &#124;
+<a href="#pub-static-methods">Открытые статические члены</a> &#124;
 <a href="#properties">Свойства</a> &#124;
 <a href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller-members.html">Полный список членов класса</a>  </div>
   <div class="headertitle">
@@ -197,6 +198,12 @@ LoadingCustomizationStruct&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memitem:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="memItemLeft" align="right" valign="top">IHttpActionResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#ade1946fc8cfa48046eb58d58bc85ecf9">GetODataFunctionsExecute</a> ()</td></tr>
 <tr class="memdesc:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выполняет пользовательскую функцию. Имя "GetODataFunctionsExecute" устанавливается в <a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing_1_1_data_object_routing_convention.html#a87f5058c4c2484cba43ca189e2d732cc" title="Осуществляет выбор действия, которое будет выполняться при запросе. ">DataObjectRoutingConvention.SelectAction</a>.  <a href="#ade1946fc8cfa48046eb58d58bc85ecf9">Подробнее...</a><br /></td></tr>
 <tr class="separator:ade1946fc8cfa48046eb58d58bc85ecf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Открытые статические члены</h2></td></tr>
+<tr class="memitem:a3112288544e2001e0d89c16cd1ccc53d"><td class="memItemLeft" align="right" valign="top">static HttpResponseMessage&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_controllers_1_1_data_object_controller.html#a3112288544e2001e0d89c16cd1ccc53d">InternalServerErrorMessage</a> (Exception ex, <a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html">IEventHandlerContainer</a> events, HttpRequestMessage request)</td></tr>
+<tr class="memdesc:a3112288544e2001e0d89c16cd1ccc53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создаётся http-ответ с кодом 500 по-умолчанию, на возникшую в сервисе ошибку. Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError.  <a href="#a3112288544e2001e0d89c16cd1ccc53d">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3112288544e2001e0d89c16cd1ccc53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Свойства</h2></td></tr>
@@ -736,6 +743,57 @@ LoadingCustomizationStruct&#160;</td><td class="memItemRight" valign="bottom"><b
   </dd>
 </dl>
 <dl class="section return"><dt>Возвращает</dt><dd>Содержит сообщение ответа для отправки в клиент после завершения.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3112288544e2001e0d89c16cd1ccc53d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static HttpResponseMessage NewPlatform.Flexberry.ORM.ODataService.Controllers.DataObjectController.InternalServerErrorMessage </td>
+          <td>(</td>
+          <td class="paramtype">Exception&#160;</td>
+          <td class="paramname"><em>ex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_events_1_1_i_event_handler_container.html">IEventHandlerContainer</a>&#160;</td>
+          <td class="paramname"><em>events</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">HttpRequestMessage&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Создаётся http-ответ с кодом 500 по-умолчанию, на возникшую в сервисе ошибку. Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError. </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ex</td><td>Ошибка сервиса.</td></tr>
+    <tr><td class="paramname">events</td><td>The container with registered events.</td></tr>
+    <tr><td class="paramname">request</td><td>Original HTTP request message for create a response.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>Http-ответ.</dd></dl>
 
 </div>
 </div>

@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xB5_xD1_dbe86843f44fb05b7f225128ec007c3f =
+[
+    [ "Дата", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xB5_xD1_dbe86843f44fb05b7f225128ec007c3f.html#a081b8031413aca8988b2a8ee488ac12c", null ],
+    [ "Лапа", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xB5_xD1_dbe86843f44fb05b7f225128ec007c3f.html#a311e6a46e49e44d6cb9db0beef90daa4", null ],
+    [ "Тип", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xB5_xD1_dbe86843f44fb05b7f225128ec007c3f.html#a6983bc7294820e6229683cfd8c9cdcb1", null ]
+];

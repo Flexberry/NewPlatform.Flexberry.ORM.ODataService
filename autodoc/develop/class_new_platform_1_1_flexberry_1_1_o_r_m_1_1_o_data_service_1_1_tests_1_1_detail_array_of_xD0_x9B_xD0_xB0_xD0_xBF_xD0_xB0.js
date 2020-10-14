@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_x9B_xD0_xB0_xD0_xBF_xD0_xB0 =
+[
+    [ "DetailArrayOfЛапа", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_x9B_xD0_xB0_xD0_xBF_xD0_xB0.html#a4407798bf58659c74a0e02986b2091d7", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_x9B_xD0_xB0_xD0_xBF_xD0_xB0.html#ab986643eb07c5490652479924a2b7dca", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_x9B_xD0_xB0_xD0_xBF_xD0_xB0.html#af53a47d65cdd60ad329bca3df6d8f0ab", null ]
+];

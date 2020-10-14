@@ -1,4 +1,0 @@
-var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s =
-[
-    [ "OnUpdateFlexberryUserSetting", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s.html#a64fc3f4c64b70eb2c0082056492bb49f", null ]
-];

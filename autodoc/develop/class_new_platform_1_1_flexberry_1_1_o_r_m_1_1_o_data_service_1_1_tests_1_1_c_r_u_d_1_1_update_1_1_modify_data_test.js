@@ -1,5 +1,6 @@
 var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test =
 [
+    [ "BatchUpdateErrorHandlingTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a58367bd18e2a854aec997aec88878e20", null ],
     [ "DeleteObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a3f2c6b917659931981a76b2513aaf8ca", null ],
     [ "PatchComplexObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#ac101d30c3b1cefd0cdae203bfcdf7748", null ],
     [ "PatchNavigationPropertiesTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#adafb39d62886f33844020b76942273fd", null ],
@@ -10,5 +11,9 @@ var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_
     [ "PostObjDateTimeNoPKTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aa9dc6e45843527e0efb5ec639cbdba7a", null ],
     [ "PostSimpleObjectTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#ac58b2feb229e703bbcd3179f3c383747", null ],
     [ "SaveDetailWithInheritanceTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aefd395101f8b99e9bed34d8ec58cdb85", null ],
-    [ "UpdateCicleDeteilTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9ae46a051612244d474c9b12561c1793", null ]
+    [ "UpdateAgregatorWithInheritanceDetailsTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#abde96def253775b9b7a4b8ee10b0e09c", null ],
+    [ "UpdateCicleDeteilTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a9ae46a051612244d474c9b12561c1793", null ],
+    [ "UpdateDeletedAndAddedDetailWithAggregatorTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#a4640fcd2839d551ad5bbb42107a6c70f", null ],
+    [ "UpdateDetailWithAggregatorTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#adcefd438ff879b15d3fabb366635311e", null ],
+    [ "UpdateSecondDetailWithAggregatorTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update_1_1_modify_data_test.html#aa5a2391a921384b3523ba0a4d4516bca", null ]
 ];

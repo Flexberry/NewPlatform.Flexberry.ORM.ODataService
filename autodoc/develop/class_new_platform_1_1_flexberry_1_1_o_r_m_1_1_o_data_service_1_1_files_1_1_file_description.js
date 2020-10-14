@@ -10,6 +10,7 @@ var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_
     [ "FileBaseUrl", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a32d188b3e6b7f8cacc62a6ba143e8a34", null ],
     [ "FileMimeType", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a5b6660e85d2b100bea2c3afdc936040c", null ],
     [ "FileName", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#ad0be86fa4f0c108417b0b30acd240212", null ],
+    [ "FilePropertyType", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a455dd337caeba33cc0d2e736da6646cb", null ],
     [ "FileSize", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a4554d29a9cee4ed18543cef96f27cc36", null ],
     [ "FileUploadKey", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a1402441638638958c4c892a5053b2812", null ],
     [ "FileUrl", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#abc1d7041e742f0fe6dd50bf02674872b", null ],

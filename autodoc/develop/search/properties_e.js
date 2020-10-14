@@ -1,7 +1,7 @@
 var searchData=
 [
   ['parameterstypes',['ParametersTypes',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_functions_1_1_function.html#acda1ecddf75fa5052f5d984476bc3b76',1,'NewPlatform::Flexberry::ORM::ODataService::Functions::Function']]],
-  ['parent',['Parent',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_test_detail_with_cicle.html#a9904b39ae7840e2e10b9c9f3892e7117',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::TestDetailWithCicle']]],
+  ['parent',['Parent',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_child.html#a4b5c04b25441e8545a2cad3aed6ab718',1,'NewPlatform.Flexberry.ORM.ODataService.Tests.Child.Parent()'],['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_test_detail_with_cicle.html#a9904b39ae7840e2e10b9c9f3892e7117',1,'NewPlatform.Flexberry.ORM.ODataService.Tests.TestDetailWithCicle.Parent()']]],
   ['previewurl',['PreviewUrl',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_file_description.html#a240623c8f7c05e2bc47aa12d9487969c',1,'NewPlatform::Flexberry::ORM::ODataService::Files::FileDescription']]],
   ['prop',['prop',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9C_xD0_xB0_xD1_x81_xD1_x82_xD0_xB5_xD1_x80.html#a826f596b8068419fbb141884e8b6c975',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Мастер']]],
   ['prop1',['prop1',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x94_xD0_xB5_xD1_x82_xD0_xB5_xD0_xB9_xD0_xBB.html#a3cc9f0f749297c6db36c7789cb6add73',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Детейл']]],

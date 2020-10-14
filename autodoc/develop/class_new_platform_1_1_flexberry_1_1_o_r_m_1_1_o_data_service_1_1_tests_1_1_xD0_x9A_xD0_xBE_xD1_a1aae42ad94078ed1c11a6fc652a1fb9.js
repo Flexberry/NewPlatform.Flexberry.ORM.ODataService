@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBE_xD1_a1aae42ad94078ed1c11a6fc652a1fb9 =
+[
+    [ "Глупость", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBE_xD1_a1aae42ad94078ed1c11a6fc652a1fb9.html#ad8245b9307a5e893c73cfae71bf2b577", null ],
+    [ "КличкаКотенка", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBE_xD1_a1aae42ad94078ed1c11a6fc652a1fb9.html#aeaef30ef0f931af8b902dcb3aee93b9d", null ],
+    [ "Кошка", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBE_xD1_a1aae42ad94078ed1c11a6fc652a1fb9.html#a77a484e58b36fe040ab01b2b97b2d1a8", null ]
+];

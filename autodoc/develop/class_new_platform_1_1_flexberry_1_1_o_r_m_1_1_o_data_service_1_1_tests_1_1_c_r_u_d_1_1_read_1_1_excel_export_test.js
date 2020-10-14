@@ -2,5 +2,6 @@ var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_
 [
     [ "ExportInvalidColumnNameTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html#a280786b88f877921bc43cc386a094f9d", null ],
     [ "ExportTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html#a58433f61d2e425e07d22b5445c0a8758", null ],
-    [ "TestFunctionExportTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html#a53ec646276f58fa6f199da311d109ac5", null ]
+    [ "TestFunctionExportTest", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html#a53ec646276f58fa6f199da311d109ac5", null ],
+    [ "DataService", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read_1_1_excel_export_test.html#a0fe493d652ced1d48c840cf597f40c56", null ]
 ];

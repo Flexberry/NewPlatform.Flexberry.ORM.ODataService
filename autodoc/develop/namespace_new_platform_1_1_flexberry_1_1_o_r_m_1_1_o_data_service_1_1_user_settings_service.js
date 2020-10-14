@@ -1,4 +1,0 @@
-var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service =
-[
-    [ "FlexberryUserSettingBS", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service_1_1_flexberry_user_setting_b_s" ]
-];

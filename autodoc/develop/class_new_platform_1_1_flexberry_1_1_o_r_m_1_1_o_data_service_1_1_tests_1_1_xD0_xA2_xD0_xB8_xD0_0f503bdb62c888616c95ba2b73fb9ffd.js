@@ -1,0 +1,5 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_xA2_xD0_xB8_xD0_0f503bdb62c888616c95ba2b73fb9ffd =
+[
+    [ "Актуально", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_xA2_xD0_xB8_xD0_0f503bdb62c888616c95ba2b73fb9ffd.html#ad673af941e55efbba7c7ad612cf5a64f", null ],
+    [ "Название", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_xA2_xD0_xB8_xD0_0f503bdb62c888616c95ba2b73fb9ffd.html#a0286c1c6538dd0335e440ab83602a012", null ]
+];

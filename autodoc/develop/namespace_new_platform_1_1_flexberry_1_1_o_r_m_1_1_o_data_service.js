@@ -12,7 +12,6 @@ var namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service =
     [ "Offline", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline" ],
     [ "Routing", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing" ],
     [ "Tests", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests" ],
-    [ "UserSettingsService", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service" ],
     [ "WebApi", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api.html", "namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api" ],
     [ "DataObjectControllerActivator", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_data_object_controller_activator" ],
     [ "ManagementToken", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_management_token.html", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_management_token" ]

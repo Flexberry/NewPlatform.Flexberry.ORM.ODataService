@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_x80_xD0_xBE_xD0_xB4_xD0_xB0 =
+[
+    [ "Иерархия", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_x80_xD0_xBE_xD0_xB4_xD0_xB0.html#a3b2fc89999fe51cb82b201358331c7d2", null ],
+    [ "Название", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_x80_xD0_xBE_xD0_xB4_xD0_xB0.html#a8d802c6dde0a669fa0584077e1598f5e", null ],
+    [ "ТипПороды", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9F_xD0_xBE_xD1_x80_xD0_xBE_xD0_xB4_xD0_xB0.html#a329931f6084c7d7ac2f59bdac84df691", null ]
+];

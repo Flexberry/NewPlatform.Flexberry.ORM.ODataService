@@ -24,6 +24,7 @@ var functions_prop =
     [ "А", "functions_prop_.html", null ],
     [ "Б", "functions_prop_.html", null ],
     [ "В", "functions_prop_.html", null ],
+    [ "Г", "functions_prop_.html", null ],
     [ "Д", "functions_prop_.html", null ],
     [ "Ж", "functions_prop_.html", null ],
     [ "З", "functions_prop_.html", null ],
@@ -33,7 +34,9 @@ var functions_prop =
     [ "М", "functions_prop_.html", null ],
     [ "Н", "functions_prop_.html", null ],
     [ "П", "functions_prop_.html", null ],
+    [ "Р", "functions_prop_ .html", null ],
     [ "С", "functions_prop_!.html", null ],
+    [ "Т", "functions_prop_".html", null ],
     [ "Ц", "functions_prop_&.html", null ],
     [ "с", "functions_prop_A.html", null ]
 ];

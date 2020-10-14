@@ -26,6 +26,7 @@ var functions_dup =
     [ "А", "functions_.html", null ],
     [ "Б", "functions_.html", null ],
     [ "В", "functions_.html", null ],
+    [ "Г", "functions_.html", null ],
     [ "Д", "functions_.html", null ],
     [ "Ж", "functions_.html", null ],
     [ "З", "functions_.html", null ],
@@ -35,7 +36,9 @@ var functions_dup =
     [ "М", "functions_.html", null ],
     [ "Н", "functions_.html", null ],
     [ "П", "functions_.html", null ],
+    [ "Р", "functions_ .html", null ],
     [ "С", "functions_!.html", null ],
+    [ "Т", "functions_".html", null ],
     [ "Ц", "functions_&.html", null ],
     [ "с", "functions_A.html", null ]
 ];

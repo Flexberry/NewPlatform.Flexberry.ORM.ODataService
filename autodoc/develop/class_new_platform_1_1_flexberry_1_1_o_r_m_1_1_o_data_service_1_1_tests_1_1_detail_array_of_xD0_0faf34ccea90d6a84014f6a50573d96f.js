@@ -1,0 +1,6 @@
+var class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_0faf34ccea90d6a84014f6a50573d96f =
+[
+    [ "DetailArrayOfПерелом", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_0faf34ccea90d6a84014f6a50573d96f.html#a6d3947f14517f0d1c65decb06773722b", null ],
+    [ "Add", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_0faf34ccea90d6a84014f6a50573d96f.html#a6bc70f03f5b19e88424a761bf08bb38f", null ],
+    [ "this[int index]", "class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_detail_array_of_xD0_0faf34ccea90d6a84014f6a50573d96f.html#a8b55af86cacc33525ee82d077a22abd6", null ]
+];

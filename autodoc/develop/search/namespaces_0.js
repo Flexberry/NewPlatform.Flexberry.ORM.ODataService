@@ -26,14 +26,13 @@ var searchData=
   ['model',['Model',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_model.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['newplatform',['NewPlatform',['../namespace_new_platform.html',1,'']]],
   ['odataservice',['ODataService',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service.html',1,'NewPlatform::Flexberry::ORM']]],
-  ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
+  ['offline',['Offline',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_offline.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['orm',['ORM',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m.html',1,'NewPlatform::Flexberry']]],
   ['providers',['Providers',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_files_1_1_providers.html',1,'NewPlatform::Flexberry::ORM::ODataService::Files']]],
   ['read',['Read',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_read.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD']]],
   ['routing',['Routing',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_routing.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['tests',['Tests',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['update',['Update',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_c_r_u_d_1_1_update.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::CRUD']]],
-  ['usersettingsservice',['UserSettingsService',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_user_settings_service.html',1,'NewPlatform::Flexberry::ORM::ODataService']]],
   ['webapi',['WebApi',['../namespace_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_web_api.html',1,'NewPlatform::Flexberry::ORM::ODataService']]]
 ];

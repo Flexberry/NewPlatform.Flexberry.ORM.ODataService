@@ -1,5 +1,5 @@
 var annotated_dup =
 [
     [ "NewPlatform", "namespace_new_platform.html", "namespace_new_platform" ],
-    [ "System", "namespace_system.html", "namespace_system" ]
+    [ "ODataServiceSample", "namespace_o_data_service_sample.html", "namespace_o_data_service_sample" ]
 ];

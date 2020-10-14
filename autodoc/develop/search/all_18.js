@@ -10,5 +10,6 @@ var searchData=
   ['Библиотека',['Библиотека',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xB8_xD0_b8aeb739ab6a6e4fb25c30fbaa1ece9f.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
   ['Библиотека1',['Библиотека1',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9A_xD0_xBD_xD0_xB8_xD0_xB3_xD0_xB0.html#aa75ba2af88c98a7188fd56f394d6ae3f',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Книга']]],
   ['Библиотека2',['Библиотека2',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x96_xD1_x83_xD1_x80_xD0_xBD_xD0_xB0_xD0_xBB.html#ae02b6cfd9b3c1c040b1e9c08bc677ea5',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Журнал']]],
-  ['Блоха',['Блоха',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xBB_xD0_xBE_xD1_x85_xD0_xB0.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]]
+  ['Блоха',['Блоха',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x91_xD0_xBB_xD0_xBE_xD1_x85_xD0_xB0.html',1,'NewPlatform::Flexberry::ORM::ODataService::Tests']]],
+  ['БылиЛиПереломы',['БылиЛиПереломы',['../class_new_platform_1_1_flexberry_1_1_o_r_m_1_1_o_data_service_1_1_tests_1_1_xD0_x9B_xD0_xB0_xD0_xBF_xD0_xB0.html#ac2b68f776d12b390408225d2f94478d9',1,'NewPlatform::Flexberry::ORM::ODataService::Tests::Лапа']]]
 ];
