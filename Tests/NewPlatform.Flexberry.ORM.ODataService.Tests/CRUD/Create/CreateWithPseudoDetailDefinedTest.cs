@@ -60,7 +60,7 @@
         [Fact]
         public void TestBatchCreate()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 // Arrange.
                 Медведь медведь = new Медведь() { ПорядковыйНомер = 1 };
@@ -76,7 +76,7 @@
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
 
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     CheckODataBatchResponseStatusCode(response, new[] { HttpStatusCode.Created });
@@ -90,7 +90,7 @@
         [Fact]
         public void TestBatchCreateWithDetails()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 // Arrange.
                 Медведь медведь = new Медведь() { ПорядковыйНомер = 1 };
@@ -111,7 +111,7 @@
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
 
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     CheckODataBatchResponseStatusCode(response, new[] { HttpStatusCode.Created, HttpStatusCode.Created });

@@ -146,7 +146,7 @@
         [Fact]
         public void CallAggregatorBSOnAddDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога());
@@ -170,13 +170,13 @@
                         новаяБерлога),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.Created });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+                    var берлоги = медведь.Берлога.Cast<Берлога>();
 
                     Assert.Equal(1, берлоги.Count(б => б.Заброшена));
                     Assert.Equal(1, берлоги.Count(б => !б.Заброшена));
@@ -190,7 +190,7 @@
         [Fact]
         public void CallAggregatorBSOnUpdateDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога() { Заброшена = true });
@@ -221,13 +221,13 @@
                         медведь.Берлога[0]),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
-                    var берлоги = медведь.Берлога.GetAllObjects().Cast<Берлога>();
+                    var берлоги = медведь.Берлога.Cast<Берлога>();
 
                     Assert.Equal(2, берлоги.Count());
 
@@ -245,7 +245,7 @@
         [Fact]
         public void CallAggregatorBSOnDeleteDetailTest()
         {
-            ActODataService(async (args) =>
+            ActODataService(args =>
             {
                 var медведь = new Медведь();
                 медведь.Берлога.Add(new Берлога());
@@ -264,14 +264,14 @@
                 };
 
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = await args.HttpClient.SendAsync(batchRequest))
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.NoContent });
 
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
                     Assert.Equal(1, медведь.Берлога.Count);
-                    Assert.Equal(1, медведь.Берлога.GetAllObjects().Cast<Берлога>().First().Комфортность);
+                    Assert.Equal(1, медведь.Берлога.Cast<Берлога>().First().Комфортность);
                 }
             });
         }
