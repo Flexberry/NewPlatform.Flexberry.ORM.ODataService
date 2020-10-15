@@ -65,7 +65,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// Integrated unit test for <see cref="LockController"/>.
         /// Starts and stops self-hosted WebAPI server with locks.
         /// </summary>
-        [Fact]
+        [Fact(Skip = "Разобраться что это за тест и насколько он нужен.")]
         public void TestStartStop()
         {
             foreach (var dataService in DataServices)
