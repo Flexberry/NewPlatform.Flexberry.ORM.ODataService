@@ -58,7 +58,7 @@
                 args.Token.Model.GetEdmEntitySet(typeof(Блоха)).Name,
                 "МедведьОбитания/Берлога/any(f:(f/Наименование eq 'Берлога 1') and ( ( not(f/ЛесРасположения/Площадь eq 123)) or (f/ЛесРасположения/__PrimaryKey eq " + лес1Pk + ") ))");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
@@ -109,7 +109,7 @@
                 args.Token.Model.GetEdmEntitySet(typeof(Блоха)).Name,
                 "(МедведьОбитания/Берлога/any(f:(f/Наименование eq 'Берлога 1') and ( ( not(f/ЛесРасположения/Площадь eq 123)) or (f/ЛесРасположения/__PrimaryKey eq " + лес1Pk + ") )) ) and (МедведьОбитания/__PrimaryKey eq " + медведь1Pk + ")");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);

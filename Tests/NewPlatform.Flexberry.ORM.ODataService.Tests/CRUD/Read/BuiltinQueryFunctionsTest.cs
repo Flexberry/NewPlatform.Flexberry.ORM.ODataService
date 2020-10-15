@@ -16,6 +16,7 @@
     using Newtonsoft.Json.Linq;
 
     using Xunit;
+    using HttpClientExtensions = Extensions.HttpClientExtensions;
 
     /// <summary>
     /// Класс тестов для тестирования применения $filter в OData-сервисе.
@@ -63,7 +64,7 @@
                     "Берлога/any(f:f/Наименование eq 'Для хорошего настроения')");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -84,7 +85,7 @@
                     "Берлога/all(f:f/Наименование eq 'Для хорошего настроения')");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -135,7 +136,7 @@
                     "3f5cc1ca-6b2c-4c38-ba02-4b3fd5f1726c");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -160,7 +161,7 @@
                     "Вес,Пол");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -173,7 +174,10 @@
 
                     // Должны возвращаться свойства, перечисленные в select + @odata.context
                     Assert.Equal(3, receivedDict.Count);
-                    Assert.Equal("http://localhost/odata/$metadata#Медведьs(Вес,Пол)/$entity", receivedDict["@odata.context"]);
+                    {
+                        string expectedValue = HttpClientExtensions.GetCustomUrl(args.HttpClient, "http://localhost/odata/$metadata#Медведьs(Вес,Пол)/$entity");
+                        Assert.Equal(expectedValue, receivedDict["@odata.context"]);
+                    }
                     Assert.Equal("Мужской", receivedDict["Пол"]);
                     Assert.Equal(48, (int)(long)receivedDict["Вес"]);
                 }
@@ -186,7 +190,7 @@
                     "Берлога");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -213,7 +217,7 @@
                     "Берлога($select=Наименование)");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -273,7 +277,7 @@
                     "isof('NewPlatform.Flexberry.ORM.ODataService.Tests.КлассСМножествомТипов') or isof('NewPlatform.Flexberry.ORM.ODataService.Tests.ДочернийКласс')");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -294,7 +298,7 @@
                     "isof('NewPlatform.Flexberry.ORM.ODataService.Tests.ДочернийКласс')");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -314,7 +318,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(КлассСМножествомТипов)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -356,7 +360,7 @@
                     "PropertyDateTime ge now()");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Получим строку с ответом.
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
@@ -376,7 +380,7 @@
                     "PropertyDateTime le now()");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -396,7 +400,7 @@
                     "PropertyDateTime eq now()");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);

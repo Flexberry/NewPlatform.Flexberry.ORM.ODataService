@@ -104,8 +104,11 @@
                 ParamObj = null;
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
-                HttpResponseMessage response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
-                Assert.NotNull(ParamObj);
+                HttpResponseMessage response = args.HttpClient.PostAsJsonAsyncEx(requestUrl, edmObj).Result;
+                if (!UseODataServiceApplication)
+                {
+                    Assert.NotNull(ParamObj);
+                }
 
                 // Убедимся, что запрос завершился успешно.
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -158,8 +161,11 @@
                 ParamObj = null;
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
-                response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
-                Assert.NotNull(ParamObj);
+                response = args.HttpClient.PostAsJsonAsyncEx(requestUrl, edmObj).Result;
+                if (!UseODataServiceApplication)
+                {
+                    Assert.NotNull(ParamObj);
+                }
 
                 // Убедимся, что запрос завершился успешно.
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -257,7 +263,10 @@
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем обновляемый объект в формате JSON.
                 using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result)
                 {
-                    Assert.NotNull(ParamObj);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.NotNull(ParamObj);
+                    }
 
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок обновления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -295,9 +304,12 @@
                 ParamObj = null;
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
-                    Assert.NotNull(ParamObj);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.NotNull(ParamObj);
+                    }
 
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -339,7 +351,7 @@
                 requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name, ((ICSSoft.STORMNET.KeyGen.KeyGuid)delБерлога.__PrimaryKey).Guid.ToString());
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -384,7 +396,7 @@
                 requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, ((ICSSoft.STORMNET.KeyGen.KeyGuid)медв.__PrimaryKey).Guid.ToString());
 
                 // Обращаемся к OData-сервису для удаления объекта с детейлами и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);

@@ -357,9 +357,35 @@
                 requestContentKey = PostPatchHandler.RequestContent + $"_{PostPatchHandler.PropertyKeyContentId}_{Request.Properties[PostPatchHandler.PropertyKeyContentId]}";
             }
 
+            //throw new NotImplementedException("-solo- decimal serialization");
+
+            //string json = "{\"__PrimaryKey\":\"af3a6a7e-0bb5-48a5-895f-1ce47043e80c\",\"EditTime\":\"2020-07-28T08:38:50.270Z\",\"Editor\":\"v-ezah001\",\"LoadOnGvsContr\":0.0008,\"OutOfService@odata.bind\":null,\"AccountDevice@odata.bind\":null,\"ComplianceDocument@odata.bind\":null,\"GvsSystemType@odata.bind\":null,\"Supplier@odata.bind\":null,\"ObjectFunction@odata.bind\":\"ArmtiObjectFunctions(3a9428c9-a23f-4ed2-8082-3bb90d559e43)\",\"ActType@odata.bind\":\"ArmtiActTypes(ae78e8ed-a6a6-4574-9165 d12054f5fede)\",\"Inspector@odata.bind\":\"ArmtiEmployees(00978315-d316-41ac-9700-9d50d389c790)\",\"PointPlanSheet@odata.bind\":\"ArmtiPointPlanSheets(a0accd0f-4721-49d5-ab5c-c160bc4ddded)\",\"ConsumptionObject@odata.bind\":\"ArmtiConsumptionObjects(95405fb6-83f3-4b0d-8bba-b927218f0430)\"}";
+            //string json = "{\"__PrimaryKey\":\"af3a6a7e-0bb5-48a5-895f-1ce47043e80c\",\"EditTime\":\"2020-07-28T08:38:50.270Z\",\"Editor\":\"v-ezah001\",\"LoadOnGvsContr\":0.00008,\"OutOfService@odata.bind\":null,\"AccountDevice@odata.bind\":null,\"ComplianceDocument@odata.bind\":null,\"GvsSystemType@odata.bind\":null,\"Supplier@odata.bind\":null,\"ObjectFunction@odata.bind\":\"ArmtiObjectFunctions(3a9428c9-a23f-4ed2-8082-3bb90d559e43)\",\"ActType@odata.bind\":\"ArmtiActTypes(ae78e8ed-a6a6-4574-9165 d12054f5fede)\",\"Inspector@odata.bind\":\"ArmtiEmployees(00978315-d316-41ac-9700-9d50d389c790)\",\"PointPlanSheet@odata.bind\":\"ArmtiPointPlanSheets(a0accd0f-4721-49d5-ab5c-c160bc4ddded)\",\"ConsumptionObject@odata.bind\":\"ArmtiConsumptionObjects(95405fb6-83f3-4b0d-8bba-b927218f0430)\"}";
+            //string json = "{\"__PrimaryKey\":\"af3a6a7e-0bb5-48a5-895f-1ce47043e80c\",\"EditTime\":\"2020-07-28T08:38:50.270Z\",\"Editor\":\"v-ezah001\",\"LoadOnGvsContr\":0.8,\"OutOfService@odata.bind\":null,\"AccountDevice@odata.bind\":null,\"ComplianceDocument@odata.bind\":null,\"GvsSystemType@odata.bind\":null,\"Supplier@odata.bind\":null,\"ObjectFunction@odata.bind\":\"ArmtiObjectFunctions(3a9428c9-a23f-4ed2-8082-3bb90d559e43)\",\"ActType@odata.bind\":\"ArmtiActTypes(ae78e8ed-a6a6-4574-9165 d12054f5fede)\",\"Inspector@odata.bind\":\"ArmtiEmployees(00978315-d316-41ac-9700-9d50d389c790)\",\"PointPlanSheet@odata.bind\":\"ArmtiPointPlanSheets(a0accd0f-4721-49d5-ab5c-c160bc4ddded)\",\"ConsumptionObject@odata.bind\":\"ArmtiConsumptionObjects(95405fb6-83f3-4b0d-8bba-b927218f0430)\"}";
+            //string json = "{\"__PrimaryKey\":\"af3a6a7e-0bb5-48a5-895f-1ce47043e80c\",\"EditTime\":\"2020-07-28T08:38:50.270Z\",\"Editor\":\"v-ezah001\",\"LoadOnGvsContr\":0.0000000000000000000000008,\"OutOfService@odata.bind\":null,\"AccountDevice@odata.bind\":null,\"ComplianceDocument@odata.bind\":null,\"GvsSystemType@odata.bind\":null,\"Supplier@odata.bind\":null,\"ObjectFunction@odata.bind\":\"ArmtiObjectFunctions(3a9428c9-a23f-4ed2-8082-3bb90d559e43)\",\"ActType@odata.bind\":\"ArmtiActTypes(ae78e8ed-a6a6-4574-9165 d12054f5fede)\",\"Inspector@odata.bind\":\"ArmtiEmployees(00978315-d316-41ac-9700-9d50d389c790)\",\"PointPlanSheet@odata.bind\":\"ArmtiPointPlanSheets(a0accd0f-4721-49d5-ab5c-c160bc4ddded)\",\"ConsumptionObject@odata.bind\":\"ArmtiConsumptionObjects(95405fb6-83f3-4b0d-8bba-b927218f0430)\"}";
+            //string json = "{\"__PrimaryKey\":\"af3a6a7e-0bb5-48a5-895f-1ce47043e80c\",\"EditTime\":\"2020-07-28T08:38:50.270Z\",\"Editor\":\"v-ezah001\",\"LoadOnGvsContr\":77.0000000000000000000000008,\"OutOfService@odata.bind\":null,\"AccountDevice@odata.bind\":null,\"ComplianceDocument@odata.bind\":null,\"GvsSystemType@odata.bind\":null,\"Supplier@odata.bind\":null,\"ObjectFunction@odata.bind\":\"ArmtiObjectFunctions(3a9428c9-a23f-4ed2-8082-3bb90d559e43)\",\"ActType@odata.bind\":\"ArmtiActTypes(ae78e8ed-a6a6-4574-9165 d12054f5fede)\",\"Inspector@odata.bind\":\"ArmtiEmployees(00978315-d316-41ac-9700-9d50d389c790)\",\"PointPlanSheet@odata.bind\":\"ArmtiPointPlanSheets(a0accd0f-4721-49d5-ab5c-c160bc4ddded)\",\"ConsumptionObject@odata.bind\":\"ArmtiConsumptionObjects(95405fb6-83f3-4b0d-8bba-b927218f0430)\"}";
             string json = (string)Request.Properties[requestContentKey];
 
-            Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            var jsonSerializerSettings = new JsonSerializerSettings() { FloatParseHandling = FloatParseHandling.Decimal };
+            //Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, jsonSerializerSettings);
+            Dictionary<string, object> props =
+                JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings() { FloatParseHandling = FloatParseHandling.Decimal });
+            var reader = new JsonTextReader(new StringReader(json)) { FloatParseHandling = FloatParseHandling.Decimal };
+            while (reader.Read())
+            {
+
+            }
+            //Dictionary<string, string> props1 = JsonConvert.DeserializeObject<Dictionary<string, string>>(json, new RawJsonConverter());
+            // Change the type of numeric values from double to decimal for proper serialization.
+            foreach (string key in props
+                .Where(x => x.Value != null)
+                .Where(x => x.Value.GetType() == typeof(double))
+                .Select(x => x.Key)
+                .ToArray())
+            {
+                //props[key] = Convert.ToDecimal(props[key]);
+            }
+
             var keys = props.Keys.ToArray();
             var odataBindNullList = new List<string>();
             foreach (var key in keys)
@@ -388,6 +414,7 @@
                 }
             }
 
+            //json = JsonConvert.SerializeObject(props, jsonSerializerSettings);
             json = JsonConvert.SerializeObject(props);
             Request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -820,6 +847,77 @@
             }
 
             return obj;
+        }
+    }
+
+    public class RawJsonConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(string);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var sb = new StringBuilder();
+            JsonToken previousToken = JsonToken.None;
+
+            if (reader.TokenType == JsonToken.StartObject)
+            {
+                sb.Append('{');
+                int depth = 1;
+                while (depth > 0)
+                {
+                    if (!reader.Read())
+                        break;
+                    switch (reader.TokenType)
+                    {
+                        case JsonToken.PropertyName:
+                            if (previousToken == JsonToken.Boolean || previousToken == JsonToken.Integer || previousToken == JsonToken.Float)
+                                sb.Append(',');
+                            sb.AppendFormat("\"{0}\":", reader.Value);
+                            break;
+                        case JsonToken.StartArray:
+                            if (previousToken == JsonToken.EndArray)
+                                sb.Append(',');
+                            sb.Append('[');
+                            break;
+                        case JsonToken.Boolean:
+                        case JsonToken.Integer:
+                        case JsonToken.Float:
+                            if (previousToken == JsonToken.Boolean || previousToken == JsonToken.Integer || previousToken == JsonToken.Float)
+                                sb.Append(',');
+                            sb.AppendFormat(System.Globalization.CultureInfo.InvariantCulture, "{0}", reader.Value);
+                            break;
+                        case JsonToken.EndArray:
+                            sb.Append(']');
+                            break;
+                        case JsonToken.StartObject:
+                            sb.Append('{');
+                            depth++;
+                            break;
+                        case JsonToken.EndObject:
+                            sb.Append('}');
+                            depth--;
+                            break;
+                    }
+                    previousToken = reader.TokenType;
+                }
+            }
+            return sb.ToString();
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            writer.WriteRawValue(value.ToString());
+        }
+
+        public override bool CanWrite
+        {
+            get
+            {
+                return true;
+            }
         }
     }
 }

@@ -84,7 +84,7 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Наследник)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
-                HttpResponseMessage response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
+                HttpResponseMessage response = args.HttpClient.PostAsJsonAsyncEx(requestUrl, edmObj).Result;
 
                 // Убедимся, что запрос завершился успешно.
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);

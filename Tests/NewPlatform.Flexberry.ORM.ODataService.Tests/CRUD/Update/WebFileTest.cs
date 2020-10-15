@@ -13,6 +13,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Xunit;
+    using HttpClientExtensions = Extensions.HttpClientExtensions;
 
     public class WebFileTest: BaseODataServiceIntegratedTest
     {
@@ -52,7 +53,7 @@
                         медведь.Берлога[0]),
                 };
                 var batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (var response = args.HttpClient.SendAsync(batchRequest).Result)
+                using (var response = args.HttpClient.SendBatchAsyncEx(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
@@ -108,6 +109,7 @@
                 const string baseUrl = "http://localhost/odata";
 
                 string json = берлога.ToJson(view, args.Token.Model).Replace(fileName, сертификатСтрока); // TODO сериализовать корректно
+                //json = HttpClientExtensions.GetCustomUrl(args.HttpClient, json);
 
                 var changesets = new[]
                 {
@@ -117,7 +119,7 @@
                         берлога)
                 };
                 var batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (var response = args.HttpClient.SendAsync(batchRequest).Result)
+                using (var response = args.HttpClient.SendBatchAsyncEx(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new[] { HttpStatusCode.Created });
 

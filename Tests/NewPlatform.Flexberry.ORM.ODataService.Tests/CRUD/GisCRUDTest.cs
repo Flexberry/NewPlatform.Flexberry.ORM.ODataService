@@ -52,9 +52,10 @@
                     "http://localhost/odata/{0}?$filter={1}",
                     args.Token.Model.GetEdmEntitySet(typeof(КлассСМножествомТипов)).Name,
                     "PropertyInt eq 5 and geo.intersects(geography1=PropertyGeography, geography2=geography'SRID=4326;LINESTRING(0 0,1 1,1 2)')");
+                    //"PropertyInt eq 5 and st_intersects(geography1=PropertyGeography, geography2=geography'SRID=4326;LINESTRING(0 0,1 1,1 2)')");
 
-                // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+            // Обращаемся к OData-сервису и обрабатываем ответ.
+            using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);

@@ -43,7 +43,7 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}?{1}", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name, "$count=true&$skip=0&$top=5&$orderby=Название desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -96,7 +96,7 @@
                     "Папа,Мама&$orderby=Мама/Вес desc,Папа/Вес desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -121,7 +121,7 @@
                 requestUrl = "http://localhost/odata/Медведьs?$filter=Папа ne null&$expand=Папа,Мама&$orderby=Мама/Вес desc,Папа/Вес";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -174,7 +174,7 @@
                     "ДатаПоследнегоОсмотра desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -231,7 +231,7 @@
                     "ЛесОбитания/ДатаПоследнегоОсмотра desc");
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);

@@ -43,6 +43,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// </summary>
         private bool _disposed;
 
+        protected bool UseODataServiceApplication { get; private set; } //= true;
+
         protected virtual string MssqlScript
         {
             get
@@ -135,7 +137,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         cmd.ExecuteNonQuery();
                     using (var cmd = new NpgsqlCommand(PostgresScript, conn))
                         cmd.ExecuteNonQuery();
-                    _dataServices.Add(CreatePostgresDataService($"{connectionStringPostgres};Database={_databaseName}"));
+                    //_dataServices.Add(CreatePostgresDataService($"{connectionStringPostgres};Database={_databaseName}"));
+                    var postgresDataService = CreatePostgresDataService($"{connectionStringPostgres};Database={_databaseName}");
+                    _dataServices.Add(postgresDataService);
+                    if (UseODataServiceApplication)
+                    {
+                        using (var f = System.IO.File.OpenWrite("c:/tmp/testconnstr.txt"))
+                        using (var w = new System.IO.StreamWriter(f))
+                        {
+                            string suffix = _useGisDataService ? "gis" : string.Empty;
+                            w.WriteLine($"{postgresDataService.CustomizationString}->{suffix}");
+                        }
+                    }
                 }
             }
 

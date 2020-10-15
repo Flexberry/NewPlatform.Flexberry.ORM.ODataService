@@ -8,6 +8,7 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using Xunit;
 
     /// <summary>
@@ -38,7 +39,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name,
                     "exportExcel=true&colsOrder=Название/Название&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
                 // A request is made to the OData service and the response is processed.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -76,7 +77,7 @@
                     "http://localhost/odata/{0}?{1}",
                     args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name,
                     $"exportExcel=true&colsOrder={WebUtility.UrlEncode(encodeInvalidColsOrder)}&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -109,11 +110,16 @@
                     "http://localhost/odata/{0}?{1}",
                     "FunctionExportExcel(entitySet='Странаs')",
                     "exportExcel=true&colsOrder=Название/Название&detSeparateCols=false&detSeparateRows=false&$filter=contains(Название,'1')");
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
+                    //-solo- core 2691
                     byte[] contentExcel = response.Content.ReadAsByteArrayAsync().Result;
+                    //using (var f = System.IO.File.Create("c:/projects/exportexcel.xlsx"))
+                    //{
+                    //    f.Write(contentExcel, 0, contentExcel.Length);
+                    //}
                 }
             });
         }

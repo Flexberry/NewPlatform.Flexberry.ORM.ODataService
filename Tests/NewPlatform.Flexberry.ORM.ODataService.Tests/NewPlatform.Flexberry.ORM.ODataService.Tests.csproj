@@ -274,6 +274,7 @@
     <Compile Include="CRUD\Read\UtfRequestsTest.cs" />
     <Compile Include="CRUD\Update\BusinessServersTest.cs" />
     <Compile Include="CRUD\Update\WebFileTest.cs" />
+    <Compile Include="CustomHttpClient.cs" />
     <Compile Include="Events\AfterInternalServerErrorTest.cs" />
     <Compile Include="Events\BeforeGetTest.cs" />
     <Compile Include="Events\AfterSaveTest.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="CRUD\Create\ChangeMasterInBSTest.cs" />
     <Compile Include="CRUD\Read\FilterByMasterFieldTest.cs" />
     <Compile Include="Events\AfterGetTest.cs" />
+    <Compile Include="Extensions\EdmEntityObjectExtensions.cs" />
     <Compile Include="Functions\DelegateFunctionsTest.cs" />
     <Compile Include="Functions\ActionsTest.cs" />
     <Compile Include="Handlers\PerRequestUpdateEdmModelHandlerTest.cs" />

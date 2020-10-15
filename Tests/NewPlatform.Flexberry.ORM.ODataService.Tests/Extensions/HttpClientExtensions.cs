@@ -2,11 +2,12 @@
 {
     using System;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Principal;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using System.Web.OData;
     using ICSSoft.STORMNET;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -16,8 +17,19 @@
     /// </summary>
     public static class HttpClientExtensions
     {
-        public static Task<HttpResponseMessage> GetAsync(this HttpClient httpClient, DataObjectEdmModel model, Type dataObjectType, string lockUserName = null)
+        public static Task<HttpResponseMessage> DeleteAsyncEx(this HttpClient httpClient, string url)
         {
+            url = GetCustomUrl(httpClient, url);
+
+            return httpClient.DeleteAsync(url);
+        }
+
+        public static Task<HttpResponseMessage> GetAsyncEx(this HttpClient httpClient, DataObjectEdmModel model, Type dataObjectType, string lockUserName)// = null)
+        {
+            string url = "http://localhost/odata/";
+            url = GetCustomUrl(httpClient, url);
+            //url = "";
+
             IPrincipal currentPrincipal = null;
             try
             {
@@ -29,7 +41,7 @@
                     httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Flexberry-Sync", "Lock");
                 }
 
-                return httpClient.GetAsync(model.GetEdmEntitySet(dataObjectType).Name);
+                return httpClient.GetAsync($"{url}{model.GetEdmEntitySet(dataObjectType).Name}");
             }
             finally
             {
@@ -42,6 +54,42 @@
             }
         }
 
+        public static Task<HttpResponseMessage> GetAsyncEx(this HttpClient httpClient, string url)
+        {
+            url = GetCustomUrl(httpClient, url);
+
+            return httpClient.GetAsync(url);
+        }
+
+        //public static Task<HttpResponseMessage> GetAsyncEx(this HttpClient httpClient, DataObjectEdmModel model, Type dataObjectType, string lockUserName = null)
+        //{
+        //    return httpClient.GetAsync(model, dataObjectType, lockUserName);
+        //}
+
+        /// <summary>
+        /// Осуществляет POST-запрос с передачей JSON-строки по заданному пути.
+        /// </summary>
+        /// <param name="httpClient">Клиент, через которые будут осуществляться запрос.</param>
+        /// <param name="url">URL-запроса.</param>
+        /// <param name="jsonData">JSON-строка с данными, которая должна быть отправлена в запросе.</param>
+        /// <returns>Ответ на запрос.</returns>
+        public static Task<HttpResponseMessage> PostAsJsonAsyncEx<T>(this HttpClient httpClient, string url, T value)
+        {
+            var d = (value as EdmEntityObject).ToJson();
+
+            //string loopBackUrl = $"http://localhost/odata/ActionODataLoopBack";
+
+            //HttpResponseMessage response = httpClient.PostAsJsonAsync(loopBackUrl, value).Result;
+            //string jsonData = response.Content.ReadAsStringAsync().Result;
+            //url = GetCustomUrl(httpClient, url);
+
+            //return httpClient.PostAsJsonAsync(url, value);
+
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(d);
+
+            return PostAsJsonStringAsync(httpClient, url, jsonData);
+        }
+
         /// <summary>
         /// Осуществляет POST-запрос с передачей JSON-строки по заданному пути.
         /// </summary>
@@ -51,6 +99,8 @@
         /// <returns>Ответ на запрос.</returns>
         public static Task<HttpResponseMessage> PostAsJsonStringAsync(this HttpClient httpClient, string url, string jsonData)
         {
+            url = GetCustomUrl(httpClient, url);
+
             return SendRequestAsJsonString(httpClient, url, jsonData, "POST");
         }
 
@@ -63,6 +113,8 @@
         /// <returns>Ответ на запрос.</returns>
         public static Task<HttpResponseMessage> PutAsJsonStringAsync(this HttpClient httpClient, string url, string jsonData)
         {
+            url = GetCustomUrl(httpClient, url);
+
             return SendRequestAsJsonString(httpClient, url, jsonData, "PUT");
         }
 
@@ -75,6 +127,8 @@
         /// <returns>Ответ на запрос.</returns>
         public static Task<HttpResponseMessage> PatchAsJsonStringAsync(this HttpClient httpClient, string url, string jsonData)
         {
+            url = GetCustomUrl(httpClient, url);
+
             return SendRequestAsJsonString(httpClient, url, jsonData, "PATCH");
         }
 
@@ -108,6 +162,20 @@
             }
         }
 
+        public static Task<HttpResponseMessage> SendBatchAsyncEx(this HttpClient httpClient, HttpRequestMessage request)
+        {
+            string url = GetCustomUrl(httpClient, request.RequestUri.AbsoluteUri);
+            request.RequestUri = new Uri(url);
+
+            MediaTypeHeaderValue contentType = request.Content.Headers.ContentType;
+            string body = request.Content.ReadAsStringAsync().Result;
+            body = GetCustomUrl(httpClient, body);  // We can use GetCustomUrl() to replace address parts.
+            request.Content = new StringContent(body);
+            request.Content.Headers.ContentType = contentType;
+
+            return httpClient.SendAsync(request);
+        }
+
         /// <summary>
         /// Осуществляет HTTP-запрос указанного типа с передачей JSON-строки по заданному пути.
         /// </summary>
@@ -118,10 +186,23 @@
         /// <returns>Ответ на запрос.</returns>
         private static Task<HttpResponseMessage> SendRequestAsJsonString(HttpClient httpClient, string url, string jsonData, string httpMethodName)
         {
+            url = GetCustomUrl(httpClient, url);
+
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(new HttpMethod(httpMethodName), url) { Content = content };
 
             return httpClient.SendAsync(request);
+        }
+
+        public static string GetCustomUrl(HttpClient httpClient, string url)
+        {
+            if (httpClient is CustomHttpClient)
+            {
+                return url.Replace("/localhost/", "/localhost:5000/");
+                //return url.Replace("/localhost:6500/", "/localhost/").Replace("/localhost/", "/localhost:5000/");
+            }
+
+            return url;
         }
     }
 }

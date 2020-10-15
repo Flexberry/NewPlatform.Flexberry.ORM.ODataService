@@ -111,6 +111,21 @@
                     typeof(IEnumerable<DataObject>),
                     parametersTypes));
             }
+
+            if (!container.IsRegistered("ActionODataLoopBack"))
+            {
+                parametersTypes = new Dictionary<string, Type> { };
+                container.Register(new Action(
+                    "ActionODataLoopBack",
+                    (queryParameters, parameters) =>
+                    {
+                        //throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        //    new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
+                        throw new NotImplementedException("-solo- core ActionODataHttpResponseException");
+                    },
+                    typeof(IEnumerable<DataObject>),
+                    parametersTypes));
+            }
         }
 
         /// <summary>
@@ -186,7 +201,7 @@
         {
             ActODataService(args =>
             {
-                args.Token.Functions.RegisterAction(new Func<QueryParameters, string, string, IEnumerable<DataObject>>(AddWithQueryParameters));
+                args.Token.Functions.RegisterAction(new Func<QueryParameters, string, string, IEnumerable<DataObject>>(ActionAddWithQueryParameters));
                 RegisterODataActions(args.Token.Functions, args.DataService);
 
                 // Создаем объекты и кладем их в базу данных.
@@ -201,6 +216,7 @@
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/ActionWithLcs";
+                //string requestUrl = $"http://localhost:5000/odata/ActionWithLcs";
                 string json = "{\"entitySet\": \"Странаs\", \"query\": \"$filter=Название eq 'Страна №1'\"}";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
@@ -220,7 +236,8 @@
                 }
 
                 DataService = args.DataService as SQLDataService;
-                requestUrl = $"http://localhost/odata/AddWithQueryParameters";
+                //requestUrl = $"http://localhost/odata/AddWithQueryParameters";
+                requestUrl = $"http://localhost/odata/ActionAddWithQueryParameters";
                 json = "{\"entitySet\": \"Странаs\", \"query\": \"$filter=Название eq 'Страна №2'\"}";
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
@@ -269,14 +286,23 @@
                     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
                     // Проверим сообщение об ошибке.
-                    Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+                    }
+                    else
+                    {
+                        string json = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(json);
+                        Assert.Equal("Сообщение об ошибке Action.", result["error"]["message"]);
+                    }
                 }
             });
         }
 
         private SQLDataService DataService { get; set; }
 
-        private IEnumerable<DataObject> AddWithQueryParameters(QueryParameters queryParameters, string entitySet, string query)
+        private IEnumerable<DataObject> ActionAddWithQueryParameters(QueryParameters queryParameters, string entitySet, string query)
         {
             Assert.NotNull(queryParameters);
             var type = queryParameters.GetDataObjectType(entitySet);

@@ -4,7 +4,7 @@
     using System.Net.Http;
 
     using ICSSoft.STORMNET;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using Xunit;
 
     /// <summary>
@@ -53,11 +53,14 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.NotNull(Objs);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.NotNull(Objs);
+                    }
                 }
             });
         }

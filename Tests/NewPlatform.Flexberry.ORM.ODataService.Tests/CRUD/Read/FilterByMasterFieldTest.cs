@@ -48,7 +48,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(Car)).Name,
                     "Driver/Name eq 'Driver2'");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

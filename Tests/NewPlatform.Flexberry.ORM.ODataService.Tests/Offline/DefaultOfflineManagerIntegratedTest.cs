@@ -32,7 +32,7 @@
                 args.DataService.UpdateObject(лес);
                 AssertLock.IsNotAcquired(lockService, лес);
 
-                var result = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес)).Result;
+                var result = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), null).Result;
                 Assert.True(result.IsSuccessStatusCode);
                 AssertLock.IsNotAcquired(lockService, лес);
             });
@@ -53,7 +53,7 @@
                 AssertLock.IsNotAcquired(lockService, лес);
 
                 userMock.Setup(u => u.Login).Returns("user1");
-                var result = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
             });
@@ -75,13 +75,13 @@
 
                 // Select data with locking for user1.
                 userMock.Setup(u => u.Login).Returns("user1");
-                var result1 = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result1 = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result1.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
 
                 // Select data with locking for user2.
                 userMock.Setup(u => u.Login).Returns("user2");
-                var result2 = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user2").Result;
+                var result2 = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user2").Result;
                 Assert.False(result2.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
             });
@@ -104,7 +104,7 @@
                 AssertLock.IsNotAcquired(lockService, лес);
 
                 // Select data with locking.
-                var result1 = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result1 = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result1.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
 
@@ -132,7 +132,7 @@
                 AssertLock.IsNotAcquired(lockService, лес);
 
                 // Select data with locking by user1.
-                var result1 = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result1 = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result1.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
 
@@ -159,7 +159,7 @@
 
                 // Select data with locking by user1.
                 userMock.Setup(u => u.Login).Returns("user1");
-                var result1 = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result1 = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result1.IsSuccessStatusCode);
                 AssertLock.IsAcquired(lockService, лес, "user1");
 
@@ -211,7 +211,7 @@
                 }
 
                 userMock.Setup(u => u.Login).Returns("user1");
-                var result = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.False(result.IsSuccessStatusCode);
 
                 foreach (var dataObject in dataObjects)
@@ -260,7 +260,7 @@
                 }
 
                 userMock.Setup(u => u.Login).Returns("user1");
-                var result = args.HttpClient.GetAsync(args.Token.Model, typeof(Лес), "user1").Result;
+                var result = args.HttpClient.GetAsyncEx(args.Token.Model, typeof(Лес), "user1").Result;
                 Assert.True(result.IsSuccessStatusCode);
 
                 foreach (var dataObject in dataObjects)

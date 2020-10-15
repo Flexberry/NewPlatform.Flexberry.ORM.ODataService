@@ -259,6 +259,8 @@
     <Compile Include="Functions\QueryParameters.cs" />
     <Compile Include="Functions\Function.cs" />
     <Compile Include="Functions\FunctionContainer.cs" />
+    <Compile Include="Routing\EntitySetRoutingConvention.cs" />
+    <Compile Include="Routing\NavigationSourceRoutingConvention.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -277,10 +279,12 @@
     <EmbeddedResource Include="Expressions\CommonWebApiResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonWebApiResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Expressions\SRResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SRResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

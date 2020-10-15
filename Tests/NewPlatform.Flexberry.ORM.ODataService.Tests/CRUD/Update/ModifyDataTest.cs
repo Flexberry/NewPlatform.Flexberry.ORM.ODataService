@@ -36,7 +36,7 @@
         /// </summary>
         [Fact]
         public void PatchNavigationPropertiesTest()
-        {
+            {
             ActODataService(args =>
             {
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
@@ -259,6 +259,24 @@
 
             ActODataService(args =>
             {
+                //RegisterODataActions(args.Token.Functions, args.DataService);
+                var container = args.Token.Functions;
+                if (!container.IsRegistered("ActionODataLoopBack"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { };
+                    container.Register(new ODataService.Functions.Action(
+                        "ActionODataLoopBack",
+                        (queryParameters, parameters) =>
+                        {
+                        //throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        //    new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
+                          throw new NotImplementedException("-solo- core ActionODataLoopBack");
+                        },
+                        typeof(IEnumerable<DataObject>),
+                        parametersTypes));
+                }
+
+
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
                 // ------------------ Только создания объектов ------------------
                 // Подготовка тестовых данных в формате OData.
@@ -278,7 +296,7 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
-                HttpResponseMessage response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
+                HttpResponseMessage response = args.HttpClient.PostAsJsonAsyncEx(requestUrl, edmObj).Result;
 
                 // Убедимся, что запрос завершился успешно.
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -327,7 +345,7 @@
                 edmБерлога2.TrySetPropertyValue("ЛесРасположения", edmЛес1);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
-                response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
+                response = args.HttpClient.PostAsJsonAsyncEx(requestUrl, edmObj).Result;
 
                 // Убедимся, что запрос завершился успешно.
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -477,6 +495,7 @@
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name);
+                //string requestUrl = string.Format("http://localhost:5000/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
                 using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, requestJsonData).Result)
@@ -627,7 +646,7 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}('{1}')", args.Token.Model.GetEdmEntitySet(typeof(КлассСоСтроковымКлючом)).Name, класс.__PrimaryKey);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -657,7 +676,7 @@
                 requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, ((ICSSoft.STORMNET.KeyGen.KeyGuid)медв.__PrimaryKey).Guid.ToString());
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -699,7 +718,7 @@
                 requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name, ((ICSSoft.STORMNET.KeyGen.KeyGuid)delБерлога.__PrimaryKey).Guid.ToString());
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -744,7 +763,7 @@
                 requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, ((ICSSoft.STORMNET.KeyGen.KeyGuid)медв.__PrimaryKey).Guid.ToString());
 
                 // Обращаемся к OData-сервису для удаления объекта с детейлами и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -928,7 +947,7 @@
                         детейл),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                using (HttpResponseMessage response = args.HttpClient.SendBatchAsyncEx(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
@@ -1003,7 +1022,7 @@
                 };
 
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                using (HttpResponseMessage response = args.HttpClient.SendBatchAsyncEx(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 
@@ -1105,7 +1124,7 @@
                 };
 
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
-                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                using (HttpResponseMessage response = args.HttpClient.SendBatchAsyncEx(batchRequest).Result)
                 {
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
 

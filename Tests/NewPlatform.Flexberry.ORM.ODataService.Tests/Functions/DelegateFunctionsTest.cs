@@ -5,7 +5,7 @@
     using System.Net.Http;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using Newtonsoft.Json;
 
     using Xunit;
@@ -24,10 +24,10 @@
         {
             ActODataService(args =>
             {
-                args.Token.Functions.Register(new Func<int, int, int>(AddWithoutQueryParameters));
+                args.Token.Functions.Register(new Func<int, int, int>(FunctionAddWithoutQueryParameters));
 
-                string url = "http://localhost/odata/AddWithoutQueryParameters(a=2,b=2)";
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(url).Result)
+                string url = "http://localhost/odata/FunctionAddWithoutQueryParameters(a=2,b=2)";
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(url).Result)
                 {
                     var resultText = response.Content.ReadAsStringAsync().Result;
                     var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultText);
@@ -46,10 +46,10 @@
         {
             ActODataService(args =>
             {
-                args.Token.Functions.Register(new Func<QueryParameters, int, int, int>(AddWithQueryParameters));
+                args.Token.Functions.Register(new Func<QueryParameters, int, int, int>(FunctionAddWithQueryParameters));
 
-                string url = "http://localhost/odata/AddWithQueryParameters(a=2,b=2)";
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(url).Result)
+                string url = "http://localhost/odata/FunctionAddWithQueryParameters(a=2,b=2)";
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(url).Result)
                 {
                     var resultText = response.Content.ReadAsStringAsync().Result;
                     var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultText);
@@ -59,12 +59,12 @@
             });
         }
 
-        private static int AddWithoutQueryParameters(int a, int b)
+        private static int FunctionAddWithoutQueryParameters(int a, int b)
         {
             return a + b;
         }
 
-        private static int AddWithQueryParameters(QueryParameters queryParameters, int a, int b)
+        private static int FunctionAddWithQueryParameters(QueryParameters queryParameters, int a, int b)
         {
             Assert.NotNull(queryParameters);
 

@@ -7,6 +7,7 @@
 
     using Xunit;
     using System;
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     /// <summary>
     /// Класс тестов для тестирования логики после возникновения исключения.
@@ -54,10 +55,13 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}?$filter=", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name);
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-                    Assert.NotNull(Ex);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.NotNull(Ex);
+                    }
                 }
             });
         }

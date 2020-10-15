@@ -60,7 +60,7 @@
                 args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                 "Блохи/any()");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
@@ -97,7 +97,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                     "Блохи/any(f:(f/Кличка eq 'Блоха 1'))");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
@@ -134,7 +134,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                     "Блохи/all(f:(f/Кличка eq 'Блоха 2'))");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
@@ -182,7 +182,7 @@
                     args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                     "Блохи/any(f:(f/Кличка eq 'Блоха 1')) and Берлога/any(f:(f/Наименование eq 'Берлога 1'))");
 
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (var response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);

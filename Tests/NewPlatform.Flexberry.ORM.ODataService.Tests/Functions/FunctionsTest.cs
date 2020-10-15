@@ -176,7 +176,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionEnum(пол=NewPlatform.Flexberry.ORM.ODataService.Tests.tПол'Мужской')";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -215,9 +215,10 @@
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/FunctionWithLcs2(entitySet='Странаs',query='$filter=Название eq ''Страна №1''')";
+                //string requestUrl = $"http://localhost:5000/odata/FunctionWithLcs2(entitySet='Странаs',query='$filter=Название eq ''Страна №1''')";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -235,7 +236,7 @@
                 requestUrl = $"http://localhost/odata/FunctionWithLcs1(entitySet='Странаs')?$filter=Название eq 'Страна №1'";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -280,7 +281,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionSelectExpandEntity(intParam={intParam})?$expand=Берлога($select=Наименование)";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -330,7 +331,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionEntity(intParam={intParam})";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -372,7 +373,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionEntitiesCollection(intParam={intParam})?$count=true";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -423,7 +424,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionEntitiesCollection(intParam={intParam})";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -456,7 +457,7 @@
                 string requestUrl = $"http://localhost/odata/FunctionString(stringParam='{returnValueString}')";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -477,7 +478,7 @@
                 requestUrl = $"http://localhost/odata/FunctionInt(intParam={returnValueInt})";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -508,13 +509,22 @@
                 string requestUrl = $"http://localhost/odata/FunctionHttpResponseException()";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
-                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                 {
                     // Проверим, что возвращается код ошибки, указанный в функции.
                     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
                     // Проверим сообщение об ошибке.
-                    Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+                    if (!UseODataServiceApplication)
+                    {
+                        Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+                    }
+                    else
+                    {
+                        string json = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(json);
+                        Assert.Equal("Сообщение об ошибке UserFunction.", result["error"]["message"]);
+                    }
                 }
             });
         }

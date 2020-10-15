@@ -69,7 +69,7 @@
                 {
                     string requestUrl = string.Format("http://localhost/odata/{0}?{1}", item.Model, item.Query);
 
-                    using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                    using (HttpResponseMessage response = args.HttpClient.GetAsyncEx(requestUrl).Result)
                     {
                         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

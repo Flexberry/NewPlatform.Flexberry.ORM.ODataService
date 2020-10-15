@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -98,7 +99,8 @@
 
                 using (var config = new HttpConfiguration())
                 using (var server = new HttpServer(config))
-                using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
+                //using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
+                using (var client = UseODataServiceApplication ? new CustomHttpClient() : new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
@@ -123,14 +125,59 @@
         protected void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            int i = 0;
+
+            var subResponses = new System.Collections.Generic.List<HttpResponseMessage>();
             ODataBatchContent content = response.Content as ODataBatchContent;
-            foreach (ChangeSetResponseItem changeSetResponseItem in content.Responses)
+            if (content != null)
             {
-                foreach (HttpResponseMessage httpResponseMessage in changeSetResponseItem.Responses)
+                foreach (ChangeSetResponseItem changeSetResponseItem in content.Responses)
                 {
-                    Assert.Equal(statusCodes[i++], httpResponseMessage.StatusCode);
+                    foreach (HttpResponseMessage httpResponseMessage in changeSetResponseItem.Responses)
+                    {
+                        subResponses.Add(httpResponseMessage);
+                    }
                 }
+            }
+            else
+            {
+                // Reads the individual parts in the content and loads them in memory
+                MultipartMemoryStreamProvider responseContents = response.Content.ReadAsMultipartAsync().Result;
+
+                // The key is to add a new content type "msgtype" header to the response
+                // Extracts each of the individual Http responses
+                foreach (HttpContent httpContent in responseContents.Contents)
+                {
+
+                    // Two cases:
+                    // 1. a "single" response
+                    if (httpContent.Headers.ContentType.MediaType.Equals("application/http", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!httpContent.Headers.ContentType.Parameters.Any(parameter => parameter.Name.Equals("msgtype", StringComparison.OrdinalIgnoreCase) && parameter.Value.Equals("response", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            httpContent.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("msgtype", "response"));
+                        }
+
+                        subResponses.Add(httpContent.ReadAsHttpResponseMessageAsync().Result);
+                        // The single object in multipartRespMsgs contains a classic exploitable HttpResponseMessage (with IsSuccessStatusCode, Content.ReadAsStringAsync().Result, etc.)
+                    }
+                    // 2. a changeset response, which is an embedded multipart content
+                    else
+                    {
+                        var subMultipartContent = httpContent.ReadAsMultipartAsync().Result;
+                        foreach (HttpContent currentSubContent in subMultipartContent.Contents)
+                        {
+                            currentSubContent.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("msgtype", "response"));
+                            subResponses.Add(currentSubContent.ReadAsHttpResponseMessageAsync().Result);
+                            // Same here, the objects in multipartRespMsgs contain classic exploitable HttpResponseMessages
+                        }
+                    }
+                }
+            }
+
+            int i = 0;
+            foreach (HttpResponseMessage httpResponseMessage in subResponses)
+            {
+                Assert.Equal(statusCodes[i++], httpResponseMessage.StatusCode);
             }
         }
 
