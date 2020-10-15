@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Http;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -21,6 +20,10 @@
     using Newtonsoft.Json.Linq;
 
     using Xunit;
+
+#if NETFRAMEWORK
+    using System.Web.Http;
+#endif
 
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
@@ -153,8 +156,12 @@
                     "FunctionHttpResponseException",
                     (queryParameters, parameters) =>
                     {
+#if NETFRAMEWORK
                         throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
+#else
+                        throw new Exception(); // TODO: реализовать корректно для netcore
+#endif
                     },
                     typeof(IEnumerable<DataObject>),
                     parametersTypes));
@@ -513,8 +520,12 @@
                     // Проверим, что возвращается код ошибки, указанный в функции.
                     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
+#if NETFRAMEWORK
                     // Проверим сообщение об ошибке.
                     Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+#else
+                    //TODO: проверить сообщение для ошибки.
+#endif
                 }
             });
         }

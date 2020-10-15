@@ -7,8 +7,6 @@
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
-    using System.Web.Http;
-    using System.Web.Http.Cors;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.KeyGen;
@@ -16,10 +14,15 @@
     using Microsoft.AspNet.OData.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity;
-    using Unity.AspNet.WebApi;
     using Xunit;
+
+#if NETFRAMEWORK
+    using System.Web.Http;
+    using System.Web.Http.Cors;
+    using Unity.AspNet.WebApi;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
+#endif
 
     /// <summary>
     /// Базовый класс для тестирования работы с данными через ODataService.
@@ -58,7 +61,7 @@
         {
             DataObjectsAssembliesNames = new[]
             {
-                typeof(Car).Assembly
+                typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
@@ -78,6 +81,7 @@
             return e;
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
         /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.
@@ -130,6 +134,30 @@
                 }
             }
         }
+#endif
+#if NETCORE
+        /// <summary>
+        /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
+        /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.
+        /// </summary>
+        /// <param name="action">Действие, выполняемое для каждого сервиса данных из <see cref="BaseIntegratedTest"/>.</param>
+        public virtual void ActODataService(Action<TestArgs> action)
+        {
+            if (action == null)
+                return;
+
+            foreach (IDataService dataService in DataServices)
+            {
+                var container = new UnityContainer();
+                container.RegisterInstance(dataService);
+            }
+        }
+
+        protected void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+#endif
 
         protected HttpRequestMessage CreateBatchRequest(string url, string[] changesets)
         {

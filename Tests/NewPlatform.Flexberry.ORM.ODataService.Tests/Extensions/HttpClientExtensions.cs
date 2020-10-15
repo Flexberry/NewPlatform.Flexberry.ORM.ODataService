@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Principal;
     using System.Text;
     using System.Threading;
@@ -10,6 +11,7 @@
     using ICSSoft.STORMNET;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Класс, содержащий вспомогательные методы для работы с <see cref="HttpClient"/>.
@@ -41,6 +43,23 @@
                 }
             }
         }
+
+#if NETCORE
+        public static Task<HttpResponseMessage> PostAsJsonAsync<T>(
+            this HttpClient httpClient, string url, T data)
+        {
+            var dataAsString = JsonConvert.SerializeObject(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return httpClient.PostAsync(url, content);
+        }
+
+        public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
+        {
+            var dataAsString = await content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(dataAsString);
+        }
+#endif
 
         /// <summary>
         /// Осуществляет POST-запрос с передачей JSON-строки по заданному пути.

@@ -4,8 +4,6 @@
     using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
-    using System.Runtime.Remoting.Messaging;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.UserDataTypes;
