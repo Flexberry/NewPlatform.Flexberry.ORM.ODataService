@@ -25,6 +25,7 @@
 #endif
 #if NETCORE
     using ODataServiceSample.AspNetCore;
+    using ICSSoft.Services;
 #endif
 
     /// <summary>
@@ -170,10 +171,11 @@
 
             foreach (IDataService dataService in DataServices)
             {
-                var container = new UnityContainer();
-                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
-
+                // Инициализация сервера и клиента.
                 HttpClient client = _factory.CreateClient();
+
+                var container = UnityFactory.GetContainer();
+                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
 
                 ManagementToken token = new ManagementToken(_builder.Build());
 
