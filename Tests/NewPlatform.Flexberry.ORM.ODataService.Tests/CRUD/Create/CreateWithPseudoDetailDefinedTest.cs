@@ -31,7 +31,7 @@
         }
 #endif
 #if NETCORE
-        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory) : base(factory) // TODO: добавить параметров
+        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory) : base(factory, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
 #endif

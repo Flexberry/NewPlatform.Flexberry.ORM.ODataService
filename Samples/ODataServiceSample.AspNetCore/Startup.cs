@@ -1,4 +1,4 @@
-namespace ODataServiceSample.AspNetCore
+Ôªønamespace ODataServiceSample.AspNetCore
 {
     using System;
     using System.IO;
@@ -120,7 +120,7 @@ namespace ODataServiceSample.AspNetCore
                 var assemblies = new[]
                 {
                     // Assembly.Load("NewPlatform.Flexberry.ORM.ODataService.Tests.Objects"),
-                    typeof(ÃÂ‰‚Â‰¸).Assembly,
+                    typeof(–ú–µ–¥–≤–µ–¥—å).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,

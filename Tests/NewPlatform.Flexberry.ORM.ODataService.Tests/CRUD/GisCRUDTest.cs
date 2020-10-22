@@ -36,7 +36,7 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
-            : base(factory)
+            : base(factory, false, true)
         { }
 #endif
 
