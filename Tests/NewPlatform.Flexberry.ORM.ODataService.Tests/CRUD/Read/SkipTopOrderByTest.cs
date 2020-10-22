@@ -21,6 +21,14 @@
     /// </summary>
     public class SkipTopOrderByTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Осуществляет проверку поиска с использованием $skip, $top, $orderby.
         /// </summary>

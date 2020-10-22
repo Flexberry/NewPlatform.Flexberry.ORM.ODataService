@@ -21,6 +21,15 @@
     /// </summary>
     public class FilterTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public FilterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         [Fact]
         public void TestFilterStringKey()
         {

@@ -31,6 +31,14 @@
     /// </summary>
     public class ActionsTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public ActionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Осуществляет регистрацию пользовательских OData-actions.
         /// </summary>

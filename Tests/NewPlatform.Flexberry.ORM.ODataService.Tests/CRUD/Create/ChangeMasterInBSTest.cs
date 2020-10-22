@@ -13,6 +13,15 @@
     /// </summary>
     public class ChangeMasterInBSTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public ChangeMasterInBSTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Тест на проверку сохранения изменений мастера,
         /// которые были внесены в BS детейла при его (детейла) создании.

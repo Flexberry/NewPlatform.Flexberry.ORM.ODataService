@@ -14,6 +14,14 @@
     /// </summary>
     public class BeforeGetTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public BeforeGetTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         private LoadingCustomizationStruct lcs { get; set; }
 
         /// <summary>

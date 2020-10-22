@@ -20,6 +20,15 @@
     /// </summary>
     public class ReferenceToMasterTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public ReferenceToMasterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Read aggregator with Detaille with reference to one master.
         /// </summary>

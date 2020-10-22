@@ -19,6 +19,15 @@
     /// </summary>
     public class CustomizationEdmModelNames : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public CustomizationEdmModelNames(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Осуществляет проверку того, что при запросах с параметром <text>$count=true</text>, возвращаются метаданные с количеством присланных объектов.
         /// </summary>

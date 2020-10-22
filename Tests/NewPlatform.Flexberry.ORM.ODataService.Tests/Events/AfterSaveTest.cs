@@ -23,6 +23,14 @@
     /// </summary>
     public class AfterSaveTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public AfterSaveTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Содержит DataObject, который является параметром в методах AfterCreate, AfterUpdate и AfterDelete.
         /// </summary>

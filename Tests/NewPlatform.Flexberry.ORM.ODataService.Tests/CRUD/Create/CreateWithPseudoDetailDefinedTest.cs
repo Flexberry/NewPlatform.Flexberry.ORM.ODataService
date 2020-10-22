@@ -25,9 +25,16 @@
             return pseudoDetailDefinitions;
         }
 
+#if NETFRAMEWORK
         public CreateWithPseudoDetailDefinedTest() : base(pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
+#endif
+#if NETCORE
+        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory) : base(factory) // TODO: добавить параметров
+        {
+        }
+#endif
 
         /// <summary>
         /// Tests the creation of entity instance with pseudodetail field defined.

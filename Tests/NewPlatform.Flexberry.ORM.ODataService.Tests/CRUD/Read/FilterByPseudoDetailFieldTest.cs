@@ -29,9 +29,17 @@
             return pseudoDetailDefinitions;
         }
 
+#if NETFRAMEWORK
         public FilterByPseudoDetailFieldTest() : base(pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
+#endif
+#if NETCORE
+        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory) // TODO: добавить параметров
+        {
+        }
+#endif
 
         /// <summary>
         /// Tests filtering data by pseudodetail field with EmptyAny.

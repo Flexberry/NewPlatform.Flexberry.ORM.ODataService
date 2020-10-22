@@ -18,6 +18,15 @@
     /// </summary>
     public class FilterByMasterDetailFieldTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public FilterByMasterDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Tests filtering data by master field.
         /// </summary>

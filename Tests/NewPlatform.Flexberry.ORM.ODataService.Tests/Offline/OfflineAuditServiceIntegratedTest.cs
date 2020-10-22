@@ -10,15 +10,14 @@
     using Xunit;
 
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
-    
 
     /// <summary>
     /// ORM-integrated unit test for <see cref="OfflineAuditService"/>.
     /// </summary>
-    /// <seealso cref="BaseOrmIntegratedTest" />
-    
+    /// <seealso cref="BaseIntegratedTest" />
     public class OfflineAuditServiceIntegratedTest : BaseIntegratedTest
     {
+#if NETFRAMEWORK
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
         /// </summary>
@@ -26,6 +25,16 @@
             : base("offline")
         {
         }
+#endif
+#if NETCORE
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
+        /// </summary>
+        public OfflineAuditServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory, "offline")
+        {
+        }
+#endif
 
         /// <summary>
         /// Unit test for <see cref="AuditService.AddCreateAuditInformation"/> and <see cref="AuditService.AddEditAuditInformation"/>.

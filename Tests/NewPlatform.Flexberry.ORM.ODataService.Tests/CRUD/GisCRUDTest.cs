@@ -22,12 +22,23 @@
     /// </summary>
     public class GisCRUDTest : BaseODataServiceIntegratedTest
     {
+
+#if NETFRAMEWORK
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
         public GisCRUDTest()
             : base("ODataGis", false, true)
         { }
+#endif
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
 
         /// <summary>
         /// Осуществляет проверку фильтрации с использованием функции geo.intersects

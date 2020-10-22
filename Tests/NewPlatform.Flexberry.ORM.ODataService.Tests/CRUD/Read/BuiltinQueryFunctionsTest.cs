@@ -22,6 +22,15 @@
     /// </summary>
     public class BuiltinQueryFunctionsTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public BuiltinQueryFunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Осуществляет проверку применения функций any и all в запросах OData.
         /// Тест проверяет следующие факты:

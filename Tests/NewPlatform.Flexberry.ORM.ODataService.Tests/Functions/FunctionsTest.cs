@@ -30,6 +30,14 @@
     /// </summary>
     public class FunctionsTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Осуществляет регистрацию пользовательских OData-функций.
         /// </summary>

@@ -13,6 +13,14 @@
 
     public class AfterGetTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public AfterGetTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Содержит массив DataObject, который является параметром в методе AfterGet.
         /// </summary>

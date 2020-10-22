@@ -15,9 +15,17 @@
     /// <summary>
     /// Класс тестов для тестирования бизнес-серверов.
     /// </summary>
-
     public class BusinessServersTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public BusinessServersTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
+
         /// <summary>
         /// Осуществляет проверку того, что при POST запросах происходит вызов бизнес-сервера.
         /// </summary>

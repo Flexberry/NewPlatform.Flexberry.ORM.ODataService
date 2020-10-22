@@ -11,9 +11,51 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using ICSSoft.STORMNET.Business;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
+    using Xunit;
 
+#if NETFRAMEWORK
+    /// <summary>
+    /// Base class for integration tests.
+    /// </summary>
     public abstract class BaseIntegratedTest : IDisposable
     {
+#endif
+#if NETCORE
+    using ICSSoft.Services;
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using ODataServiceSample.AspNetCore;
+    using Unity;
+
+    /// <summary>
+    /// Base class for integration tests.
+    /// </summary>
+    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>
+    {
+        protected readonly WebApplicationFactory<Startup> _factory;
+
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="BaseIntegratedTest"/> class.
+        ///// </summary>
+        ///// <param name="factory">Web application factory.</param>
+        //public BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory)
+        //{
+        //    _factory = factory;
+
+            // Init sturtup.
+            //var client = _factory.CreateClient();
+
+            //IUnityContainer unityContainer = UnityFactory.GetContainer();
+            //unityContainer.RegisterType(typeof(IConfigResolver), typeof(ConfigurationConfigResolver));
+            //IConfigResolver configResolver = unityContainer.Resolve<IConfigResolver>();
+
+            //// ADO.NET doesn't close the connection with pooling. We have to disable it explicitly.
+            //// http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
+            //connectionStringPostgres = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringPostgres")}";
+            //connectionStringMssql = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringMssql")}";
+            //connectionStringOracle = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringOracle")}";
+        //}
+
+#endif
         private const string PoolingFalseConst = "Pooling=false;";
 
         private static string connectionStringOracle;
@@ -83,11 +125,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
         static BaseIntegratedTest()
         {
+//#if NETFRAMEWORK
             // ADO.NET doesn't close the connection with pooling. We have to disable it explicitly.
             // http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
             connectionStringPostgres = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringPostgres"]}";
             connectionStringMssql = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringMssql"]}";
             connectionStringOracle = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringOracle"]}";
+
+//#endif
+//#if NETCORE
+
+//#endif
+
         }
 
         /// <summary>
@@ -98,6 +147,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             Dispose(true);
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>
@@ -105,6 +155,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
+#endif
+#if NETCORE
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
+        /// </summary>
+        /// <param name="factory">Web application factory.</param>
+        /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
+        /// <param name="useGisDataService">Use DataService with Gis support.</param>
+        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, string tempDbNamePrefix, bool useGisDataService = false)
+        {
+            _factory = factory;
+#endif
             _useGisDataService = useGisDataService;
             if (!(tempDbNamePrefix != null))
                 throw new ArgumentNullException();
@@ -114,13 +176,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 throw new ArgumentException();
             _tempDbNamePrefix = tempDbNamePrefix;
             _databaseName = _tempDbNamePrefix + "_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + "_" + Guid.NewGuid().ToString("N");
+            bool watchdogEmptyTest = false;
 
             if (!string.IsNullOrWhiteSpace(PostgresScript) && connectionStringPostgres != PoolingFalseConst)
             {
                 if (!(tempDbNamePrefix.Length <= 12)) // Max length is 63 (-18 -32).
                     throw new ArgumentException();
+
                 if (!char.IsLetter(tempDbNamePrefix[0])) // Database names must have an alphabetic first character.
-                    throw new ArgumentException();                
+                    throw new ArgumentException();
+
+                watchdogEmptyTest = true;
+
                 using (var conn = new NpgsqlConnection(connectionStringPostgres))
                 {
                     conn.Open();
@@ -143,6 +210,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             {
                 if (!(tempDbNamePrefix.Length <= 64))// Max is 128.
                     throw new ArgumentException();
+
+                watchdogEmptyTest = true;
+
                 using (var connection = new SqlConnection(connectionStringMssql))
                 {
                     connection.Open();
@@ -167,6 +237,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             {
                 if (!(tempDbNamePrefix.Length <= 8)) // Max length is 30 (-18 -4).
                     throw new ArgumentException();
+
+                watchdogEmptyTest = true;
 
                 using (var connection = new OracleConnection(connectionStringOracle))
                 {
@@ -218,6 +290,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     }
                 }
             }
+
+            Assert.True(watchdogEmptyTest);
         }
 
         /// <summary>

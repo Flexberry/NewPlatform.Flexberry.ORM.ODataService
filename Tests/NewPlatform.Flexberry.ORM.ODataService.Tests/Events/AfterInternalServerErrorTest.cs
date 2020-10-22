@@ -13,6 +13,14 @@
     /// </summary>
     public class AfterInternalServerErrorTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public AfterInternalServerErrorTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         private Exception Ex { get; set; }
 
         /// <summary>

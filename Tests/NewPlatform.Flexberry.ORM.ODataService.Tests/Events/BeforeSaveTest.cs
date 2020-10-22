@@ -20,6 +20,14 @@
     /// </summary>
     public class BeforeSaveTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public BeforeSaveTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Содержит DataObject, который является параметром в методах BeforeCreate, BeforeUpdate и BeforeDelete.
         /// </summary>

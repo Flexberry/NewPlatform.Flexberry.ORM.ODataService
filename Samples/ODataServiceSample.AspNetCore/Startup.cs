@@ -18,6 +18,7 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.Tests;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Services;
@@ -41,7 +42,7 @@ namespace ODataServiceSample.AspNetCore
         public string CustomizationString => "";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             /*
             // Configure Flexberry services (LockService and IDataService) via native DI.
@@ -70,6 +71,8 @@ namespace ODataServiceSample.AspNetCore
                 unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
 
                 unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+
+                unityContainer.RegisterInstance(Configuration);
             }
 
             services.AddMvcCore(options =>
@@ -83,7 +86,14 @@ namespace ODataServiceSample.AspNetCore
 
             services.AddSingleton<IDataObjectFileAccessor>(provider =>
             {
-                Uri baseUri = new Uri(ServerAddressesFeature.Addresses.Single()); // This works with pure self-hosted service only.
+                Uri baseUri = new Uri("http://localhost");
+
+                if (ServerAddressesFeature != null && ServerAddressesFeature.Addresses != null)
+                {
+                    // This works with pure self-hosted service only.
+                    baseUri = new Uri(ServerAddressesFeature.Addresses.Single());
+                }
+
                 var env = provider.GetRequiredService<IHostingEnvironment>();
 
                 return new DefaultDataObjectFileAccessor(baseUri, "api/file", Path.Combine(env.WebRootPath, "Uploads"));
@@ -91,7 +101,7 @@ namespace ODataServiceSample.AspNetCore
         }   
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Save reference to IApplicationBuilder instance.
             ApplicationBuilder = app;
@@ -102,14 +112,15 @@ namespace ODataServiceSample.AspNetCore
             app.UseMvc(builder =>
             {
                 builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
-                builder.MapFileRoute();
+                // TODO: builder.MapFileRoute();
             });
 
             app.UseODataService(builder =>
             {
                 var assemblies = new[]
                 {
-                    Assembly.Load("NewPlatform.Flexberry.ORM.ODataServiceCore.Tests.Objects"),
+                    // Assembly.Load("NewPlatform.Flexberry.ORM.ODataService.Tests.Objects"),
+                    typeof(Ìוהגוהü).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,

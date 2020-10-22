@@ -14,6 +14,14 @@
 
     public class WebFileTest: BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public WebFileTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         [Fact]
         public void WebFileAsStringShouldSave()
         {

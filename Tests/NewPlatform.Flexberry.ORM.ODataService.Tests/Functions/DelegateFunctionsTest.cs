@@ -15,6 +15,14 @@
     /// </summary>
     public class DelegateFunctionsTest : BaseODataServiceIntegratedTest
     {
+#if NETCORE
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        public DelegateFunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+            : base(factory)
+        { }
+#endif
         /// <summary>
         /// Unit test for <see cref="IFunctionContainer.Register(Delegate)"/>.
         /// Tests the function call without query parameters.

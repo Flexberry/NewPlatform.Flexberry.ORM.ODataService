@@ -23,13 +23,16 @@
     using Unity.AspNet.WebApi;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
 #endif
+#if NETCORE
+    using ODataServiceSample.AspNetCore;
+#endif
 
     /// <summary>
     /// Базовый класс для тестирования работы с данными через ODataService.
     /// </summary>
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
     {
-        protected readonly IDataObjectEdmModelBuilder _builder;
+        protected IDataObjectEdmModelBuilder _builder;
 
         public class TestArgs
         {
@@ -52,12 +55,31 @@
         /// </summary>
         public bool UseNamespaceInEntitySetName { get; protected set; }
 
+#if NETFRAMEWORK
         public BaseODataServiceIntegratedTest(
             string stageCasePath = @"РТЦ Тестирование и документирование\Модели для юнит-тестов\Flexberry ORM\NewPlatform.Flexberry.ORM.ODataService.Tests\",
             bool useNamespaceInEntitySetName = false,
             bool useGisDataService = false,
             PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base("ODataDB", useGisDataService)
+        {
+            Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
+        }
+#endif
+#if NETCORE
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, bool useNamespaceInEntitySetName = false,
+            bool useGisDataService = false,
+            PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base (factory, "ODataDB", useGisDataService)
+        {
+            Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
+        }
+#endif
+
+
+        private void Init(
+            bool useNamespaceInEntitySetName = false,
+            PseudoDetailDefinitions pseudoDetailDefinitions = null)
         {
             DataObjectsAssembliesNames = new[]
             {
@@ -149,7 +171,15 @@
             foreach (IDataService dataService in DataServices)
             {
                 var container = new UnityContainer();
-                container.RegisterInstance(dataService);
+                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
+
+                HttpClient client = _factory.CreateClient();
+
+                ManagementToken token = new ManagementToken(_builder.Build());
+
+                var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                ExternalLangDef.LanguageDef.DataService = dataService;
+                action(args);
             }
         }
 
