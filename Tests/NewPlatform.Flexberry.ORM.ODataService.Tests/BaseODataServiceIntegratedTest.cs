@@ -26,6 +26,7 @@
 #if NETCORE
     using ODataServiceSample.AspNetCore;
     using ICSSoft.Services;
+    using Microsoft.AspNetCore.Routing;
 #endif
 
     /// <summary>
@@ -175,9 +176,9 @@
                 HttpClient client = _factory.CreateClient();
 
                 var container = UnityFactory.GetContainer();
-                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
 
-                ManagementToken token = new ManagementToken(_builder.Build());
+                ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
+                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 ExternalLangDef.LanguageDef.DataService = dataService;

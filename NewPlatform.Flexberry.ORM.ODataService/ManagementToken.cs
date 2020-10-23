@@ -54,13 +54,5 @@
             _model = model ?? throw new ArgumentNullException(nameof(model), "Contract assertion not met: model != null");
             Functions = new FunctionContainer(this);
         }
-
-#if NETSTANDARD
-        public ManagementToken(DataObjectEdmModel model)
-        {
-            _model = model ?? throw new ArgumentNullException(nameof(model), "Contract assertion not met: model != null");
-            Functions = new FunctionContainer(this);
-        }
-#endif
     }
 }

@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Hosting.Server.Features;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using NewPlatform.Flexberry.ORM.ODataService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -128,6 +129,9 @@
                 var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
+
+                var container = UnityFactory.GetContainer();
+                container.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }

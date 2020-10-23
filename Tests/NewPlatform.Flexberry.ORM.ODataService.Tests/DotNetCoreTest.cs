@@ -56,7 +56,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Use common factory")]
         public async Task SelfHostedNetCoreTest()
         {
             HttpClient client = _factory.CreateClient();
