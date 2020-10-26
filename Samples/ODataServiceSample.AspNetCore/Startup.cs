@@ -113,7 +113,7 @@
             app.UseMvc(builder =>
             {
                 builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
-                builder.MapFileRoute(); // TODO: 
+                builder.MapFileRoute();
             });
 
             app.UseODataService(builder =>
@@ -130,7 +130,7 @@
                 };
 
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions); // TODO: сюда надо передавать псевдодетейлы
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 

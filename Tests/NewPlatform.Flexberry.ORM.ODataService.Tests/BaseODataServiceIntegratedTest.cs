@@ -27,6 +27,7 @@
     using ODataServiceSample.AspNetCore;
     using ICSSoft.Services;
     using Microsoft.AspNetCore.Routing;
+    using NewPlatform.Flexberry.ORM.ODataService.Routing;
 #endif
 
     /// <summary>
@@ -174,6 +175,9 @@
             {
                 // Инициализация сервера и клиента.
                 HttpClient client = _factory.CreateClient();
+
+                // Add "/odata/" postfix.
+                client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
                 var container = UnityFactory.GetContainer();
 
