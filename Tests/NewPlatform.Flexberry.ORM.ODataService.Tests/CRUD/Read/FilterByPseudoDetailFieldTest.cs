@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Net;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Windows.Forms;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -9,7 +10,7 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-
+    using Unity;
     using Xunit;
 
     /// <summary>
@@ -38,6 +39,8 @@
         public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
+            IUnityContainer container = UnityFactory.GetContainer();
+            container.RegisterInstance(GetPseudoDetailDefinitions());
         }
 #endif
 

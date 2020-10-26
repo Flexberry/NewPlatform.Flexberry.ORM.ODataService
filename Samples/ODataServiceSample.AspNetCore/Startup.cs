@@ -113,11 +113,13 @@
             app.UseMvc(builder =>
             {
                 builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
-                // TODO: builder.MapFileRoute();
+                builder.MapFileRoute(); // TODO: 
             });
 
             app.UseODataService(builder =>
             {
+                IUnityContainer container = UnityFactory.GetContainer();
+
                 var assemblies = new[]
                 {
                     // Assembly.Load("NewPlatform.Flexberry.ORM.ODataService.Tests.Objects"),
@@ -126,11 +128,12 @@
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
+
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions); // TODO: сюда надо передавать псевдодетейлы
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
-                var container = UnityFactory.GetContainer();
                 container.RegisterInstance(typeof(ManagementToken), token);
             });
         }
