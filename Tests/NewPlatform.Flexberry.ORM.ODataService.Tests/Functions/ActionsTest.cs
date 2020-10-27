@@ -37,8 +37,10 @@
         /// </summary>
         public ActionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
+
         /// <summary>
         /// Осуществляет регистрацию пользовательских OData-actions.
         /// </summary>
@@ -120,7 +122,7 @@
                         throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
 #else
-                        throw new Exception(); // TODO: реализовать корректно для netcore
+                        throw new ODataException("Сообщение об ошибке");
 #endif
                     },
                     typeof(IEnumerable<DataObject>),
@@ -287,7 +289,16 @@
                     // Проверим сообщение об ошибке.
                     Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
 #else
-                    //TODO: проверить сообщение для ошибки.
+                    // Получим строку с ответом.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+
+                    JObject jObject = JObject.Parse(receivedStr);
+                    var error = jObject["error"];
+
+                    Assert.NotNull(error);
+                    string errorMessage = error["message"].ToString();
+
+                    Assert.Equal("Сообщение об ошибке", errorMessage);
 #endif
                 }
             });

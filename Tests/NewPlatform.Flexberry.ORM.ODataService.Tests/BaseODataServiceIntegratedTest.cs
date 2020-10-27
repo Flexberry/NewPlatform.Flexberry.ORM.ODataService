@@ -183,6 +183,7 @@
 
                 ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
                 container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
+                token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 ExternalLangDef.LanguageDef.DataService = dataService;
