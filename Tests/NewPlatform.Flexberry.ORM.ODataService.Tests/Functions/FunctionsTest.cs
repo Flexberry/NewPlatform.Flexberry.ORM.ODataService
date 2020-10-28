@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
@@ -18,7 +18,7 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-
+    using Unity;
     using Xunit;
 
 #if NETFRAMEWORK
@@ -34,6 +34,7 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
         {
@@ -58,6 +59,10 @@
                     {
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var lcs = queryParameters.CreateLcs(type);
+#if NETCORE
+                        IUnityContainer container = UnityFactory.GetContainer();
+                        dataService = container.Resolve<IDataService>();
+#endif
                         var dobjs = dataService.LoadObjects(lcs);
                         return dobjs.AsEnumerable();
                     },
@@ -75,6 +80,10 @@
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var uri = $"http://a/b/c?{parameters["query"]}";
                         var lcs = queryParameters.CreateLcs(type, uri);
+#if NETCORE
+                        IUnityContainer container = UnityFactory.GetContainer();
+                        dataService = container.Resolve<IDataService>();
+#endif
                         var dobjs = dataService.LoadObjects(lcs);
                         return dobjs.Length;
                     },
@@ -109,6 +118,10 @@
                     "FunctionEntity",
                     (queryParameters, parameters) =>
                     {
+#if NETCORE
+                        IUnityContainer container = UnityFactory.GetContainer();
+                        dataService = container.Resolve<IDataService>();
+#endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).ToArray();
                         return result[(int)parameters["intParam"]];
                     },
@@ -124,6 +137,10 @@
                     (queryParameters, parameters) =>
                     {
                         var top = (int)parameters["intParam"];
+#if NETCORE
+                        IUnityContainer container = UnityFactory.GetContainer();
+                        dataService = container.Resolve<IDataService>();
+#endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).Take(top).ToArray();
                         queryParameters.Count = result.Length;
                         return result;
@@ -139,6 +156,10 @@
                     "FunctionSelectExpandEntity",
                     (queryParameters, parameters) =>
                     {
+#if NETCORE
+                        IUnityContainer container = UnityFactory.GetContainer();
+                        dataService = container.Resolve<IDataService>();
+#endif
                         var result = (dataService as SQLDataService).Query<Медведь>(Медведь.Views.МедведьE).ToArray();
                         return result[(int)parameters["intParam"]];
                     },
@@ -176,7 +197,6 @@
                     typeof(IEnumerable<DataObject>),
                     parametersTypes));
             }
-
         }
 
         /// <summary>

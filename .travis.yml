@@ -16,6 +16,7 @@ addons:
     packages:
       - doxygen
       - postgresql-9.6-postgis-2.4
+      - dotnet-sdk-2.2
 services:
   - postgresql
 before_script:

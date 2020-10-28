@@ -79,7 +79,6 @@
         }
 #endif
 
-
         private void Init(
             bool useNamespaceInEntitySetName = false,
             PseudoDetailDefinitions pseudoDetailDefinitions = null)
@@ -179,10 +178,10 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                var container = UnityFactory.GetContainer();
+                IUnityContainer container = UnityFactory.GetContainer();
 
                 ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
-                container.RegisterInstance(dataService); // TODO: разобраться какой сервис данных будет в ODataService!!!
+                container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
