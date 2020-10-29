@@ -7,15 +7,27 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
 
+    /// <summary>
+    /// Middleware for exception handling in tests.
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate next;
 
+        /// <summary>
+        /// Initialize new instance of ExceptionMiddleware.
+        /// </summary>
+        /// <param name="next">Request delegate.</param>
         public ExceptionMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
 
+        /// <summary>
+        /// Invoke pipe.
+        /// </summary>
+        /// <param name="httpContext">Http context for current pipe.</param>
+        /// <returns>Task for execute.</returns>
         public async Task Invoke(HttpContext httpContext)
         {
             try
