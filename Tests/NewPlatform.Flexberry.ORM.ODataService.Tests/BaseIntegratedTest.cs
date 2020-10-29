@@ -12,6 +12,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
     using Xunit;
+    using Xunit.Abstractions;
 
 #if NETFRAMEWORK
     /// <summary>
@@ -23,6 +24,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #if NETCORE
     using Microsoft.AspNetCore.Mvc.Testing;
     using ODataServiceSample.AspNetCore;
+    using ICSSoft.Services;
+    using Unity;
 
     /// <summary>
     /// Base class for integration tests.
@@ -31,6 +34,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
+        protected ITestOutputHelper _output;
+
         private const string PoolingFalseConst = "Pooling=false;";
 
         private static string connectionStringOracle;
@@ -129,11 +134,19 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>
         /// <param name="factory">Web application factory.</param>
+        /// <param name="output">Unit tests debug output.</param>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
-        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, string tempDbNamePrefix, bool useGisDataService = false)
+        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
             _factory = factory;
+            _output = output;
+
+            if (output != null)
+            {
+                IUnityContainer container = UnityFactory.GetContainer();
+                container.RegisterInstance(_output);
+            }
 #endif
             _useGisDataService = useGisDataService;
             if (!(tempDbNamePrefix != null))

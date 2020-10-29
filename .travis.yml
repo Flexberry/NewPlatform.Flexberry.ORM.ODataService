@@ -25,8 +25,6 @@ script:
   - df -h
   - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
   - df -h
-  - mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-  - df -h
   - dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp2.2/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - df -h
 after_success:

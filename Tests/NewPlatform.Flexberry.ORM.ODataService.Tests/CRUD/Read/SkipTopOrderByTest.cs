@@ -15,6 +15,7 @@
     using Newtonsoft.Json.Linq;
 
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     /// Класс тестов для тестирования $skip, $top, $orderby.
@@ -26,11 +27,13 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
-        public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
-            : base(factory)
+        /// <param name="output">Выходной поток для отладочной информации.</param>
+        public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
+            : base(factory, output)
         {
         }
 #endif
+
         /// <summary>
         /// Осуществляет проверку поиска с использованием $skip, $top, $orderby.
         /// </summary>

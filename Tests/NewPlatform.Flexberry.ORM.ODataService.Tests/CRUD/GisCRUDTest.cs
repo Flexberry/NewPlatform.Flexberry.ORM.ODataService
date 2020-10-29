@@ -16,6 +16,7 @@
     using Newtonsoft.Json.Linq;
 
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     /// Класс тестов для тестирования работы с гео-данными.
@@ -36,8 +37,8 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
-        public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
-            : base(factory, false, true)
+        public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
+            : base(factory, output, false, true)
         { }
 #endif
 

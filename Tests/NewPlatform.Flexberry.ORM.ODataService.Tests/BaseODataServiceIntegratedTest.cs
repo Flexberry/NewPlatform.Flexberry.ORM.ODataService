@@ -6,6 +6,7 @@
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.KeyGen;
@@ -13,6 +14,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using Unity;
     using Xunit;
+    using Xunit.Abstractions;
 
 #if NETFRAMEWORK
     using System.IO;
@@ -24,7 +26,6 @@
     using Unity.AspNet.WebApi;
 #endif
 #if NETCORE
-    using ICSSoft.Services;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
     using ODataServiceSample.AspNetCore;
 #endif
@@ -69,8 +70,8 @@
         }
 #endif
 #if NETCORE
-        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
-            : base(factory, "ODataDB", useGisDataService)
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(factory, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
@@ -97,6 +98,13 @@
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
         public static Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
         {
+            IUnityContainer container = UnityFactory.GetContainer();
+            if (container.IsRegistered<ITestOutputHelper>())
+            {
+                ITestOutputHelper output = container.Resolve<ITestOutputHelper>();
+                output.WriteLine(e.ToString());
+            }
+
             Assert.Null(e);
             code = HttpStatusCode.InternalServerError;
             return e;
