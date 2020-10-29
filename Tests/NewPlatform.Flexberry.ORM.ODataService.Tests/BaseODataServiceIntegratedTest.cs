@@ -24,10 +24,9 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
 #endif
 #if NETCORE
-    using ODataServiceSample.AspNetCore;
     using ICSSoft.Services;
-    using Microsoft.AspNetCore.Routing;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using ODataServiceSample.AspNetCore;
 #endif
 
     /// <summary>
@@ -70,12 +69,15 @@
         }
 #endif
 #if NETCORE
-        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, bool useNamespaceInEntitySetName = false,
-            bool useGisDataService = false,
-            PseudoDetailDefinitions pseudoDetailDefinitions = null)
-            : base (factory, "ODataDB", useGisDataService)
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(factory, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
+
+            // Hack for Assembly Load under Linux dotnet core.
+            Type businesServerType = typeof(МедведьБС);
+            Type testObjectType = typeof(Медведь);
+            string names = businesServerType.FullName + testObjectType.FullName;
         }
 #endif
 
