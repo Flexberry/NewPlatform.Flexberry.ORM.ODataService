@@ -73,11 +73,6 @@
             : base(factory, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
-
-            // Hack for Assembly Load under Linux dotnet core.
-            Type businesServerType = typeof(МедведьБС);
-            Type testObjectType = typeof(Медведь);
-            string names = businesServerType.FullName + testObjectType.FullName;
         }
 #endif
 

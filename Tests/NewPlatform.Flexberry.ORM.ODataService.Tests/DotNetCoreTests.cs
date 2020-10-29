@@ -44,7 +44,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         [Fact]
         public void LoadTypeTest()
         {
-            string typeName = "NewPlatform.Flexberry.ORM.ODataService.Tests.МедведьБС, NewPlatform.Flexberry.ORM.ODataService.Tests.BusinessServers";
+            string typeName = "NewPlatform.Flexberry.ORM.ODataService.Tests.BearBS, NewPlatform.Flexberry.ORM.ODataService.Tests.BusinessServers";
 
             Type type = Type.GetType(typeName);
 
