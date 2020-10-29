@@ -37,9 +37,11 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="output">Вывод диагностической информации по тестам.</param>
         public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
             : base(factory, output, false, true)
-        { }
+        {
+        }
 #endif
 
         /// <summary>
