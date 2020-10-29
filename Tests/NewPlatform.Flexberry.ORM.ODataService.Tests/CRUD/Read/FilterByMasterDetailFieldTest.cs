@@ -22,9 +22,11 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public FilterByMasterDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
 
         /// <summary>

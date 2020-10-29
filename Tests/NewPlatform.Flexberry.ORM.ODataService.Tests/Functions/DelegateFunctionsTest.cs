@@ -19,10 +19,13 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public DelegateFunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
+ 
         /// <summary>
         /// Unit test for <see cref="IFunctionContainer.Register(Delegate)"/>.
         /// Tests the function call without query parameters.

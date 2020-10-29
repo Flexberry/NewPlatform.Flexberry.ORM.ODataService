@@ -35,6 +35,7 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory, false, true)
         { }

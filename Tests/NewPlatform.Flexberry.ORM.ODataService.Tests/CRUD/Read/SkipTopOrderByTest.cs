@@ -25,9 +25,11 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
         /// <summary>
         /// Осуществляет проверку поиска с использованием $skip, $top, $orderby.

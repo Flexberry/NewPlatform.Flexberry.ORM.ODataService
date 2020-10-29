@@ -25,10 +25,13 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public ModifyDataTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
+
         /// <summary>
         /// Осуществляет проверку того, что при PATCH запросах происходит вставка и удаление связей объекта.
         /// Зависимые объекты (мастера, детейлы) представлены в виде - Имя_Связи@odata.bind: Имя_Набора_Сущностей(ключ) или Имя_Связи@odata.bind: [ Имя_Набора_Сущностей(ключ) ]   .

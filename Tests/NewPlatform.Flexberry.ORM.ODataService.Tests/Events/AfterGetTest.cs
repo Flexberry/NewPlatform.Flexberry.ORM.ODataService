@@ -17,10 +17,13 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
         public AfterGetTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory)
-        { }
+        {
+        }
 #endif
+
         /// <summary>
         /// Содержит массив DataObject, который является параметром в методе AfterGet.
         /// </summary>

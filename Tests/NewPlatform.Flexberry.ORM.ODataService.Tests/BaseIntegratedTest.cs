@@ -32,29 +32,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         protected readonly WebApplicationFactory<Startup> _factory;
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="BaseIntegratedTest"/> class.
-        ///// </summary>
-        ///// <param name="factory">Web application factory.</param>
-        //public BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory)
-        //{
-        //    _factory = factory;
-
-            // Init sturtup.
-            //var client = _factory.CreateClient();
-
-            //IUnityContainer unityContainer = UnityFactory.GetContainer();
-            //unityContainer.RegisterType(typeof(IConfigResolver), typeof(ConfigurationConfigResolver));
-            //IConfigResolver configResolver = unityContainer.Resolve<IConfigResolver>();
-
-            //// ADO.NET doesn't close the connection with pooling. We have to disable it explicitly.
-            //// http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
-            //connectionStringPostgres = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringPostgres")}";
-            //connectionStringMssql = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringMssql")}";
-            //connectionStringOracle = $"{PoolingFalseConst}{configResolver.ResolveConnectionString("ConnectionStringOracle")}";
-        //}
-
 #endif
         private const string PoolingFalseConst = "Pooling=false;";
 
@@ -125,18 +102,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
         static BaseIntegratedTest()
         {
-//#if NETFRAMEWORK
             // ADO.NET doesn't close the connection with pooling. We have to disable it explicitly.
             // http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
             connectionStringPostgres = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringPostgres"]}";
             connectionStringMssql = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringMssql"]}";
             connectionStringOracle = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringOracle"]}";
-
-//#endif
-//#if NETCORE
-
-//#endif
-
         }
 
         /// <summary>
