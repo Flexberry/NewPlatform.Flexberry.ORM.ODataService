@@ -1,7 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
-    using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -11,17 +10,18 @@
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
-    using Microsoft.AspNet.OData.Batch;
-    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using Unity;
     using Xunit;
 
 #if NETFRAMEWORK
+    using System.IO;
     using System.Web.Http;
     using System.Web.Http.Cors;
-    using Unity.AspNet.WebApi;
+    using Microsoft.AspNet.OData.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
+    using Unity.AspNet.WebApi;
 #endif
 #if NETCORE
     using ICSSoft.Services;

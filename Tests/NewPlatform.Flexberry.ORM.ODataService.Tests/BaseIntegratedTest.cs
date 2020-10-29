@@ -21,10 +21,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     {
 #endif
 #if NETCORE
-    using ICSSoft.Services;
     using Microsoft.AspNetCore.Mvc.Testing;
     using ODataServiceSample.AspNetCore;
-    using Unity;
 
     /// <summary>
     /// Base class for integration tests.

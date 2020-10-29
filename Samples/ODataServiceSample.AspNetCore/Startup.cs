@@ -13,6 +13,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Server.Features;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService;
@@ -72,8 +73,6 @@
                 unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
 
                 unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-
-                unityContainer.RegisterInstance(Configuration);
             }
 
             services.AddMvcCore(options =>
@@ -118,23 +117,16 @@
 
             app.UseODataService(builder =>
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-
                 var assemblies = new[]
                 {
-                    // Assembly.Load("NewPlatform.Flexberry.ORM.ODataService.Tests.Objects"),
                     typeof(Медведь).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-
-                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
-
-                container.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }

@@ -1,6 +1,6 @@
 language: csharp
 solution: NewPlatform.Flexberry.ORM.ODataService.sln
-dotnet: 2.2
+dotnet: 3.1
 mono: latest
 env:
   global:
@@ -16,6 +16,7 @@ addons:
     packages:
       - doxygen
       - postgresql-9.6-postgis-2.4
+      - dotnet-sdk-2.2
 services:
   - postgresql
 before_script:
@@ -25,8 +26,6 @@ script:
   - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
   - df -h
   - mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-  - df -h
-  - dotnet build NewPlatform.Flexberry.ORM.ODataService.netstandard2.0.sln
   - df -h
   - dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp2.2/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - df -h

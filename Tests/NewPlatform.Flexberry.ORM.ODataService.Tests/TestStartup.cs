@@ -2,28 +2,30 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using ICSSoft.Services;
-    using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.Security;
-    using ICSSoft.STORMNET.Windows.Forms;
-    using Microsoft.AspNet.OData.Extensions;
+    using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.ORM.ODataService;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
     using ODataServiceSample.AspNetCore;
     using Unity;
-
-    using LockService = NewPlatform.Flexberry.Services.LockService;
 
     /// <summary>
     /// Startup for tests.
     /// </summary>
     public class TestStartup : Startup
     {
+        /// <summary>
+        /// Initialize new instance of TestStartup.
+        /// </summary>
+        /// <param name="configuration">Configuration for new instance.</param>
         public TestStartup(IConfiguration configuration)
-            : base (configuration)
+            : base(configuration)
         {
         }
 
@@ -34,33 +36,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
-            base.Configure(app, env);
+
+            app.UseMvc(builder =>
+            {
+                builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
+                builder.MapFileRoute();
+            });
+
+            app.UseODataService(builder =>
+            {
+                IUnityContainer container = UnityFactory.GetContainer();
+
+                var assemblies = new[]
+                {
+                    typeof(Медведь).Assembly,
+                    typeof(ApplicationLog).Assembly,
+                    typeof(UserSetting).Assembly,
+                    typeof(Lock).Assembly,
+                };
+
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions);
+
+                var token = builder.MapDataObjectRoute(modelBuilder);
+
+                container.RegisterInstance(typeof(ManagementToken), token);
+            });
         }
-
-        //public override void ConfigureServices(IServiceCollection services)
-        //{
-        //    {
-        //        IUnityContainer unityContainer = UnityFactory.GetContainer();
-
-        //        IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-
-        //        unityContainer.RegisterInstance(dataService);
-        //        ExternalLangDef.LanguageDef.DataService = dataService;
-
-        //        unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
-
-        //        unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-        //    }
-
-        //    services.AddMvcCore(options =>
-        //    {
-        //        options.Filters.Add<CustomExceptionFilter>();
-        //    })
-        //        .AddFormatterMappings()
-        //        .AddJsonFormatters();
-
-        //    services.AddOData();
-        //}
     }
 }
 #endif
