@@ -17,7 +17,7 @@
     /// </summary>
     public class FilterByMasterFieldTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

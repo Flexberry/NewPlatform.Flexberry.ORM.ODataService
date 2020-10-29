@@ -23,7 +23,6 @@
     /// </summary>
     public class GisCRUDTest : BaseODataServiceIntegratedTest
     {
-
 #if NETFRAMEWORK
         /// <summary>
         /// Конструктор по-умолчанию.
@@ -32,7 +31,7 @@
             : base("ODataGis", false, true)
         { }
 #endif
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

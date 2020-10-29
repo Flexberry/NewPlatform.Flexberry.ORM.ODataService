@@ -22,7 +22,7 @@
     /// </summary>
     public class BuiltinQueryFunctionsTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

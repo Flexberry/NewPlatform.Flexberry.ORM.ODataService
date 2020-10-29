@@ -19,7 +19,7 @@
     /// </summary>
     public class AfterSaveTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

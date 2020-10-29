@@ -15,7 +15,7 @@
     /// </summary>
     public class ExcelExportTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

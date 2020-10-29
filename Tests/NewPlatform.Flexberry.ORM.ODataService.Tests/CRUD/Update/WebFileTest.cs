@@ -14,7 +14,7 @@
 
     public class WebFileTest: BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
@@ -90,7 +90,7 @@
                 Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), key));
                 const string fileName = "cert.txt";
                 string basePath = Path.GetTempPath();
-#if NETCORE
+#if NETCOREAPP
                 Unity.IUnityContainer container = UnityFactory.GetContainer();
                 var env = container.Resolve<Microsoft.AspNetCore.Hosting.IHostingEnvironment>();
                 basePath = Path.Combine(env.WebRootPath, "Uploads");

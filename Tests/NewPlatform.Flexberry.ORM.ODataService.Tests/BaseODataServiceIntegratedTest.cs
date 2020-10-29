@@ -25,7 +25,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
 #endif
-#if NETCORE
+#if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
     using ODataServiceSample.AspNetCore;
 #endif
@@ -69,7 +69,7 @@
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 #endif
-#if NETCORE
+#if NETCOREAPP
         public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base(factory, output, "ODataDB", useGisDataService)
         {
@@ -164,7 +164,7 @@
             }
         }
 #endif
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
         /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.

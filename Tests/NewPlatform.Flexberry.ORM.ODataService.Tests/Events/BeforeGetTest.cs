@@ -14,7 +14,7 @@
     /// </summary>
     public class BeforeGetTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

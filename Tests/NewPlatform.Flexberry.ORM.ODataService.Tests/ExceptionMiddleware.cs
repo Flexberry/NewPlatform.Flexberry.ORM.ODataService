@@ -1,4 +1,4 @@
-﻿#if NETCORE
+﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;

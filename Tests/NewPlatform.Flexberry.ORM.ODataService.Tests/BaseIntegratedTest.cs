@@ -21,7 +21,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public abstract class BaseIntegratedTest : IDisposable
     {
 #endif
-#if NETCORE
+#if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
     using ODataServiceSample.AspNetCore;
     using ICSSoft.Services;
@@ -129,7 +129,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
 #endif
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>

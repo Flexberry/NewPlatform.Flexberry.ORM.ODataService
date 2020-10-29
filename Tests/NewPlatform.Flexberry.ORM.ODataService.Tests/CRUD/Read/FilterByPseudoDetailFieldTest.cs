@@ -35,7 +35,7 @@
         {
         }
 #endif
-#if NETCORE
+#if NETCOREAPP
         public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
             : base(factory, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {

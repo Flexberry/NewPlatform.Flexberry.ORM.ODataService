@@ -15,7 +15,7 @@
     /// </summary>
     public class BusinessServersTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

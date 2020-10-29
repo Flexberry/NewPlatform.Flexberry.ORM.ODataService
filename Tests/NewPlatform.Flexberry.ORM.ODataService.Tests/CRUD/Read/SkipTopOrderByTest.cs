@@ -22,7 +22,7 @@
     /// </summary>
     public class SkipTopOrderByTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

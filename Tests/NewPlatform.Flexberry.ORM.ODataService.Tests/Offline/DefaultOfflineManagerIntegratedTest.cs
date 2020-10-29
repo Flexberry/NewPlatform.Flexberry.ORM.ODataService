@@ -17,7 +17,7 @@
 
     public class DefaultOfflineManagerIntegratedTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

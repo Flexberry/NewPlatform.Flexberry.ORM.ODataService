@@ -24,7 +24,7 @@
         {
         }
 #endif
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
         /// </summary>

@@ -30,7 +30,7 @@
         {
         }
 #endif
-#if NETCORE
+#if NETCOREAPP
         public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory) : base(factory, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }

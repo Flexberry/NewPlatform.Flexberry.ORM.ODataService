@@ -20,7 +20,7 @@
     /// </summary>
     public class UtfRequestsTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

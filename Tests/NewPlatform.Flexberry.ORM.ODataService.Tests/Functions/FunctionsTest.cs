@@ -30,7 +30,7 @@
     /// </summary>
     public class FunctionsTest : BaseODataServiceIntegratedTest
     {
-#if NETCORE
+#if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
@@ -59,7 +59,7 @@
                     {
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var lcs = queryParameters.CreateLcs(type);
-#if NETCORE
+#if NETCOREAPP
                         IUnityContainer container = UnityFactory.GetContainer();
                         dataService = container.Resolve<IDataService>();
 #endif
@@ -80,7 +80,7 @@
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var uri = $"http://a/b/c?{parameters["query"]}";
                         var lcs = queryParameters.CreateLcs(type, uri);
-#if NETCORE
+#if NETCOREAPP
                         IUnityContainer container = UnityFactory.GetContainer();
                         dataService = container.Resolve<IDataService>();
 #endif
@@ -118,7 +118,7 @@
                     "FunctionEntity",
                     (queryParameters, parameters) =>
                     {
-#if NETCORE
+#if NETCOREAPP
                         IUnityContainer container = UnityFactory.GetContainer();
                         dataService = container.Resolve<IDataService>();
 #endif
@@ -137,7 +137,7 @@
                     (queryParameters, parameters) =>
                     {
                         var top = (int)parameters["intParam"];
-#if NETCORE
+#if NETCOREAPP
                         IUnityContainer container = UnityFactory.GetContainer();
                         dataService = container.Resolve<IDataService>();
 #endif
@@ -156,7 +156,7 @@
                     "FunctionSelectExpandEntity",
                     (queryParameters, parameters) =>
                     {
-#if NETCORE
+#if NETCOREAPP
                         IUnityContainer container = UnityFactory.GetContainer();
                         dataService = container.Resolve<IDataService>();
 #endif
