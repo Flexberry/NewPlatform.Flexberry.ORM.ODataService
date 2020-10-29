@@ -8,7 +8,7 @@ env:
     - DOTNET_CLI_TELEMETRY_OPTOUT: 1
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
 install:
-  - nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
+  - nuget restore NewPlatform.Flexberry.ORM.ODataService.sln -NonInteractive
   - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
 addons:
   postgresql: 9.6
@@ -26,6 +26,7 @@ script:
   - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
   - dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp2.2/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+  - df -h
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false"
     && (test $TRAVIS_BRANCH == "master" || test $TRAVIS_BRANCH == "develop")
