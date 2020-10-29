@@ -45,33 +45,33 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.Audit" Version="4.0.0-beta03" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService" Version="2.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisPostgresDataService" Version="2.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="6.0.0-beta10" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="6.0.0-beta10" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta10" />
-    <PackageReference Include="NewPlatform.Flexberry.Audit" Version="4.0.0-beta03" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="2.0.0-beta02" />
     <PackageReference Include="NewPlatform.Flexberry.Security" Version="3.0.0-beta03" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2' ">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
-	<PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+	  <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.2" />
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="Unity.AspNet.WebApi" Version="5.11.2" />
-    <PackageReference Include="WebActivatorEx" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.SelfHost" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
+    <PackageReference Include="Unity.AspNet.WebApi" Version="5.11.2" />
+    <PackageReference Include="WebActivatorEx" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,10 +103,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.Development.json">
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.json">
+    <None Update="appsettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="xunit.runner.json">
