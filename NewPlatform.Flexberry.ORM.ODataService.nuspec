@@ -32,11 +32,6 @@
         <dependency id="Newtonsoft.Json" version="12.0.3" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" />
-        <dependency id="Microsoft.AspNetCore.Mvc.Abstractions" version="2.2.0" />
-        <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.2.5" />
-        <dependency id="Microsoft.AspNetCore.Mvc.Formatters.Json" version="2.2.0" />
-        <dependency id="Microsoft.AspNetCore.StaticFiles" version="2.2.0" />
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.5.1-beta01" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0-beta02" />
         <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0-beta11" />

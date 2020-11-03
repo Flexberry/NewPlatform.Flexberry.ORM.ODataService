@@ -45,8 +45,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="NewPlatform.Flexberry.AspNetCore.OData" Version="7.5.1-beta01" />
+    <PackageReference Include="NewPlatform.Flexberry.AspNetCore.OData" Version="7.5.1-beta02" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
