@@ -20,6 +20,7 @@
     using Newtonsoft.Json.Linq;
     using Unity;
     using Xunit;
+    using Xunit.Abstractions;
 
 #if NETFRAMEWORK
     using System.Web.Http;
@@ -35,7 +36,8 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
-        public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory)
+        /// <param name="output">Вывод информации об ошибках.</param>
+        public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory,  ITestOutputHelper output)
             : base(factory)
         {
         }

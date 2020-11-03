@@ -1,7 +1,6 @@
 language: csharp
 solution: NewPlatform.Flexberry.ORM.ODataService.sln
 dotnet: 3.1
-mono: latest
 env:
   global:
     - CONFIGURATION: Debug
@@ -22,8 +21,6 @@ before_script:
   - psql -U postgres -c "create extension postgis"
 script:
   - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
-  - df -h
-  - mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - df -h
   - dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - df -h
