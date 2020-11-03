@@ -38,7 +38,7 @@
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод информации об ошибках.</param>
         public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory,  ITestOutputHelper output)
-            : base(factory)
+            : base(factory, output)
         {
         }
 #endif
