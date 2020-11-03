@@ -330,7 +330,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                             {
                                 conn.Open();
                                 using (var command = new NpgsqlCommand($"DROP DATABASE \"{_databaseName}\";", conn))
+                                {
                                     command.ExecuteNonQuery();
+                                    if (_output != null)
+                                    {
+                                        _output.WriteLine($"Database {_databaseName} was dropped successfully.");
+                                    }
+                                }
                             }
                         }
 
