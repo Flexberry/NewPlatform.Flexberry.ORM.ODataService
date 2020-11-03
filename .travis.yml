@@ -22,7 +22,7 @@ before_script:
 script:
   - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
   - df -h
-  - dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+  - dotnet test -l "console;verbosity=detailed" ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
   - df -h
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false"
