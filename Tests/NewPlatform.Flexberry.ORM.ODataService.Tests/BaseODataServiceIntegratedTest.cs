@@ -28,6 +28,7 @@
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
     using ODataServiceSample.AspNetCore;
+    using Npgsql;
 #endif
 
     /// <summary>
@@ -192,6 +193,23 @@
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 ExternalLangDef.LanguageDef.DataService = dataService;
                 action(args);
+
+                // Удалим БД.
+                if (dataService is PostgresDataService || dataService.GetType().IsSubclassOf(typeof(PostgresDataService)))
+                {
+                    using (var conn = new NpgsqlConnection(dataService.CustomizationString))
+                    {
+                        conn.Open();
+                        using (var command = new NpgsqlCommand($"DROP DATABASE \"{_databaseName}\";", conn))
+                        {
+                            command.ExecuteNonQuery();
+                            if (_output != null)
+                            {
+                                _output.WriteLine($"Database {_databaseName} was dropped successfully.");
+                            }
+                        }
+                    }
+                }
             }
         }
 

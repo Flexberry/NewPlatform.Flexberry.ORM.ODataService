@@ -49,7 +49,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// </summary>
         private readonly string _tempDbNamePrefix;
 
-        private string _databaseName;
+        protected string _databaseName;
 
         private string _tmpUserNameOracle;
 
