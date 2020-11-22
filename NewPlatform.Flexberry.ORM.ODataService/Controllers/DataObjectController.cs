@@ -1285,7 +1285,7 @@
             CreateDynamicView();
         }
 
-                /// <summary>
+        /// <summary>
         /// Возвращает объект DataObject для данного ключа.
         /// </summary>
         /// <param name="type">Тип DataObject.</param>
