@@ -205,7 +205,7 @@
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
-            _dataObjectFileAccessor = dataObjectFileAccessor ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+            _dataObjectFileAccessor = dataObjectFileAccessor ?? throw new ArgumentNullException(nameof(dataObjectFileAccessor), "Contract assertion not met: dataObjectFileAccessor != null");
 
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
 
