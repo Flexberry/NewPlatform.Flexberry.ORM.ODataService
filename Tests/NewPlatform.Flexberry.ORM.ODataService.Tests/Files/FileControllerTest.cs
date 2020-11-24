@@ -84,26 +84,26 @@
             _srcTextFilePath = Path.Combine(_filesDirectoryPath, "readme.txt");
         }
 
-        /*
-        /// <summary>
-        /// Finalizes an instance of the <see cref="FileControllerTest"/> class.
-        /// Деинициализирует тестовый класс (деинициализация выполняется после того как все тесты завершат свою работу).
-        /// </summary>
-        ~FileControllerTest()
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
         {
-            // Удаляем каталог с загруженными на сервер файлами.
-            if (Directory.Exists(_uploadsDirectoryPath))
+            if (disposing)
             {
-                Directory.Delete(_uploadsDirectoryPath, true);
+                // Удаляем каталог с загруженными на сервер файлами.
+                if (Directory.Exists(_uploadsDirectoryPath))
+                {
+                    Directory.Delete(_uploadsDirectoryPath, true);
+                }
+
+                // Удаляем каталог со скачанными с сервера файлами.
+                if (Directory.Exists(_downloadsDirectoryPath))
+                {
+                    Directory.Delete(_downloadsDirectoryPath, true);
+                }
             }
 
-            // Удаляем каталог со скачанными с сервера файлами.
-            if (Directory.Exists(_downloadsDirectoryPath))
-            {
-                Directory.Delete(_downloadsDirectoryPath, true);
-            }
+            base.Dispose(disposing);
         }
-        */
 
         /// <summary>
         /// Осуществляет создание подкаталога с заданным именем в каталоге <see cref="_uploadsDirectoryPath"/>.

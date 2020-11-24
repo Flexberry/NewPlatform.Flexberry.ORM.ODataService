@@ -237,7 +237,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
                 new FileDescription(FileBaseUrl) { FileName = fileName, EntityPrimaryKey = entityPrimaryKey },
                 new FileDescription(FileBaseUrl) { FileName = fileName, EntityTypeName = entityTypeName, EntityPropertyName = entityPropertyName },
                 new FileDescription(FileBaseUrl) { FileName = fileName, EntityTypeName = entityTypeName, EntityPropertyName = entityPrimaryKey },
-                new FileDescription(FileBaseUrl) { FileName = fileName, EntityPropertyName = entityPropertyName, EntityPrimaryKey = entityPrimaryKey }
+                new FileDescription(FileBaseUrl) { FileName = fileName, EntityPropertyName = entityPropertyName, EntityPrimaryKey = entityPrimaryKey },
             };
 
             foreach (FileDescription fileDescription in incompleteFileDescriptions)
