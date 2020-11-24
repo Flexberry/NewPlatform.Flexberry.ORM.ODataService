@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.OData;
@@ -9,10 +10,11 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Exceptions;
-
+    using ICSSoft.STORMNET.FunctionalLanguage;
+    using ICSSoft.STORMNET.KeyGen;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
     using Newtonsoft.Json;
 
     using Xunit;
@@ -407,6 +409,357 @@
                     dobjs = args.DataService.LoadObjects(lcs);
 
                     Assert.Equal(0, dobjs.Length);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test callback afterCreate event in batch.
+        /// </summary>
+        [Fact]
+        public void BatchCallbackAfterCreateTest()
+        {
+            ActODataService(args =>
+            {
+                bool eventFired = false;
+
+                args.Token.Events.CallbackAfterCreate = (DataObject obj) =>
+                {
+                    eventFired = true;
+                    Type objType = obj.GetType();
+                    string viewName = $"{objType.Name}E";
+                    LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, viewName);
+                    Function limitPk = FunctionBuilder.BuildEquals(obj);
+                    if (objType == typeof(Кошка))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Кошка>(cat => cat.Кличка, "50"));
+                    }
+
+                    if (objType == typeof(Лапа))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Лапа>(paw => paw.Размер, 50));
+                    }
+
+                    if (objType == typeof(Порода))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Порода>(type => type.Название, "Первая"));
+                    }
+
+                    Assert.Equal(1, args.DataService.GetObjectsCount(lcs));
+                };
+
+                args.Token.Events.CallbackAfterUpdate = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Update event was fired");
+                };
+
+                args.Token.Events.CallbackAfterDelete = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Delete event was fired");
+                };
+
+                string[] породаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Порода>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Порода>(x => x.Название),
+                };
+
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                };
+                var породаDynamicView = new View(new ViewAttribute("породаDynamicView", породаPropertiesNames), typeof(Порода));
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string requestJsonDataКошка = кошка.ToJson(кошкаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonКошка = DataObjectDictionary.Parse(requestJsonDataКошка, кошкаDynamicView, args.Token.Model);
+
+                objJsonКошка.Add(
+                   $"{nameof(Кошка.Порода)}@odata.bind",
+                   string.Format(
+                       "{0}({1})",
+                       args.Token.Model.GetEdmEntitySet(typeof(Порода)).Name,
+                       ((KeyGuid)порода.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataКошка = objJsonКошка.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Порода)).Name}",
+                        порода.ToJson(породаDynamicView, args.Token.Model),
+                        порода),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        requestJsonDataКошка,
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created });
+
+                    Assert.True(eventFired);
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+
+                    args.DataService.LoadObject(кошкаDynamicView, кошка);
+
+                    var лапы = кошка.Лапа.Cast<Лапа>();
+
+                    Assert.Equal("50", кошка.Кличка);
+                    Assert.Equal(1, лапы.Count(б => б.Размер == 50));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test callback afterUpdate event in batch.
+        /// </summary>
+        [Fact]
+        public void BatchCallbackAfterUpdateTest()
+        {
+            ActODataService(args =>
+            {
+                bool eventFired = false;
+
+                args.Token.Events.CallbackAfterCreate = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Create event was fired");
+                };
+
+                args.Token.Events.CallbackAfterUpdate = (DataObject obj) =>
+                {
+                    eventFired = true;
+                    Type objType = obj.GetType();
+                    string viewName = $"{objType.Name}E";
+                    LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, viewName);
+                    Function limitPk = FunctionBuilder.BuildEquals(obj);
+                    if (objType == typeof(Кошка))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Кошка>(cat => cat.Кличка, "100"), FunctionBuilder.BuildEquals<Кошка>(cat => cat.Тип, ТипКошки.Дикая));
+                    }
+
+                    if (objType == typeof(Лапа))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Лапа>(paw => paw.Размер, 100));
+                    }
+
+                    Assert.Equal(1, args.DataService.GetObjectsCount(lcs));
+                };
+
+                args.Token.Events.CallbackAfterDelete = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Delete event was fired");
+                };
+
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.Кличка = "100";
+                кошка.Тип = ТипКошки.Дикая;
+                лапа.Размер = 100;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        кошка.ToJson(кошкаDynamicView, args.Token.Model),
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    Assert.True(eventFired);
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+
+                    args.DataService.LoadObject(кошкаDynamicView, кошка);
+
+                    var лапы = кошка.Лапа.Cast<Лапа>();
+
+                    Assert.Equal("100", кошка.Кличка);
+                    Assert.Equal(ТипКошки.Дикая, кошка.Тип);
+                    Assert.Equal(1, лапы.Count(б => б.Размер == 100));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test callback afterDelete event in batch.
+        /// </summary>
+        [Fact]
+        public void BatchCallbackAfterDeleteTest()
+        {
+            ActODataService(args =>
+            {
+                bool eventFired = false;
+
+                args.Token.Events.CallbackAfterCreate = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Create event was fired");
+                };
+
+                args.Token.Events.CallbackAfterUpdate = (DataObject obj) =>
+                {
+                    throw new Exception("Wrong Update event was fired");
+                };
+
+                args.Token.Events.CallbackAfterDelete = (DataObject obj) =>
+                {
+                    eventFired = true;
+                    Type objType = obj.GetType();
+                    string viewName = $"{objType.Name}E";
+                    LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, viewName);
+                    Function limitPk = FunctionBuilder.BuildEquals(obj);
+                    if (objType == typeof(Кошка))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Кошка>(cat => cat.Кличка, "50"), FunctionBuilder.BuildEquals<Кошка>(cat => cat.Тип, ТипКошки.Домашняя));
+                    }
+
+                    if (objType == typeof(Лапа))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Лапа>(paw => paw.Размер, 50));
+                    }
+
+                    if (objType == typeof(Порода))
+                    {
+                        lcs.LimitFunction = FunctionBuilder.BuildAnd(limitPk, FunctionBuilder.BuildEquals<Порода>(type => type.Название, "Первая"));
+                    }
+
+                    Assert.Equal(0, args.DataService.GetObjectsCount(lcs));
+                };
+
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.SetStatus(ObjectStatus.Deleted);
+                порода.SetStatus(ObjectStatus.Deleted);
+                лапа.SetStatus(ObjectStatus.Deleted);
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Порода)).Name}",
+                        null,
+                        порода),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        null,
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        null,
+                        лапа),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.NoContent, HttpStatusCode.NoContent, HttpStatusCode.NoContent });
+
+                    Assert.True(eventFired);
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+
+                    Assert.Throws(typeof(CantFindDataObjectException), () => args.DataService.LoadObject(кошкаDynamicView, кошка, false, true));
+
+                    Assert.Throws(typeof(CantFindDataObjectException), () => args.DataService.LoadObject(лапаDynamicView, лапа, false, true));
+
+                    Assert.Throws(typeof(CantFindDataObjectException), () => args.DataService.LoadObject(порода, false, true));
+
                 }
             });
         }
