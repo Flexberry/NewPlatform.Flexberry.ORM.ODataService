@@ -1,6 +1,5 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Files.Providers
 {
-    using System;
     using System.IO;
 
     using File = ICSSoft.STORMNET.FileType.File;
@@ -8,7 +7,7 @@
     /// <summary>
     /// Провайдер для файловых свойств объектов данных типа <see cref="File"/>.
     /// </summary>
-    public class DataObjectFileProvider : BaseDataObjectFileProvider
+    public class DataObjectFileProvider : BaseDataObjectFileProvider<File>
     {
         /// <summary>
         /// Конструктор класса <see cref="DataObjectFileProvider"/>.
@@ -19,16 +18,11 @@
         }
 
         /// <summary>
-        /// Тип файловых свойств объектов данных, обрабатываемых провайдером (<see cref="File"/>).
-        /// </summary>
-        public override Type FilePropertyType => typeof(File);
-
-        /// <summary>
         /// Осуществляет получение файлового свойства из файла, расположенного по заданному пути.
         /// </summary>
         /// <param name="filePath">Путь к файлу.</param>
         /// <returns>Значение файлового свойства объекта данных, соответствующее типу <see cref="File"/>.</returns>
-        public override object GetFileProperty(string filePath)
+        public override File GetFileProperty(string filePath)
         {
             if (!System.IO.File.Exists(filePath))
             {
@@ -47,9 +41,9 @@
         /// </summary>
         /// <param name="fileProperty">Файловому свойству объекта данных, для которого требуется получить имя файла.</param>
         /// <returns>Имя файла.</returns>
-        public override string GetFileName(object fileProperty)
+        public override string GetFileName(File fileProperty)
         {
-            return (fileProperty as File)?.Name;
+            return fileProperty?.Name;
         }
 
         /// <summary>
@@ -57,9 +51,9 @@
         /// </summary>
         /// <param name="fileProperty">Файловое свойство объекта данных, для которого требуется получить размер файла.</param>
         /// <returns>Размер файла в байтах.</returns>
-        public override long GetFileSize(object fileProperty)
+        public override long GetFileSize(File fileProperty)
         {
-            return (fileProperty as File)?.Size ?? 0;
+            return fileProperty?.Size ?? 0;
         }
 
         /// <summary>
@@ -67,9 +61,9 @@
         /// </summary>
         /// <param name="fileProperty">Значение файлового свойства объекта данных, для которого требуется получить поток данных.</param>
         /// <returns>Поток данных.</returns>
-        public override Stream GetFileStream(object fileProperty)
+        public override Stream GetFileStream(File fileProperty)
         {
-            return (fileProperty as File)?.GetUnzippedFile();
+            return fileProperty?.GetUnzippedFile();
         }
     }
 }

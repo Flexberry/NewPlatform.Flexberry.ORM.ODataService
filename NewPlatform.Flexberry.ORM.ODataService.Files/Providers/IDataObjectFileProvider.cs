@@ -73,7 +73,7 @@
         /// <returns>
         /// Список метаданных с описанием файловых свойств объекта данных, соответствующих типу <see cref="FilePropertyType"/>.
         /// </returns>
-        List<FileDescription> GetFileDescriptions(IDataService dataService, DataObject dataObject);
+        IEnumerable<FileDescription> GetFileDescriptions(IDataService dataService, DataObject dataObject);
 
         /// <summary>
         /// Осуществляет получение файлового свойства объекта данных.
@@ -138,7 +138,7 @@
         /// <returns>
         /// Список файловых свойств объекта данных, соответствующих типу <see cref="FilePropertyType"/>.
         /// </returns>
-        List<object> GetFileProperties(IDataService dataService, DataObject dataObject);
+        IEnumerable<object> GetFileProperties(IDataService dataService, DataObject dataObject);
 
         /// <summary>
         /// Осуществляет получение имени файла для файлового свойства объекта данных.

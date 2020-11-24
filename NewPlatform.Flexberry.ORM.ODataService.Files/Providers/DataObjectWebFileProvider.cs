@@ -1,6 +1,5 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Files.Providers
 {
-    using System;
     using System.IO;
 
     using WebFile = ICSSoft.STORMNET.UserDataTypes.WebFile;
@@ -8,7 +7,7 @@
     /// <summary>
     /// Провайдер для свойства объектов данных типа <see cref="WebFile"/>.
     /// </summary>
-    public class DataObjectWebFileProvider : BaseDataObjectFileProvider
+    public class DataObjectWebFileProvider : BaseDataObjectFileProvider<WebFile>
     {
         /// <summary>
         /// Конструктор класса <see cref="DataObjectWebFileProvider"/>.
@@ -19,11 +18,6 @@
         }
 
         /// <summary>
-        /// Тип файловых свойств объектов данных, обрабатываемых провайдером (<see cref="WebFile"/>).
-        /// </summary>
-        public override Type FilePropertyType => typeof(WebFile);
-
-        /// <summary>
         /// Осуществляет получение метаданных с описанием файлового свойства объекта данных.
         /// </summary>
         /// <param name="fileProperty">
@@ -32,12 +26,12 @@
         /// <returns>
         /// Метаданные с описанием файлового свойства объекта данных.
         /// </returns>
-        public override FileDescription GetFileDescription(object fileProperty)
+        public override FileDescription GetFileDescription(WebFile fileProperty)
         {
             FileDescription fileDescription = base.GetFileDescription(fileProperty);
             if (fileDescription != null)
             {
-                fileDescription.FileUrl = (fileProperty as WebFile)?.Url;
+                fileDescription.FileUrl = fileProperty?.Url;
             }
 
             return fileDescription;
@@ -52,7 +46,7 @@
         /// <returns>
         /// Значение файлового свойства объекта данных, соответствующее типу <see cref="WebFile"/>.
         /// </returns>
-        public override object GetFileProperty(string filePath)
+        public override WebFile GetFileProperty(string filePath)
         {
             if (!System.IO.File.Exists(filePath))
             {
@@ -61,11 +55,11 @@
 
             FileDescription fileDescription = new FileDescription(FileBaseUrl, filePath);
             WebFile fileProperty = new WebFile
-                                       {
-                                           Name = fileDescription.FileName,
-                                           Size = (int)fileDescription.FileSize,
-                                           Url = fileDescription.FileUrl
-                                       };
+            {
+                Name = fileDescription.FileName,
+                Size = (int)fileDescription.FileSize,
+                Url = fileDescription.FileUrl,
+            };
 
             return fileProperty;
         }
@@ -79,9 +73,9 @@
         /// <returns>
         /// Имя файла.
         /// </returns>
-        public override string GetFileName(object fileProperty)
+        public override string GetFileName(WebFile fileProperty)
         {
-            return (fileProperty as WebFile)?.Name;
+            return fileProperty?.Name;
         }
 
         /// <summary>
@@ -93,9 +87,9 @@
         /// <returns>
         /// Размер файла в байтах.
         /// </returns>
-        public override long GetFileSize(object fileProperty)
+        public override long GetFileSize(WebFile fileProperty)
         {
-            return (fileProperty as WebFile)?.Size ?? 0;
+            return fileProperty?.Size ?? 0;
         }
 
         /// <summary>
@@ -107,12 +101,12 @@
         /// <returns>
         /// Поток данных.
         /// </returns>
-        public override Stream GetFileStream(object fileProperty)
+        public override Stream GetFileStream(WebFile fileProperty)
         {
             FileDescription fileDescription = new FileDescription(FileBaseUrl)
-                                                  {
-                                                      FileUrl = (fileProperty as WebFile)?.Url
-                                                  };
+            {
+                FileUrl = fileProperty?.Url,
+            };
 
             string filePath = string.Concat(UploadsDirectoryPath, Path.DirectorySeparatorChar, fileDescription.FileUploadKey, Path.DirectorySeparatorChar, fileDescription.FileName);
             if (!System.IO.File.Exists(filePath))
