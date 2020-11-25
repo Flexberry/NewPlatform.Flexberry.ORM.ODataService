@@ -694,6 +694,12 @@
                             if (dataObjectPropName == agregatorPropertyName)
                             {
                                 master.AddDetail(obj);
+
+                                string detailPropName = Information.GetDetailArrayPropertyName(master.GetType(), obj.GetType());
+                                if (!string.IsNullOrEmpty(detailPropName) && !master.CheckLoadedProperty(detailPropName))
+                                {
+                                    master.AddLoadedProperties(detailPropName);
+                                }
                             }
                         }
                         else
