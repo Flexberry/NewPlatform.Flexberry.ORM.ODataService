@@ -130,6 +130,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         public static LambdaExpression Bind(
             OrderByClause orderBy, Type elementType, IEdmModel model, ODataQuerySettings querySettings)
         {
+            var timerId = MetricsHolder.StartTimer("Bind");
+
             if (orderBy == null)
             {
                 throw new ArgumentNullException(nameof(orderBy), "Contract assertion not met: orderBy != null");
@@ -152,6 +154,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
             FilterBinder binder = new FilterBinder(model, querySettings);
             LambdaExpression orderByLambda = binder.BindExpression(orderBy.Expression, orderBy.RangeVariable, elementType);
+            MetricsHolder.StopTimer(timerId);
             return orderByLambda;
         }
 
@@ -176,6 +179,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 #endif
             ODataQuerySettings querySettings)
         {
+            var timerId = MetricsHolder.StartTimer("Transform");
+
             if (filterClause == null)
             {
                 throw Error.ArgumentNull("filterClause");
@@ -205,6 +210,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 throw Error.Argument("filterType", SRResources.CannotCastFilter, binder.LinqExpression.Type.FullName, expectedFilterType.FullName);
             }
 
+            MetricsHolder.StopTimer(timerId);
             return binder;
         }
 
@@ -220,6 +226,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
         private static Expression CheckIfArgumentsAreNull(Expression[] arguments)
         {
+            var timerId = MetricsHolder.StartTimer("CheckIfArgumentsAreNull");
+
             if (arguments.Any(arg => arg == _nullConstant))
             {
                 return _trueConstant;
@@ -230,6 +238,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 .Select(arg => CheckForNull(arg))
                 .Where(arg => arg != null)
                 .ToArray();
+
+            MetricsHolder.StopTimer(timerId);
 
             if (arguments.Any())
             {
@@ -256,6 +266,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
         private void GetAllAnyElementType(Expression source, out Type elementType, out IPseudoDetailDefinition pseudoDetailDefinition)
         {
+            var timerId = MetricsHolder.StartTimer("GetAllAnyElementType");
+
             IDataObjectEdmModelBuilder builder = (_model as DataObjectEdmModel).EdmModelBuilder;
             pseudoDetailDefinition = builder.GetPseudoDetailDefinition((source as ConstantExpression)?.Value);
             if (pseudoDetailDefinition != null)
@@ -266,6 +278,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             {
                 source.Type.IsCollection(out elementType);
             }
+
+            MetricsHolder.StopTimer(timerId);
         }
 
         private Expression Any(Expression source, Expression filter)
@@ -533,10 +547,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
         private static void ValidateAllStringArguments(string functionName, Expression[] arguments)
         {
+            var timerId = MetricsHolder.StartTimer("ValidateAllStringArguments");
+
             if (arguments.Any(arg => arg.Type != typeof(string)))
             {
                 throw new ODataException(Error.Format(SRResources.FunctionNotSupportedOnEnum, functionName));
             }
+
+            MetricsHolder.StopTimer(timerId);
         }
 
         private static Expression BindCastToStringType(Expression source)

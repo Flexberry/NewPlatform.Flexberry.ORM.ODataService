@@ -227,6 +227,7 @@
         [CustomEnableQuery]
         public HttpResponseMessage GetCollection()
         {
+            
             try
             {
                 var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, EvaluateOdataPath());
@@ -297,6 +298,8 @@
         [CustomEnableQuery]
         public HttpResponseMessage Get()
         {
+            var timerId = MetricsHolder.StartTimer("Get");
+
             try
             {
                 Init();
@@ -305,6 +308,10 @@
             catch (Exception ex)
             {
                 return InternalServerErrorMessage(ex);
+            }
+            finally
+            {
+                MetricsHolder.StopTimer(timerId);
             }
         }
 
@@ -328,6 +335,8 @@
         /// <returns>Количество объектов.</returns>
         public int GetObjectsCount(Type type, ODataQueryOptions queryOptions)
         {
+            var timerId = MetricsHolder.StartTimer("GetObjectsCount");
+
             var expr = GetExpressionFilterOnly(type, queryOptions);
             View view = _model.GetDataObjectDefaultView(type);
             var lcs = LinqToLcs.GetLcs(expr, view);
@@ -335,7 +344,9 @@
             lcs.LoadingTypes = new[] { type };
             lcs.ReturnType = LcsReturnType.Objects;
 
-            return _dataService.GetObjectsCount(lcs);
+            var ret = _dataService.GetObjectsCount(lcs);
+            MetricsHolder.StopTimer(timerId);
+            return ret;
         }
 
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
@@ -470,6 +481,8 @@
         /// <returns>Сущность.</returns>
         internal EdmEntityObject GetEdmObject(IEdmEntityType entityType, object obj, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView)
         {
+            var timerId = MetricsHolder.StartTimer("GetEdmObject");
+
             if (level == 0 || obj == null || (obj is DataObject dataObject && dataObject.__PrimaryKey == null))
                 return null;
             EdmEntityObject entity = new EdmEntityObject(entityType);
@@ -687,7 +700,7 @@
                     }
                 }
             }
-
+            MetricsHolder.StopTimer(timerId);
             return entity;
         }
 
@@ -1184,6 +1197,8 @@
         /// <returns>Если параметр callGetObjectsCount установлен в false, то возвращаются объекты, иначе пустой массив объектов.</returns>
         private DataObject[] LoadObjects(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
+            var timerId = MetricsHolder.StartTimer("LoadObjects");
+
             foreach (var propType in Information.GetAllTypesFromView(lcs.View))
             {
                 if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
@@ -1215,6 +1230,7 @@
             if (callExecuteCallbackAfterGet)
                 ExecuteCallbackAfterGet(ref dobjs);
 
+            MetricsHolder.StopTimer(timerId);
             return dobjs;
         }
 

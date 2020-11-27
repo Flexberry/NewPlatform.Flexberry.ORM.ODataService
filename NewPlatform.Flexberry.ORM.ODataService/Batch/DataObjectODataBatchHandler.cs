@@ -107,22 +107,38 @@
                 throw new ArgumentNullException(nameof(request));
             }
 
-            ValidateRequest(request);
+            MetricsHolder.Clear();
 
+            var timerId = MetricsHolder.StartTimer("ProcessBatchAsync");
+
+            var timerVId = MetricsHolder.StartTimer("ValidateRequest");
+            ValidateRequest(request);
+            MetricsHolder.StopTimer(timerVId);
+
+            var timerPId = MetricsHolder.StartTimer("ParseBatchRequestsAsync");
             IList<ODataBatchRequestItem> subRequests = isSyncMode
                 ? ParseBatchRequestsAsync(request, cancellationToken).Result
                 : await ParseBatchRequestsAsync(request, cancellationToken);
+            MetricsHolder.StopTimer(timerPId);
 
             try
             {
                 if (isSyncMode)
                 {
+                    var timerEId = MetricsHolder.StartTimer("ExecuteRequestMessagesAsync Sync");
+
                     IList<ODataBatchResponseItem> responses = ExecuteRequestMessagesAsync(subRequests, cancellationToken).Result;
+                    MetricsHolder.StopTimer(timerEId);
+
                     return CreateResponseMessageAsync(responses, request, cancellationToken).Result;
                 }
                 else
                 {
+                    var timerEId = MetricsHolder.StartTimer("ExecuteRequestMessagesAsync Async");
                     IList<ODataBatchResponseItem> responses = await ExecuteRequestMessagesAsync(subRequests, cancellationToken);
+
+                    MetricsHolder.StopTimer(timerEId);
+
                     return await CreateResponseMessageAsync(responses, request, cancellationToken);
                 }
             }
@@ -137,6 +153,12 @@
                     request.RegisterForDispose(subRequest.GetResourcesForDisposal());
                     request.RegisterForDispose(subRequest);
                 }
+
+                MetricsHolder.StopTimer(timerId);
+                var avgTimes = MetricsHolder.GetAvgMs();
+                var counts = MetricsHolder.GetCallsCount();
+
+                int i = 0;
             }
         }
 #endif
@@ -197,6 +219,8 @@
                 throw new ArgumentNullException(nameof(request));
             }
 
+            var timerId = MetricsHolder.StartTimer("ParseBatchRequestsAsync");
+
             IServiceProvider requestContainer = request.CreateRequestContainer(ODataRouteName);
             ODataMessageReaderSettings oDataReaderSettings = requestContainer.GetRequiredService<ODataMessageReaderSettings>();
 
@@ -240,7 +264,7 @@
                         break;
                 }
             }
-
+            MetricsHolder.StopTimer(timerId);
             return requests;
         }
 #endif
@@ -255,6 +279,8 @@
             }
 
             IList<ODataBatchResponseItem> responses = new List<ODataBatchResponseItem>();
+            var timerId = MetricsHolder.StartTimer("ExecuteRequestMessagesAsync");
+
             try
             {
                 foreach (ODataBatchRequestItem request in requests)
@@ -287,6 +313,10 @@
                 }
 
                 throw;
+            }
+            finally
+            {
+                MetricsHolder.StopTimer(timerId);
             }
 
             return responses;
@@ -368,16 +398,25 @@
                 }
             }
 
+            var timerSId = MetricsHolder.StartTimer("SendRequestAsync");
             ChangeSetResponseItem changeSetResponse = isSyncMode
                 ? (ChangeSetResponseItem)changeSet.SendRequestAsync(Invoker, cancellation).Result
                 : (ChangeSetResponseItem)await changeSet.SendRequestAsync(Invoker, cancellation);
+            MetricsHolder.StopTimer(timerSId);
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
             {
                 try
                 {
+                    var timerId = MetricsHolder.StartTimer("Batch ds.UpdateObjects");
+
                     DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
                     dataService.UpdateObjects(ref dataObjects);
+
+                    MetricsHolder.StopTimer(timerId);
+
+                    var avgTimes = MetricsHolder.GetAvgMs();
+                    var counts = MetricsHolder.GetCallsCount();
                 }
                 catch (Exception ex)
                 {

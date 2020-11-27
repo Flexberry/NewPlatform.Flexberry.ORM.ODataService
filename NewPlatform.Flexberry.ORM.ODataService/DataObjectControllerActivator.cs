@@ -40,9 +40,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService
         /// <inheritdoc />
         public IHttpController Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
         {
-            return controllerDescriptor.ControllerType == typeof(DataObjectController)
+            var timerId = MetricsHolder.StartTimer("DataObjectControllerActivator.Create");
+
+            var controller = controllerDescriptor.ControllerType == typeof(DataObjectController)
                 ? CreateDataObjectController(request, controllerDescriptor, controllerType)
                 : _fallbackActivator.Create(request, controllerDescriptor, controllerType);
+
+            MetricsHolder.StopTimer(timerId);
+            return controller;
         }
 
         /// <summary>

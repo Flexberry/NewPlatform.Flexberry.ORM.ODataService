@@ -61,6 +61,8 @@
         /// <returns> Созданная сущность. </returns>
         public HttpResponseMessage Post([FromBody] EdmEntityObject edmEntity)
         {
+            var timerId = MetricsHolder.StartTimer("Post");
+
             try
             {
                 if (edmEntity == null)
@@ -95,6 +97,10 @@
             catch (Exception ex)
             {
                 return InternalServerErrorMessage(ex);
+            }
+            finally
+            {
+                MetricsHolder.StopTimer(timerId);
             }
         }
 
@@ -999,9 +1005,13 @@
                 edmEntity.TryGetPropertyValue(keyProperty.Name, out value);
             }
 
+            var timerId = MetricsHolder.StartTimer("ReturnDataObject");
+
             // Загрузим объект из хранилища, если он там есть (используем представление по умолчанию), или создадим, если нет, но только для POST.
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
             DataObject obj = ReturnDataObject(objType, value);
+
+            MetricsHolder.StopTimer(timerId);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
             var objInList = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, obj, false));
