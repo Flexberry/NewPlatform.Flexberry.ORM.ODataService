@@ -13,7 +13,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Xml.Linq;
-    using ICSSoft.STORMNET.Business.LINQProvider;
     using Microsoft.AspNet.OData.Query;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
@@ -23,11 +22,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
 #if NETFRAMEWORK
     using System.Data.Linq;
-    using System.Web.Http.Dispatcher;
-#endif
-#if NETSTANDARD
+
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
     using Microsoft.AspNet.OData.Common;
-    using Microsoft.AspNet.OData.Interfaces;
+
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
 #endif
 
     /// <summary>
@@ -38,6 +38,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     internal class FilterBinder
     {
         public List<string> FilterDetailProperties = new List<string>();
+
         /// <summary>
         /// Выражение linq, после преобразования из $filter.
         /// </summary>
@@ -86,7 +87,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         private Dictionary<string, ParameterExpression> _lambdaParameters;
 
         private ODataQuerySettings _querySettings;
-#if NETFRAMEWORK
+
         private IAssembliesResolver _assembliesResolver;
 
         private FilterBinder(IEdmModel model, IAssembliesResolver assembliesResolver, ODataQuerySettings querySettings)
@@ -94,16 +95,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         {
             _assembliesResolver = assembliesResolver;
         }
-#endif
-#if NETSTANDARD
-        private IWebApiAssembliesResolver _assembliesResolver;
-
-        private FilterBinder(IEdmModel model, IWebApiAssembliesResolver assembliesResolver, ODataQuerySettings querySettings)
-            : this(model, querySettings)
-        {
-            _assembliesResolver = assembliesResolver;
-        }
-#endif
 
         private FilterBinder(IEdmModel model, ODataQuerySettings querySettings)
         {
@@ -168,12 +159,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             FilterClause filterClause,
             Type filterType,
             IEdmModel model,
-#if NETFRAMEWORK
             IAssembliesResolver assembliesResolver,
-#endif
-#if NETSTANDARD
-            IWebApiAssembliesResolver assembliesResolver,
-#endif
             ODataQuerySettings querySettings)
         {
             if (filterClause == null)

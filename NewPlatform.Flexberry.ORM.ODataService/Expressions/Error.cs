@@ -10,7 +10,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using System.Web.Http.Properties;
 
     /// <summary>
     /// Utility class for creating and unwrapping <see cref="Exception"/> instances.
