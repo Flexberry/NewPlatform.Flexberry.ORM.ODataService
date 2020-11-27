@@ -28,7 +28,6 @@
     using System.Web.Http.Validation;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 #endif
 #if NETSTANDARD
     using Microsoft.AspNet.OData.Formatter;
@@ -44,19 +43,11 @@
     /// </summary>
     public partial class DataObjectController
     {
-#if NETFRAMEWORK
-        /// <summary>
-        /// Метаданные файлов, загруженных во временную папку <see cref="FileController.UploadsDirectoryPath"/>,
-        /// и привязанных к свойствам обрабатываемых объектов данных.
-        /// Файлы будут удалены из файловой системы в случае успешного сохранения объектов данных.
-        /// </summary>
-#elif NETSTANDARD
         /// <summary>
         /// Метаданные файлов, временно загруженных в каталог файлового хранилища и привязанных к свойствам обрабатываемых объектов данных.
         /// Файлы будут удалены из файловой системы <see cref="IDataObjectFileAccessor.RemoveFileUploadDirectories"/>
         /// в случае успешного сохранения объектов данных.
         /// </summary>
-#endif
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
 
         /// <summary>

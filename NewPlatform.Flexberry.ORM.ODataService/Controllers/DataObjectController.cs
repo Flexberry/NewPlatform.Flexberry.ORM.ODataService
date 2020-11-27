@@ -34,7 +34,6 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Web.Http;
-    using System.Web.Http.Dispatcher;
     using System.Web.Http.Results;
     using Microsoft.OData;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
@@ -42,12 +41,12 @@
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-#endif
-#if NETSTANDARD
+
+    using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
     using ICSSoft.Services;
-    using Microsoft.AspNet.OData.Adapters;
     using Microsoft.AspNet.OData.Common;
-    using Microsoft.AspNet.OData.Interfaces;
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -56,8 +55,11 @@
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Middleware;
     using NewPlatform.Flexberry.ORM.ODataService.WebUtilities;
-    using HandleNullPropagationOptionHelper = Expressions.HandleNullPropagationOptionHelper;
-    using SRResources = Expressions.SRResources;
+
+    using DefaultAssembliesResolver = Microsoft.AspNet.OData.Adapters.WebApiAssembliesResolver;
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
+    using HandleNullPropagationOptionHelper = NewPlatform.Flexberry.ORM.ODataService.Expressions.HandleNullPropagationOptionHelper;
+    using SRResources = NewPlatform.Flexberry.ORM.ODataService.Expressions.SRResources;
 #endif
 
     /// <summary>
@@ -148,20 +150,18 @@
             }
         }
 
+        private static readonly IAssembliesResolver _defaultAssembliesResolver = new DefaultAssembliesResolver();
+
 #if NETFRAMEWORK
         /// <summary>
         /// The current EDM model.
         /// </summary>
         private readonly DataObjectEdmModel _model;
 
-        private static readonly IAssembliesResolver _defaultAssembliesResolver = new DefaultAssembliesResolver();
-
         private bool IsBatchChangeSetRequest => Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey);
 
         private ODataPath ODataPath => Request.ODataProperties().Path;
 #elif NETSTANDARD
-        private static readonly IWebApiAssembliesResolver _defaultAssembliesResolver = new WebApiAssembliesResolver();
-
         private ManagementToken _managementToken;
 
         /// <summary>
@@ -909,11 +909,6 @@
         private IQueryable FilterApplyTo(FilterQueryOption filter, IQueryable query)
         {
             ODataQuerySettings querySettings = new ODataQuerySettings();
-#if NETFRAMEWORK
-            IAssembliesResolver assembliesResolver = _defaultAssembliesResolver;
-#elif NETSTANDARD
-            IWebApiAssembliesResolver assembliesResolver = _defaultAssembliesResolver;
-#endif
             if (query == null)
             {
                 throw Error.ArgumentNull("query");
@@ -924,7 +919,7 @@
                 throw Error.ArgumentNull("querySettings");
             }
 
-            if (assembliesResolver == null)
+            if (_defaultAssembliesResolver == null)
             {
                 throw Error.ArgumentNull("assembliesResolver");
             }
@@ -950,7 +945,7 @@
             FilterBinder binder;
             try
             {
-                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, _defaultAssembliesResolver, updatedSettings);
             }
             catch (Exception ex)
             {
