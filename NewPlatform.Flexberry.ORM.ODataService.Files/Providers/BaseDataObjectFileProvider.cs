@@ -11,10 +11,11 @@
     /// <summary>
     /// Базовый провайдер для файловых свойств объектов данных.
     /// </summary>
-    public abstract class BaseDataObjectFileProvider : IDataObjectFileProvider
+    public abstract class BaseDataObjectFileProvider<T> : IDataObjectFileProvider, IDataObjectFileProvider<T>
+        where T : class
     {
         /// <inheritdoc />
-        public abstract Type FilePropertyType { get; }
+        public Type FilePropertyType { get; } = typeof(T);
 
         /// <inheritdoc />
         public string UploadsDirectoryPath { get; set; }
@@ -23,14 +24,78 @@
         public string FileBaseUrl { get; set; }
 
         /// <summary>
-        /// Конструктор классa <see cref="BaseDataObjectFileProvider"/>.
+        /// Конструктор классa <see cref="BaseDataObjectFileProvider{T}" />.
         /// </summary>
         protected BaseDataObjectFileProvider()
         {
         }
 
+        #region IDataObjectFileProvider
+
         /// <inheritdoc />
-        public virtual FileDescription GetFileDescription(object fileProperty)
+        FileDescription IDataObjectFileProvider.GetFileDescription(object fileProperty)
+        {
+            return GetFileDescription(fileProperty as T);
+        }
+
+        /// <inheritdoc />
+        object IDataObjectFileProvider.GetFileProperty(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
+        {
+            return GetFileProperty(dataService, dataObject, dataObjectFilePropertyName);
+        }
+
+        /// <inheritdoc />
+        object IDataObjectFileProvider.GetFileProperty(string filePath)
+        {
+            return GetFileProperty(filePath);
+        }
+
+        /// <inheritdoc />
+        object IDataObjectFileProvider.GetFileProperty(IDataService dataService, FileDescription fileDescription)
+        {
+            return GetFileProperty(dataService, fileDescription);
+        }
+
+        /// <inheritdoc />
+        IEnumerable<object> IDataObjectFileProvider.GetFileProperties(IDataService dataService, DataObject dataObject)
+        {
+            return GetFileProperties(dataService, dataObject);
+        }
+
+        /// <inheritdoc />
+        string IDataObjectFileProvider.GetFileName(object fileProperty)
+        {
+            return GetFileName(fileProperty as T);
+        }
+
+        /// <inheritdoc />
+        string IDataObjectFileProvider.GetFileMimeType(object fileProperty)
+        {
+            return GetFileMimeType(fileProperty as T);
+        }
+
+        /// <inheritdoc />
+        long IDataObjectFileProvider.GetFileSize(object fileProperty)
+        {
+            return GetFileSize(fileProperty as T);
+        }
+
+        /// <inheritdoc />
+        Stream IDataObjectFileProvider.GetFileStream(object fileProperty)
+        {
+            return GetFileStream(fileProperty as T);
+        }
+
+        /// <inheritdoc />
+        void IDataObjectFileProvider.RemoveFile(object fileProperty)
+        {
+            RemoveFile(fileProperty as T);
+        }
+
+        #endregion
+
+        /// <inheritdoc />
+        public virtual FileDescription GetFileDescription(T fileProperty)
         {
             if (fileProperty == null)
             {
@@ -63,30 +128,19 @@
         }
 
         /// <inheritdoc />
-        public virtual List<FileDescription> GetFileDescriptions(IDataService dataService, DataObject dataObject)
+        public virtual IEnumerable<FileDescription> GetFileDescriptions(IDataService dataService, DataObject dataObject)
         {
-            List<FileDescription> fileDescriptions = new List<FileDescription>();
-
-            if (dataObject != null)
-            {
-                string[] filePropertiesNames = dataObject
-                    .GetType()
-                    .GetProperties()
-                    .Where(x => x.PropertyType == FilePropertyType)
-                    .Select(x => x.Name)
-                    .ToArray();
-
-                fileDescriptions.AddRange(
-                    filePropertiesNames
-                    .Select(filePropertyName => GetFileDescription(dataService, dataObject, filePropertyName))
-                    .Where(x => x != null));
-            }
-
-            return fileDescriptions;
+            return dataObject
+                ?.GetType()
+                .GetProperties()
+                .Where(x => x.PropertyType == FilePropertyType)
+                .Select(x => x.Name)
+                .Select(x => GetFileDescription(dataService, dataObject, x))
+                .Where(x => x != null);
         }
 
         /// <inheritdoc />
-        public virtual object GetFileProperty(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
+        public virtual T GetFileProperty(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
         {
             if (dataObject == null)
             {
@@ -119,14 +173,14 @@
                 dataService.LoadObject(view, srcDataObject);
             }
 
-            return Information.GetPropValueByName(srcDataObject, dataObjectFilePropertyName);
+            return Information.GetPropValueByName(srcDataObject, dataObjectFilePropertyName) as T;
         }
 
         /// <inheritdoc />
-        public abstract object GetFileProperty(string filePath);
+        public abstract T GetFileProperty(string filePath);
 
         /// <inheritdoc />
-        public virtual object GetFileProperty(IDataService dataService, FileDescription fileDescription)
+        public virtual T GetFileProperty(IDataService dataService, FileDescription fileDescription)
         {
             if (fileDescription == null)
             {
@@ -164,30 +218,19 @@
         }
 
         /// <inheritdoc />
-        public virtual List<object> GetFileProperties(IDataService dataService, DataObject dataObject)
+        public virtual IEnumerable<T> GetFileProperties(IDataService dataService, DataObject dataObject)
         {
-            List<object> fileProperties = new List<object>();
-
-            if (dataObject != null)
-            {
-                string[] filePropertiesNames = dataObject
-                    .GetType()
-                    .GetProperties()
-                    .Where(x => x.PropertyType == FilePropertyType)
-                    .Select(x => x.Name)
-                    .ToArray();
-
-                fileProperties.AddRange(
-                    filePropertiesNames
-                    .Select(x => GetFileProperty(dataService, dataObject, x))
-                    .Where(x => x != null));
-            }
-
-            return fileProperties;
+            return dataObject
+                ?.GetType()
+                .GetProperties()
+                .Where(x => x.PropertyType == FilePropertyType)
+                .Select(x => x.Name)
+                .Select(x => GetFileProperty(dataService, dataObject, x))
+                .Where(x => x != null);
         }
 
         /// <inheritdoc />
-        public abstract string GetFileName(object fileProperty);
+        public abstract string GetFileName(T fileProperty);
 
         /// <inheritdoc />
         public virtual string GetFileName(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
@@ -196,7 +239,7 @@
         }
 
         /// <inheritdoc />
-        public virtual string GetFileMimeType(object fileProperty)
+        public virtual string GetFileMimeType(T fileProperty)
         {
             return MimeTypeUtils.GetFileMimeType(GetFileName(fileProperty));
         }
@@ -208,7 +251,7 @@
         }
 
         /// <inheritdoc />
-        public abstract long GetFileSize(object fileProperty);
+        public abstract long GetFileSize(T fileProperty);
 
         /// <inheritdoc />
         public virtual long GetFileSize(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
@@ -217,7 +260,7 @@
         }
 
         /// <inheritdoc />
-        public abstract Stream GetFileStream(object fileProperty);
+        public abstract Stream GetFileStream(T fileProperty);
 
         /// <inheritdoc />
         public virtual Stream GetFileStream(IDataService dataService, DataObject dataObject, string dataObjectFilePropertyName)
@@ -243,7 +286,7 @@
         }
 
         /// <inheritdoc />
-        public virtual void RemoveFile(object fileProperty)
+        public virtual void RemoveFile(T fileProperty)
         {
             RemoveFile(GetFileDescription(fileProperty));
         }
