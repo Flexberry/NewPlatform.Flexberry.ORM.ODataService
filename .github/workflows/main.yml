@@ -34,3 +34,6 @@ jobs:
         run: |
           nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
           nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
+          msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln
+          mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+              
