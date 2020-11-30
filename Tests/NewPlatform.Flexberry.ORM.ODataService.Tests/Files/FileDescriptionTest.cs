@@ -438,7 +438,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
                             // Убедимся, что запрос завершился успешно.
                             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-                            serializedFileDescriptions.Add(response.Content.ReadAsStringAsync().Result);
+                            string rawRes = response.Content.ReadAsStringAsync().Result;
+
+                            Assert.NotNull(rawRes);
+                            serializedFileDescriptions.Add(rawRes);
                         }
                     }
                 }
@@ -450,6 +453,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
             {
                 // Преобразуем сериализованное описание файла в словарь.
                 Dictionary<string, object> deserializedFileDescription = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedFileDescription);
+                Assert.False(deserializedFileDescription == null, serializedFileDescription);
                 Assert.Equal(5, deserializedFileDescription.Keys.Count);
                 Assert.Equal(fileName, deserializedFileDescription["fileName"]);
                 Assert.Equal(fileSize, deserializedFileDescription["fileSize"]);
