@@ -9,9 +9,15 @@
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
+
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
 
     using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
+
+#if NETSTANDARD
+    using Microsoft.AspNet.OData.Common;
+    using SRResources = NewPlatform.Flexberry.ORM.ODataService.Expressions.SRResources;
+#endif
 
     /// <inheritdoc cref="DefaultODataPathHandler"/>
     public class ExtendedODataPathHandler : DefaultODataPathHandler
@@ -37,8 +43,7 @@
                 throw Error.ArgumentNull("odataPath");
             }
 
-            ODataPath path = null;
-            path = Parse(model, serviceRoot, odataPath, _resolverSettings, false);
+            ODataPath path = Parse(model, serviceRoot, odataPath, _resolverSettings, false);
             return path;
         }
 
@@ -51,7 +56,6 @@
         {
             ODataUriParser uriParser;
             Uri serviceRootUri = null;
-            Uri fullUri = null;
             NameValueCollection queryString = null;
 
             if (enableUriTemplateParsing)
@@ -70,18 +74,23 @@
                     serviceRoot.EndsWith("/", StringComparison.Ordinal) ?
                         serviceRoot :
                         serviceRoot + "/");
+#if NETFRAMEWORK
                 /*Из-за ошибки в mono, при вызове конструктора new Uri(serviceRootUri, odataPath);
                  * будем использовать конструктор new Uri($"{serviceRootUri}{odataPath}");
                  */
-                fullUri = new Uri($"{serviceRootUri}{odataPath}");
+                var fullUri = new Uri($"{serviceRootUri}{odataPath}");
                 queryString = fullUri.ParseQueryString();
+#elif NETSTANDARD
+                var fullUri = new Uri(serviceRootUri, odataPath);
+                queryString = fullUri.ParseQueryString();
+#endif
                 uriParser = new ODataUriParser(model, serviceRootUri, fullUri);
             }
 
             uriParser.Resolver = resolverSettings.CreateResolver(model);
 
             Microsoft.OData.UriParser.ODataPath path;
-            UnresolvedPathSegment unresolvedPathSegment = null;
+            UnresolvedPathSegment unresolvedPathSegment;
             KeySegment id = null;
             try
             {

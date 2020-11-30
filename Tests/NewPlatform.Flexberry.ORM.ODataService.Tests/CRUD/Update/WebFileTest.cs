@@ -4,18 +4,29 @@
     using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
-    using System.Runtime.Remoting.Messaging;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.UserDataTypes;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
-
+    using Unity;
     using Xunit;
 
     public class WebFileTest: BaseODataServiceIntegratedTest
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="output">Вывод отладочной информации.</param>
+        public WebFileTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
+        {
+        }
+#endif
+
         [Fact]
         public void WebFileAsStringShouldSave()
         {
@@ -78,9 +89,11 @@
                 args.DataService.UpdateObject(медведь);
 
                 string key = Guid.NewGuid().ToString("D");
-                Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), key));
                 const string fileName = "cert.txt";
-                string filePath = Path.Combine(Path.GetTempPath(), key, fileName);
+                var fileAccessor = args.UnityContainer.Resolve<IDataObjectFileAccessor>();
+                string basePath = fileAccessor.CreateFileUploadDirectory(key);
+
+                string filePath = Path.Combine(basePath, fileName);
                 using (var fs = new FileStream(filePath, FileMode.Create))
                 {
                     fs.SetLength(100);

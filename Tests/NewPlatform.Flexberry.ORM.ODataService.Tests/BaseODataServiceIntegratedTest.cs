@@ -1,32 +1,41 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
-    using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Text;
-    using System.Web.Http;
-    using System.Web.Http.Cors;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
+    using NewPlatform.Flexberry.ORM.ODataService.Files;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Unity;
+    using Xunit;
+    using Xunit.Abstractions;
+
+#if NETFRAMEWORK
+    using System.Web.Http;
+    using System.Web.Http.Cors;
     using Microsoft.AspNet.OData.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
-    using Unity;
     using Unity.AspNet.WebApi;
-    using Xunit;
+#endif
+#if NETCOREAPP
+    using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using ODataServiceSample.AspNetCore;
+#endif
 
     /// <summary>
     /// Базовый класс для тестирования работы с данными через ODataService.
     /// </summary>
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
     {
-        protected readonly IDataObjectEdmModelBuilder _builder;
+        protected IDataObjectEdmModelBuilder _builder;
 
         public class TestArgs
         {
@@ -49,6 +58,7 @@
         /// </summary>
         public bool UseNamespaceInEntitySetName { get; protected set; }
 
+#if NETFRAMEWORK
         public BaseODataServiceIntegratedTest(
             string stageCasePath = @"РТЦ Тестирование и документирование\Модели для юнит-тестов\Flexberry ORM\NewPlatform.Flexberry.ORM.ODataService.Tests\",
             bool useNamespaceInEntitySetName = false,
@@ -56,9 +66,24 @@
             PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base("ODataDB", useGisDataService)
         {
+            Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
+        }
+#endif
+#if NETCOREAPP
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(factory, output, "ODataDB", useGisDataService)
+        {
+            Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
+        }
+#endif
+
+        private void Init(
+            bool useNamespaceInEntitySetName = false,
+            PseudoDetailDefinitions pseudoDetailDefinitions = null)
+        {
             DataObjectsAssembliesNames = new[]
             {
-                typeof(Car).Assembly
+                typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
@@ -73,11 +98,19 @@
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
         public static Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
         {
+            IUnityContainer container = UnityFactory.GetContainer();
+            if (container.IsRegistered<ITestOutputHelper>())
+            {
+                ITestOutputHelper output = container.Resolve<ITestOutputHelper>();
+                output.WriteLine(e.ToString());
+            }
+
             Assert.Null(e);
             code = HttpStatusCode.InternalServerError;
             return e;
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
         /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.
@@ -90,23 +123,21 @@
 
             foreach (IDataService dataService in DataServices)
             {
-                var container = new UnityContainer();
-                container.RegisterInstance(dataService);
-
+                using (var container = new UnityContainer())
                 using (var config = new HttpConfiguration())
                 using (var server = new HttpServer(config))
                 using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
+                    container.RegisterInstance(dataService);
+
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
                     const string fileControllerPath = "api/File";
-                    config.MapODataServiceFileRoute(
-                        "File",
-                        fileControllerPath,
-                        Path.GetTempPath(),
-                        dataService);
+                    config.MapODataServiceFileRoute("File", fileControllerPath);
+                    var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
+                    container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
@@ -130,6 +161,46 @@
                 }
             }
         }
+#endif
+#if NETCOREAPP
+        /// <summary>
+        /// Осуществляет перебор тестовых сервисов данных из <see cref="BaseIntegratedTest"/>, и вызывает переданный делегат
+        /// для каждого сервиса данных, передав в него <see cref="HttpClient"/> для осуществления запросов к OData-сервису.
+        /// </summary>
+        /// <param name="action">Действие, выполняемое для каждого сервиса данных из <see cref="BaseIntegratedTest"/>.</param>
+        public virtual void ActODataService(Action<TestArgs> action)
+        {
+            if (action == null)
+                return;
+
+            foreach (IDataService dataService in DataServices)
+            {
+                // Инициализация сервера и клиента.
+                HttpClient client = _factory.CreateClient();
+
+                // Add "/odata/" postfix.
+                client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
+
+                IUnityContainer container = UnityFactory.GetContainer();
+
+                ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
+                container.RegisterInstance(dataService);
+                token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
+
+                var fileAccessor = (IDataObjectFileAccessor)_factory.Services.GetService(typeof(IDataObjectFileAccessor));
+                container.RegisterInstance(fileAccessor);
+
+                var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                ExternalLangDef.LanguageDef.DataService = dataService;
+                action(args);
+            }
+        }
+
+        protected void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+#endif
 
         protected HttpRequestMessage CreateBatchRequest(string url, string[] changesets)
         {

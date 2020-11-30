@@ -1,10 +1,12 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
+﻿#if NETFRAMEWORK
+namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
+    using System.Web.Http.Validation;
     using ICSSoft.STORMNET.Business;
     using Microsoft.AspNet.OData.Batch;
     using Microsoft.AspNet.OData.Extensions;
@@ -114,6 +116,7 @@
             var registeredActivator = (IHttpControllerActivator)config.Services.GetService(typeof(IHttpControllerActivator));
             var fallbackActivator = registeredActivator ?? new DefaultHttpControllerActivator();
             config.Services.Replace(typeof(IHttpControllerActivator), new DataObjectControllerActivator(fallbackActivator));
+            config.Services.Replace(typeof(IBodyModelValidator), new DisabledBodyModelValidator());
 
             // Handlers.
             if (config.MessageHandlers.FirstOrDefault(h => h is PostPatchHandler) == null)
@@ -149,3 +152,4 @@
         }
     }
 }
+#endif

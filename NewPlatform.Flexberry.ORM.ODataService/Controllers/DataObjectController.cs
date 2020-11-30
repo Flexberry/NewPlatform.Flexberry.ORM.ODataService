@@ -4,17 +4,12 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Reflection;
     using System.Web;
-    using System.Web.Http;
-    using System.Web.Http.Dispatcher;
-    using System.Web.Http.Results;
+
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
@@ -25,25 +20,52 @@
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNet.OData.Query;
-    using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
-    using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
+    using NewPlatform.Flexberry.ORM.ODataService.Files;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.Offline;
+
+    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
+    using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
+
+#if NETFRAMEWORK
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+    using System.Web.Http.Results;
+    using Microsoft.OData;
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using NewPlatform.Flexberry.ORM.ODataService.Offline;
-    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 
-    using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
-    using OrderByQueryOption = Expressions.OrderByQueryOption;
+    using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
+    using ICSSoft.Services;
+    using Microsoft.AspNet.OData.Common;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+    using NewPlatform.Flexberry.ORM.ODataService.Middleware;
+    using NewPlatform.Flexberry.ORM.ODataService.WebUtilities;
+
+    using DefaultAssembliesResolver = Microsoft.AspNet.OData.Adapters.WebApiAssembliesResolver;
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
+    using HandleNullPropagationOptionHelper = NewPlatform.Flexberry.ORM.ODataService.Expressions.HandleNullPropagationOptionHelper;
+    using SRResources = NewPlatform.Flexberry.ORM.ODataService.Expressions.SRResources;
+#endif
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
     /// </summary>
-    public partial class DataObjectController : BaseODataController
+    public partial class DataObjectController : ODataController
     {
         private List<string> _filterDetailProperties;
         private DataObject[] _objs;
@@ -57,12 +79,7 @@
         /// <summary>
         /// Data object cache for sync loading.
         /// </summary>
-        private readonly DataObjectCache _dataObjectCache;
-
-        /// <summary>
-        /// The current EDM model.
-        /// </summary>
-        private readonly DataObjectEdmModel _model;
+        private DataObjectCache _dataObjectCache;
 
         /// <summary>
         /// Используемые в запросе параметры. Заполняется в методе Init().
@@ -84,7 +101,6 @@
         /// </summary>
         public int Count { get; set; }
 
-        private static readonly IAssembliesResolver _defaultAssembliesResolver = new DefaultAssembliesResolver();
         private List<Type> _lcsLoadingTypes = new List<Type>();
         private DynamicView _dynamicView;
         private Dictionary<SelectItem, ExpandedNavigationSelectItem> _parentExpandedNavigationSelectItem = new Dictionary<SelectItem, ExpandedNavigationSelectItem>();
@@ -93,20 +109,104 @@
         internal BaseOfflineManager OfflineManager { get; set; }
 
         /// <summary>
+        /// The data object file properties accessor.
+        /// </summary>
+        private readonly IDataObjectFileAccessor _dataObjectFileAccessor;
+
+        /// <summary>
+        /// Gets a <see cref="ICSSoft.STORMNET.DataObjectCache" /> instance from a http context if such instance exists,
+        /// otherwise creates a new <see cref="ICSSoft.STORMNET.DataObjectCache"/> instance.
+        /// </summary>
+        /// <remarks>
+        /// Tries to extract object from the request shared data for batch requests
+        /// before creating a new <see cref="DataObjectCache"/> instance.
+        /// </remarks>
+        private DataObjectCache DataObjectCache
+        {
+            get
+            {
+                if (_dataObjectCache == null)
+                {
+#if NETFRAMEWORK
+                    if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectCachePropertyKey))
+                    {
+                        _dataObjectCache = (DataObjectCache)Request.Properties[DataObjectODataBatchHandler.DataObjectCachePropertyKey];
+                    }
+#elif NETSTANDARD
+                    if (IsBatchChangeSetRequest)
+                    {
+                        _dataObjectCache = (DataObjectCache)HttpContext.Items[DataObjectODataBatchHandler.DataObjectCachePropertyKey];
+                    }
+#endif
+
+                    if (_dataObjectCache == null)
+                    {
+                        _dataObjectCache = new DataObjectCache();
+                        _dataObjectCache.StartCaching(false);
+                    }
+                }
+
+                return _dataObjectCache;
+            }
+        }
+
+        private static readonly IAssembliesResolver _defaultAssembliesResolver = new DefaultAssembliesResolver();
+
+#if NETFRAMEWORK
+        /// <summary>
+        /// The current EDM model.
+        /// </summary>
+        private readonly DataObjectEdmModel _model;
+
+        private bool IsBatchChangeSetRequest => Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey);
+
+        private ODataPath ODataPath => Request.ODataProperties().Path;
+#elif NETSTANDARD
+        private ManagementToken _managementToken;
+
+        /// <summary>
+        /// The current EDM model.
+        /// </summary>
+        private DataObjectEdmModel _model => ManagementToken?.Model;
+
+        private bool IsBatchChangeSetRequest => HttpContext?.ODataBatchFeature()?.ChangeSetId != null;
+
+        private ODataPath ODataPath => HttpContext.ODataFeature().Path;
+
+        private ManagementToken ManagementToken
+        {
+            get
+            {
+                if (_managementToken == null)
+                {
+                    _managementToken = RouteData == null ? null : RouteData.Routers.OfType<ODataRoute>().Single().GetManagementToken();
+                }
+
+                return _managementToken;
+            }
+        }
+#endif
+
+#if NETFRAMEWORK
+        /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="dataService">Data service for all manipulations with data.</param>
+        /// <param name="dataObjectFileAccessor">The data object file properties accessor.</param>
         /// <param name="dataObjectCache">DataObject cache.</param>
         /// <param name="model">EDM model.</param>
         /// <param name="events">The container with registered events.</param>
         /// <param name="functions">The container with OData Service functions.</param>
         public DataObjectController(
             IDataService dataService,
+            IDataObjectFileAccessor dataObjectFileAccessor,
             DataObjectCache dataObjectCache,
             DataObjectEdmModel model,
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
+            _dataObjectFileAccessor = dataObjectFileAccessor ?? throw new ArgumentNullException(nameof(dataObjectFileAccessor), "Contract assertion not met: dataObjectFileAccessor != null");
+
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
 
             if (dataObjectCache != null)
@@ -125,9 +225,25 @@
 
             OfflineManager = new DummyOfflineManager();
         }
-
+#elif NETSTANDARD
         /// <summary>
-        /// Обрабатывает все несопоставленные запросы OData
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        /// <param name="dataObjectFileAccessor">The data object file properties accessor.</param>
+        /// <param name="dataService">The data service for all manipulations with data.</param>
+        /// <param name="offlineManager">The offline manager.</param>
+        public DataObjectController(IDataObjectFileAccessor dataObjectFileAccessor, IDataService dataService = null, BaseOfflineManager offlineManager = null)
+            : base()
+        {
+            _dataObjectFileAccessor = dataObjectFileAccessor;
+
+            _dataService = UnityFactoryHelper.ResolveRequiredIfNull(dataService);
+            OfflineManager = UnityFactoryHelper.ResolveIfNull(offlineManager) ?? new DummyOfflineManager();
+        }
+#endif
+#if NETFRAMEWORK
+        /// <summary>
+        /// Обрабатывает все несопоставленные запросы OData.
         /// </summary>
         /// <param name="odataPath">Путь запроса.</param>
         /// <returns>Содержит сообщение ответа для отправки в клиент после завершения.</returns>
@@ -136,22 +252,45 @@
         {
             return null;
         }
+#elif NETSTANDARD
+        /// <summary>
+        /// Обрабатывает все несопоставленные запросы OData.
+        /// </summary>
+        /// <returns>Содержит сообщение ответа для отправки в клиент после завершения.</returns>
+        [AcceptVerbs("GET", "POST", "PUT", "PATCH", "MERGE", "DELETE")]
+        public IActionResult HandleUnmappedRequest()
+        {
+            return null;
+        }
+#endif
 
         /// <summary>
         /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность. Имя "GetEntity" устанавливается в DataObjectRoutingConvention.SelectAction.
         /// </summary>
-        /// <returns>Сущность</returns>
+        /// <returns>Сущность.</returns>
         [CustomEnableQuery]
+#if NETFRAMEWORK
         public HttpResponseMessage GetEntity()
+#elif NETSTANDARD
+        public OkObjectResult GetEntity()
+#endif
         {
             try
             {
-                var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, EvaluateOdataPath());
-                return result;
+                var edmObj = EvaluateOdataPath();
+#if NETFRAMEWORK
+                return Request.CreateResponse(HttpStatusCode.OK, edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
@@ -161,67 +300,100 @@
         /// </summary>
         /// <returns>Совпадающие сущности из набора сущностей.</returns>
         [CustomEnableQuery]
+#if NETFRAMEWORK
         public HttpResponseMessage GetCollection()
+#elif NETSTANDARD
+        public OkObjectResult GetCollection()
+#endif
         {
             try
             {
-                var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, EvaluateOdataPath());
-                return result;
+                var edmObj = EvaluateOdataPath();
+#if NETFRAMEWORK
+                return Request.CreateResponse(HttpStatusCode.OK, edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-            }
-        }
-
-        [CustomEnableQuery]
-        public HttpResponseMessage GetString()
-        {
-            try
-            {
-                ODataPath odataPath = Request.ODataProperties().Path;
-                var keySegment = odataPath.Segments[1] as KeySegment;
-                string key = keySegment.Keys.First().Value.ToString().Trim().Replace("'", string.Empty);
-
-                Init();
-                var obj = LoadObject(type, key);
-                var result = Request.CreateResponse(
-                    System.Net.HttpStatusCode.OK,
-                    GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView));
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
         /// <summary>
         /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
         /// </summary>
-        /// <param name="key">Ключ сущности, которую необходимо получить.</param>
-        /// <returns>Сущность</returns>
+        /// <returns>Сущность.</returns>
         [CustomEnableQuery]
-        public HttpResponseMessage GetGuid()
+#if NETFRAMEWORK
+        public HttpResponseMessage GetString()
+#elif NETSTANDARD
+        public OkObjectResult GetString()
+#endif
         {
             try
             {
-                ODataPath odataPath = Request.ODataProperties().Path;
-                var keySegment = odataPath.Segments[1] as KeySegment;
+                var keySegment = ODataPath.Segments[1] as KeySegment;
+                string key = keySegment.Keys.First().Value.ToString().Trim().Replace("'", string.Empty);
+
+                Init();
+                var obj = LoadObject(type, key);
+
+                var edmObj = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView);
+#if NETFRAMEWORK
+                return Request.CreateResponse(HttpStatusCode.OK, edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
+            }
+            catch (Exception ex)
+            {
+#if NETFRAMEWORK
+                return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
+        /// </summary>
+        /// <returns>Сущность.</returns>
+        [CustomEnableQuery]
+#if NETFRAMEWORK
+        public HttpResponseMessage GetGuid()
+#elif NETSTANDARD
+        public OkObjectResult GetGuid()
+#endif
+        {
+            try
+            {
+                var keySegment = ODataPath.Segments[1] as KeySegment;
                 Guid key = new Guid(keySegment.Keys.First().Value.ToString());
 
                 Init();
                 var obj = LoadObject(type, key);
-                var result = Request.CreateResponse(
-                    System.Net.HttpStatusCode.OK,
-                    GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView));
 
-                return result;
+                var edmObj = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView);
+#if NETFRAMEWORK
+                return Request.CreateResponse(HttpStatusCode.OK, edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
@@ -231,7 +403,11 @@
         /// </summary>
         /// <returns>Совпадающие сущности из набора сущностей.</returns>
         [CustomEnableQuery]
+#if NETFRAMEWORK
         public HttpResponseMessage Get()
+#elif NETSTANDARD
+        public IActionResult Get()
+#endif
         {
             try
             {
@@ -240,20 +416,12 @@
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
-        }
-
-        /// <summary>
-        /// Проверяет, содержит ли исключение OdataError.
-        /// </summary>
-        /// <param name="exception">Исключение.</param>
-        /// <returns>true - если содержит.</returns>
-        private bool HasOdataError(Exception exception)
-        {
-            HttpResponseException httpResponseException = exception as HttpResponseException;
-            ObjectContent content = httpResponseException?.Response?.Content as ObjectContent;
-            return content?.Value is ODataError;
         }
 
         /// <summary>
@@ -274,7 +442,16 @@
             return _dataService.GetObjectsCount(lcs);
         }
 
+        /// <summary>
+        /// Exports data as a file with .xlsx content.
+        /// </summary>
+        /// <param name="queryParams">The request query values.</param>
+        /// <returns>A file with .xlsx content.</returns>
+#if NETFRAMEWORK
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
+#elif NETSTANDARD
+        internal IActionResult CreateExcel(NameValueCollection queryParams)
+#endif
         {
             View view = _dynamicView.View;
             if (_lcs != null)
@@ -288,7 +465,7 @@
                 PropertiesOrder = new List<string>(),
                 View = view,
                 DataObjectTypes = null,
-                LimitFunction = null
+                LimitFunction = null,
             };
 
             var colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
@@ -331,21 +508,19 @@
 
             par.DetailsInSeparateColumns = Convert.ToBoolean(queryParams.Get("detSeparateCols"));
             par.DetailsInSeparateRows = Convert.ToBoolean(queryParams.Get("detSeparateRows"));
-            MemoryStream result;
-            if (_model.ODataExportService != null)
-            {
-                result = _model.ODataExportService.CreateExportStream(_dataService, par, _objs, queryParams);
-            }
-            else
-            {
-                result = _model.ExportService.CreateExportStream(_dataService, par, _objs);
-            }
+            var result = _model.ODataExportService != null
+                ? _model.ODataExportService.CreateExportStream(_dataService, par, _objs, queryParams)
+                : _model.ExportService.CreateExportStream(_dataService, par, _objs);
 
+#if NETFRAMEWORK
             HttpResponseMessage msg = Request.CreateResponse(HttpStatusCode.OK);
             RawOutputFormatter.PrepareHttpResponseMessage(ref msg, "application/ms-excel", _model, result.ToArray());
             msg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             msg.Content.Headers.ContentDisposition.FileName = "list.xlsx";
             return msg;
+#elif NETSTANDARD
+            return File(result.ToArray(), "application/ms-excel", "list.xlsx");
+#endif
         }
 
         /// <summary>
@@ -374,7 +549,11 @@
 
             if (IncludeCount && expandedNavigationSelectItem == null)
             {
+#if NETFRAMEWORK
                 Request.Properties.Add(CustomODataFeedSerializer.Count, Count);
+#elif NETSTANDARD
+                Request.HttpContext.Items.Add(CustomODataFeedSerializer.Count, Count);
+#endif
             }
 
             IEdmCollectionTypeReference entityCollectionType = new EdmCollectionTypeReference(new EdmCollectionType(new EdmEntityTypeReference(entityType, false)));
@@ -503,7 +682,7 @@
                                 {
                                     if (!DynamicView.ContainsPoperty(dynamicView.View, propPath))
                                     {
-                                        _dataService.LoadObject(dynamicView.View, master, false, true, _dataObjectCache);
+                                        _dataService.LoadObject(dynamicView.View, master, false, true, DataObjectCache);
                                     }
 
                                     edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem, dynamicView);
@@ -585,14 +764,14 @@
 
                         // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
                         // значит свойство файловое, и его нужно обработать особым образом.
-                        if (FileController.HasDataObjectFileProvider(propType))
+                        if (_dataObjectFileAccessor.HasDataObjectFileProvider(propType))
                         {
                             // Обработка файловых свойств объектов данных.
                             // ODataService будет возвращать строку с сериализованными метаданными файлового свойства.
                             if (!selectedProperties.Any() || (selectedProperties.Any() && selectedProperties.ContainsKey(dataObjectPropName)))
                             {
-                                value = FileController.GetDataObjectFileProvider(propType)
-                                    .GetFileDescription((DataObject)obj, dataObjectPropName)
+                                value = _dataObjectFileAccessor.GetDataObjectFileProvider(propType)
+                                    .GetFileDescription(_dataService, (DataObject)obj, dataObjectPropName)
                                     ?.ToJson();
                             }
                         }
@@ -703,29 +882,6 @@
         }
 
         /// <summary>
-        /// Преобразует примитивное значение в результат Http для ответа.
-        /// </summary>
-        /// <param name="type">Тип содержимого.</param>
-        /// <param name="content">Содержимое.</param>
-        /// <returns>Результат Http для ответа.</returns>
-        public IHttpActionResult SetResultPrimitive(Type type, object content)
-        {
-            MethodInfo methodSetResult = GetType().GetMethod("SetResult").MakeGenericMethod(type);
-            return (IHttpActionResult)methodSetResult.Invoke(this, new[] { content });
-        }
-
-        /// <summary>
-        /// Преобразует сущность или набор сущностей в результат Http для ответа.
-        /// </summary>
-        /// <param name="content">Содержимое.</param>
-        /// <typeparam name="T">Параметр.</typeparam>
-        /// <returns>Результат Http для ответа.</returns>
-        public OkNegotiatedContentResult<T> SetResult<T>(T content)
-        {
-            return Ok(content);
-        }
-
-        /// <summary>
         /// Создаёт параметры запроса OData.
         /// </summary>
         /// <param name="type">Тип DataObject.</param>
@@ -739,8 +895,13 @@
         /// Создаёт параметры запроса OData.
         /// </summary>
         /// <param name="type">Тип DataObject.</param>
+        /// <param name="request">Запрос OData.</param>
         /// <returns>Параметры запроса OData.</returns>
+#if NETFRAMEWORK
         public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequestMessage request)
+#elif NETSTANDARD
+        public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequest request)
+#endif
         {
             return new ODataQueryOptions(CreateODataQueryContext(type), request);
         }
@@ -748,7 +909,6 @@
         private IQueryable FilterApplyTo(FilterQueryOption filter, IQueryable query)
         {
             ODataQuerySettings querySettings = new ODataQuerySettings();
-            IAssembliesResolver assembliesResolver = _defaultAssembliesResolver;
             if (query == null)
             {
                 throw Error.ArgumentNull("query");
@@ -759,7 +919,7 @@
                 throw Error.ArgumentNull("querySettings");
             }
 
-            if (assembliesResolver == null)
+            if (_defaultAssembliesResolver == null)
             {
                 throw Error.ArgumentNull("assembliesResolver");
             }
@@ -785,7 +945,7 @@
             FilterBinder binder;
             try
             {
-                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, _defaultAssembliesResolver, updatedSettings);
             }
             catch (Exception ex)
             {
@@ -802,6 +962,7 @@
             {
                 _lcsLoadingTypes.Clear();
             }
+
             query = ExpressionHelpers.Where(query, binder.LinqExpression, type);
             return query;
         }
@@ -825,10 +986,9 @@
         private IEdmObject EvaluateOdataPath()
         {
             // The EntitySetSegment type represents the Microsoft OData v5.7.0 EntitySetPathSegment type here.
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().Identifier);
+            type = _model.GetDataObjectType(ODataPath.Segments.OfType<EntitySetSegment>().First().Identifier);
             DetailArray detail = null;
-            ODataPath odataPath = Request.ODataProperties().Path;
-            var keySegment = odataPath.Segments[1] as KeySegment;
+            var keySegment = ODataPath.Segments[1] as KeySegment;
             Guid key = new Guid(keySegment.Keys.First().Value.ToString());
             IEdmEntityType entityType = null;
             var obj = LoadObject(type, key);
@@ -838,11 +998,11 @@
             }
 
             bool returnCollection = false;
-            for (int i = 2; i < odataPath.Segments.Count; i++)
+            for (int i = 2; i < ODataPath.Segments.Count; i++)
             {
                 type = obj.GetType();
                 entityType = _model.GetEdmEntityType(type);
-                string propName = odataPath.Segments[i].ToString();
+                string propName = ODataPath.Segments[i].ToString();
                 EdmNavigationProperty navProp = (EdmNavigationProperty)entityType.FindProperty(propName);
 
                 if (navProp.TargetMultiplicity() == EdmMultiplicity.One || navProp.TargetMultiplicity() == EdmMultiplicity.ZeroOrOne)
@@ -873,13 +1033,13 @@
                     obj = LoadObject(view, obj);
                     detail = (DetailArray)obj.GetType().GetProperty(propName).GetValue(obj, null);
                     i++;
-                    if (i == odataPath.Segments.Count)
+                    if (i == ODataPath.Segments.Count)
                     {
                         returnCollection = true;
                         break;
                     }
 
-                    keySegment = odataPath.Segments[i] as KeySegment;
+                    keySegment = ODataPath.Segments[i] as KeySegment;
                     key = new Guid(keySegment.Keys.First().Value.ToString());
                     obj = detail.GetAllObjects().FirstOrDefault(o => ((KeyGuid)o.__PrimaryKey).Guid == key);
                     if (obj == null)
@@ -899,10 +1059,14 @@
                 type = obj.GetType();
             }
 
-            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
+            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, ODataPath), Request);
             if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
             {
+#if NETFRAMEWORK
                 Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#elif NETSTANDARD
+                HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#endif
             }
 
             if (returnCollection)
@@ -954,9 +1118,12 @@
         /// <summary>
         /// Возвращает набор сущностей, соответствующий параметрам запроса OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
         /// <returns>Набор сущностей.</returns>
+#if NETFRAMEWORK
         private HttpResponseMessage ExecuteExpression()
+#elif NETSTANDARD
+        private IActionResult ExecuteExpression()
+#endif
         {
             _objs = new DataObject[0];
             _lcs = CreateLcs();
@@ -980,20 +1147,33 @@
             if (!IncludeCount || count != 0)
                 _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
 
+#if NETFRAMEWORK
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+#elif NETSTANDARD
+            NameValueCollection queryParams = QueryHelpers.QueryToNameValueCollection(Request.Query);
+#endif
 
+#if NETFRAMEWORK
             if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+#elif NETSTANDARD
+            if ((_model.ExportService != null || _model.ODataExportService != null) && (HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+#endif
             {
                 return CreateExcel(queryParams);
             }
 
-            HttpResponseMessage msg = null;
-            EdmEntityObjectCollection edmCol = null;
-            edmCol = GetEdmCollection(_objs, type, 1, null, _dynamicView);
-            msg = Request.CreateResponse(HttpStatusCode.OK, edmCol);
-            return msg;
+            EdmEntityObjectCollection edmCol = GetEdmCollection(_objs, type, 1, null, _dynamicView);
+#if NETFRAMEWORK
+            return Request.CreateResponse(HttpStatusCode.OK, edmCol);
+#elif NETSTANDARD
+            return Ok(edmCol);
+#endif
         }
 
+        /// <summary>
+        /// Создает настройку загрузки группы объектов.
+        /// </summary>
+        /// <returns>A <see cref="LoadingCustomizationStruct"/> instance.</returns>
         public LoadingCustomizationStruct CreateLcs()
         {
             Expression expr = GetExpression(type, QueryOptions);
@@ -1043,14 +1223,18 @@
         private void Init()
         {
             // The EntitySetSegment type represents the Microsoft OData v5.7.0 EntitySetPathSegment type here.
-            type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetSegment>().First().Identifier);
-            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
+            type = _model.GetDataObjectType(ODataPath.Segments.OfType<EntitySetSegment>().First().Identifier);
+            QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, ODataPath), Request);
             try
             {
                 var selectExpandClause = QueryOptions.SelectExpand?.SelectExpandClause;
                 if (selectExpandClause != null)
                 {
+#if NETFRAMEWORK
                     Request.ODataProperties().SelectExpandClause = selectExpandClause;
+#elif NETSTANDARD
+                    Request.HttpContext.ODataFeature().SelectExpandClause = selectExpandClause;
+#endif
                 }
             }
             catch (Exception e)
@@ -1116,6 +1300,7 @@
         /// <param name="count">В этом параметре веренётся количество объектов, если параметр callGetObjectsCount установлен в true, иначе -1.</param>
         /// <param name="callExecuteCallbackBeforeGet">Задаёт будет ли вызваться метод ExecuteCallbackBeforeGet.</param>
         /// <param name="callGetObjectsCount">Задаёт будет ли вызваться метод GetObjectsCount вместо LoadObjects у сервиса данных.</param>
+        /// <param name="callExecuteCallbackAfterGet">Задаёт будет ли вызваться метод ExecuteCallbackAfterGet.</param>
         /// <returns>Если параметр callGetObjectsCount установлен в false, то возвращаются объекты, иначе пустой массив объектов.</returns>
         private DataObject[] LoadObjects(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
@@ -1136,7 +1321,7 @@
             {
                 if (!callGetObjectsCount)
                 {
-                    dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                    dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
                 }
                 else
                 {
@@ -1162,6 +1347,66 @@
                 return null;
             return expandedItem;
         }
+
+#if NETFRAMEWORK
+        /// <summary>
+        /// Проверяет, содержит ли исключение OdataError.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>true - если содержит.</returns>
+        private bool HasOdataError(Exception exception)
+        {
+            HttpResponseException httpResponseException = exception as HttpResponseException;
+            ObjectContent content = httpResponseException?.Response?.Content as ObjectContent;
+            return content?.Value is ODataError;
+        }
+
+        /// <summary>
+        /// Преобразует примитивное значение в результат Http для ответа.
+        /// </summary>
+        /// <param name="type">Тип содержимого.</param>
+        /// <param name="content">Содержимое.</param>
+        /// <returns>Результат Http для ответа.</returns>
+        public IHttpActionResult SetResultPrimitive(Type type, object content)
+        {
+            MethodInfo methodSetResult = GetType().GetMethod("SetResult").MakeGenericMethod(type);
+            return (IHttpActionResult)methodSetResult.Invoke(this, new[] { content });
+        }
+
+        /// <summary>
+        /// Преобразует сущность или набор сущностей в результат Http для ответа.
+        /// </summary>
+        /// <param name="content">Содержимое.</param>
+        /// <typeparam name="T">Параметр.</typeparam>
+        /// <returns>Результат Http для ответа.</returns>
+        public OkNegotiatedContentResult<T> SetResult<T>(T content)
+        {
+            return Ok(content);
+        }
+#elif NETSTANDARD
+
+        /// <summary>
+        /// Создаёт экземпляр <see cref="ODataServiceCore.Common.Exceptions.CustomException"/> с кодом 500 по-умолчанию, содержащий возникшую в сервисе ошибку.
+        /// Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError.
+        /// </summary>
+        /// <param name="exception">Ошибка сервиса.</param>
+        /// <returns>Новый экземпляр <see cref="ODataServiceCore.Common.Exceptions.CustomException"/>.</returns>
+        private ODataServiceCore.Common.Exceptions.CustomException CustomException(Exception exception)
+        {
+            HttpStatusCode code = HttpStatusCode.InternalServerError;
+            Exception originalException = exception;
+            exception = ExecuteCallbackAfterInternalServerError(exception, ref code);
+
+            if (exception == null)
+            {
+                exception = new Exception("Exception is null.");
+            }
+
+            LogService.LogError(originalException.Message, originalException);
+
+            return new ODataServiceCore.Common.Exceptions.CustomException(exception, (int)code);
+        }
+#endif
 
         private void CreateDynamicView()
         {
