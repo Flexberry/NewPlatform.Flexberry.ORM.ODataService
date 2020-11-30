@@ -8,7 +8,7 @@ then
   IFS=/
   set -- $GITHUB_REF
   IFS=$ifs
-  while $# -gt 1 ]; do shift; done
+  while [ $# -gt 1 ]; do shift; done
   TRAVIS_BRANCH=$1
 fi
 
