@@ -19,21 +19,50 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      # Install pachages
+      - name: Install packages
+        run: apt-get intsall -y doxygen  postgresql-9.6-postgis-2.4
+        
+      - name: Start postgres
+        run: service postgres start
 
-      # Install mono
-      - name: Install mono
-        run: sudo apt-get install -y mono-devel
+      # Restore NewPlatform.Flexberry.ORM.ODataService.sln
+      - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
+        run: Restore NewPlatform.Flexberry.ORM.ODataService.sln
+      
+      - name: Install xunit.runner.console
+        run: nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
+        
+      - name: Compile code
+        run:  msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
+       
+       - name: Create postgis extension
+         run: psql -U postgres -c "create extension postgis"
+       
+       - name: Run mono application 
+         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+         
 
-      # Runs a set of commands using the runners shell
-      - name: Compile OData
-        run: |
-          nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
-          nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
-          msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln
-          mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-              
+      
