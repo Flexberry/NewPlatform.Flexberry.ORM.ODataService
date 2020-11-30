@@ -5,7 +5,6 @@
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
-    using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
 
     /// <summary>
@@ -82,7 +81,7 @@
         /// <param name="obj">Объект после создания.</param>
         internal void ExecuteCallbackAfterCreate(DataObject obj)
         {
-            if (!Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+            if (!IsBatchChangeSetRequest)
             {
                 _events.CallbackAfterCreate?.Invoke(obj);
             }
@@ -94,7 +93,7 @@
         /// <param name="obj">Объект после обновления.</param>
         internal void ExecuteCallbackAfterUpdate(DataObject obj)
         {
-            if (!Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+            if (!IsBatchChangeSetRequest)
             {
                 _events.CallbackAfterUpdate?.Invoke(obj);
             }
@@ -106,7 +105,7 @@
         /// <param name="obj">Объект перед удалением.</param>
         internal void ExecuteCallbackAfterDelete(DataObject obj)
         {
-            if (!Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+            if (!IsBatchChangeSetRequest)
             {
                 _events.CallbackAfterDelete?.Invoke(obj);
             }
