@@ -60,10 +60,10 @@ jobs:
        
       #- name: Create postgis extension
         #run: psql -U postgres -c "create extension postgis"
-      - name: Edit config file
+      - name: Test config file
         run: |
-          sed -i -e 's/ID=postgres;Password=;Port=5432;/ID=postgres;Password=p@ssw0rd;Port=5432;/' Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/App.config
-          cat Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/App.config
+          find . -name App.config 
+          cat ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/
           
       - name: Run mono application 
         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
