@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v2
       # Install pachages
       - name: Install packages
-        run: apt-get intsall -y doxygen  postgresql-9.6-postgis-2.4
+        run: apt-get install -y doxygen  postgresql-9.6-postgis-2.4
         
       - name: Start postgres
         run: service postgres start
