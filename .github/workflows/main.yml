@@ -24,10 +24,10 @@ jobs:
       # Label used to access the service container
       postgres:
         # Docker Hub image
-        image: postgres
+        image: flexberry/alt.p8-postgresql-postgis
         # Provide the password for postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: p@ssw0rd
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -60,6 +60,9 @@ jobs:
        
       #- name: Create postgis extension
         #run: psql -U postgres -c "create extension postgis"
-       
+      - name: Edit config file
+        run: |
+          sed -i -e 's/ID=postgres;Password=;Port=5432;/ID=postgres;Password=p@ssw0rd;Port=5432;/' Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/App.config
+          
       - name: Run mono application 
         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
