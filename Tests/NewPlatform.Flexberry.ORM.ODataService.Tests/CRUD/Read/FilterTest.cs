@@ -328,6 +328,11 @@
         {
             ActODataService(args =>
             {
+                if (args.DataService is ICSSoft.STORMNET.Business.OracleDataService)
+                {
+                    return;
+                }
+
                 DateTime dateTime = DateTime.UtcNow;
                 DataObject класс = new КлассСМножествомТипов
                 {
