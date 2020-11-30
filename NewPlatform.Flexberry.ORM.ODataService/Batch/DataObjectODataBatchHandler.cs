@@ -455,9 +455,37 @@
             {
                 try
                 {
+                    Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
+                    foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
+                    {
+                        if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
+                        {
+                            stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
+                        }
+                    }
+
                     IDataService dataService = UnityFactoryHelper.ResolveRequiredIfNull(batchContext.RequestServices.GetService<IDataService>());
                     DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
                     dataService.UpdateObjects(ref dataObjects);
+
+                    foreach (DataObject dataObject in dataObjectsToUpdate)
+                    {
+                        var state = stateDictionary[dataObject.__PrimaryKey];
+                        switch (state)
+                        {
+                            case ObjectStatus.Created:
+                                _events.CallbackAfterCreate?.Invoke(dataObject);
+                                break;
+                            case ObjectStatus.Altered:
+                                _events.CallbackAfterUpdate?.Invoke(dataObject);
+                                break;
+                            case ObjectStatus.Deleted:
+                                _events.CallbackAfterDelete?.Invoke(dataObject);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
