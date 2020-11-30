@@ -50,7 +50,7 @@ jobs:
 
       # Restore NewPlatform.Flexberry.ORM.ODataService.sln
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: Restore NewPlatform.Flexberry.ORM.ODataService.sln
+        run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
       
       - name: Install xunit.runner.console
         run: nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
