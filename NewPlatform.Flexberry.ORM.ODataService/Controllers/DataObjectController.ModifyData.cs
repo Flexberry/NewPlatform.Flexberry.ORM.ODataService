@@ -299,7 +299,7 @@
 
 #elif NETSTANDARD
                         List<DataObject> dataObjectsToUpdate = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
-                        List<DataObject> allProcessedObjects = (List<DataObject>)Request.HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
+                        List<DataObject> allProcessedObjects = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
 #endif
                         dataObjectsToUpdate.AddRange(objs);
                         allProcessedObjects.Add(obj);
