@@ -44,14 +44,12 @@ jobs:
       - name: Show env
         run: set 
         
-      # Install packages
       - name: Install packages
         run: sudo apt-get install -y doxygen 
 
-      # Restore NewPlatform.Flexberry.ORM.ODataService.sln
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
-      
+        
       - name: Install xunit.runner.console
         run: nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
         
@@ -60,3 +58,10 @@ jobs:
         
       - name: Run mono application 
         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+
+      - name: Update documentation
+        run: |
+          #[ $GITHUB_EVENT_NAME == 'push' ] && 
+          #( [ $GITHUB_REF == "refs/heads/master" ] || [ $GITHUB_REF == "refs/heads/develop" ] ) &&
+          bash Doxygen/update-autodoc.sh
+        
