@@ -42,9 +42,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         
-      #- name: Show env
-        #run: set 
-        
       - name: Install packages
         run: sudo apt-get install -y doxygen 
 
@@ -57,9 +54,11 @@ jobs:
       - name: Compile code
         run:  msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
 
-      - name: Run mono application 
+      - name: Test under mono
         run: mono ./testrunner/xunit.runner.console.2.4.1/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
+      - name: Test under dotnet
+        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Update documentation
         run: |
