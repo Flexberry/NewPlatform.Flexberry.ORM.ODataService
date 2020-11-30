@@ -42,11 +42,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       # Install pachages
-      - name: Install packages
-        run: sudo apt-get install -y doxygen  postgresql-9.6-postgis-2.4
+      #- name: Install packages
+        #run: sudo apt-get install -y doxygen  postgresql-9.6-postgis-2.4
         
-      - name: Start postgres
-        run: sudo service postgres start
+      #- name: Start postgres
+        #run: sudo service postgres start
 
       # Restore NewPlatform.Flexberry.ORM.ODataService.sln
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
@@ -58,8 +58,8 @@ jobs:
       - name: Compile code
         run:  msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
        
-      - name: Create postgis extension
-        run: psql -U postgres -c "create extension postgis"
+      #- name: Create postgis extension
+        #run: psql -U postgres -c "create extension postgis"
        
       - name: Run mono application 
         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
