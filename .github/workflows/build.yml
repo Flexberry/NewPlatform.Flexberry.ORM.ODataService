@@ -55,7 +55,7 @@ jobs:
         run:  msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
 
       - name: Test under mono
-        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Test under dotnet
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
