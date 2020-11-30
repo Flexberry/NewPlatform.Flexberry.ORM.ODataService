@@ -328,15 +328,16 @@
         {
             ActODataService(args =>
             {
+                DateTime dateTime = DateTime.UtcNow;
                 DataObject класс = new КлассСМножествомТипов
                 {
-                    PropertyDateTime = DateTime.UtcNow,
-                    PropertySystemNullableDateTime = DateTime.UtcNow,
-                    PropertyStormnetNullableDateTime = NullableDateTime.UtcNow,
+                    PropertyDateTime = dateTime,
+                    PropertySystemNullableDateTime = dateTime,
+                    PropertyStormnetNullableDateTime = (NullableDateTime)dateTime,
                 };
                 args.DataService.UpdateObject(ref класс);
 
-                string datetimeNowString = DateTime.UtcNow.ToString("yyyy-MM-dd");
+                string datetimeNowString = dateTime.ToString("yyyy-MM-dd");
                 string filter = $"date({nameof(КлассСМножествомТипов.PropertyDateTime)}) eq {datetimeNowString} and date({nameof(КлассСМножествомТипов.PropertySystemNullableDateTime)}) eq {datetimeNowString} and date({nameof(КлассСМножествомТипов.PropertyStormnetNullableDateTime)}) eq {datetimeNowString}";
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
