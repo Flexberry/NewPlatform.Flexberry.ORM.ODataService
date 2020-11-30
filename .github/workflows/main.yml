@@ -63,7 +63,7 @@ jobs:
       - name: Test config file
         run: |
           find . -name App.config 
-          cat ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/
+          cat ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/App.config
           
       - name: Run mono application 
         run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
