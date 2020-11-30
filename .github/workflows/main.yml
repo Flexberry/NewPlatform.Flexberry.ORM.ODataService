@@ -27,7 +27,7 @@ jobs:
 
       # Install mono
       - name: Install mono
-        run: apt-get install -y mono
+        run: sudo apt-get install -y mono
 
       # Runs a set of commands using the runners shell
       - name: Compile OData
