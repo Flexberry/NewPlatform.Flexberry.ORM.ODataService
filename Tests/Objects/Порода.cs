@@ -28,6 +28,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** End programmer edit section *** (Порода CustomAttributes)
     [AutoAltered()]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
+    [View("ПородаE", new string[] {
+            "Название",
+            "ТипПороды",
+            "ТипПороды.Название",
+            "Иерархия",
+            "Иерархия.Название"}, Hidden=new string[] {
+            "ТипПороды",
+            "Иерархия"})]
     public class Порода : ICSSoft.STORMNET.DataObject
     {
         
@@ -133,6 +141,24 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Порода.Иерархия Set end)
 
                 // *** End programmer edit section *** (Порода.Иерархия Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Class views container.
+        /// </summary>
+        public class Views
+        {
+            
+            /// <summary>
+            /// "ПородаE" view.
+            /// </summary>
+            public static ICSSoft.STORMNET.View ПородаE
+            {
+                get
+                {
+                    return ICSSoft.STORMNET.Information.GetView("ПородаE", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Порода));
+                }
             }
         }
     }

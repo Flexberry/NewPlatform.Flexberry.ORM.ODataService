@@ -871,6 +871,13 @@
                             if (dataObjectPropName == agregatorPropertyName)
                             {
                                 master.AddDetail(obj);
+
+                                // Нужно обязательно обозначить детейловое свойство загруженным, поскольку мы вносим в него изменения.
+                                string detailPropName = Information.GetDetailArrayPropertyName(master.GetType(), obj.GetType());
+                                if (!string.IsNullOrEmpty(detailPropName) && !master.CheckLoadedProperty(detailPropName))
+                                {
+                                    master.AddLoadedProperties(detailPropName);
+                                }
                             }
                         }
                         else
