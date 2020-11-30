@@ -27,7 +27,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SqlServer.Types" Version="10.50.1600.1" />
     <PackageReference Include="Moq" Version="4.14.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -41,9 +40,9 @@
     <PackageReference Include="NewPlatform.Flexberry.Audit" Version="4.0.0-beta03" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService" Version="2.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisPostgresDataService" Version="2.0.0-beta01" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="6.0.0-beta10" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="6.0.0-beta10" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta10" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="6.0.0-beta11" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="6.0.0-beta12" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta11" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="2.0.0-beta02" />
     <PackageReference Include="NewPlatform.Flexberry.Security" Version="3.0.0-beta03" />
   </ItemGroup>
@@ -63,6 +62,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.SelfHost" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
+    <PackageReference Include="Microsoft.SqlServer.Types" Version="10.50.1600.1" />
     <PackageReference Include="Unity.AspNet.WebApi" Version="5.11.2" />
     <PackageReference Include="WebActivatorEx" Version="2.2.0" />
   </ItemGroup>

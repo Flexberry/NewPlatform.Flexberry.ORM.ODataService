@@ -39,6 +39,12 @@
         public const string DataObjectsToUpdatePropertyKey = "DataObjectsToUpdate";
 
         /// <summary>
+        /// Request Properties collection key for AllProcessedObjects list.
+        /// Данный массив содержит объекты, которые отправлены на обновление или удаление в batch. Массив нужен для того, чтобы DataObjectCache не очищался между обработкой отдельных запросов (DataObjectCache содержит WeakReferences).
+        /// </summary>
+        public const string AllProcessedObjectsPropertyKey = "AllProcessedObjects";
+
+        /// <summary>
         /// Request Properties collection key for DataObjectCache instance.
         /// </summary>
         public const string DataObjectCachePropertyKey = "DataObjectCache";
@@ -352,6 +358,7 @@
             }
 
             List<DataObject> dataObjectsToUpdate = new List<DataObject>();
+            List<DataObject> allProcessedObjects = new List<DataObject>();
             DataObjectCache dataObjectCache = new DataObjectCache();
             dataObjectCache.StartCaching(false);
 
@@ -360,6 +367,11 @@
                 if (!request.Properties.ContainsKey(DataObjectsToUpdatePropertyKey))
                 {
                     request.Properties.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);
+                }
+
+                if (!request.Properties.ContainsKey(AllProcessedObjectsPropertyKey))
+                {
+                    request.Properties.Add(AllProcessedObjectsPropertyKey, allProcessedObjects);
                 }
 
                 if (!request.Properties.ContainsKey(DataObjectCachePropertyKey))
@@ -433,6 +445,7 @@
             }
 
             List<DataObject> dataObjectsToUpdate = new List<DataObject>();
+            List<DataObject> allProcessedObjects = new List<DataObject>();
             DataObjectCache dataObjectCache = new DataObjectCache();
             dataObjectCache.StartCaching(false);
 
@@ -441,6 +454,11 @@
                 if (!context.Items.ContainsKey(DataObjectsToUpdatePropertyKey))
                 {
                     context.Items.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);
+                }
+
+                if (!context.Items.ContainsKey(AllProcessedObjectsPropertyKey))
+                {
+                    context.Items.Add(AllProcessedObjectsPropertyKey, allProcessedObjects);
                 }
 
                 if (!context.Items.ContainsKey(DataObjectCachePropertyKey))
