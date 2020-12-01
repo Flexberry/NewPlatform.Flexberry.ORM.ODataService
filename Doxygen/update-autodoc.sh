@@ -1,8 +1,13 @@
 #!/bin/bash
 
-
 set -x
-if [ -n "$GITHUB_REF" ] 
+set
+if  [  "$GITHUB_EVENT_NAME" = 'push' ] && ( [ "$GITHUB_REF" = 'refs/heads/master' ]  || [ "$GITHUB_REF" = 'refs/heads/develop' ] )
+then
+  exit 0
+fi
+
+if [ -n "$GITHUB_REF" ]
 then
   ifs=$IFS
   IFS=/
