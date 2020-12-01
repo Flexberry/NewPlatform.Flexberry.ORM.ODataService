@@ -1,5 +1,5 @@
-# Exit with nonzero exit code if anything fails.
-set -e
+#!/bin/bash
+
 
 set -x
 if [ -n "$GITHUB_REF" ] 
