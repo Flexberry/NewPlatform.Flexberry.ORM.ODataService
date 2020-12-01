@@ -58,13 +58,13 @@ jobs:
       - name: Compile code
         run:  msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
 
-      - name: Run mono application 
-        run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-
       - name: Run dotnet aoolication
         run:  dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
-      - name: Update documentation
+      - name: Run mono application 
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+
+       - name: Update documentation
         run: |
           [ $GITHUB_EVENT_NAME == 'push' ] && 
           ( [ $GITHUB_REF == "refs/heads/master" ] || [ $GITHUB_REF == "refs/heads/develop" ] ) &&
