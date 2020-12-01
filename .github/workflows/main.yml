@@ -58,6 +58,11 @@ jobs:
       - name: Compile code
         run:  msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
 
+      - name: Run mono application 
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+        env:
+          CONFIGURATION: Debug
+      
       - name: Run dotnet application
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
         env:
@@ -65,9 +70,6 @@ jobs:
           DOTNET_CLI_TELEMETRY_OPTOUT: 1
           DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
             
-      - name: Run mono application 
-        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-
       - name: Update documentation
         run: |
           [ $GITHUB_EVENT_NAME == 'push' ] && 
