@@ -65,4 +65,5 @@ jobs:
           [ $GITHUB_EVENT_NAME == 'push' ] && 
           ( [ $GITHUB_REF == "refs/heads/master" ] || [ $GITHUB_REF == "refs/heads/develop" ] ) &&
           bash Doxygen/update-autodoc.sh
+          exit 0
         
