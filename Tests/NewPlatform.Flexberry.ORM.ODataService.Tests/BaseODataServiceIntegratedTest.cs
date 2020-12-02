@@ -1,6 +1,7 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
+    using System.Diagnostics;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -143,7 +144,11 @@
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     ExternalLangDef.LanguageDef.DataService = dataService;
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     action(args);
+                    stopwatch.Stop();
+                    Assert.True(stopwatch.ElapsedMilliseconds < 3000);
                 }
             }
         }
