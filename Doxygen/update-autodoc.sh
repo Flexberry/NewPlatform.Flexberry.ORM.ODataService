@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 if [ -n "$GITHUB_REF" ]
 then
   ifs=$IFS
