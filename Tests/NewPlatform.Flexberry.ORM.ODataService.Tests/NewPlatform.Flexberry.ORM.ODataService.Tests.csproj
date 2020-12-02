@@ -50,8 +50,6 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
-    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0-beta02" />
-    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0-beta02" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
@@ -87,10 +85,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <ProjectReference Include="..\..\Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <Content Include="Files\delorean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -104,6 +98,15 @@
     <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataService\NewPlatform.Flexberry.ORM.ODataService.csproj" />
     <ProjectReference Include="..\BusinessServers\NewPlatform.Flexberry.ORM.ODataService.Tests.BusinessServers.csproj" />
     <ProjectReference Include="..\Objects\NewPlatform.Flexberry.ORM.ODataService.Tests.Objects.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataService.WebApi\NewPlatform.Flexberry.ORM.ODataService.WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.csproj" />
+    <ProjectReference Include="..\..\Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
