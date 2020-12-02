@@ -2,7 +2,7 @@
 {
 #if NETFRAMEWORK
     using System.Web;
-#elif NETSTANDARD
+#elif NETSTANDARD || NETCOREAPP
     using Microsoft.AspNetCore.StaticFiles;
 #endif
 
@@ -21,7 +21,7 @@
         {
             return MimeMapping.GetMimeMapping(subpath);
         }
-#elif NETSTANDARD
+#elif NETSTANDARD || NETCOREAPP
         private static readonly FileExtensionContentTypeProvider fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
 
         /// <summary>

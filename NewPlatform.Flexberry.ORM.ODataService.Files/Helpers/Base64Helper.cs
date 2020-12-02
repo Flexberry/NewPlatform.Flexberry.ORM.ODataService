@@ -3,7 +3,10 @@
     using System;
     using System.IO;
 
-    public class Base64Helper
+    /// <summary>
+    /// Помощник Base64String.
+    /// </summary>
+    public static class Base64Helper
     {
         /// <summary>
         /// Осуществляет получение данных файла в виде Base64String.
