@@ -1,7 +1,6 @@
 # Exit with nonzero exit code if anything fails.
 set -e
 
-set -x
 if [ -n "$GITHUB_REF" ] 
 then
   ifs=$IFS
