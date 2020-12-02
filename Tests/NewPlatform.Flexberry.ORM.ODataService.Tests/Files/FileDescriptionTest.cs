@@ -22,7 +22,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
     /// <summary>
     /// Класс, содержащий модульные тесты для метаданных, описывающих файловые свойства объектов данных.
     /// </summary>
-    public class FileDescriptionTest
+    public class FileDescriptionTest : IDisposable
     {
         private const string FileBaseUrl = "http://localhost/api/File";
 
@@ -57,10 +57,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
             _srcTextFilePath = Path.Combine(_filesDirectoryPath, "readme.txt");
         }
 
-        /// <summary>
-        /// Осуществляет очистку результатов работы тестов.
-        /// </summary>
-        ~FileDescriptionTest()
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <inheritdoc/>
+        protected virtual void Dispose(bool disposing)
         {
             FileDescriptionTestController.FileDescriptionGet = null;
             FileDescriptionTestController.FileDescriptionPost = null;
@@ -424,7 +428,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
             FileDescriptionTestController.FileDescriptionGet = fileDescription;
 
             // Получаем сериализованные описания файлов несколькими способами (вручную, и из ответа, получаемого от сервера).
-            List<string> serializedFileDescriptions = new List<string> { fileDescription.ToJson() };
+            var jsonFileDescription = fileDescription.ToJson();
+            Assert.NotNull(jsonFileDescription);
+            List<string> serializedFileDescriptions = new List<string> { jsonFileDescription };
             using (HttpConfiguration config = new HttpConfiguration())
             {
                 config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
@@ -453,9 +459,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Files
             // Пока каокй-то причине один из дескрипторов обращается в null при тестовом запуске.
             foreach (string serializedFileDescription in serializedFileDescriptions.Where(fd => !string.IsNullOrEmpty(fd)))
             {
+                Assert.NotNull(serializedFileDescription);
+
                 // Преобразуем сериализованное описание файла в словарь.
                 Dictionary<string, object> deserializedFileDescription = JsonConvert.DeserializeObject<Dictionary<string, object>>(serializedFileDescription);
-                Assert.False(deserializedFileDescription == null, serializedFileDescription);
+                Assert.False(deserializedFileDescription == null, "Deserialize object issue. Input: " + serializedFileDescription);
                 Assert.Equal(5, deserializedFileDescription.Keys.Count);
                 Assert.Equal(fileName, deserializedFileDescription["fileName"]);
                 Assert.Equal(fileSize, deserializedFileDescription["fileSize"]);
