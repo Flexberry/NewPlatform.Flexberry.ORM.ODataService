@@ -3,7 +3,9 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions
 {
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNet.OData.Interfaces;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using Microsoft.Extensions.DependencyInjection;
+    using NewPlatform.Flexberry.ORM.ODataService;
 
     /// <summary>
     /// Provides extension methods to add ODataService services.
@@ -18,6 +20,7 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions
         public static IODataBuilder AddODataService(this IServiceCollection services)
         {
             return services.AddHttpContextAccessor()
+                .AddSingleton<IObjectModelValidator, DisabledBodyModelValidator>()
                 .AddOData();
         }
     }
