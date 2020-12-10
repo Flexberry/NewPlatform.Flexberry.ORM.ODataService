@@ -26,7 +26,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-beta02" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta12" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta13" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="NewPlatform.Flexberry.AspNetCore.OData" Version="7.5.1-beta02" />
+    <PackageReference Include="NewPlatform.Flexberry.AspNetCore.OData" Version="7.5.1-beta03" />
   </ItemGroup>
 
   <ItemGroup>

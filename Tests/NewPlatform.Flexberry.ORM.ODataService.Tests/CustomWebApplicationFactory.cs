@@ -2,6 +2,7 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System.IO;
+    using System.Net.Http;
     using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
@@ -24,6 +25,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                             .UseContentRoot(contentRootDirectory)
                             .UseStartup<TestStartup>();
             return webHostBuilder;
+        }
+
+        /// <inheritdoc/>
+        protected override void ConfigureClient(HttpClient client)
+        {
+            base.ConfigureClient(client);
+            client.DefaultRequestHeaders.Add("Prefer", "return=representation");
         }
     }
 }
