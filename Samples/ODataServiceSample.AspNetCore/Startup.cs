@@ -72,6 +72,8 @@
                 unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
             }
 
+            services.AddHttpContextAccessor();
+
             services.AddMvcCore(options =>
             {
                 options.Filters.Add<CustomExceptionFilter>();
