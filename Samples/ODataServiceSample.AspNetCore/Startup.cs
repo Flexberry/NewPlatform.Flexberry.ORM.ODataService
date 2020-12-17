@@ -20,6 +20,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Tests;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
     using NewPlatform.Flexberry.Services;
     using Unity;
 
@@ -72,8 +73,6 @@
                 unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
             }
 
-            services.AddHttpContextAccessor();
-
             services.AddMvcCore(options =>
             {
                 options.Filters.Add<CustomExceptionFilter>();
@@ -81,7 +80,7 @@
             })
                 .AddFormatterMappings();
 
-            services.AddOData();
+            services.AddODataService();
 
             services.AddSingleton<IDataObjectFileAccessor>(provider =>
             {
