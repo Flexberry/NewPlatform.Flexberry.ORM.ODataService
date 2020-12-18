@@ -105,7 +105,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                             _output.WriteLine($"Thread {item.Key}: {item.Value}");
                         }
 
-                        // Пусть так.
+                        // Проверим наличие исключений.
                         Assert.Empty(exception.InnerExceptions);
                     }
                 });
@@ -149,7 +149,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                             _output.WriteLine($"Thread {item.Key}: {item.Value}");
                         }
 
-                        // Пусть так.
+                        // Проверим наличие исключений.
                         Assert.Empty(exception.InnerExceptions);
                     }
                 });
@@ -209,7 +209,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                             _output.WriteLine($"Thread {item.Key}: {item.Value}");
                         }
 
-                        // Пусть так.
+                        // Проверим наличие исключений.
                         Assert.Empty(exception.InnerExceptions);
                     }
                 });
@@ -275,7 +275,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                             _output.WriteLine($"Thread {item.Key}: {item.Value}");
                         }
 
-                        // Пусть так.
+                        // Проверим наличие исключений.
                         Assert.Empty(exception.InnerExceptions);
                     }
                 });
@@ -326,7 +326,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                             _output.WriteLine($"Thread {item.Key}: {item.Value}");
                         }
 
-                        // Пусть так.
+                        // Проверим наличие исключений.
                         Assert.Empty(exception.InnerExceptions);
                     }
                 });

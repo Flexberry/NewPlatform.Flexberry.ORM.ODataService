@@ -174,9 +174,10 @@
                 IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(context);
 
                 // Restore current httpcontext.
+                // FYI: https://github.com/OData/WebApi/issues/2294
                 if (httpContextAccessor != null)
                 {
-                    httpContextAccessor.HttpContext = currentContext;
+                    httpContextAccessor.HttpContext ??= currentContext;
                 }
 
                 ODataOptions options = context.RequestServices.GetRequiredService<ODataOptions>();

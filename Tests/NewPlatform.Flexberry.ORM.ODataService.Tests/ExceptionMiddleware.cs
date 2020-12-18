@@ -28,17 +28,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// </summary>
         /// <param name="httpContext">Http context for current pipe.</param>
         /// <returns>Task for execute.</returns>
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
             try
             {
-                return this.next(httpContext);
+                await this.next(httpContext);
             }
             catch (Exception ex)
             {
                 httpContext.Response.ContentType = MediaTypeNames.Text.Plain;
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return httpContext.Response.WriteAsync("Internal server error");
+                await httpContext.Response.WriteAsync("Internal server error");
             }
         }
     }
