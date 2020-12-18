@@ -162,7 +162,7 @@
 
             // Retrieve current httpcontext.
             var httpContextAccessor = context.RequestServices.GetService<IHttpContextAccessor>();
-            var currentContext = httpContextAccessor.HttpContext;
+            var currentContext = httpContextAccessor?.HttpContext;
 
             if (!await ValidateRequest(context.Request))
             {
@@ -174,7 +174,10 @@
                 IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(context);
 
                 // Restore current httpcontext.
-                httpContextAccessor.HttpContext = currentContext;
+                if (httpContextAccessor != null)
+                {
+                    httpContextAccessor.HttpContext = currentContext;
+                }
 
                 ODataOptions options = context.RequestServices.GetRequiredService<ODataOptions>();
                 bool enableContinueOnErrorHeader = (options != null)

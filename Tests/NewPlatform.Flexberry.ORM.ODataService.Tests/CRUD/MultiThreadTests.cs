@@ -35,7 +35,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
     /// </summary>
     public class MultiThreadTests : BaseODataServiceIntegratedTest
     {
-        private const int ThreadCount = 1;
+        private const int ThreadCount = 50;
 
 #if NETFRAMEWORK
         /// <summary>
