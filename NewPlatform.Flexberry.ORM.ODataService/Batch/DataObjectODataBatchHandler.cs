@@ -92,6 +92,7 @@
 #endif
 
 #if NETSTANDARD
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DataObjectODataBatchHandler"/> class.
         /// </summary>
@@ -160,10 +161,6 @@
                 throw Error.ArgumentNull(nameof(nextHandler));
             }
 
-            // Retrieve current httpcontext.
-            var httpContextAccessor = context.RequestServices.GetService<IHttpContextAccessor>();
-            var currentContext = httpContextAccessor?.HttpContext;
-
             if (!await ValidateRequest(context.Request))
             {
                 return;
@@ -172,13 +169,6 @@
             try
             {
                 IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(context);
-
-                // Restore current httpcontext.
-                // FYI: https://github.com/OData/WebApi/issues/2294
-                if (httpContextAccessor != null)
-                {
-                    httpContextAccessor.HttpContext ??= currentContext;
-                }
 
                 ODataOptions options = context.RequestServices.GetRequiredService<ODataOptions>();
                 bool enableContinueOnErrorHeader = (options != null)
