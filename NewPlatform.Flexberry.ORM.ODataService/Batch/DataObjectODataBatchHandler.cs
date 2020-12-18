@@ -92,8 +92,6 @@
 #endif
 
 #if NETSTANDARD
-        private HttpContext Context;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DataObjectODataBatchHandler"/> class.
         /// </summary>
@@ -164,7 +162,7 @@
 
             // Retrieve current httpcontext.
             var httpContextAccessor = context.RequestServices.GetService<IHttpContextAccessor>();
-            Context = httpContextAccessor.HttpContext;
+            var currentContext = httpContextAccessor.HttpContext;
 
             if (!await ValidateRequest(context.Request))
             {
@@ -176,7 +174,7 @@
                 IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(context);
 
                 // Restore current httpcontext.
-                httpContextAccessor.HttpContext = Context;
+                httpContextAccessor.HttpContext = currentContext;
 
                 ODataOptions options = context.RequestServices.GetRequiredService<ODataOptions>();
                 bool enableContinueOnErrorHeader = (options != null)
