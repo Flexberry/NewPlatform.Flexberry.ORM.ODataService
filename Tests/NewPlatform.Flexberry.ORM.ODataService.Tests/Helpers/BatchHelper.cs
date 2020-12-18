@@ -65,6 +65,11 @@
             return request;
         }
 
+        /// <summary>
+        /// Проверить ответ на batch-запрос.
+        /// </summary>
+        /// <param name="response">Сообщение.</param>
+        /// <param name="statusCodes">Статусы подзапросов.</param>
         public static void CheckODataBatchResponseStatusCode(HttpResponseMessage response, HttpStatusCode[] statusCodes)
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
