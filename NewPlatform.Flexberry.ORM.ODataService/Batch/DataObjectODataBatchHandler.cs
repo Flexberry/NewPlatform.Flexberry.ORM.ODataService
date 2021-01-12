@@ -21,7 +21,6 @@
 #endif
 
 #if NETSTANDARD
-    using ICSSoft.Services;
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Adapters;
     using Microsoft.AspNet.OData.Common;
@@ -482,7 +481,7 @@
                         }
                     }
 
-                    IDataService dataService = UnityFactoryHelper.ResolveRequiredIfNull(batchContext.RequestServices.GetService<IDataService>());
+                    IDataService dataService = batchContext.RequestServices.GetService<IDataService>();
                     DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
                     dataService.UpdateObjects(ref dataObjects);
 
