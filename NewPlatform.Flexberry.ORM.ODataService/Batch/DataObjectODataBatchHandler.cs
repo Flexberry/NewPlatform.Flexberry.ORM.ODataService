@@ -454,7 +454,12 @@
         }
 #endif
 
-        private void UpdateObjects(IDataService ds, List<DataObject> dataObjectsToUpdate)
+        /// <summary>
+        /// Update processed object.
+        /// </summary>
+        /// <param name="ds">The instance of <see cref="IDataService" />.</param>
+        /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
+        protected virtual void UpdateObjects(IDataService ds, List<DataObject> dataObjectsToUpdate)
         {
             try
             {
