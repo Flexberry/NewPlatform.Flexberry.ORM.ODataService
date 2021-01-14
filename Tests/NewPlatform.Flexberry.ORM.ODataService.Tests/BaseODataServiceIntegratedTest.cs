@@ -29,16 +29,34 @@
     /// </summary>
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
     {
-        protected readonly IDataObjectEdmModelBuilder _builder;
+        /// <summary>
+        /// Edm model builder.
+        /// </summary>
+        protected IDataObjectEdmModelBuilder _builder;
 
+        /// <summary>
+        /// Arguments for test methods.
+        /// </summary>
         public class TestArgs
         {
+            /// <summary>
+            /// Unity container.
+            /// </summary>
             public IUnityContainer UnityContainer { get; set; }
 
+            /// <summary>
+            /// Management token.
+            /// </summary>
             public ManagementToken Token { get; set; }
 
+            /// <summary>
+            /// Data service.
+            /// </summary>
             public IDataService DataService { get; set; }
 
+            /// <summary>
+            /// Http client.
+            /// </summary>
             public HttpClient HttpClient { get; set; }
         }
 
@@ -222,12 +240,5 @@
                     throw new InvalidOperationException();
             }
         }
-
-        /*
-        private bool PropertyFilter(PropertyInfo propertyInfo)
-        {
-            return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
-        }
-        */
     }
 }
