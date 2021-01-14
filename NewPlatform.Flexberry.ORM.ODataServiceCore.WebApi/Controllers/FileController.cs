@@ -1,6 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers
 {
-    using ICSSoft.Services;
+    using System;
     using ICSSoft.STORMNET.Business;
     using Microsoft.AspNetCore.Mvc;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
@@ -20,12 +20,10 @@
         /// </summary>
         /// <param name="dataObjectFileAccessor">The data object file properties accessor.</param>
         /// <param name="dataService">The data service for all manipulations with data.</param>
-        public FileController(IDataObjectFileAccessor dataObjectFileAccessor, IDataService dataService = null)
-            : base ()
+        public FileController(IDataObjectFileAccessor dataObjectFileAccessor, IDataService dataService)
         {
-            this.dataObjectFileAccessor = dataObjectFileAccessor;
-    
-            this.dataService = UnityFactoryHelper.ResolveRequiredIfNull(dataService);
+            this.dataObjectFileAccessor = dataObjectFileAccessor ?? throw new ArgumentNullException(nameof(dataObjectFileAccessor));
+            this.dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         }
     }
 }

@@ -21,7 +21,6 @@
 #endif
 
 #if NETSTANDARD
-    using ICSSoft.Services;
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Adapters;
     using Microsoft.AspNet.OData.Common;
@@ -31,7 +30,7 @@
     /// <summary>
     /// Batch handler for DataService.
     /// </summary>
-    internal class DataObjectODataBatchHandler : DefaultODataBatchHandler
+    public class DataObjectODataBatchHandler : DefaultODataBatchHandler
     {
         /// <summary>
         /// Request Properties collection key for DataObjectsToUpdate list.
@@ -68,7 +67,6 @@
         /// if set to true then use synchronous mode for call subrequests.
         /// </summary>
         private readonly bool isSyncMode;
-
 
         /// <summary>
         /// DataService instance for execute queries.
@@ -350,7 +348,7 @@
         /// <param name="changeSet">Changeset for processing.</param>
         /// <param name="cancellation">Cancelation token.</param>
         /// <returns>Task for changeset processing.</returns>
-        private async Task<ODataBatchResponseItem> ExecuteChangeSet(ChangeSetRequestItem changeSet, CancellationToken cancellation)
+        protected virtual async Task<ODataBatchResponseItem> ExecuteChangeSet(ChangeSetRequestItem changeSet, CancellationToken cancellation)
         {
             if (changeSet == null)
             {
@@ -386,43 +384,7 @@
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
             {
-                try
-                {
-                    Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
-                    foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
-                    {
-                        if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
-                        {
-                            stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
-                        }
-                    }
-
-                    DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                    dataService.UpdateObjects(ref dataObjects);
-
-                    foreach (DataObject dataObject in dataObjectsToUpdate)
-                    {
-                        var state = stateDictionary[dataObject.__PrimaryKey];
-                        switch (state)
-                        {
-                            case ObjectStatus.Created:
-                                _events.CallbackAfterCreate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Altered:
-                                _events.CallbackAfterUpdate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Deleted:
-                                _events.CallbackAfterDelete?.Invoke(dataObject);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                UpdateObjects(dataService, dataObjectsToUpdate);
             }
 
             return changeSetResponse;
@@ -437,7 +399,7 @@
         /// <param name="changeSet">The changeset for processing.</param>
         /// <param name="handler">The handler for processing a message.</param>
         /// <returns>Task for changeset processing.</returns>
-        private async Task<ODataBatchResponseItem> ExecuteChangeSet(HttpContext batchContext, ChangeSetRequestItem changeSet, RequestDelegate handler)
+        protected virtual async Task<ODataBatchResponseItem> ExecuteChangeSet(HttpContext batchContext, ChangeSetRequestItem changeSet, RequestDelegate handler)
         {
             if (changeSet == null)
             {
@@ -471,48 +433,85 @@
 
             if (changeSetResponse.Contexts.All(x => x.Response.IsSuccessStatusCode()))
             {
-                try
-                {
-                    Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
-                    foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
-                    {
-                        if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
-                        {
-                            stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
-                        }
-                    }
-
-                    IDataService dataService = UnityFactoryHelper.ResolveRequiredIfNull(batchContext.RequestServices.GetService<IDataService>());
-                    DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                    dataService.UpdateObjects(ref dataObjects);
-
-                    foreach (DataObject dataObject in dataObjectsToUpdate)
-                    {
-                        var state = stateDictionary[dataObject.__PrimaryKey];
-                        switch (state)
-                        {
-                            case ObjectStatus.Created:
-                                _events.CallbackAfterCreate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Altered:
-                                _events.CallbackAfterUpdate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Deleted:
-                                _events.CallbackAfterDelete?.Invoke(dataObject);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                UpdateObjects(batchContext, dataObjectsToUpdate);
             }
 
             return changeSetResponse;
         }
 #endif
+
+#if NETSTANDARD
+        /// <summary>
+        /// Update processed objects.
+        /// </summary>
+        /// <param name="batchContext">The http context of a batch request.</param>
+        /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
+        protected virtual void UpdateObjects(HttpContext batchContext, List<DataObject> dataObjectsToUpdate)
+        {
+            if (batchContext == null)
+            {
+                throw new ArgumentNullException(nameof(batchContext));
+            }
+
+            IDataService dataService = batchContext.RequestServices.GetService<IDataService>();
+            UpdateObjects(dataService, dataObjectsToUpdate);
+        }
+#endif
+
+        /// <summary>
+        /// Update processed objects.
+        /// </summary>
+        /// <param name="dataService">The instance of <see cref="IDataService" />.</param>
+        /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
+        protected virtual void UpdateObjects(IDataService dataService, List<DataObject> dataObjectsToUpdate)
+        {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
+            if (dataObjectsToUpdate == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectsToUpdate));
+            }
+
+            try
+            {
+                Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
+                foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
+                {
+                    if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
+                    {
+                        stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
+                    }
+                }
+
+                DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
+                dataService.UpdateObjects(ref dataObjects);
+
+                foreach (DataObject dataObject in dataObjectsToUpdate)
+                {
+                    var state = stateDictionary[dataObject.__PrimaryKey];
+                    switch (state)
+                    {
+                        case ObjectStatus.Created:
+                            _events.CallbackAfterCreate?.Invoke(dataObject);
+                            break;
+                        case ObjectStatus.Altered:
+                            _events.CallbackAfterUpdate?.Invoke(dataObject);
+                            break;
+                        case ObjectStatus.Deleted:
+                            _events.CallbackAfterDelete?.Invoke(dataObject);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

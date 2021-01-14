@@ -45,7 +45,6 @@
     using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
     using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
 #elif NETSTANDARD
-    using ICSSoft.Services;
     using Microsoft.AspNet.OData.Common;
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Http;
@@ -232,13 +231,12 @@
         /// <param name="dataObjectFileAccessor">The data object file properties accessor.</param>
         /// <param name="dataService">The data service for all manipulations with data.</param>
         /// <param name="offlineManager">The offline manager.</param>
-        public DataObjectController(IDataObjectFileAccessor dataObjectFileAccessor, IDataService dataService = null, BaseOfflineManager offlineManager = null)
-            : base()
+        public DataObjectController(IDataObjectFileAccessor dataObjectFileAccessor, IDataService dataService, BaseOfflineManager offlineManager = null)
         {
-            _dataObjectFileAccessor = dataObjectFileAccessor;
+            _dataObjectFileAccessor = dataObjectFileAccessor ?? throw new ArgumentNullException(nameof(dataObjectFileAccessor));
+            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
 
-            _dataService = UnityFactoryHelper.ResolveRequiredIfNull(dataService);
-            OfflineManager = UnityFactoryHelper.ResolveIfNull(offlineManager) ?? new DummyOfflineManager();
+            OfflineManager = offlineManager ?? new DummyOfflineManager();
         }
 #endif
 #if NETFRAMEWORK
