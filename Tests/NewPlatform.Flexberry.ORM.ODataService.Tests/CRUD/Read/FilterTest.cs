@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-
+    using System.Reflection;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.UserDataTypes;
     using ICSSoft.STORMNET.Windows.Forms;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Newtonsoft.Json;
@@ -21,6 +21,20 @@
     /// </summary>
     public class FilterTest : BaseODataServiceIntegratedTest
     {
+        /// <summary>
+        /// Initialize new instance of <see cref="FilterTest"/>.
+        /// </summary>
+        public FilterTest()
+            : base()
+        {
+            DataObjectsAssembliesNames = new[]
+            {
+                typeof(Car).Assembly
+            };
+
+            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, UseNamespaceInEntitySetName) { PropertyFilter = PropertyFilter };
+        }
+
         [Fact]
         public void TestFilterStringKey()
         {
@@ -306,6 +320,54 @@
                     Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                 }
             });
+        }
+
+        /// <summary>
+        /// Test FilteredProperty is absend in response. Filter is <see cref="PropertyFilter"/>.
+        /// </summary>
+        [Fact]
+        public void TestFilteredProperty()
+        {
+            ActODataService(args =>
+            {
+                var breed = new Порода() { Название = "Хвостатая" };
+                var cat = new Кошка() { Порода = breed, Тип = ТипКошки.Домашняя };
+                var kitty = new Котенок() { КличкаКотенка = "Барсище", Глупость = 55, Кошка = cat };
+                var objs = new DataObject[] { kitty };
+                args.DataService.UpdateObjects(ref objs);
+
+                string requestUrl = string.Format(
+                    "http://localhost/odata/{0}?$filter={1}",
+                    args.Token.Model.GetEdmEntitySet(typeof(Котенок)).Name,
+                    $"КличкаКотенка eq '{kitty.КличкаКотенка}'");
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    // Получим строку с ответом.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+
+                    Assert.DoesNotContain(nameof(Котенок.Глупость), receivedStr);
+
+                    // Преобразуем полученный объект в словарь.
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Property filter for <see cref="TestFilteredProperty"/>.
+        /// </summary>
+        /// <param name="propertyInfo">Property info for checks.</param>
+        /// <returns>Filter result.</returns>
+        protected virtual bool PropertyFilter(PropertyInfo propertyInfo)
+        {
+            return Information.ExtractPropertyInfo<Котенок>(x => x.Глупость) != propertyInfo;
         }
     }
 }
