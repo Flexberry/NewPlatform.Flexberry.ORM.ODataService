@@ -87,7 +87,7 @@
         public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            var container = UnityFactory.GetContainer(); // TODO: use DI.
+            var container = UnityFactory.GetContainer();
             if (container != null)
             {
                 if (container.IsRegistered<IExportService>("Export"))
