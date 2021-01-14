@@ -68,7 +68,6 @@
         /// </summary>
         private readonly bool isSyncMode;
 
-
         /// <summary>
         /// DataService instance for execute queries.
         /// </summary>
@@ -449,18 +448,33 @@
         /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
         protected virtual void UpdateObjects(HttpContext batchContext, List<DataObject> dataObjectsToUpdate)
         {
+            if (batchContext == null)
+            {
+                throw new ArgumentNullException(nameof(batchContext));
+            }
+
             IDataService dataService = batchContext.RequestServices.GetService<IDataService>();
             UpdateObjects(dataService, dataObjectsToUpdate);
         }
 #endif
 
         /// <summary>
-        /// Update processed object.
+        /// Update processed objects.
         /// </summary>
-        /// <param name="ds">The instance of <see cref="IDataService" />.</param>
+        /// <param name="dataService">The instance of <see cref="IDataService" />.</param>
         /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
-        protected virtual void UpdateObjects(IDataService ds, List<DataObject> dataObjectsToUpdate)
+        protected virtual void UpdateObjects(IDataService dataService, List<DataObject> dataObjectsToUpdate)
         {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
+            if (dataObjectsToUpdate == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectsToUpdate));
+            }
+
             try
             {
                 Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
@@ -473,7 +487,7 @@
                 }
 
                 DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                ds.UpdateObjects(ref dataObjects);
+                dataService.UpdateObjects(ref dataObjects);
 
                 foreach (DataObject dataObject in dataObjectsToUpdate)
                 {

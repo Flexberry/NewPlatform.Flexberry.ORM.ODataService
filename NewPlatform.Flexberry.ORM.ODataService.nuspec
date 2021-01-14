@@ -15,7 +15,7 @@
       Added
       1. Netstandard 2.0 implementation.
     </releaseNotes>
-    <copyright>Copyright New Platform Ltd 2020</copyright>
+    <copyright>Copyright New Platform Ltd 2021</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5">
