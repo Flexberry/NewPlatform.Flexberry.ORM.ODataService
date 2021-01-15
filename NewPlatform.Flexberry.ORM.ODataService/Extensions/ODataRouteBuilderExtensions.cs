@@ -12,7 +12,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
     using Microsoft.AspNetCore.Mvc.ApplicationParts;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.OData;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
@@ -33,20 +32,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
         /// </summary>
         /// <param name="builder">The <see cref="IRouteBuilder"/> to add the route to.</param>
         /// <param name="modelBuilder">The Edm model builder.</param>
+        /// <param name="batchHandler">The <see cref="DataObjectODataBatchHandler"/>.</param>
         /// <param name="routeName">The name of the route to map.</param>
         /// <param name="routePrefix">The prefix to add to the OData route's path template.</param>
-        /// <param name="messageQuotasMaxPartsPerBatch">The maximum number of top level query operations and changesets allowed in a single batch.</param>
-        /// <param name="messageQuotasMaxOperationsPerChangeset">The maximum number of operations allowed in a single changeset in a batch. Default is 1000.</param>
-        /// <param name="messageQuotasMaxReceivedMessageSize">The maximum number of bytes that should be read from the message in a batch. Default is 10485760.</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
         public static ManagementToken MapDataObjectRoute(
             this IRouteBuilder builder,
             IDataObjectEdmModelBuilder modelBuilder,
+            DataObjectODataBatchHandler batchHandler,
             string routeName = DataObjectRoutingConventions.DefaultRouteName,
-            string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix,
-            int messageQuotasMaxPartsPerBatch = 1000,
-            int messageQuotasMaxOperationsPerChangeset = 1000,
-            int messageQuotasMaxReceivedMessageSize = 10485760)
+            string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix)
         {
             if (builder == null)
             {
@@ -56,6 +51,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             if (modelBuilder == null)
             {
                 throw Error.ArgumentNull(nameof(modelBuilder));
+            }
+
+            if (batchHandler == null)
+            {
+                throw Error.ArgumentNull(nameof(batchHandler));
             }
 
             if (routeName == null)
@@ -69,11 +69,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             // Make sure the DataObjectController is registered with the ApplicationPartManager.
             var applicationPartManager = builder.ServiceProvider.GetRequiredService<ApplicationPartManager>();
             applicationPartManager.ApplicationParts.Add(new AssemblyPart(typeof(DataObjectController).Assembly));
-
-            var batchHandler = new DataObjectODataBatchHandler();
-            batchHandler.MessageQuotas.MaxPartsPerBatch = messageQuotasMaxPartsPerBatch;
-            batchHandler.MessageQuotas.MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset;
-            batchHandler.MessageQuotas.MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize;
 
             ODataRoute route = builder.MapODataServiceRoute(routeName, routePrefix, cb => cb
                 .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
@@ -89,6 +84,34 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             batchHandler.InitializeEvents(token.Events);
 
             return token;
+        }
+
+        /// <summary>
+        /// Maps the specified OData Service DataObject route.
+        /// </summary>
+        /// <param name="builder">The <see cref="IRouteBuilder"/> to add the route to.</param>
+        /// <param name="modelBuilder">The Edm model builder.</param>
+        /// <param name="routeName">The name of the route to map.</param>
+        /// <param name="routePrefix">The prefix to add to the OData route's path template.</param>
+        /// <param name="messageQuotasMaxPartsPerBatch">The maximum number of top level query operations and changesets allowed in a single batch.</param>
+        /// <param name="messageQuotasMaxOperationsPerChangeset">The maximum number of operations allowed in a single changeset in a batch. Default is 1000.</param>
+        /// <param name="messageQuotasMaxReceivedMessageSize">The maximum number of bytes that should be read from the message in a batch. Default is 10485760.</param>
+        /// <returns>A <see cref="ManagementToken"/> instance.</returns>
+        public static ManagementToken MapDataObjectRoute(
+            this IRouteBuilder builder,
+            IDataObjectEdmModelBuilder modelBuilder,
+            string routeName = DataObjectRoutingConventions.DefaultRouteName,
+            string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix,
+            int messageQuotasMaxPartsPerBatch = 1000,
+            int messageQuotasMaxOperationsPerChangeset = 1000,
+            long messageQuotasMaxReceivedMessageSize = long.MaxValue)
+        {
+            var batchHandler = new DataObjectODataBatchHandler();
+            batchHandler.MessageQuotas.MaxPartsPerBatch = messageQuotasMaxPartsPerBatch;
+            batchHandler.MessageQuotas.MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset;
+            batchHandler.MessageQuotas.MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize;
+
+            return builder.MapDataObjectRoute(modelBuilder, batchHandler, routeName, routePrefix);
         }
     }
 }
