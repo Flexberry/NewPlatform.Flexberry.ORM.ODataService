@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.2.0-beta02</version>
+    <version>5.2.0-beta03</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -19,6 +19,7 @@
       Changed
       1. Removing files through file providers.
       2. Add additional edm mapping into model builder.
+      3. Change load and prepare data for responce of export query.
 
       Fixed
       1. Batch update InternalServerError event handling.

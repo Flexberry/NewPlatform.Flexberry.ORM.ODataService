@@ -38,6 +38,11 @@
         public IODataExportService ODataExportService { get; set; }
 
         /// <summary>
+        /// Service to export data from ORM.
+        /// </summary>
+        public IODataExportServiceFast ODataExportServiceFast { get; set; }
+
+        /// <summary>
         /// Ссылка на IDataObjectEdmModelBuilder.
         /// </summary>
         public IDataObjectEdmModelBuilder EdmModelBuilder { get; set; }
@@ -110,6 +115,16 @@
                 if (container.IsRegistered<IODataExportService>())
                 {
                     ODataExportService = container.Resolve<IODataExportService>();
+                }
+
+                if (container.IsRegistered<IODataExportServiceFast>("Export"))
+                {
+                    ODataExportServiceFast = container.Resolve<IODataExportServiceFast>("Export");
+                }
+
+                if (container.IsRegistered<IODataExportServiceFast>())
+                {
+                    ODataExportServiceFast = container.Resolve<IODataExportServiceFast>();
                 }
             }
 

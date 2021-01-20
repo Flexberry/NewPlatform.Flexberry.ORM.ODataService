@@ -49,6 +49,7 @@
     {
         private List<string> _filterDetailProperties;
         private DataObject[] _objs;
+        private ObjectStringDataView[] _objsStringView;
         private LoadingCustomizationStruct _lcs;
 
         /// <summary>
@@ -273,6 +274,11 @@
             return _dataService.GetObjectsCount(lcs);
         }
 
+        /// <summary>
+        /// Формирует ответ с данными для экспорта в Excel.
+        /// </summary>
+        /// <param name="queryParams">Параметры запроса.</param>
+        /// <returns>Ответ на запрос.</returns>
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
         {
             View view = _dynamicView.View;
@@ -290,48 +296,26 @@
                 LimitFunction = null
             };
 
-            var colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
             par.PropertiesOrder = new List<string>();
             par.HeaderCaptions = new List<IHeaderCaption>();
 
-            foreach (string column in colsOrder)
+            Dictionary<string, string> colsconfigOrder = GetColsConfigOrderDictionary(queryParams);
+
+            foreach (string colsconfigname in colsconfigOrder.Keys)
             {
-                var columnInfo = column.Split(new char[] { '/' }, 2);
-                var decodeColumnInfo0 = HttpUtility.UrlDecode(columnInfo[0]);
-                var decodeColumnInfo1 = HttpUtility.UrlDecode(columnInfo[1]);
-
-                par.PropertiesOrder.Add(decodeColumnInfo0);
-                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = decodeColumnInfo0, Caption = decodeColumnInfo1 });
-            }
-
-            for (int i = 0; i < view.Details.Length; i++)
-            {
-                DetailInView detail = view.Details[i];
-                detail.View.Name = string.IsNullOrEmpty(detail.Name) ? $"ViewDetail{i}" : detail.Name;
-                var column = par.HeaderCaptions.FirstOrDefault(col => col.PropertyName == detail.Name);
-                if (column != null)
-                {
-                    column.MasterName = string.IsNullOrEmpty(view.Name) ? "View" : view.Name;
-                    column.DetailName = detail.View.Name;
-                }
-
-                var properties = new List<PropertyInView>();
-                for (int j = 0; j < detail.View.Properties.Length; j++)
-                {
-                    PropertyInView propDetail = detail.View.Properties[j];
-                    if (_properties.Keys.FirstOrDefault(p => !(p is PathSelectItem) && _properties[p] == $"{detail.Name}.{propDetail.Name}") != null)
-                        continue;
-                    if (_properties.Keys.FirstOrDefault(p => p is PathSelectItem && _properties[p] == $"{detail.Name}.{propDetail.Name}") != null)
-                        properties.Add(propDetail);
-                }
-
-                detail.View.Properties = properties.ToArray();
+                par.PropertiesOrder.Add(colsconfigname);
+                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = colsconfigname, Caption = colsconfigOrder[colsconfigname] });
             }
 
             par.DetailsInSeparateColumns = Convert.ToBoolean(queryParams.Get("detSeparateCols"));
             par.DetailsInSeparateRows = Convert.ToBoolean(queryParams.Get("detSeparateRows"));
             MemoryStream result;
-            if (_model.ODataExportService != null)
+
+            if (_model.ODataExportServiceFast != null)
+            {
+                result = _model.ODataExportServiceFast.CreateExportStreamFast(par, _objsStringView);
+            }
+            else if (_model.ODataExportService != null)
             {
                 result = _model.ODataExportService.CreateExportStream(_dataService, par, _objs, queryParams);
             }
@@ -345,6 +329,58 @@
             msg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             msg.Content.Headers.ContentDisposition.FileName = "list.xlsx";
             return msg;
+        }
+
+        /// <summary>
+        /// Формирует из параметров перечень столбцов для экспорта в заданном порядке.
+        /// </summary>
+        /// <param name="queryParams">Параметры запроса.</param>
+        /// <returns>Перечень столбцов.</returns>
+        internal Dictionary<string, string> GetColsConfigOrderDictionary(NameValueCollection queryParams)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            var colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
+
+            foreach (string column in colsOrder)
+            {
+                var columnInfo = column.Split(new char[] { '/' }, 2);
+                var name = HttpUtility.UrlDecode(columnInfo[0]);
+                var caption = HttpUtility.UrlDecode(columnInfo[1]);
+
+                result.Add(name, caption);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Преобразует lcs для экспорта, убирая лишние properties.
+        /// </summary>
+        /// <param name="queryParams">Параметры запроса.</param>
+        /// <returns>Настройка загрузки (lcs).</returns>
+        internal LoadingCustomizationStruct ChangeLcsForExport(NameValueCollection queryParams)
+        {
+            LoadingCustomizationStruct resultLcs = _lcs;
+
+            Dictionary<string, string> colsconfigOrder = GetColsConfigOrderDictionary(queryParams);
+
+            List<PropertyInView> resultProperies = new List<PropertyInView>();
+
+            foreach (string key in colsconfigOrder.Keys)
+            {
+                foreach (PropertyInView property in resultLcs.View.Properties)
+                {
+                    if (property.Name == key)
+                    {
+                        resultProperies.Add(property);
+                        continue;
+                    }
+                }
+            }
+
+            resultLcs.View.Properties = resultProperies.ToArray();
+
+            return resultLcs;
         }
 
         /// <summary>
@@ -951,12 +987,44 @@
         /// <summary>
         /// Возвращает набор сущностей, соответствующий параметрам запроса OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
         /// <returns>Набор сущностей.</returns>
         private HttpResponseMessage ExecuteExpression()
         {
-            _objs = new DataObject[0];
+            NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+
+            bool isExport = _model.ODataExportServiceFast != null || _model.ODataExportService != null || _model.ExportService != null;
+            bool isFastExport = _model.ODataExportServiceFast != null;
+            bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
+
             _lcs = CreateLcs();
+            _lcs = isExport && isForExcel ? ChangeLcsForExport(queryParams) : _lcs;
+
+            PrepareDataObjectsForResponse(isFastExport);
+
+            if (isExport && isForExcel)
+            {
+                return CreateExcel(queryParams);
+            }
+            else
+            {
+                HttpResponseMessage msg = null;
+                EdmEntityObjectCollection edmCol = null;
+                edmCol = GetEdmCollection(_objs, type, 1, null, _dynamicView);
+                msg = Request.CreateResponse(HttpStatusCode.OK, edmCol);
+
+                return msg;
+            }
+        }
+
+        /// <summary>
+        /// Формирует.
+        /// </summary>
+        /// <param name="isFast">Тип DataObject.</param>
+        private void PrepareDataObjectsForResponse(bool isFast)
+        {
+            _objs = new DataObject[0];
+            _objsStringView = new ObjectStringDataView[0];
+
             int count = -1;
             bool callExecuteCallbackBeforeGet = true;
             IncludeCount = false;
@@ -967,7 +1035,10 @@
                 var rowNumber = _lcs.RowNumber;
                 _lcs.RowNumber = null;
                 _lcs.ReturnTop = 0;
-                _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, true);
+
+                _objs = isFast ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, true);
+                _objsStringView = isFast ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, true) : _objsStringView;
+
                 _lcs.RowNumber = rowNumber;
                 _lcs.ReturnTop = returnTop;
                 callExecuteCallbackBeforeGet = false;
@@ -975,20 +1046,10 @@
             }
 
             if (!IncludeCount || count != 0)
-                _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
-
-            NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
-
-            if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
             {
-                return CreateExcel(queryParams);
+                _objs = isFast ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
+                _objsStringView = isFast ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, false) : _objsStringView;
             }
-
-            HttpResponseMessage msg = null;
-            EdmEntityObjectCollection edmCol = null;
-            edmCol = GetEdmCollection(_objs, type, 1, null, _dynamicView);
-            msg = Request.CreateResponse(HttpStatusCode.OK, edmCol);
-            return msg;
         }
 
         public LoadingCustomizationStruct CreateLcs()
@@ -1145,6 +1206,36 @@
 
             if (callExecuteCallbackAfterGet)
                 ExecuteCallbackAfterGet(ref dobjs);
+
+            return dobjs;
+        }
+
+        private ObjectStringDataView[] LoadObjectsFast(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
+        {
+            foreach (var propType in Information.GetAllTypesFromView(lcs.View))
+            {
+                if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
+                {
+                    _dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Read, true);
+                }
+            }
+
+            ObjectStringDataView[] dobjs = new ObjectStringDataView[0];
+            bool doLoad = true;
+            count = -1;
+            if (callExecuteCallbackBeforeGet)
+                doLoad = ExecuteCallbackBeforeGet(ref lcs);
+            if (doLoad)
+            {
+                if (!callGetObjectsCount)
+                {
+                    dobjs = _dataService.LoadStringedObjectView(',', lcs);
+                }
+                else
+                {
+                    count = _dataService.GetObjectsCount(lcs);
+                }
+            }
 
             return dobjs;
         }
