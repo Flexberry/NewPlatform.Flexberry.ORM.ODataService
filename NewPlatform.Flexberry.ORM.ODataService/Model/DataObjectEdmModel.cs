@@ -35,12 +35,12 @@
         /// <summary>
         /// Service to export data from ORM.
         /// </summary>
-        public IODataExportService ODataExportService { get; set; }
+        public IExportStringedObjectViewService ExportStringedObjectViewService { get; set; }
 
         /// <summary>
         /// Service to export data from ORM.
         /// </summary>
-        public IODataExportServiceFast ODataExportServiceFast { get; set; }
+        public IODataExportService ODataExportService { get; set; }
 
         /// <summary>
         /// Ссылка на IDataObjectEdmModelBuilder.
@@ -107,6 +107,16 @@
                     ExportService = container.Resolve<IExportService>();
                 }
 
+                if (container.IsRegistered<IExportStringedObjectViewService>("Export"))
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("Export");
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>())
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
+                }
+
                 if (container.IsRegistered<IODataExportService>("Export"))
                 {
                     ODataExportService = container.Resolve<IODataExportService>("Export");
@@ -115,17 +125,7 @@
                 if (container.IsRegistered<IODataExportService>())
                 {
                     ODataExportService = container.Resolve<IODataExportService>();
-                }
-
-                if (container.IsRegistered<IODataExportServiceFast>("Export"))
-                {
-                    ODataExportServiceFast = container.Resolve<IODataExportServiceFast>("Export");
-                }
-
-                if (container.IsRegistered<IODataExportServiceFast>())
-                {
-                    ODataExportServiceFast = container.Resolve<IODataExportServiceFast>();
-                }
+                }                
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");

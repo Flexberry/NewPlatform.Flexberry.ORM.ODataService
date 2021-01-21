@@ -311,9 +311,9 @@
             par.DetailsInSeparateRows = Convert.ToBoolean(queryParams.Get("detSeparateRows"));
             MemoryStream result;
 
-            if (_model.ODataExportServiceFast != null)
+            if (_model.ExportStringedObjectViewService != null)
             {
-                result = _model.ODataExportServiceFast.CreateExportStreamFast(par, _objsStringView);
+                result = _model.ExportStringedObjectViewService.CreateExportStream(par, _objsStringView);
             }
             else if (_model.ODataExportService != null)
             {
@@ -992,8 +992,8 @@
         {
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
 
-            bool isExport = _model.ODataExportServiceFast != null || _model.ODataExportService != null || _model.ExportService != null;
-            bool isFastExport = _model.ODataExportServiceFast != null;
+            bool isExport = _model.ExportStringedObjectViewService != null || _model.ODataExportService != null || _model.ExportService != null;
+            bool isFastExport = _model.ExportStringedObjectViewService != null;
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 
             _lcs = CreateLcs();
