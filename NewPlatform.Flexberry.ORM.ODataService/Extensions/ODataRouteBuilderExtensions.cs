@@ -43,7 +43,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             this IRouteBuilder builder,
             IDataObjectEdmModelBuilder modelBuilder,
             DataObjectODataBatchHandler batchHandler,
-            Action<IContainerBuilder> configureAction,
+            Action<IContainerBuilder> configureAction = null,
             string routeName = DataObjectRoutingConventions.DefaultRouteName,
             string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix)
         {
@@ -121,7 +121,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             this IContainerBuilder builder,
             DataObjectEdmModel model,
             DataObjectODataBatchHandler batchHandler,
-            Action<IContainerBuilder> configureAction)
+            Action<IContainerBuilder> configureAction = null)
         {
             builder
                 .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
