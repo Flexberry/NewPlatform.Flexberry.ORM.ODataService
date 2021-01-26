@@ -107,9 +107,9 @@
                     ExportService = container.Resolve<IExportService>();
                 }
 
-                if (container.IsRegistered<IExportStringedObjectViewService>("Export"))
+                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
                 {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("Export");
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
                 }
 
                 if (container.IsRegistered<IExportStringedObjectViewService>())
@@ -125,7 +125,7 @@
                 if (container.IsRegistered<IODataExportService>())
                 {
                     ODataExportService = container.Resolve<IODataExportService>();
-                }                
+                }
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
