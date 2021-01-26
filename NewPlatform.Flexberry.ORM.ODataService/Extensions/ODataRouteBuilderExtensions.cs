@@ -1,6 +1,7 @@
 ﻿#if NETSTANDARD
 namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.AspNet.OData.Batch;
     using Microsoft.AspNet.OData.Common;
@@ -12,6 +13,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
     using Microsoft.AspNetCore.Mvc.ApplicationParts;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
@@ -33,6 +35,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
         /// <param name="builder">The <see cref="IRouteBuilder"/> to add the route to.</param>
         /// <param name="modelBuilder">The Edm model builder.</param>
         /// <param name="batchHandler">The <see cref="DataObjectODataBatchHandler"/>.</param>
+        /// <param name="configureAction">The configuring action to add the services to the root container.</param>
         /// <param name="routeName">The name of the route to map.</param>
         /// <param name="routePrefix">The prefix to add to the OData route's path template.</param>
         /// <returns>A <see cref="ManagementToken"/> instance.</returns>
@@ -40,6 +43,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             this IRouteBuilder builder,
             IDataObjectEdmModelBuilder modelBuilder,
             DataObjectODataBatchHandler batchHandler,
+            Action<IContainerBuilder> configureAction,
             string routeName = DataObjectRoutingConventions.DefaultRouteName,
             string routePrefix = DataObjectRoutingConventions.DefaultRoutePrefix)
         {
@@ -70,13 +74,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             var applicationPartManager = builder.ServiceProvider.GetRequiredService<ApplicationPartManager>();
             applicationPartManager.ApplicationParts.Add(new AssemblyPart(typeof(DataObjectController).Assembly));
 
-            ODataRoute route = builder.MapODataServiceRoute(routeName, routePrefix, cb => cb
-                .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
-                .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
-                .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
-                .AddService(ServiceLifetime.Singleton, typeof(ODataBatchHandler), sp => batchHandler)
-                .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
-                .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp)));
+            ODataRoute route = builder.MapODataServiceRoute(routeName, routePrefix, cb => cb.ConfigurateDefaults(model, batchHandler, configureAction));
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
@@ -107,11 +105,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
             long messageQuotasMaxReceivedMessageSize = long.MaxValue)
         {
             var batchHandler = new DataObjectODataBatchHandler();
-            batchHandler.MessageQuotas.MaxPartsPerBatch = messageQuotasMaxPartsPerBatch;
-            batchHandler.MessageQuotas.MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset;
-            batchHandler.MessageQuotas.MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize;
 
-            return builder.MapDataObjectRoute(modelBuilder, batchHandler, routeName, routePrefix);
+            // FYI: https://github.com/OData/WebApi/issues/2163
+            var messageQuotas = new ODataMessageQuotas
+            {
+                MaxPartsPerBatch = messageQuotasMaxPartsPerBatch,
+                MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset,
+                MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize,
+            };
+
+            return builder.MapDataObjectRoute(modelBuilder, batchHandler, cb => cb.AddServicePrototype(new ODataMessageReaderSettings { MessageQuotas = messageQuotas }), routeName, routePrefix);
+        }
+
+        private static void ConfigurateDefaults(
+            this IContainerBuilder builder,
+            DataObjectEdmModel model,
+            DataObjectODataBatchHandler batchHandler,
+            Action<IContainerBuilder> configureAction)
+        {
+            builder
+                .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
+                .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
+                .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
+                .AddService(ServiceLifetime.Singleton, typeof(ODataBatchHandler), sp => batchHandler)
+                .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
+                .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp));
+
+            configureAction?.Invoke(builder);
         }
     }
 }
