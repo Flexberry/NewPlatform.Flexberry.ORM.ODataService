@@ -406,10 +406,11 @@
         /// Преобразует lcs для экспорта в эксель с типом данных ObjectStringDataView, убирает лишние properties.
         /// </summary>
         /// <param name="queryParams">Параметры запроса.</param>
+        /// <param name="lcs">Настройка загрузки.</param>
         /// <returns>Настройка загрузки (lcs).</returns>
-        internal LoadingCustomizationStruct PrepareLcsForStringedObjectViewExport(NameValueCollection queryParams)
+        internal LoadingCustomizationStruct PrepareLcsForStringedObjectViewExport(NameValueCollection queryParams, LoadingCustomizationStruct lcs)
         {
-            LoadingCustomizationStruct resultLcs = _lcs;
+            LoadingCustomizationStruct resultLcs = lcs;
 
             Dictionary<string, string> colsconfigOrder = GetColsConfigOrderDictionary(queryParams);
 
@@ -1045,11 +1046,13 @@
 
             bool isExport = _model.ExportStringedObjectViewService != null || _model.ODataExportService != null || _model.ExportService != null;
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
-            bool isStringedObjectViewExport = isForExcel && _model.ExportStringedObjectViewService != null && _lcs.View.Details.Length == 0;
+
+            bool isStringedObjectViewExportAvailable = _model.ExportStringedObjectViewService != null && _lcs.View.Details.Length == 0 && CheckRegisterCallbackAfterExportGet();
+            bool isStringedObjectViewExport = isForExcel && isStringedObjectViewExportAvailable;
 
             if (isStringedObjectViewExport)
             {
-                PrepareLcsForStringedObjectViewExport(queryParams);
+                _lcs = PrepareLcsForStringedObjectViewExport(queryParams, _lcs);
             }
 
             PrepareDataObjects(isStringedObjectViewExport);
@@ -1229,7 +1232,8 @@
         /// <returns>Если параметр callGetObjectsCount установлен в false, то возвращаются объекты, иначе пустой массив объектов.</returns>
         private DataObject[] LoadObjects(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
-            foreach (var propType in Information.GetAllTypesFromView(lcs.View))
+            List<Type> allTypesFromView = Information.GetAllTypesFromView(lcs.View);
+            foreach (var propType in allTypesFromView)
             {
                 if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
                 {
@@ -1265,7 +1269,8 @@
 
         private ObjectStringDataView[] LoadObjectsFast(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
-            foreach (var propType in Information.GetAllTypesFromView(lcs.View))
+            List<Type> allTypesFromView = Information.GetAllTypesFromView(lcs.View);
+            foreach (var propType in allTypesFromView)
             {
                 if (!_dataService.SecurityManager.AccessObjectCheck(propType, tTypeAccess.Full, false))
                 {
@@ -1289,6 +1294,9 @@
                     count = _dataService.GetObjectsCount(lcs);
                 }
             }
+
+            if (callExecuteCallbackAfterGet)
+                ExecuteCallbackAfterExportGet(ref dobjs);
 
             return dobjs;
         }

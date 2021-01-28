@@ -19,7 +19,7 @@
       Changed
       1. Removing files through file providers.
       2. Add additional edm mapping into model builder.
-      3. Change load and prepare data for responce of export query.
+      3. Add fast load and prepare data for export to excel.
 
       Fixed
       1. Batch update InternalServerError event handling.
