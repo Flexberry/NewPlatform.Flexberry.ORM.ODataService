@@ -355,10 +355,36 @@
         }
 
         /// <summary>
+        /// Проверяет данные на возможность их экспорта в эксель с типом ObjectStringDataView.
+        /// </summary>
+        /// <param name="model">Текущие данные сервиса.</param>
+        /// <param name="lcs">Настройка загрузки.</param>
+        /// <returns>Ответ, подходят или нет.</returns>
+        internal bool CheckDataAvailableForStringDataViewExcelExport(DataObjectEdmModel model, LoadingCustomizationStruct lcs)
+        {
+            bool isAfterGetDeniedTypesExist = false;
+
+            Type[] deniedTypes = model.ExcelExportAfterGetDeniedTypes;
+            Type[] lcsTypes = lcs.LoadingTypes;
+
+            IEnumerable<Type> intersection = lcsTypes.Intersect(deniedTypes);
+
+            if (intersection.Any())
+            {
+                isAfterGetDeniedTypesExist = true;
+                LogService.LogInfo("Object type denied for StringDataView excel export");
+            }
+
+            bool isDetailsExist = lcs.View.Details.Length > 0;
+
+            return !isAfterGetDeniedTypesExist && !isDetailsExist;
+        }
+
+        /// <summary>
         /// Формирует из параметров перечень столбцов для экспорта в заданном порядке.
         /// </summary>
         /// <param name="queryParams">Параметры запроса.</param>
-        /// <returns>Перечень столбцов.</returns>
+        /// <returns>Перечень столбцов. Имя и Описание.</returns>
         internal Dictionary<string, string> GetColsConfigOrderDictionary(NameValueCollection queryParams)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -385,8 +411,10 @@
         internal MemoryStream GetMemoryStreamFromExcelExportService(ExportParams exportParams, NameValueCollection queryParams)
         {
             MemoryStream result = null;
+            DataObjectEdmModel currentModel = _model;
+            LoadingCustomizationStruct currentLcs = _lcs;
 
-            if (_model.ExportStringedObjectViewService != null && _lcs.View.Details.Length == 0)
+            if (_model.ExportStringedObjectViewService != null && CheckDataAvailableForStringDataViewExcelExport(currentModel, currentLcs))
             {
                 result = _model.ExportStringedObjectViewService.CreateExportStream(exportParams, _objsStringView);
             }
@@ -1047,7 +1075,7 @@
             bool isExport = _model.ExportStringedObjectViewService != null || _model.ODataExportService != null || _model.ExportService != null;
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 
-            bool isStringedObjectViewExportAvailable = _model.ExportStringedObjectViewService != null && _lcs.View.Details.Length == 0 && CheckRegisterCallbackAfterExportGet();
+            bool isStringedObjectViewExportAvailable = _model.ExportStringedObjectViewService != null && CheckDataAvailableForStringDataViewExcelExport(_model, _lcs);
             bool isStringedObjectViewExport = isForExcel && isStringedObjectViewExportAvailable;
 
             if (isStringedObjectViewExport)

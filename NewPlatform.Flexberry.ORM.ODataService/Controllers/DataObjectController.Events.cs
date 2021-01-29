@@ -77,15 +77,6 @@
         }
 
         /// <summary>
-        /// Проверяет используется ли делегат.
-        /// </summary>
-        /// <returns>Результат проверки.</returns>
-        internal bool CheckRegisterCallbackAfterExportGet()
-        {
-            return _events.CallbackAfterExportGet != null;
-        }
-
-        /// <summary>
         /// Вызов делегата после создания объекта.
         /// </summary>
         /// <param name="obj">Объект после создания.</param>

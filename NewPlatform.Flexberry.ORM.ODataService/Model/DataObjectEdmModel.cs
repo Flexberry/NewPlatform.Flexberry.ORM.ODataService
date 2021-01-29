@@ -57,6 +57,11 @@
         /// </summary>
         public PropertyInfo KeyProperty => _metadata.KeyProperty;
 
+        /// <summary>
+        /// Типы объектов непредназначенные для вызова события AfterGet перед отправкой выгруженных данных.
+        /// </summary>
+        public Type[] ExcelExportAfterGetDeniedTypes { get; set; }
+
         private const string DefaultNamespace = "DataObject";
 
         /// <summary>
