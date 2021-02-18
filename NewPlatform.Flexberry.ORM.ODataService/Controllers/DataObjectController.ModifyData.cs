@@ -544,7 +544,20 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache, true, true, _dataObjectCache);
+                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                            View miniView = view.Clone();
+                            DetailInView[] miniViewDetails = miniView.Details;
+                            foreach (DetailInView detailInView in miniViewDetails)
+                            {
+                                miniView.RemoveDetail(detailInView.Name);
+                            }
+
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
+
+                            if (miniViewDetails.Length > 0)
+                            {
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, _dataObjectCache);
+                            }
                         }
                     }
 
