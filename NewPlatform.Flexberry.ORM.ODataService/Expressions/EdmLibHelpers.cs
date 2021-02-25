@@ -6,18 +6,28 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Web.Http.Dispatcher;
     using System.Xml.Linq;
-    using Microsoft.OData.Edm;
-    using Microsoft.Spatial;
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Builder;
+    using Microsoft.OData.Edm;
+    using Microsoft.Spatial;
+
+#if NETFRAMEWORK
+    using System.Data.Linq;
+
+    using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
+    using Microsoft.AspNet.OData.Common;
+
+    using DefaultAssembliesResolver = Microsoft.AspNet.OData.Adapters.WebApiAssembliesResolver;
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
+#endif
 
     /// <summary>
     /// Класс содержит вспомогательные методы для работы с EDM-моделью.
@@ -81,7 +91,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                 // Keep the Binary and XElement in the end, since there are not the default mappings for Edm.Binary and Edm.String.
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(XElement), GetPrimitiveType(EdmPrimitiveTypeKind.String)),
+#if NETFRAMEWORK
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(Binary), GetPrimitiveType(EdmPrimitiveTypeKind.Binary)),
+#endif
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(ushort?), GetPrimitiveType(EdmPrimitiveTypeKind.Int32)),
                 new KeyValuePair<Type, IEdmPrimitiveType>(typeof(uint), GetPrimitiveType(EdmPrimitiveTypeKind.Int64)),
@@ -200,7 +212,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             }
 
             string typeName = edmSchemaType.FullName();
-            IEnumerable<Type> matchingTypes = GetMatchingTypes(typeName, assembliesResolver);
+            IEnumerable<Type> matchingTypes = GetMatchingTypes(typeName, assembliesResolver).ToArray();
 
             if (matchingTypes.Count() > 1)
             {
@@ -386,7 +398,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             List<Type> result = new List<Type>();
 
             // Go through all assemblies referenced by the application and search for types matching a predicate
+#if NETFRAMEWORK
             ICollection<Assembly> assemblies = assembliesResolver.GetAssemblies();
+#elif NETSTANDARD
+            ICollection<Assembly> assemblies = assembliesResolver.Assemblies.ToArray();
+#endif
             foreach (Assembly assembly in assemblies)
             {
                 Type[] exportedTypes = null;
@@ -432,6 +448,5 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
             return edmModel.GetAnnotationValue<QueryableRestrictionsAnnotation>(edmProperty);
         }
-
     }
 }

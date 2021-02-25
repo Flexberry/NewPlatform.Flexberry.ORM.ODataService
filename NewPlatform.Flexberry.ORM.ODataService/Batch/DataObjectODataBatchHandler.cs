@@ -6,8 +6,6 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.Http;
-    using System.Web.Http.Batch;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using Microsoft.AspNet.OData.Batch;
@@ -17,15 +15,33 @@
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
 
+#if NETFRAMEWORK
+    using System.Web.Http;
+    using System.Web.Http.Batch;
+#endif
+
+#if NETSTANDARD
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Adapters;
+    using Microsoft.AspNet.OData.Common;
+    using Microsoft.AspNetCore.Http;
+#endif
+
     /// <summary>
     /// Batch handler for DataService.
     /// </summary>
-    internal class DataObjectODataBatchHandler : DefaultODataBatchHandler
+    public class DataObjectODataBatchHandler : DefaultODataBatchHandler
     {
         /// <summary>
         /// Request Properties collection key for DataObjectsToUpdate list.
         /// </summary>
         public const string DataObjectsToUpdatePropertyKey = "DataObjectsToUpdate";
+
+        /// <summary>
+        /// Request Properties collection key for AllProcessedObjects list.
+        /// Данный массив содержит объекты, которые отправлены на обновление или удаление в batch. Массив нужен для того, чтобы DataObjectCache не очищался между обработкой отдельных запросов (DataObjectCache содержит WeakReferences).
+        /// </summary>
+        public const string AllProcessedObjectsPropertyKey = "AllProcessedObjects";
 
         /// <summary>
         /// Request Properties collection key for DataObjectCache instance.
@@ -37,6 +53,16 @@
         /// </summary>
         private IEventHandlerContainer _events;
 
+        /// <summary>
+        /// Initializes the container with registered events.
+        /// </summary>
+        /// <param name="events">The container with registered events.</param>
+        public void InitializeEvents(IEventHandlerContainer events)
+        {
+            _events = events;
+        }
+
+#if NETFRAMEWORK
         /// <summary>
         /// if set to true then use synchronous mode for call subrequests.
         /// </summary>
@@ -61,14 +87,21 @@
             this.isSyncMode = isSyncMode ?? Type.GetType("Mono.Runtime") != null;
         }
 
+#endif
+
+#if NETSTANDARD
+
         /// <summary>
-        /// Initializes the container with registered events.
+        /// Initializes a new instance of the <see cref="DataObjectODataBatchHandler"/> class.
         /// </summary>
-        /// <param name="events">The container with registered events.</param>
-        public void InitializeEvents(IEventHandlerContainer events)
+        public DataObjectODataBatchHandler()
+            : base()
         {
-            _events = events;
         }
+
+#endif
+
+#if NETFRAMEWORK
 
         /// <inheritdoc />
         public override async Task<HttpResponseMessage> ProcessBatchAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -110,7 +143,56 @@
                 }
             }
         }
+#endif
 
+#if NETSTANDARD
+        /// <inheritdoc />
+        public override async Task ProcessBatchAsync(HttpContext context, RequestDelegate nextHandler)
+        {
+            if (context == null)
+            {
+                throw Error.ArgumentNull(nameof(context));
+            }
+
+            if (nextHandler == null)
+            {
+                throw Error.ArgumentNull(nameof(nextHandler));
+            }
+
+            if (!await ValidateRequest(context.Request))
+            {
+                return;
+            }
+
+            try
+            {
+                IList<ODataBatchRequestItem> subRequests = await ParseBatchRequestsAsync(context);
+
+                ODataOptions options = context.RequestServices.GetRequiredService<ODataOptions>();
+                bool enableContinueOnErrorHeader = (options != null)
+                    ? options.EnableContinueOnErrorHeader
+                    : false;
+
+                SetContinueOnError(new WebApiRequestHeaders(context.Request.Headers), enableContinueOnErrorHeader);
+
+                IList<ODataBatchResponseItem> responses = await ExecuteRequestMessagesAsync(new ODataBatchRequestsWrapper(context, subRequests), nextHandler);
+                await CreateResponseMessageAsync(responses, context.Request);
+            }
+            catch (Exception ex)
+            {
+                if (_events?.CallbackAfterInternalServerError != null)
+                {
+                    var statusCode = System.Net.HttpStatusCode.InternalServerError;
+                    _events.CallbackAfterInternalServerError(ex, ref statusCode);
+                }
+
+                throw;
+            }
+        }
+
+#endif
+
+#if NETFRAMEWORK
         /// <inheritdoc />
         public override async Task<IList<ODataBatchRequestItem>> ParseBatchRequestsAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -165,11 +247,11 @@
 
             return requests;
         }
+#endif
 
+#if NETFRAMEWORK
         /// <inheritdoc />
-        public override async Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(
-                   IEnumerable<ODataBatchRequestItem> requests,
-                   CancellationToken cancellation)
+        public override async Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(IEnumerable<ODataBatchRequestItem> requests, CancellationToken cancellation)
         {
             if (requests == null)
             {
@@ -213,14 +295,60 @@
 
             return responses;
         }
+#endif
 
+#if NETSTANDARD
+        /// <inheritdoc />
+        public override async Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(IEnumerable<ODataBatchRequestItem> requests, RequestDelegate handler)
+        {
+            if (requests == null)
+            {
+                throw Error.ArgumentNull(nameof(requests));
+            }
+
+            if (handler == null)
+            {
+                throw Error.ArgumentNull(nameof(handler));
+            }
+
+            IList<ODataBatchResponseItem> responses = new List<ODataBatchResponseItem>();
+
+            HttpContext batchContext = (requests as ODataBatchRequestsWrapper).BatchContext;
+            foreach (ODataBatchRequestItem request in requests)
+            {
+                ODataBatchResponseItem responseItem;
+                switch (request)
+                {
+                    case OperationRequestItem operation:
+                        responseItem = await request.SendRequestAsync(handler);
+                        break;
+                    case ChangeSetRequestItem changeSet:
+                        responseItem = await ExecuteChangeSet(batchContext, changeSet, handler);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Unsupported request of type `{request.GetType()}`");
+                }
+
+                responses.Add(responseItem);
+
+                if (responseItem != null && responseItem.IsResponseSuccessful() == false && ContinueOnError == false)
+                {
+                    break;
+                }
+            }
+
+            return responses;
+        }
+#endif
+
+#if NETFRAMEWORK
         /// <summary>
         /// Execute changeset processing.
         /// </summary>
         /// <param name="changeSet">Changeset for processing.</param>
         /// <param name="cancellation">Cancelation token.</param>
         /// <returns>Task for changeset processing.</returns>
-        private async Task<ODataBatchResponseItem> ExecuteChangeSet(ChangeSetRequestItem changeSet, CancellationToken cancellation)
+        protected virtual async Task<ODataBatchResponseItem> ExecuteChangeSet(ChangeSetRequestItem changeSet, CancellationToken cancellation)
         {
             if (changeSet == null)
             {
@@ -228,6 +356,7 @@
             }
 
             List<DataObject> dataObjectsToUpdate = new List<DataObject>();
+            List<DataObject> allProcessedObjects = new List<DataObject>();
             DataObjectCache dataObjectCache = new DataObjectCache();
             dataObjectCache.StartCaching(false);
 
@@ -236,6 +365,11 @@
                 if (!request.Properties.ContainsKey(DataObjectsToUpdatePropertyKey))
                 {
                     request.Properties.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);
+                }
+
+                if (!request.Properties.ContainsKey(AllProcessedObjectsPropertyKey))
+                {
+                    request.Properties.Add(AllProcessedObjectsPropertyKey, allProcessedObjects);
                 }
 
                 if (!request.Properties.ContainsKey(DataObjectCachePropertyKey))
@@ -250,46 +384,134 @@
 
             if (changeSetResponse.Responses.All(r => r.IsSuccessStatusCode))
             {
-                try
-                {
-                    Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
-                    foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
-                    {
-                        if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
-                        {
-                            stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
-                        }
-                    }
-
-                    DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
-                    dataService.UpdateObjects(ref dataObjects);
-
-                    foreach (DataObject dataObject in dataObjectsToUpdate)
-                    {
-                        var state = stateDictionary[dataObject.__PrimaryKey];
-                        switch (state)
-                        {
-                            case ObjectStatus.Created:
-                                _events.CallbackAfterCreate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Altered:
-                                _events.CallbackAfterUpdate?.Invoke(dataObject);
-                                break;
-                            case ObjectStatus.Deleted:
-                                _events.CallbackAfterDelete?.Invoke(dataObject);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                UpdateObjects(dataService, dataObjectsToUpdate);
             }
 
             return changeSetResponse;
+        }
+#endif
+
+#if NETSTANDARD
+        /// <summary>
+        /// Execute changeset processing.
+        /// </summary>
+        /// <param name="batchContext">The http context of a batch request.</param>
+        /// <param name="changeSet">The changeset for processing.</param>
+        /// <param name="handler">The handler for processing a message.</param>
+        /// <returns>Task for changeset processing.</returns>
+        protected virtual async Task<ODataBatchResponseItem> ExecuteChangeSet(HttpContext batchContext, ChangeSetRequestItem changeSet, RequestDelegate handler)
+        {
+            if (changeSet == null)
+            {
+                throw new ArgumentNullException(nameof(changeSet));
+            }
+
+            List<DataObject> dataObjectsToUpdate = new List<DataObject>();
+            List<DataObject> allProcessedObjects = new List<DataObject>();
+            DataObjectCache dataObjectCache = new DataObjectCache();
+            dataObjectCache.StartCaching(false);
+
+            foreach (HttpContext context in changeSet.Contexts)
+            {
+                if (!context.Items.ContainsKey(DataObjectsToUpdatePropertyKey))
+                {
+                    context.Items.Add(DataObjectsToUpdatePropertyKey, dataObjectsToUpdate);
+                }
+
+                if (!context.Items.ContainsKey(AllProcessedObjectsPropertyKey))
+                {
+                    context.Items.Add(AllProcessedObjectsPropertyKey, allProcessedObjects);
+                }
+
+                if (!context.Items.ContainsKey(DataObjectCachePropertyKey))
+                {
+                    context.Items.Add(DataObjectCachePropertyKey, dataObjectCache);
+                }
+            }
+
+            ChangeSetResponseItem changeSetResponse = (ChangeSetResponseItem)await changeSet.SendRequestAsync(handler);
+
+            if (changeSetResponse.Contexts.All(x => x.Response.IsSuccessStatusCode()))
+            {
+                UpdateObjects(batchContext, dataObjectsToUpdate);
+            }
+
+            return changeSetResponse;
+        }
+#endif
+
+#if NETSTANDARD
+        /// <summary>
+        /// Update processed objects.
+        /// </summary>
+        /// <param name="batchContext">The http context of a batch request.</param>
+        /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
+        protected virtual void UpdateObjects(HttpContext batchContext, List<DataObject> dataObjectsToUpdate)
+        {
+            if (batchContext == null)
+            {
+                throw new ArgumentNullException(nameof(batchContext));
+            }
+
+            IDataService dataService = batchContext.RequestServices.GetService<IDataService>();
+            UpdateObjects(dataService, dataObjectsToUpdate);
+        }
+#endif
+
+        /// <summary>
+        /// Update processed objects.
+        /// </summary>
+        /// <param name="dataService">The instance of <see cref="IDataService" />.</param>
+        /// <param name="dataObjectsToUpdate">The collection of DataObjects.</param>
+        protected virtual void UpdateObjects(IDataService dataService, List<DataObject> dataObjectsToUpdate)
+        {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
+            if (dataObjectsToUpdate == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectsToUpdate));
+            }
+
+            try
+            {
+                Dictionary<object, ObjectStatus> stateDictionary = new Dictionary<object, ObjectStatus>();
+                foreach (DataObject dataObjectToUpdate in dataObjectsToUpdate)
+                {
+                    if (!stateDictionary.ContainsKey(dataObjectToUpdate.__PrimaryKey))
+                    {
+                        stateDictionary.Add(dataObjectToUpdate.__PrimaryKey, dataObjectToUpdate.GetStatus());
+                    }
+                }
+
+                DataObject[] dataObjects = dataObjectsToUpdate.ToArray();
+                dataService.UpdateObjects(ref dataObjects);
+
+                foreach (DataObject dataObject in dataObjectsToUpdate)
+                {
+                    var state = stateDictionary[dataObject.__PrimaryKey];
+                    switch (state)
+                    {
+                        case ObjectStatus.Created:
+                            _events.CallbackAfterCreate?.Invoke(dataObject);
+                            break;
+                        case ObjectStatus.Altered:
+                            _events.CallbackAfterUpdate?.Invoke(dataObject);
+                            break;
+                        case ObjectStatus.Deleted:
+                            _events.CallbackAfterDelete?.Invoke(dataObject);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Expressions;
 
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Formatter.Deserialization;
@@ -10,6 +9,13 @@
     using Microsoft.OData.Edm;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+#if NETFRAMEWORK
+    using NewPlatform.Flexberry.ORM.ODataService.Expressions;
+#elif NETSTANDARD
+    using Microsoft.AspNet.OData.Common;
+    using Microsoft.AspNetCore.Http.Extensions;
+#endif
 
     /// <summary>
     /// Десериализатор для чтения передаваемых данных OData.
@@ -57,13 +63,18 @@
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
+                IDictionary<string, object> props = readContext.Request.Properties;
+#elif NETSTANDARD
+                IDictionary<object, object> props = readContext.Request.HttpContext.Items;
+#endif
                 if (ex is ODataException && ex.ToString().IndexOf("odata.bind") != -1)
                 {
-                    readContext.Request.Properties.Add(OdataBindNull, readContext.ResourceEdmType);
+                    props.Add(OdataBindNull, readContext.ResourceEdmType);
                     return null;
                 }
 
-                readContext.Request.Properties.Add(ReadException, ex);
+                props.Add(ReadException, ex);
             }
 
             return obj;
@@ -107,12 +118,17 @@
 
             foreach (var childItem in resourceInfoWrapper.NestedItems)
             {
-                if (!readContext.Request.Properties.ContainsKey(Dictionary))
+#if NETFRAMEWORK
+                IDictionary<string, object> props = readContext.Request.Properties;
+#elif NETSTANDARD
+                IDictionary<object, object> props = readContext.Request.HttpContext.Items;
+#endif
+                if (!props.ContainsKey(Dictionary))
                 {
-                    readContext.Request.Properties.Add(Dictionary, new Dictionary<string, object>());
+                    props.Add(Dictionary, new Dictionary<string, object>());
                 }
 
-                var dictionary = (Dictionary<string, object>)readContext.Request.Properties[Dictionary];
+                var dictionary = (Dictionary<string, object>)props[Dictionary];
                 var navigationPropertyName = resourceInfoWrapper.NestedResourceInfo.Name;
                 var entityReferenceLink = childItem as ODataEntityReferenceLinkBase;
 
@@ -121,7 +137,12 @@
                     Uri referencedEntityUrl = entityReferenceLink.EntityReferenceLink.Url;
                     if (referencedEntityUrl.IsAbsoluteUri)
                     {
-                        referencedEntityUrl = referencedEntityUrl.MakeRelativeUri(readContext.Request.RequestUri);
+#if NETFRAMEWORK
+                        var requestUri = readContext.Request.RequestUri;
+#elif NETSTANDARD
+                        var requestUri = new Uri(readContext.Request.GetEncodedUrl());
+#endif
+                        referencedEntityUrl = referencedEntityUrl.MakeRelativeUri(requestUri);
                     }
 
                     var segments = referencedEntityUrl.OriginalString.Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);

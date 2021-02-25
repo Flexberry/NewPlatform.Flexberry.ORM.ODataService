@@ -1,12 +1,14 @@
+# This is a basic workflow to help you get started with Actions
+
 name: CI
 
-# Controls when the action will run.
+# Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the develop-v5.2 branch
   push:
-    branches: [ develop-v6.0 ]
+    branches: [ develop-v6.1 ]
   pull_request:
-    branches: [ develop-v6.0 ]
+    branches: [ develop-v6.1 ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -39,27 +41,29 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      #- name: Show env
-        #run: set
-
+        
       - name: Install packages
-        run: sudo apt-get install -y doxygen
+        run: sudo apt-get install -y doxygen 
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln
-
+        run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln -NonInteractive
+        
       - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
-
+        run: nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+        
       - name: Compile code
-        run:  msbuild /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln
+        run:  msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
 
-      - name: Run mono application
-        run: mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+      - name: Test under mono
+        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+
+      - name: Test under dotnet
+        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Update documentation
         run: |
-          [  "$GITHUB_EVENT_NAME" = 'push' ] && ( [ "$GITHUB_REF" = 'refs/heads/master' ]  || [ "$GITHUB_REF" = 'refs/heads/develop' ] ) && bash Doxygen/update-autodoc.sh
+          [ $GITHUB_EVENT_NAME == 'push' ] && 
+          ( [ $GITHUB_REF == "refs/heads/master" ] || [ $GITHUB_REF == "refs/heads/develop" ] ) &&
+          bash Doxygen/update-autodoc.sh
           exit 0
-
+        

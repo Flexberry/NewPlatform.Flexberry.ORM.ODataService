@@ -21,6 +21,18 @@
     /// </summary>
     public class FilterTest : BaseODataServiceIntegratedTest
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="output">Вывод отладочной информации.</param>
+        public FilterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
+        {
+        }
+#endif
+
         [Fact]
         public void TestFilterStringKey()
         {
@@ -316,15 +328,16 @@
         {
             ActODataService(args =>
             {
+                DateTime dateTime = DateTime.UtcNow;
                 DataObject класс = new КлассСМножествомТипов
                 {
-                    PropertyDateTime = DateTime.UtcNow,
-                    PropertySystemNullableDateTime = DateTime.UtcNow,
-                    PropertyStormnetNullableDateTime = NullableDateTime.UtcNow,
+                    PropertyDateTime = dateTime,
+                    PropertySystemNullableDateTime = dateTime,
+                    PropertyStormnetNullableDateTime = (NullableDateTime)dateTime,
                 };
                 args.DataService.UpdateObject(ref класс);
 
-                string datetimeNowString = DateTime.UtcNow.ToString("yyyy-MM-dd");
+                string datetimeNowString = dateTime.ToString("yyyy-MM-dd");
                 string filter = $"date({nameof(КлассСМножествомТипов.PropertyDateTime)}) eq {datetimeNowString} and date({nameof(КлассСМножествомТипов.PropertySystemNullableDateTime)}) eq {datetimeNowString} and date({nameof(КлассСМножествомТипов.PropertyStormnetNullableDateTime)}) eq {datetimeNowString}";
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",

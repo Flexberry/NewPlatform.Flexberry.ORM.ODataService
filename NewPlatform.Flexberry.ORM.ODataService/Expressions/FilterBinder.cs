@@ -6,22 +6,29 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Web.Http.Dispatcher;
     using System.Xml.Linq;
-    using ICSSoft.STORMNET.Business.LINQProvider;
     using Microsoft.AspNet.OData.Query;
     using Microsoft.OData;
     using Microsoft.OData.Edm;
     using Microsoft.OData.UriParser;
     using Microsoft.Spatial;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+#if NETFRAMEWORK
+    using System.Data.Linq;
+
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
+    using Microsoft.AspNet.OData.Common;
+
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
+#endif
 
     /// <summary>
     /// Translates an OData $filter parse tree represented by <see cref="FilterClause"/> to
@@ -31,6 +38,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     internal class FilterBinder
     {
         public List<string> FilterDetailProperties = new List<string>();
+
         /// <summary>
         /// Выражение linq, после преобразования из $filter.
         /// </summary>
@@ -79,6 +87,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         private Dictionary<string, ParameterExpression> _lambdaParameters;
 
         private ODataQuerySettings _querySettings;
+
         private IAssembliesResolver _assembliesResolver;
 
         private FilterBinder(IEdmModel model, IAssembliesResolver assembliesResolver, ODataQuerySettings querySettings)
@@ -1132,7 +1141,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     }
                     catch (ArgumentException e)
                     {
+#if NETFRAMEWORK
                         if (e.ParamName == null)
+#endif
+#if NETSTANDARD
+                        if (e.ParamName == "propertyName")
+#endif
                         {
                             PropertyInfo pi = source.Type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
                             if (pi == null)
@@ -2264,10 +2278,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                             {
                                 convertedExpression = Expression.Call(source, "ToString", typeArguments: null, arguments: null);
                             }
+#if NETFRAMEWORK
                             else if (sourceType == typeof(Binary))
                             {
                                 convertedExpression = Expression.Call(source, "ToArray", typeArguments: null, arguments: null);
                             }
+#endif
                             else if (sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDateTime)
                                 || sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDecimal)
                                 || sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableInt))
