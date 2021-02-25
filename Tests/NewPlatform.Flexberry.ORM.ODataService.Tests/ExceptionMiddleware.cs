@@ -36,9 +36,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             }
             catch (Exception ex)
             {
-                httpContext.Response.ContentType = MediaTypeNames.Text.Plain;
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await httpContext.Response.WriteAsync("Internal server error");
+                if (!httpContext.Response.HasStarted)
+                {
+                    httpContext.Response.ContentType = MediaTypeNames.Text.Plain;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    await httpContext.Response.WriteAsync("Internal server error");
+                }
             }
         }
     }
