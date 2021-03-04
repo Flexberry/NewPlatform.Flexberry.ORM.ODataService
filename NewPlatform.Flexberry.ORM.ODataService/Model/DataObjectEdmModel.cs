@@ -35,6 +35,11 @@
         /// <summary>
         /// Service to export data from ORM.
         /// </summary>
+        public IExportStringedObjectViewService ExportStringedObjectViewService { get; set; }
+
+        /// <summary>
+        /// Service to export data from ORM.
+        /// </summary>
         public IODataExportService ODataExportService { get; set; }
 
         /// <summary>
@@ -51,6 +56,11 @@
         /// Описание свойства ключа.
         /// </summary>
         public PropertyInfo KeyProperty => _metadata.KeyProperty;
+
+        /// <summary>
+        /// Типы объектов непредназначенные для вызова события AfterGet перед отправкой выгруженных данных.
+        /// </summary>
+        public Type[] ExcelExportAfterGetDeniedTypes { get; set; }
 
         private const string DefaultNamespace = "DataObject";
 
@@ -100,6 +110,16 @@
                 if (container.IsRegistered<IExportService>())
                 {
                     ExportService = container.Resolve<IExportService>();
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>())
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
                 }
 
                 if (container.IsRegistered<IODataExportService>("Export"))

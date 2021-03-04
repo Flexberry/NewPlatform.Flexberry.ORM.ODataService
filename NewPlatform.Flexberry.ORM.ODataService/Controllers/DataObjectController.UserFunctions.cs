@@ -156,7 +156,7 @@
 
                     NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
 
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
                         return ResponseMessage(CreateExcel(queryParams));

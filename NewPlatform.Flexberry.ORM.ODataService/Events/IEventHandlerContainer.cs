@@ -31,6 +31,11 @@
         DelegateAfterGet CallbackAfterGet { get; set; }
 
         /// <summary>
+        /// Делегат для вызова логики после вычитывания объектов с использованием данных в формате ObjectStringDataView.
+        /// </summary>
+        DelegateAfterExportGet CallbackAfterExportGet { get; set; }
+
+        /// <summary>
         /// Делегат для вызова логики после сохранения объекта.
         /// </summary>
         DelegateAfterCreate CallbackAfterCreate { get; set; }
