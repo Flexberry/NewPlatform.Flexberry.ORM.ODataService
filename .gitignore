@@ -6,3 +6,6 @@
 */*/FakesAssemblies/
 **/*.vspscc
 *.user
+
+# Code generator
+gen/
