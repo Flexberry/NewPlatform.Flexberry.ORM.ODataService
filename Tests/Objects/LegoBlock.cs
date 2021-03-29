@@ -37,7 +37,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         
         private int fHeight;
         
-        private int fTop;
+        private int fDepth;
         
         private string fConfiguration;
         
@@ -117,33 +117,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         }
         
         /// <summary>
-        /// Top.
+        /// Depth.
         /// </summary>
-        // *** Start programmer edit section *** (LegoBlock.Top CustomAttributes)
+        // *** Start programmer edit section *** (LegoBlock.Depth CustomAttributes)
 
-        // *** End programmer edit section *** (LegoBlock.Top CustomAttributes)
-        public virtual int Top
+        // *** End programmer edit section *** (LegoBlock.Depth CustomAttributes)
+        public virtual int Depth
         {
             get
             {
-                // *** Start programmer edit section *** (LegoBlock.Top Get start)
+                // *** Start programmer edit section *** (LegoBlock.Depth Get start)
 
-                // *** End programmer edit section *** (LegoBlock.Top Get start)
-                int result = this.fTop;
-                // *** Start programmer edit section *** (LegoBlock.Top Get end)
+                // *** End programmer edit section *** (LegoBlock.Depth Get start)
+                int result = this.fDepth;
+                // *** Start programmer edit section *** (LegoBlock.Depth Get end)
 
-                // *** End programmer edit section *** (LegoBlock.Top Get end)
+                // *** End programmer edit section *** (LegoBlock.Depth Get end)
                 return result;
             }
             set
             {
-                // *** Start programmer edit section *** (LegoBlock.Top Set start)
+                // *** Start programmer edit section *** (LegoBlock.Depth Set start)
 
-                // *** End programmer edit section *** (LegoBlock.Top Set start)
-                this.fTop = value;
-                // *** Start programmer edit section *** (LegoBlock.Top Set end)
+                // *** End programmer edit section *** (LegoBlock.Depth Set start)
+                this.fDepth = value;
+                // *** Start programmer edit section *** (LegoBlock.Depth Set end)
 
-                // *** End programmer edit section *** (LegoBlock.Top Set end)
+                // *** End programmer edit section *** (LegoBlock.Depth Set end)
             }
         }
         

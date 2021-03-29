@@ -182,7 +182,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         // *** End programmer edit section *** (LegoPatent.BaseLegoBlock CustomAttributes)
         [Agregator()]
         [NotNull()]
-        [PropertyStorage("/BaseLegoBlock")]
+        [PropertyStorage(new string[] {
+                "LegoBlock",
+                "LegoDevice"})]
         [TypeUsage(new string[] {
                 "NewPlatform.Flexberry.ORM.ODataService.Tests.LegoBlock",
                 "NewPlatform.Flexberry.ORM.ODataService.Tests.LegoDevice"})]
