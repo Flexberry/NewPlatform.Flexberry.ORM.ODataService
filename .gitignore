@@ -1,7 +1,7 @@
 /packages/
 **/bin/
 */obj/
-*/*/obj/
+**/obj/
 .vs
 */*/FakesAssemblies/
 **/*.vspscc

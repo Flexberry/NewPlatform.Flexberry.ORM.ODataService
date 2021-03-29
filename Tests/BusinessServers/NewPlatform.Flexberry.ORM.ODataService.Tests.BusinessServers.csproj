@@ -141,8 +141,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BearBS.cs" />
     <Compile Include="CarBS.cs" />
     <Compile Include="CatsBS.cs" />
+    <Compile Include="DenBS.cs" />
+    <Compile Include="ForestBS.cs" />
     <Compile Include="БерлогаБС.cs">
       <SubType>Code</SubType>
     </Compile>
