@@ -1619,7 +1619,16 @@
                 5. Сохраняются детейлы LegoPatent
                 */
 
+                LegoSocketStandard legoSocketStandard = new LegoSocketStandard() { Name = "Базовый" };
+                args.DataService.UpdateObject(legoSocketStandard);
+
                 LegoBlock legoBlock = new LegoBlock() { Name = "Прямоугольник" };
+
+                legoBlock.SetExistObjectPrimaryKey(KeyGuid.NewGuid());
+                legoBlock.InitDataCopy();
+
+                legoBlock.Name = "Квадрат";
+
                 View legoBlockView = new View() { DefineClassType = typeof(LegoBlock), Name = "V" };
                 legoBlockView.AddProperty(nameof(LegoBlock.__PrimaryKey));
                 legoBlockView.AddProperty(nameof(LegoBlock.Name));
@@ -1636,7 +1645,7 @@
                 det1Json.Add($"{nameof(LegoBlockBottomPanel.Block)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoBlock)).Name}({((KeyGuid)legoBlock.__PrimaryKey).Guid:D})");
                 legoBlockBottomPanelJson = det1Json.Serialize();
 
-                LegoBlockTopPanel legoBlockTopPanel = new LegoBlockTopPanel() { HeightCount = 3, WidthCount = 3 };
+                LegoBlockTopPanel legoBlockTopPanel = new LegoBlockTopPanel() { HeightCount = 3, WidthCount = 3, SocketStandard = legoSocketStandard };
                 legoBlock.TopPanels.Add(legoBlockTopPanel);
                 View legoBlockTopPanelView = new View() { DefineClassType = typeof(LegoBlockTopPanel), Name = "V" };
                 legoBlockTopPanelView.AddProperty(nameof(LegoBlockTopPanel.__PrimaryKey));
@@ -1645,6 +1654,7 @@
                 var legoBlockTopPanelJson = legoBlockTopPanel.ToJson(legoBlockTopPanelView, args.Token.Model);
                 DataObjectDictionary det2Json = DataObjectDictionary.Parse(legoBlockTopPanelJson, legoBlockTopPanelView, args.Token.Model);
                 det2Json.Add($"{nameof(LegoBlockTopPanel.Block)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoBlock)).Name}({((KeyGuid)legoBlock.__PrimaryKey).Guid:D})");
+                det2Json.Add($"{nameof(LegoBlockTopPanel.SocketStandard)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoSocketStandard)).Name}({((KeyGuid)legoSocketStandard.__PrimaryKey).Guid:D})");
                 legoBlockTopPanelJson = det2Json.Serialize();
 
                 LegoBlockTopPanelHole legoBlockTopPanelHole = new LegoBlockTopPanelHole() { Position = "Центр" };
@@ -1675,10 +1685,6 @@
                 string[] changesets = new[]
 {
                     CreateChangeset(
-                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlock)).Name}",
-                        legoBlockJson,
-                        legoBlock),
-                    CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockBottomPanel)).Name}",
                         legoBlockBottomPanelJson,
                         legoBlockBottomPanel),
@@ -1694,11 +1700,15 @@
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoPatent)).Name}",
                         legoPatentJson,
                         legoPatent),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlock)).Name}",
+                        legoBlockJson,
+                        legoBlock),
                 };
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
-                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created });
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.OK });
                 }
             });
         }
