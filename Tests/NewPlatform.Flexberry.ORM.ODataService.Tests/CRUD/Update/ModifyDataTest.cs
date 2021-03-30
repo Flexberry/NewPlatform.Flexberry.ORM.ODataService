@@ -1622,7 +1622,18 @@
                 LegoSocketStandard legoSocketStandard = new LegoSocketStandard() { Name = "Базовый" };
                 args.DataService.UpdateObject(legoSocketStandard);
 
-                LegoBlock legoBlock = new LegoBlock() { Name = "Прямоугольник" };
+                LegoBlockColor legoBlockColor = new LegoBlockColor() { Name = "Оранжевый" };
+                legoBlockColor.SetExistObjectPrimaryKey(KeyGuid.NewGuid());
+                legoBlockColor.InitDataCopy();
+
+                legoBlockColor.Name = "Рыжий";
+
+                View legoBlockColorView = new View() { DefineClassType = typeof(LegoBlockColor), Name = "V" };
+                legoBlockColorView.AddProperty(nameof(LegoBlockColor.__PrimaryKey));
+                legoBlockColorView.AddProperty(nameof(LegoBlockColor.Name));
+                var legoBlockColorJson = legoBlockColor.ToJson(legoBlockColorView, args.Token.Model);
+
+                LegoBlock legoBlock = new LegoBlock() { Name = "Прямоугольник", Color = legoBlockColor };
 
                 legoBlock.SetExistObjectPrimaryKey(KeyGuid.NewGuid());
                 legoBlock.InitDataCopy();
@@ -1689,13 +1700,17 @@
                         legoBlockBottomPanelJson,
                         legoBlockBottomPanel),
                     CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanelHole)).Name}",
+                        legoBlockTopPanelHoleJson,
+                        legoBlockTopPanelHole),
+                    CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanel)).Name}",
                         legoBlockTopPanelJson,
                         legoBlockTopPanel),
                     CreateChangeset(
-                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanelHole)).Name}",
-                        legoBlockTopPanelHoleJson,
-                        legoBlockTopPanelHole),
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockColor)).Name}",
+                        legoBlockColorJson,
+                        legoBlockColor),
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoPatent)).Name}",
                         legoPatentJson,
@@ -1708,7 +1723,7 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
-                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.OK });
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.OK });
                 }
             });
         }
