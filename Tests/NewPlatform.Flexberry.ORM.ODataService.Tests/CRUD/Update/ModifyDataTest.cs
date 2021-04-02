@@ -1668,15 +1668,22 @@
                 det2Json.Add($"{nameof(LegoBlockTopPanel.SocketStandard)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoSocketStandard)).Name}({((KeyGuid)legoSocketStandard.__PrimaryKey).Guid:D})");
                 legoBlockTopPanelJson = det2Json.Serialize();
 
-                LegoBlockTopPanelHole legoBlockTopPanelHole = new LegoBlockTopPanelHole() { Position = "Центр" };
-                legoBlockTopPanel.Holes.Add(legoBlockTopPanelHole);
+                LegoBlockTopPanelHole legoBlockTopPanelHoleFirst = new LegoBlockTopPanelHole() { Position = "Центр" };
+                legoBlockTopPanel.Holes.Add(legoBlockTopPanelHoleFirst);
                 View legoBlockTopPanelHoleView = new View() { DefineClassType = typeof(LegoBlockTopPanelHole), Name = "V" };
                 legoBlockTopPanelHoleView.AddProperty(nameof(LegoBlockTopPanelHole.__PrimaryKey));
                 legoBlockTopPanelHoleView.AddProperty(nameof(LegoBlockTopPanelHole.Position));
-                var legoBlockTopPanelHoleJson = legoBlockTopPanelHole.ToJson(legoBlockTopPanelHoleView, args.Token.Model);
-                DataObjectDictionary det3Json = DataObjectDictionary.Parse(legoBlockTopPanelHoleJson, legoBlockTopPanelHoleView, args.Token.Model);
+                var legoBlockTopPanelHoleFirstJson = legoBlockTopPanelHoleFirst.ToJson(legoBlockTopPanelHoleView, args.Token.Model);
+                DataObjectDictionary det3Json = DataObjectDictionary.Parse(legoBlockTopPanelHoleFirstJson, legoBlockTopPanelHoleView, args.Token.Model);
                 det3Json.Add($"{nameof(LegoBlockTopPanelHole.TopPanel)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanel)).Name}({((KeyGuid)legoBlockTopPanel.__PrimaryKey).Guid:D})");
-                legoBlockTopPanelHoleJson = det3Json.Serialize();
+                legoBlockTopPanelHoleFirstJson = det3Json.Serialize();
+
+                LegoBlockTopPanelHole legoBlockTopPanelHoleSecond = new LegoBlockTopPanelHole() { Position = "Бок" };
+                legoBlockTopPanel.Holes.Add(legoBlockTopPanelHoleSecond);
+                var legoBlockTopPanelHoleSecondJson = legoBlockTopPanelHoleSecond.ToJson(legoBlockTopPanelHoleView, args.Token.Model);
+                det3Json = DataObjectDictionary.Parse(legoBlockTopPanelHoleSecondJson, legoBlockTopPanelHoleView, args.Token.Model);
+                det3Json.Add($"{nameof(LegoBlockTopPanelHole.TopPanel)}@odata.bind", $"{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanel)).Name}({((KeyGuid)legoBlockTopPanel.__PrimaryKey).Guid:D})");
+                legoBlockTopPanelHoleSecondJson = det3Json.Serialize();
 
                 LegoPatent legoPatent = new LegoPatent() { Authors = "Phill", Date = DateTime.Now, Name = "Кубики с пимпочками и дырками", Description = "Вот" };
                 legoBlock.Patents.Add(legoPatent);
@@ -1700,13 +1707,17 @@
                         legoBlockBottomPanelJson,
                         legoBlockBottomPanel),
                     CreateChangeset(
-                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanelHole)).Name}",
-                        legoBlockTopPanelHoleJson,
-                        legoBlockTopPanelHole),
-                    CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanel)).Name}",
                         legoBlockTopPanelJson,
                         legoBlockTopPanel),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanelHole)).Name}",
+                        legoBlockTopPanelHoleFirstJson,
+                        legoBlockTopPanelHoleFirst),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockTopPanelHole)).Name}",
+                        legoBlockTopPanelHoleSecondJson,
+                        legoBlockTopPanelHoleSecond),
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(LegoBlockColor)).Name}",
                         legoBlockColorJson,
@@ -1723,7 +1734,28 @@
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
-                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.OK });
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.Created, HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.OK });
+
+                    legoBlockView.AddDetailInView(nameof(LegoBlock.Patents), legoPatentView, true);
+                    legoBlockView.AddDetailInView(nameof(LegoBlock.TopPanels), legoBlockTopPanelView, true);
+                    legoBlockView.AddDetailInView(nameof(LegoBlock.BottomPanels), legoBlockBottomPanelView, true);
+                    legoBlockTopPanelView.AddDetailInView(nameof(LegoBlockTopPanel.Holes), legoBlockTopPanelHoleView, true);
+
+                    legoBlock.TopPanels.Clear();
+
+                    args.DataService.LoadObject(legoBlockView, legoBlock, true, true);
+
+                    Assert.Equal(legoPatent.Authors, legoBlock.Patents[0].Authors);
+                    Assert.Equal(legoPatent.Name, legoBlock.Patents[0].Name);
+                    Assert.Equal(legoPatent.Description, legoBlock.Patents[0].Description);
+
+                    Assert.Equal(legoBlockBottomPanel.HeightCount, legoBlock.BottomPanels[0].HeightCount);
+                    Assert.Equal(legoBlockBottomPanel.WidthCount, legoBlock.BottomPanels[0].WidthCount);
+
+                    Assert.Equal(legoBlockTopPanel.HeightCount, legoBlock.TopPanels[0].HeightCount);
+                    Assert.Equal(legoBlockTopPanel.WidthCount, legoBlock.TopPanels[0].WidthCount);
+
+                    Assert.Equal(2, legoBlock.TopPanels[0].Holes.Count);
                 }
             });
         }
