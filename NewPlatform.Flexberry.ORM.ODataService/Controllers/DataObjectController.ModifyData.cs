@@ -547,10 +547,7 @@
                             // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
-                            foreach (DetailInView detailInView in miniViewDetails)
-                            {
-                                miniView.RemoveDetail(detailInView.Name);
-                            }
+                            miniView.Details = new DetailInView[0];
 
                             _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
 
@@ -567,10 +564,7 @@
                 // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
                 View lightView = view.Clone();
                 DetailInView[] lightViewDetails = lightView.Details;
-                foreach (DetailInView detailInView in lightViewDetails)
-                {
-                    lightView.RemoveDetail(detailInView.Name);
-                }
+                lightView.Details = new DetailInView[0];
 
                 // Проверим существование объекта в базе.
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
