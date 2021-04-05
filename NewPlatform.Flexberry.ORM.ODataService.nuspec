@@ -26,7 +26,7 @@
       3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
       4. SafeLoadDetails for partial loaded agregator.
     </releaseNotes>
-    <copyright>Copyright New Platform Ltd 2020</copyright>
+    <copyright>Copyright New Platform Ltd 2021</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Cors" version="5.2.3" />
