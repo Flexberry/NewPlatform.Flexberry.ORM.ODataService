@@ -150,11 +150,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BaseLegoBlock.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="Daughter.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="GUIDToStringGenerator.cs" />
+    <Compile Include="LegoBlock.cs" />
+    <Compile Include="LegoBlockBottomPanel.cs" />
+    <Compile Include="LegoBlockColor.cs" />
+    <Compile Include="LegoBlockCustomPanel.cs" />
+    <Compile Include="LegoBlockTopPanel.cs" />
+    <Compile Include="LegoBlockTopPanelHole.cs" />
+    <Compile Include="LegoDevice.cs" />
+    <Compile Include="LegoMaterial.cs" />
+    <Compile Include="LegoPanelAngle.cs" />
+    <Compile Include="LegoPatent.cs" />
+    <Compile Include="LegoSocketStandard.cs" />
     <Compile Include="Master.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Son.cs" />

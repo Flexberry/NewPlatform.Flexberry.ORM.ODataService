@@ -40,7 +40,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         public virtual ICSSoft.STORMNET.DataObject[] OnUpdateПерелом(NewPlatform.Flexberry.ORM.ODataService.Tests.Перелом UpdatedObject)
         {
             // *** Start programmer edit section *** (OnUpdateПерелом)
-
             return new ICSSoft.STORMNET.DataObject[0];
             // *** End programmer edit section *** (OnUpdateПерелом)
         }
@@ -67,7 +66,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         public virtual ICSSoft.STORMNET.DataObject[] OnUpdateКошка(NewPlatform.Flexberry.ORM.ODataService.Tests.Кошка UpdatedObject)
         {
             // *** Start programmer edit section *** (OnUpdateКошка)
-
             return new ICSSoft.STORMNET.DataObject[0];
             // *** End programmer edit section *** (OnUpdateКошка)
         }

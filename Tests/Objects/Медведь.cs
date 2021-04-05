@@ -30,8 +30,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** Start programmer edit section *** (Медведь CustomAttributes)
 
     // *** End programmer edit section *** (Медведь CustomAttributes)
-    [BusinessServer("NewPlatform.Flexberry.ORM.ODataService.Tests.МедведьБС, NewPlatform.Flexberry.ORM" +
-        ".ODataService.Tests.BusinessServers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
+    [BusinessServer("NewPlatform.Flexberry.ORM.ODataService.Tests.BearBS, NewPlatform.Flexberry.ORM.OD" +
+        "ataService.Tests.BusinessServers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
     [AutoAltered()]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
     [View("LoadTestView", new string[] {

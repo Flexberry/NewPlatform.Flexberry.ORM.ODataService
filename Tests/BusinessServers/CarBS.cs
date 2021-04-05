@@ -7,12 +7,13 @@
 //     повторной генерации кода.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
     using System.Xml;
-
-
+    
+    
     // *** Start programmer edit section *** (Using statements)
     using System.Collections.Generic;
     using ICSSoft.STORMNET;
