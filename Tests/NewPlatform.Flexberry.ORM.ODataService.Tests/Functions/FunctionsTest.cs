@@ -1,22 +1,26 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Functions
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
+    using System.Web.Http;
+    using System.Web.OData.Extensions;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
 
-    using Xunit;
+    using Microsoft.OData.Core;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
-    using System.Text;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    using Xunit;
 
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
@@ -141,6 +145,21 @@
                     typeof(tПол),
                     parametersTypes));
             }
+
+            if (!container.IsRegistered("FunctionHttpResponseException"))
+            {
+                parametersTypes = new Dictionary<string, Type> { /*{ "intParam", typeof(int) }*/ };
+                container.Register(new Function(
+                    "FunctionHttpResponseException",
+                    (queryParameters, parameters) =>
+                    {
+                        throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
+                    },
+                    typeof(IEnumerable<DataObject>),
+                    parametersTypes));
+            }
+
         }
 
         /// <summary>
@@ -166,7 +185,7 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
                     Assert.True(receivedDict["value"] as string == "Мужской");
@@ -207,10 +226,10 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
-                    Assert.Equal(1, receivedDict["value"]);
+                    Assert.Equal(1, (int)(long)receivedDict["value"]);
                 }
 
                 requestUrl = $"http://localhost/odata/FunctionWithLcs1(entitySet='Странаs')?$filter=Название eq 'Страна №1'";
@@ -225,10 +244,10 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
-                    Assert.Equal(1, (receivedDict["value"] as ArrayList).Count);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                 }
             });
         }
@@ -270,14 +289,14 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
-                    Assert.Equal(expectedResult[intParam].Вес, receivedDict["Вес"]);
+                    Assert.Equal(expectedResult[intParam].Вес, (int)(long)receivedDict["Вес"]);
 
                     for (int i = 0; i < expectedResult[intParam].Берлога.Count; i++)
                     {
-                        Assert.Equal(expectedResult[intParam].Берлога[i].Наименование, ((receivedDict["Берлога"] as ArrayList)[i] as Dictionary<string, object>)["Наименование"] as string);
-                        Assert.Equal(1, ((receivedDict["Берлога"] as ArrayList)[i] as Dictionary<string, object>).Count);
+                        Assert.Equal(expectedResult[intParam].Берлога[i].Наименование, (string)((JArray)receivedDict["Берлога"])[i].ToObject<Dictionary<string, object>>()["Наименование"]);
+                        Assert.Equal(1, ((JArray)receivedDict["Берлога"])[i].ToObject<Dictionary<string, object>>().Count);
                     }
                 }
             });
@@ -320,7 +339,7 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.Equal(expectedResult[intParam].Название, receivedDict["Название"]);
                 }
@@ -362,19 +381,18 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     // Убедимся, что объекты получены и их нужное количество.
                     Assert.True(receivedDict.ContainsKey("value"));
-                    Assert.Equal(((ArrayList)receivedDict["value"]).Count, intParam);
+                    Assert.Equal(((JArray)receivedDict["value"]).Count, intParam);
 
                     // Убедимся, что метаданные о количестве объектов получены.
                     Assert.True(receivedDict.ContainsKey("@odata.count"));
 
                     // Убедимся, что количество объектов в метаданных совпадает, с ожидаемым количеством.
                     object receivedMetadataCount = receivedDict["@odata.count"];
-                    Assert.IsType(typeof(int),receivedMetadataCount);
-                    Assert.Equal((int)receivedMetadataCount, intParam);
+                    Assert.Equal((int)(long)receivedMetadataCount, intParam);
                 }
             });
         }
@@ -414,10 +432,10 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
-                    Assert.Equal(intParam, ((ArrayList)receivedDict["value"]).Count);
+                    Assert.Equal(intParam, ((JArray)receivedDict["value"]).Count);
                 }
             });
         }
@@ -447,7 +465,7 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
                     Assert.Equal(returnValueString, receivedDict["value"]);
@@ -468,10 +486,35 @@
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
 
                     // Преобразуем полученный объект в словарь.
-                    Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedStr);
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
 
                     Assert.True(receivedDict.ContainsKey("value"));
-                    Assert.Equal(returnValueInt, receivedDict["value"]);
+                    Assert.Equal(returnValueInt, (int)(long)receivedDict["value"]);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку проброса исключения, содержащего ODataError.
+        /// </summary>
+        [Fact]
+        public void TestFunctionHttpResponseException()
+        {
+            ActODataService(args =>
+            {
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = $"http://localhost/odata/FunctionHttpResponseException()";
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Проверим, что возвращается код ошибки, указанный в функции.
+                    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+                    // Проверим сообщение об ошибке.
+                    Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
                 }
             });
         }

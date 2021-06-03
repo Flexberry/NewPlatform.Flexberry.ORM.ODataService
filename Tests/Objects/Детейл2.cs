@@ -13,8 +13,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System;
     using System.Xml;
     using ICSSoft.STORMNET;
-
-
+    
+    
     // *** Start programmer edit section *** (Using statements)
 
     // *** End programmer edit section *** (Using statements)
@@ -80,8 +80,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         // *** End programmer edit section *** (Детейл2.Детейл CustomAttributes)
         [Agregator()]
         [NotNull()]
-        [PropertyStorage(new string[] {
-                "Детейл"})]
+        [PropertyStorage("Детейл")]
+        [TypeUsage(new string[] {
+                "NewPlatform.Flexberry.ORM.ODataService.Tests.Детейл",
+                "NewPlatform.Flexberry.ORM.ODataService.Tests.ДетейлНаследник"})]
         public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Детейл Детейл
         {
             get

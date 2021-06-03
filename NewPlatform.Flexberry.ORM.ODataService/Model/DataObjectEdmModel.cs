@@ -1,28 +1,26 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Model
 {
-    using Microsoft.Spatial;
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Web.OData;
 
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
-    using NewPlatform.Flexberry.ORM.ODataService.Functions;
 
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
     using Microsoft.OData.Edm.Library.Expressions;
     using Microsoft.OData.Edm.Library.Values;
+    using Microsoft.Spatial;
 
-    using ICSSoft.Services;
+    using NewPlatform.Flexberry.ORM.ODataService.Functions;
 
     using Unity;
 
-    using Action = NewPlatform.Flexberry.ORM.ODataService.Functions.Action;
+    using Action = Functions.Action;
 
     /// <summary>
     /// EDM-модель, которая строится на основе сборок с объектами данных (унаследованными от <see cref="DataObject"/>).
@@ -90,7 +88,6 @@
 
         public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
-            Contract.Requires<ArgumentNullException>(metadata != null);
             EdmModelBuilder = edmModelBuilder;
             var container = UnityFactory.GetContainer();
             if (container != null)
@@ -116,13 +113,14 @@
                 }
             }
 
-            _metadata = metadata;
+            _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
 
             BuildTypeHierarchy();
             BuildEdmEntityTypes();
             BuildEntitySets();
             RegisterMasters();
             RegisterDetails();
+            RegisterPseudoDetails();
             RegisterGeoIntersectsFunction();
             RegisterGeomIntersectsFunction();
         }
@@ -132,7 +130,10 @@
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseDataObjectType = dataObjectType.BaseType;
-                Contract.Assume(baseDataObjectType != null);
+                if (baseDataObjectType == null)
+                {
+                    throw new ArgumentException("Contract assertion not met: baseDataObjectType != null", "value");
+                }
 
                 if (!_typeHierarchy.ContainsKey(baseDataObjectType))
                     _typeHierarchy[baseDataObjectType] = new List<Type> { dataObjectType };
@@ -153,7 +154,10 @@
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
-                Contract.Assume(baseType != null);
+                if (baseType == null)
+                {
+                    throw new ArgumentException("Contract assertion not met: baseType != null", "value");
+                }
 
                 // TODO: гарантирована сортировка от базового типа к дочернему?
                 EdmEntityType baseEdmEntityType;
@@ -177,7 +181,7 @@
         private void BuildOwnProperties(EdmEntityType edmEntityType, Type dataObjectType)
         {
             var settings = _metadata[dataObjectType];
-            var keyPropertyType = settings.KeyType == null ? null : EdmTypeMap.GetEdmPrimitiveType(settings.KeyType);
+            var keyPropertyType = settings.KeyType == null ? null : EdmTypeMap.GetEdmPrimitiveType(settings.KeyType, EdmModelBuilder?.AdditionalMapping);
             IEnumerable<PropertyInfo> ownProperties = settings.OwnProperties;
             foreach (var propertyInfo in ownProperties)
             {
@@ -208,14 +212,14 @@
                         AddElement(edmEnumType);
                     }
 
-                    EdmStructuralProperty edmProp = edmEntityType.AddStructuralProperty(GetEntityPropertName(propertyInfo), new EdmEnumTypeReference(edmEnumType, false));
+                    EdmStructuralProperty edmProp = edmEntityType.AddStructuralProperty(GetEntityPropertyName(propertyInfo), new EdmEnumTypeReference(edmEnumType, false));
                     this.SetAnnotationValue(edmProp, new ClrPropertyInfoAnnotation(propertyInfo));
                 }
 
-                IEdmPrimitiveType edmPrimitiveType = EdmTypeMap.GetEdmPrimitiveType(propertyType);
+                IEdmPrimitiveType edmPrimitiveType = EdmTypeMap.GetEdmPrimitiveType(propertyType, EdmModelBuilder?.AdditionalMapping);
                 if (edmPrimitiveType != null)
                 {
-                    EdmStructuralProperty edmProp = edmEntityType.AddStructuralProperty(GetEntityPropertName(propertyInfo), edmPrimitiveType.PrimitiveKind);
+                    EdmStructuralProperty edmProp = edmEntityType.AddStructuralProperty(GetEntityPropertyName(propertyInfo), edmPrimitiveType.PrimitiveKind);
                     this.SetAnnotationValue(edmProp, new ClrPropertyInfoAnnotation(propertyInfo));
                 }
             }
@@ -260,7 +264,7 @@
 
                     var navigationProperty = new EdmNavigationPropertyInfo
                     {
-                        Name = GetEntityPropertName(masterProperty.Key),
+                        Name = GetEntityPropertyName(masterProperty.Key),
                         Target = edmTargetEntityType,
                         TargetMultiplicity = allowNull
                             ? EdmMultiplicity.ZeroOrOne
@@ -304,7 +308,7 @@
 
                     var navigationProperty = new EdmNavigationPropertyInfo
                     {
-                        Name = GetEntityPropertName(detailProperty.Key),
+                        Name = GetEntityPropertyName(detailProperty.Key),
                         Target = edmTargetEntityType,
                         TargetMultiplicity = EdmMultiplicity.Many
                     };
@@ -328,9 +332,56 @@
             }
         }
 
+        private void RegisterPseudoDetails()
+        {
+            foreach (Type dataObjectType in _metadata.Types)
+            {
+                DataObjectEdmTypeSettings typeSettings = _metadata[dataObjectType];
+                EdmEntityType edmEntityType = _registeredEdmEntityTypes[dataObjectType];
+
+                foreach (var detailProperty in typeSettings.PseudoDetailProperties)
+                {
+                    if (!_registeredEdmEntityTypes.ContainsKey(detailProperty.Value.DetailType))
+                    {
+                        throw new Exception($"Тип псевдодетейла {detailProperty.Value.DetailType.FullName} не найден для типа {dataObjectType.FullName}.");
+                    }
+
+                    EdmEntityType edmTargetEntityType = _registeredEdmEntityTypes[detailProperty.Value.DetailType];
+
+                    string name = (detailProperty.Key as PseudoDetailPropertyInfo).Name;
+
+                    var nameBuilder = EdmModelBuilder.EntityPropertyNameBuilder;
+                    PropertyInfo pi = dataObjectType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy)
+                        .Where(x => nameBuilder(x) == name)
+                        .FirstOrDefault();
+                    if (pi != null)
+                    {
+                        throw new Exception($"Недопустимое переопределение существующего свойства {pi.Name} c типом {pi.PropertyType} " +
+                            $"одноименным псевдосвойством с типом {detailProperty.Value.DetailType.FullName} для типа {dataObjectType.FullName}.");
+                    }
+
+                    var navigationProperty = new EdmNavigationPropertyInfo
+                    {
+                        Name = name,
+                        Target = edmTargetEntityType,
+                        TargetMultiplicity = EdmMultiplicity.Many
+                    };
+
+                    EdmNavigationProperty unidirectionalNavigation = edmEntityType.AddUnidirectionalNavigation(navigationProperty);
+
+                    EdmEntitySet thisEdmEntitySet = _registeredEntitySets[dataObjectType];
+                    EdmEntitySet targetEdmEntitySet = _registeredEntitySets[detailProperty.Value.DetailType];
+                    thisEdmEntitySet.AddNavigationTarget(unidirectionalNavigation, targetEdmEntitySet);
+                }
+            }
+        }
+
         public bool IsDataObjectRegistered(Type dataObjectType)
         {
-            Contract.Requires<ArgumentNullException>(dataObjectType != null);
+            if (dataObjectType == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
+            }
 
             return _metadata.Contains(dataObjectType);
         }
@@ -342,7 +393,11 @@
         /// <returns>Тип EDM-сущности, соответствующий заданному типу объекта данных.</returns>
         public IEdmEntityType GetEdmEntityType(Type dataObjectType)
         {
-            Contract.Requires<ArgumentNullException>(dataObjectType != null);
+            if (dataObjectType == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
+            }
+
             if (!_registeredEdmEntityTypes.ContainsKey(dataObjectType))
                 return null;
             return _registeredEdmEntityTypes[dataObjectType];
@@ -355,7 +410,11 @@
         /// <returns>Тип EDM-перечисления, соответствующий заданному типу clr-перечисления.</returns>
         public EdmEnumType GetEdmEnumType(Type enumType)
         {
-            Contract.Requires<ArgumentNullException>(enumType != null);
+            if (enumType == null)
+            {
+                throw new ArgumentNullException(nameof(enumType), "Contract assertion not met: enumType != null");
+            }
+
             if (!_registeredEnums.ContainsKey(enumType))
                 return null;
             return _registeredEnums[enumType];
@@ -427,75 +486,18 @@
         }
 
         /// <summary>
-        /// Строит имя типа сущности по clr типу.
-        /// </summary>
-        /// <param name="type">Тип</param>
-        /// <returns></returns>
-        private string GetEntityTypeName(Type type)
-        {
-            var name = type.Name;
-            var nameSpace = GetEntityTypeNamespace(type);
-            if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNameBuilder != null)
-                name = EdmModelBuilder.EntityTypeNameBuilder(type);
-            var fullname = $"{nameSpace}.{name}";
-            if (!_aliasesNameToType.ContainsKey(fullname))
-                _aliasesNameToType.Add(fullname, type);
-            if (!_aliasesTypeToName.ContainsKey(type))
-                _aliasesTypeToName.Add(type, fullname);
-            return name;
-        }
-
-        /// <summary>
-        /// Строит Namespace типа сущности по clr типу.
-        /// </summary>
-        /// <param name="type">Тип</param>
-        /// <returns></returns>
-        private string GetEntityTypeNamespace(Type type)
-        {
-            var name = type.Namespace;
-            if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNamespaceBuilder != null)
-                name = EdmModelBuilder.EntityTypeNamespaceBuilder(type);
-            if (!_aliasesNamespaceToType.ContainsKey(name))
-                _aliasesNamespaceToType.Add(name, type);
-            return name;
-        }
-
-        /// <summary>
-        /// Строит имя типа свойства сущности по clr типу.
-        /// </summary>
-        /// <param name="type">Тип</param>
-        /// <returns></returns>
-        private string GetEntityPropertName(PropertyInfo prop)
-        {
-            var name = prop.Name;
-            if (name != KeyPropertyName && prop.DeclaringType != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityPropertyNameBuilder != null)
-                name = EdmModelBuilder.EntityPropertyNameBuilder(prop);
-            var typeFullName = $"{GetEntityTypeNamespace(prop.DeclaringType)}.{GetEntityTypeName(prop.DeclaringType)}";
-            if (!_aliasesNameToProperty.ContainsKey(typeFullName))
-            {
-                _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
-                _namePropertyToAlias.Add(prop.DeclaringType, new Dictionary<string, string>());
-            }
-
-            if (!_aliasesNameToProperty[typeFullName].ContainsKey(name))
-            {
-                _aliasesNameToProperty[typeFullName].Add(name, prop);
-                _namePropertyToAlias[prop.DeclaringType].Add(prop.Name, name);
-            }
-
-            return name;
-        }
-
-        /// <summary>
         /// Осуществляет получение представления по умолчанию, соответствующего заданному типу объекта данных.
         /// </summary>
         /// <param name="dataObjectType">Тип объекта данных, для которого требуется получить представление по умолчанию.</param>
         /// <returns>Представление по умолчанию, соответствующее заданному типу объекта данных.</returns>
         public View GetDataObjectDefaultView(Type dataObjectType)
         {
-            Contract.Requires<ArgumentNullException>(dataObjectType != null);
+            if (dataObjectType == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
+            }
 
-            return _metadata[dataObjectType].DefaultView;
+            return _metadata[dataObjectType].DefaultView.Clone();
         }
 
         /// <summary>
@@ -523,8 +525,15 @@
         /// <returns>Типа объекта данных, соответствующий заданному имени набора сущностей в EDM-модели.</returns>
         public Type GetDataObjectType(string edmEntitySetName)
         {
-            Contract.Requires<ArgumentNullException>(edmEntitySetName != null);
-            Contract.Requires<ArgumentException>(edmEntitySetName != string.Empty);
+            if (edmEntitySetName == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntitySetName), "Contract assertion not met: edmEntitySetName != null");
+            }
+
+            if (edmEntitySetName == string.Empty)
+            {
+                throw new ArgumentException("Contract assertion not met: edmEntitySetName != string.Empty", nameof(edmEntitySetName));
+            }
 
             Type dataObjectType;
             _registeredCollections.TryGetValue(edmEntitySetName, out dataObjectType);
@@ -554,7 +563,10 @@
         /// <returns>Набор EDM-сущностей, соответствующий заданному типу объекта данных.</returns>
         public EdmEntitySet GetEdmEntitySet(Type dataObjectType)
         {
-            Contract.Requires<ArgumentNullException>(dataObjectType != null);
+            if (dataObjectType == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
+            }
 
             return GetEdmEntitySet(GetEdmEntityType(dataObjectType));
         }
@@ -668,7 +680,7 @@
             {
                 Type paramType = function.ParametersTypes[parameter];
                 IEdmEnumType enumType = GetEdmEnumType(paramType);
-                var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(paramType);
+                var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(paramType, EdmModelBuilder?.AdditionalMapping);
                 if (edmParameterType != null)
                 {
                     edmFunction.AddParameter(parameter, new EdmPrimitiveTypeReference(edmParameterType, false));
@@ -679,6 +691,66 @@
                     edmFunction.AddParameter(parameter, new EdmEnumTypeReference(enumType, false));
                 }
             }
+        }
+
+        /// <summary>
+        /// Строит имя типа сущности по clr типу.
+        /// </summary>
+        /// <param name="type">Тип</param>
+        /// <returns>Имя типа сущности</returns>
+        private string GetEntityTypeName(Type type)
+        {
+            var name = type.Name;
+            var nameSpace = GetEntityTypeNamespace(type);
+            if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNameBuilder != null)
+                name = EdmModelBuilder.EntityTypeNameBuilder(type);
+            var fullname = $"{nameSpace}.{name}";
+            if (!_aliasesNameToType.ContainsKey(fullname))
+                _aliasesNameToType.Add(fullname, type);
+            if (!_aliasesTypeToName.ContainsKey(type))
+                _aliasesTypeToName.Add(type, fullname);
+            return name;
+        }
+
+        /// <summary>
+        /// Строит Namespace типа сущности по clr типу.
+        /// </summary>
+        /// <param name="type">Тип</param>
+        /// <returns>Namespace типа сущности</returns>
+        private string GetEntityTypeNamespace(Type type)
+        {
+            var name = type.Namespace;
+            if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNamespaceBuilder != null)
+                name = EdmModelBuilder.EntityTypeNamespaceBuilder(type);
+            if (!_aliasesNamespaceToType.ContainsKey(name))
+                _aliasesNamespaceToType.Add(name, type);
+            return name;
+        }
+
+        /// <summary>
+        /// Строит имя типа свойства сущности по clr типу.
+        /// </summary>
+        /// <param name="prop">Метаданные свойства</param>
+        /// <returns>Имя свойства</returns>
+        private string GetEntityPropertyName(PropertyInfo prop)
+        {
+            var name = prop.Name;
+            if (name != KeyPropertyName && prop.DeclaringType != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityPropertyNameBuilder != null)
+                name = EdmModelBuilder.EntityPropertyNameBuilder(prop);
+            var typeFullName = $"{GetEntityTypeNamespace(prop.DeclaringType)}.{GetEntityTypeName(prop.DeclaringType)}";
+            if (!_aliasesNameToProperty.ContainsKey(typeFullName))
+            {
+                _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
+                _namePropertyToAlias.Add(prop.DeclaringType, new Dictionary<string, string>());
+            }
+
+            if (!_aliasesNameToProperty[typeFullName].ContainsKey(name))
+            {
+                _aliasesNameToProperty[typeFullName].Add(name, prop);
+                _namePropertyToAlias[prop.DeclaringType].Add(prop.Name, name);
+            }
+
+            return name;
         }
 
         private IEdmTypeReference GetEdmTypeReference(Type clrType, out IEdmEntityType entityType, out bool isCollection)
@@ -730,7 +802,7 @@
 
         private IEdmTypeReference GetNotEntityTypeReference(Type clrType)
         {
-            IEdmType edmType = EdmTypeMap.GetEdmPrimitiveType(clrType);
+            IEdmType edmType = EdmTypeMap.GetEdmPrimitiveType(clrType, EdmModelBuilder?.AdditionalMapping);
             if (edmType != null)
             {
                 return new EdmPrimitiveTypeReference(edmType as IEdmPrimitiveType, false);
@@ -768,10 +840,10 @@
         private void RegisterGeoIntersectsFunction()
         {
             EdmFunction edmFunction;
-            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool));
+            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool), EdmModelBuilder?.AdditionalMapping);
             edmFunction = new EdmFunction("geo", "intersects", new EdmPrimitiveTypeReference(edmReturnType, false), false, null, true);
             AddElement(edmFunction);
-            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geography));
+            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geography), EdmModelBuilder?.AdditionalMapping);
             edmFunction.AddParameter("geography1", new EdmPrimitiveTypeReference(edmParameterType, false));
             edmFunction.AddParameter("geography2", new EdmPrimitiveTypeReference(edmParameterType, false));
         }
@@ -779,10 +851,10 @@
         private void RegisterGeomIntersectsFunction()
         {
             EdmFunction edmFunction;
-            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool));
+            var edmReturnType = EdmTypeMap.GetEdmPrimitiveType(typeof(bool), EdmModelBuilder?.AdditionalMapping);
             edmFunction = new EdmFunction("geom", "intersects", new EdmPrimitiveTypeReference(edmReturnType, false), false, null, true);
             AddElement(edmFunction);
-            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geometry));
+            var edmParameterType = EdmTypeMap.GetEdmPrimitiveType(typeof(Geometry), EdmModelBuilder?.AdditionalMapping);
             edmFunction.AddParameter("geometry1", new EdmPrimitiveTypeReference(edmParameterType, false));
             edmFunction.AddParameter("geometry2", new EdmPrimitiveTypeReference(edmParameterType, false));
         }

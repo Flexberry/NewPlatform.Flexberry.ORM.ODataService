@@ -3,11 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
-
-    using Xunit;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
+
+    using Newtonsoft.Json;
+
+    using Xunit;
 
     /// <summary>
     /// Unit test class for OData Service user-defined functions
@@ -29,9 +30,9 @@
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(url).Result)
                 {
                     var resultText = response.Content.ReadAsStringAsync().Result;
-                    var result = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(resultText);
+                    var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultText);
 
-                    Assert.Equal(4, result["value"]);
+                    Assert.Equal(4, (int)(long)result["value"]);
                 }
             });
         }
@@ -51,9 +52,9 @@
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(url).Result)
                 {
                     var resultText = response.Content.ReadAsStringAsync().Result;
-                    var result = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(resultText);
+                    var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(resultText);
 
-                    Assert.Equal(4, result["value"]);
+                    Assert.Equal(4, (int)(long)result["value"]);
                 }
             });
         }

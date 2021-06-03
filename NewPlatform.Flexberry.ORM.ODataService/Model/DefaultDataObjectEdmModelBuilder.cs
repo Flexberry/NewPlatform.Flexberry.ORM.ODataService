@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
+
+    using Microsoft.OData.Edm;
+
     /// <summary>
     /// Default implementation of <see cref="IDataObjectEdmModelBuilder"/>.
     /// Builds EDM-model by list of assemblies.
@@ -24,6 +26,16 @@
         /// Is need to add the whole type namespace for EDM entity set.
         /// </summary>
         private readonly bool _useNamespaceInEntitySetName;
+
+        /// <summary>
+        /// The list of links from master to pseudodetail (pseudoproperty) definitions.
+        /// </summary>
+        private readonly PseudoDetailDefinitions _pseudoDetailDefinitions;
+
+        /// <summary>
+        /// Additional mapping of CLR type to edm primitive type. When it's required on the application side.
+        /// </summary>
+        public Dictionary<Type, IEdmPrimitiveType> AdditionalMapping { get; }
 
         /// <summary>
         /// Delegate for additional filtering exposed types.
@@ -64,12 +76,19 @@
         /// </summary>
         /// <param name="searchAssemblies">The list of assemblies for searching types to expose.</param>
         /// <param name="useNamespaceInEntitySetName">Is need to add the whole type namespace for EDM entity set.</param>
-        public DefaultDataObjectEdmModelBuilder(IEnumerable<Assembly> searchAssemblies, bool useNamespaceInEntitySetName = true)
+        /// <param name="pseudoDetailDefinitions">A collection of pseudodetail links.</param>
+        /// <param name="additionalMapping">Additional mapping of CLR type to edm primitive type.</param>
+        public DefaultDataObjectEdmModelBuilder(
+            IEnumerable<Assembly> searchAssemblies,
+            bool useNamespaceInEntitySetName = true,
+            PseudoDetailDefinitions pseudoDetailDefinitions = null,
+            Dictionary<Type, IEdmPrimitiveType> additionalMapping = null)
         {
-            Contract.Requires<ArgumentNullException>(searchAssemblies != null);
-
-            _searchAssemblies = searchAssemblies;
+            _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
+            _pseudoDetailDefinitions = pseudoDetailDefinitions ?? new PseudoDetailDefinitions();
+
+            AdditionalMapping = additionalMapping;
 
             EntitySetNameBuilder = BuildEntitySetName;
             EntityPropertyNameBuilder = BuildEntityPropertyName;
@@ -108,7 +127,11 @@
             if (meta[typeof(DataObject)].KeyType == null)
             {
                 var key = meta[typeof(DataObject)].OwnProperties.FirstOrDefault(p => p.Name == _keyProperty.Name);
-                Contract.Assume(key != null);
+                if (key == null)
+                {
+                    throw new ArgumentException("Contract assertion not met: key != null", "value");
+                }
+
                 meta[typeof(DataObject)].OwnProperties.Clear();
                 foreach (var type in meta.Types)
                 {
@@ -121,6 +144,33 @@
             }
 
             return new DataObjectEdmModel(meta, this);
+        }
+
+        /// <summary>
+        /// Returns <see cref="ICSSoft.STORMNET.Business.LINQProvider.PseudoDetail{T, TP}"/> as object.
+        /// </summary>
+        /// <param name="masterType">The type of master.</param>
+        /// <param name="masterToDetailPseudoProperty">The name of the link from master to pseudodetail (pseudoproperty).</param>
+        /// <returns>An <see cref="ICSSoft.STORMNET.Business.LINQProvider.PseudoDetail{T, TP}"/> instance as object.</returns>
+        public object GetPseudoDetail(Type masterType, string masterToDetailPseudoProperty)
+        {
+            return _pseudoDetailDefinitions
+                .Where(x => x.MasterType == masterType)
+                .Where(x => x.MasterToDetailPseudoProperty == masterToDetailPseudoProperty)
+                .FirstOrDefault()
+                ?.PseudoDetail;
+        }
+
+        /// <summary>
+        /// Returns <see cref="IPseudoDetailDefinition" /> instance.
+        /// </summary>
+        /// <param name="pseudoDetail"><see cref="ICSSoft.STORMNET.Business.LINQProvider.PseudoDetail{T, TP}"/> instance as object.</param>
+        /// <returns>An <see cref="IPseudoDetailDefinition" /> instance.</returns>
+        public IPseudoDetailDefinition GetPseudoDetailDefinition(object pseudoDetail)
+        {
+            return _pseudoDetailDefinitions
+                .Where(x => x.PseudoDetail == pseudoDetail)
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -150,6 +200,14 @@
                 return;
             }
 
+            // Link from master to pseudodetail (pseudoproperty).
+            if (dataObjectProperty is PseudoDetailPropertyInfo)
+            {
+                var detailType = dataObjectProperty.PropertyType.GenericTypeArguments[0];
+                typeSettings.PseudoDetailProperties.Add(dataObjectProperty, new DataObjectEdmDetailSettings(detailType));
+                return;
+            }
+
             // Own property.
             typeSettings.OwnProperties.Add(dataObjectProperty);
         }
@@ -173,7 +231,10 @@
             }
 
             Type baseType = dataObjectType.BaseType;
-            Contract.Assume(baseType != null);
+            if (baseType == null)
+            {
+                throw new ArgumentException("Contract assertion not met: baseType != null", nameof(dataObjectType));
+            }
 
             AddDataObjectWithHierarchy(meta, baseType);
 
@@ -210,9 +271,11 @@
             }
             else
             {
-                Contract.Assume(
-                    dataObjectType.BaseType == typeof(DataObject),
-                    $"Запрещено переопределение ключа в типе {dataObjectType.FullName}, т.к он не наследуется непосредственно от DataObject.");
+                if (dataObjectType.BaseType != typeof(DataObject))
+                {
+                    throw new ArgumentException($"Запрещено переопределение ключа в типе {dataObjectType.FullName}, т.к он не наследуется непосредственно от DataObject.", nameof(dataObjectType));
+                }
+
                 typeSettings.KeyType = keyType;
             }
 
@@ -235,6 +298,13 @@
                 if (overridden && property.Name != _keyProperty.Name)
                     continue;
                 AddProperty(typeSettings, property);
+            }
+
+            // Add the defined links from master to pseudodetail (pseudoproperties) as properties for exposing.
+            foreach (var definition in _pseudoDetailDefinitions.Where(x => x.MasterType == dataObjectType))
+            {
+                var pi = new PseudoDetailPropertyInfo(definition.MasterToDetailPseudoProperty, definition.PseudoPropertyType, definition.MasterType);
+                AddProperty(typeSettings, pi);
             }
         }
 

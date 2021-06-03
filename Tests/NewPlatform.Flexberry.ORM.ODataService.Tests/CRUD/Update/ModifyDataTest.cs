@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -12,15 +12,16 @@
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
 
-    using Xunit;
-
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
+
+    using Newtonsoft.Json;
+
+    using Xunit;
 
     /// <summary>
     /// Класс тестов для тестирования операций модификации данных OData-сервисом (вставка, обновление, удаление).
     /// </summary>
-    
     public class ModifyDataTest : BaseODataServiceIntegratedTest
     {
         /// <summary>
@@ -198,7 +199,7 @@
 
                 string requestJsonDataМедв = медв.ToJson(медвDynamicView, args.Token.Model);
                 DataObjectDictionary objJsonМедв = DataObjectDictionary.Parse(requestJsonDataМедв, медвDynamicView, args.Token.Model);
-                Dictionary<string, object> receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonЛес1);
+                Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonЛес1);
 
                 objJsonМедв.Add("ЛесОбитания@odata.bind", string.Format(
                     "{0}({1})",
@@ -219,7 +220,7 @@
 
                 var requestJsonDataБерлога = берлога1.ToJson(берлогаDynamicView, args.Token.Model);
                 var objJson = DataObjectDictionary.Parse(requestJsonDataБерлога, берлогаDynamicView, args.Token.Model);
-                receivedDict = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonМедв);
+                receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonМедв);
                 objJson.Add("Медведь@odata.bind", string.Format(
                     "{0}({1})",
                     args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
@@ -261,7 +262,7 @@
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
                 // ------------------ Только создания объектов ------------------
                 // Подготовка тестовых данных в формате OData.
-                var controller = new Controllers.DataObjectController(args.DataService, args.Token.Model, args.Token.Events, args.Token.Functions);
+                var controller = new Controllers.DataObjectController(args.DataService, null, args.Token.Model, args.Token.Events, args.Token.Functions);
                 System.Web.OData.EdmEntityObject edmObj = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Медведь)), медв, 1, null);
                 var edmЛес1 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес1, 1, null);
                 var edmЛес2 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес2, 1, null);
@@ -287,14 +288,14 @@
 
                 // В ответе приходит объект с созданной сущностью.
                 // Преобразуем полученный объект в словарь.
-                Dictionary<string, object> receivedObjs = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonObjs);
+                Dictionary<string, object> receivedObjs = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonObjs);
 
                 // Проверяем созданный объект, вычитав с помощью DataService
                 DataObject createdObj = new Медведь { __PrimaryKey = медв.__PrimaryKey };
                 args.DataService.LoadObject(createdObj);
 
                 Assert.Equal(ObjectStatus.UnAltered, createdObj.GetStatus());
-                Assert.Equal(((Медведь)createdObj).Вес, receivedObjs["Вес"]);
+                Assert.Equal(((Медведь)createdObj).Вес, (int)(long)receivedObjs["Вес"]);
 
                 // Проверяем что созданы все зависимые объекты, вычитав с помощью DataService
                 var ldef = ICSSoft.STORMNET.FunctionalLanguage.SQLWhere.SQLWhereLanguageDef.LanguageDef;
@@ -329,7 +330,7 @@
                 response = args.HttpClient.PostAsJsonAsync(requestUrl, edmObj).Result;
 
                 // Убедимся, что запрос завершился успешно.
-                Assert.Equal(response.StatusCode, HttpStatusCode.Created);
+                Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
                 // Проверяем созданный объект, вычитав с помощью DataService
                 createdObj = new Медведь { __PrimaryKey = медвежонок.__PrimaryKey };
@@ -889,6 +890,716 @@
 
                         Assert.Equal(testDetailWithCicleArray[i].TestDetailName, updatedTestDetailWithCicle.TestDetailName);
                     }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test save details with inheritance.
+        /// </summary>
+        [Fact]
+        public void SaveDetailWithInheritanceTest()
+        {
+            ActODataService(args =>
+            {
+                var базовыйКласс = new БазовыйКласс() { Свойство1 = "sv1" };
+                var детейл = new ДетейлНаследник() { prop1 = 1 };
+                базовыйКласс.Детейл.Add(детейл);
+
+                args.DataService.UpdateObject(базовыйКласс);
+                int newValue = 2;
+                детейл.prop1 = newValue;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string detJson = детейл.ToJson(ДетейлНаследник.Views.ДетейлНаследникE, args.Token.Model);
+                detJson = detJson.Replace(nameof(ДетейлНаследник.БазовыйКласс), $"{nameof(ДетейлНаследник.БазовыйКласс)}@odata.bind");
+                detJson = detJson.Replace("{\"__PrimaryKey\":\"", $"\"{args.Token.Model.GetEdmEntitySet(typeof(БазовыйКласс)).Name}(");
+                detJson = detJson.Replace("\"}", ")\"");
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(БазовыйКласс)).Name}",
+                        "{}",
+                        базовыйКласс),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(ДетейлНаследник)).Name}",
+                        detJson,
+                        детейл),
+                };
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    args.DataService.LoadObject(БазовыйКласс.Views.БазовыйКлассE, базовыйКласс);
+
+                    var детейлы = базовыйКласс.Детейл.Cast<ДетейлНаследник>();
+
+                    Assert.Equal(1, детейлы.Count());
+                    Assert.Equal(newValue, детейлы.First().prop1);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test update details with Aggregator.
+        /// </summary>
+        [Fact]
+        public void UpdateDetailWithAggregatorTest()
+        {
+            ActODataService(args =>
+            {
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.Кличка = "100";
+                кошка.Тип = ТипКошки.Дикая;
+                лапа.Размер = 100;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        кошка.ToJson(кошкаDynamicView, args.Token.Model),
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+
+                    args.DataService.LoadObject(кошкаDynamicView, кошка);
+
+                    var лапы = кошка.Лапа.Cast<Лапа>();
+
+                    Assert.Equal("100", кошка.Кличка);
+                    Assert.Equal(ТипКошки.Дикая, кошка.Тип);
+                    Assert.Equal(1, лапы.Count(б => б.Размер == 100));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test update details with Aggregator.
+        /// </summary>
+        [Fact]
+        public void UpdateSecondDetailWithAggregatorTest()
+        {
+            ActODataService(args =>
+            {
+                // Arrange.
+                DateTime date = new DateTime(2010, 10, 10, 10, 10, 10, DateTimeKind.Local);
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+                var перелом = new Перелом() { Дата = DateTime.UtcNow, Тип = ТипПерелома.Открытый };
+                лапа.Перелом.Add(перелом);
+
+                args.DataService.UpdateObject(кошка);
+
+                string[] переломPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Перелом>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Перелом>(x => x.Дата),
+                };
+                var переломDynamicView = new View(new ViewAttribute("переломDynamicView", переломPropertiesNames), typeof(Перелом));
+
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                    Information.ExtractPropertyPath<Лапа>(x => x.РазмерСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                лапа.Размер = 100;
+                перелом.Дата = date;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string requestJsonDataПерелом = перелом.ToJson(переломDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonПерелом = DataObjectDictionary.Parse(requestJsonDataПерелом, переломDynamicView, args.Token.Model);
+
+                objJsonПерелом.Add(
+                    $"{nameof(Перелом.Лапа)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name,
+                        ((KeyGuid)лапа.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataПерелом = objJsonПерелом.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Перелом)).Name}",
+                        requestJsonDataПерелом,
+                        перелом),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+                    лапаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Лапа>(x => x.Перелом), переломDynamicView, true);
+
+                    args.DataService.LoadObject(кошкаDynamicView, кошка);
+
+                    var лапы = кошка.Лапа.Cast<Лапа>();
+
+                    var переломы = лапы.FirstOrDefault().Перелом.Cast<Перелом>();
+
+                    Assert.Equal("50", кошка.Кличка);
+                    Assert.Equal(1, лапы.Count(б => б.Размер == 100));
+                    Assert.Equal(1, переломы.Count(б => б.Дата == date.ToUniversalTime()));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test delete and add detail.
+        /// </summary>
+        [Fact]
+        public void UpdateDeletedAndAddedDetailWithAggregatorTest()
+        {
+            ActODataService(args =>
+            {
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                var лапа2 = new Лапа() { Размер = 1000 };
+                var лапа3 = new Лапа() { Размер = 2000 };
+                кошка.Лапа.Add(лапа);
+                кошка.Лапа.Add(лапа2);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.Кличка = "100";
+                кошка.Тип = ТипКошки.Дикая;
+                лапа.Размер = 100;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                лапа2.SetStatus(ObjectStatus.Deleted);
+
+                string requestJsonDataЛапа3 = лапа3.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа3 = DataObjectDictionary.Parse(requestJsonDataЛапа3, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа3.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа3 = objJsonЛапа3.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        string.Empty,
+                        лапа2),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа3,
+                        лапа3),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.NoContent, HttpStatusCode.Created });
+
+                    кошкаDynamicView.AddDetailInView(Information.ExtractPropertyPath<Кошка>(x => x.Лапа), лапаDynamicView, true);
+
+                    args.DataService.LoadObject(кошкаDynamicView, кошка);
+
+                    var лапы = кошка.Лапа.Cast<Лапа>();
+
+                    Assert.Equal(2, лапы.Count());
+                    Assert.Equal(1, лапы.Count(x => x.Размер == 2000));
+                    Assert.Equal(0, лапы.Count(x => x.Размер == 1000));
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test batch update error handling when business server throws exception.
+        /// </summary>
+        [Fact]
+        public void BatchUpdateErrorHandlingTest()
+        {
+            ActODataService(args =>
+            {
+                string[] лапаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лапа>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Лапа>(x => x.Размер),
+                };
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Тип),
+                    Information.ExtractPropertyPath<Кошка>(x => x.КошкаСтрокой),
+                };
+                var лапаDynamicView = new View(new ViewAttribute("лапаDynamicView", лапаPropertiesNames), typeof(Лапа));
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                var порода = new Порода() { Название = "Первая" };
+                var кошка = new Кошка() { Кличка = "50", Порода = порода, Тип = ТипКошки.Домашняя };
+                var лапа = new Лапа() { Размер = 50 };
+                кошка.Лапа.Add(лапа);
+
+                args.DataService.UpdateObject(кошка);
+
+                кошка.Кличка = "100";
+                кошка.Тип = ТипКошки.Дикая;
+
+                // Этот размер лапы указан в CatsBS как недопустимый размер, будет сгенерировано исключение.
+                лапа.Размер = 100899;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataЛапа = лапа.ToJson(лапаDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonЛапа = DataObjectDictionary.Parse(requestJsonDataЛапа, лапаDynamicView, args.Token.Model);
+
+                objJsonЛапа.Add(
+                    $"{nameof(Лапа.Кошка)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name,
+                        ((KeyGuid)кошка.__PrimaryKey).Guid.ToString("D")));
+
+                requestJsonDataЛапа = objJsonЛапа.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        кошка.ToJson(кошкаDynamicView, args.Token.Model),
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Лапа)).Name}",
+                        requestJsonDataЛапа,
+                        лапа),
+                };
+
+                int exceptionHandled = 0;
+
+                args.Token.Events.CallbackAfterInternalServerError = (Exception exception, ref HttpStatusCode code) =>
+                {
+                    Exception currentException = exception;
+
+                    while (currentException != null)
+                    {
+                        if (currentException.Message == "Недопустимый размер кошачьей лапы!")
+                        {
+                            exceptionHandled++;
+                        }
+
+                        currentException = currentException.InnerException;
+                    }
+
+                    return exception;
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+                    Assert.Equal(1, exceptionHandled);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test update agregator with inheritance details.
+        /// </summary>
+        [Fact]
+        public void UpdateAgregatorWithInheritanceDetailsTest()
+        {
+            ActODataService(args =>
+            {
+                var son = new Son() { Name = "Yakov", SuspendersColor = "Brown" };
+                var daughter = new Daughter() { Name = "Yana", DressColor = "Red" };
+                var person = new Person() { Name = "Yan" };
+                person.Childrens.AddRange(son, daughter);
+
+                args.DataService.UpdateObject(person);
+
+                person.Name = "Yan Yakovlevich";
+
+                // Преобразуем объект данных в JSON-строку.
+                string[] personPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Person>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Person>(x => x.Name)
+                };
+
+                var personDynamicView = new View(new ViewAttribute("personDynamicView", personPropertiesNames), typeof(Person));
+
+                string requestJsonData = person.ToJson(personDynamicView, args.Token.Model);
+
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = string.Format("http://localhost/odata/{0}", args.Token.Model.GetEdmEntitySet(typeof(Person)).Name);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем создаваемый объект в формате JSON.
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, requestJsonData).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test batch update detail of detail.
+        /// </summary>
+        [Fact]
+        public void UpdateDetailOfDetailTest()
+        {
+            ActODataService(args =>
+            {
+                var базовыйКласс = new БазовыйКласс() { Свойство1 = "sv1" };
+                var детейл = new Детейл() { prop1 = 1 };
+                базовыйКласс.Детейл.Add(детейл);
+                var детейл2 = new Детейл2() { prop2 = "2" };
+                детейл.Детейл2.Add(детейл2);
+
+                args.DataService.UpdateObject(базовыйКласс);
+                string newValue = "new";
+                базовыйКласс.Свойство1 = newValue;
+                детейл2.prop2 = newValue;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] classPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<БазовыйКласс>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<БазовыйКласс>(x => x.Свойство1),
+                };
+
+                string[] detail2PropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Детейл2>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Детейл2>(x => x.prop2),
+                };
+
+                var classDynamicView = new View(new ViewAttribute("classDynamicView", classPropertiesNames), typeof(БазовыйКласс));
+                var detail2DynamicView = new View(new ViewAttribute("detailDynamicView", detail2PropertiesNames), typeof(Детейл2));
+
+                string classJson = базовыйКласс.ToJson(classDynamicView, args.Token.Model);
+                string detJson = детейл2.ToJson(detail2DynamicView, args.Token.Model);
+
+                DataObjectDictionary objJson = DataObjectDictionary.Parse(detJson, detail2DynamicView, args.Token.Model);
+
+                objJson.Add(
+                    $"{nameof(Детейл2.Детейл)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Детейл)).Name,
+                        ((KeyGuid)детейл.__PrimaryKey).Guid.ToString("D")));
+
+                detJson = objJson.Serialize();
+
+                detail2DynamicView.AddProperty(Information.ExtractPropertyPath<Детейл2>(x => x.Детейл));
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(БазовыйКласс)).Name}",
+                        classJson,
+                        базовыйКласс),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Детейл2)).Name}",
+                        detJson,
+                        детейл2),
+                };
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    args.DataService.LoadObject(detail2DynamicView, детейл2);
+
+                    Assert.Equal(newValue, детейл2.prop2);
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// Test batch update detail of detail.
+        /// </summary>
+        [Fact]
+        public void UpdateDetailOfDetailDescOrderTest()
+        {
+            ActODataService(args =>
+            {
+                var базовыйКласс = new БазовыйКласс() { Свойство1 = "sv1" };
+                var детейл = new Детейл() { prop1 = 1 };
+                базовыйКласс.Детейл.Add(детейл);
+                var детейл2 = new Детейл2() { prop2 = "2" };
+                детейл.Детейл2.Add(детейл2);
+
+                args.DataService.UpdateObject(базовыйКласс);
+                string newValue = "new";
+                базовыйКласс.Свойство1 = newValue;
+                детейл2.prop2 = newValue;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] classPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<БазовыйКласс>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<БазовыйКласс>(x => x.Свойство1),
+                };
+
+                string[] detail2PropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Детейл2>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Детейл2>(x => x.prop2),
+                };
+
+                var classDynamicView = new View(new ViewAttribute("classDynamicView", classPropertiesNames), typeof(БазовыйКласс));
+                var detail2DynamicView = new View(new ViewAttribute("detailDynamicView", detail2PropertiesNames), typeof(Детейл2));
+
+                string classJson = базовыйКласс.ToJson(classDynamicView, args.Token.Model);
+                string detJson = детейл2.ToJson(detail2DynamicView, args.Token.Model);
+
+                DataObjectDictionary objJson = DataObjectDictionary.Parse(detJson, detail2DynamicView, args.Token.Model);
+
+                objJson.Add(
+                    $"{nameof(Детейл2.Детейл)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Детейл)).Name,
+                        ((KeyGuid)детейл.__PrimaryKey).Guid.ToString("D")));
+
+                detJson = objJson.Serialize();
+
+                detail2DynamicView.AddProperty(Information.ExtractPropertyPath<Детейл2>(x => x.Детейл));
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Детейл2)).Name}",
+                        detJson,
+                        детейл2),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(БазовыйКласс)).Name}",
+                        classJson,
+                        базовыйКласс),
+                };
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    args.DataService.LoadObject(detail2DynamicView, детейл2);
+
+                    Assert.Equal(newValue, детейл2.prop2);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test batch update detail and another type detail.
+        /// </summary>
+        [Fact]
+        public void UpdateDetailAndDetailTest()
+        {
+            ActODataService(args =>
+            {
+                var базовыйКласс = new Библиотека() { Адрес = "ул. Пушкина" };
+                var мастер = new Автор() { Имя = "Александр" };
+                var детейл1 = new Книга() { Название = "Му-Му", Автор1 = мастер };
+                базовыйКласс.Книга.Add(детейл1);
+                var детейл2 = new Журнал() { Номер = 2, Автор2 = мастер };
+                базовыйКласс.Журнал.Add(детейл2);
+
+                args.DataService.UpdateObject(базовыйКласс);
+                string newValue = "ул. Лермонтова";
+                int newIntValue = 3;
+                базовыйКласс.Адрес = newValue;
+                детейл1.Название = newValue;
+                детейл2.Номер = newIntValue;
+
+                const string baseUrl = "http://localhost/odata";
+
+                string[] classPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Библиотека>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Библиотека>(x => x.Адрес),
+                };
+
+                string[] detail1PropertiesNames =
+{
+                    Information.ExtractPropertyPath<Книга>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Книга>(x => x.Название),
+                };
+
+                string[] detail2PropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Журнал>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Журнал>(x => x.Номер),
+                };
+
+                var classDynamicView = new View(new ViewAttribute("classDynamicView", classPropertiesNames), typeof(Библиотека));
+                var detail1DynamicView = new View(new ViewAttribute("detailDynamicView", detail1PropertiesNames), typeof(Книга));
+                var detail2DynamicView = new View(new ViewAttribute("detailDynamicView", detail2PropertiesNames), typeof(Журнал));
+
+                string classJson = базовыйКласс.ToJson(classDynamicView, args.Token.Model);
+                string det1Json = детейл1.ToJson(detail1DynamicView, args.Token.Model);
+                string det2Json = детейл2.ToJson(detail2DynamicView, args.Token.Model);
+
+                DataObjectDictionary obj1Json = DataObjectDictionary.Parse(det1Json, detail1DynamicView, args.Token.Model);
+
+                obj1Json.Add(
+                    $"{nameof(Книга.Библиотека1)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Библиотека)).Name,
+                        ((KeyGuid)базовыйКласс.__PrimaryKey).Guid.ToString("D")));
+
+                det1Json = obj1Json.Serialize();
+
+                DataObjectDictionary obj2Json = DataObjectDictionary.Parse(det2Json, detail2DynamicView, args.Token.Model);
+
+                obj2Json.Add(
+                    $"{nameof(Журнал.Библиотека2)}@odata.bind",
+                    string.Format(
+                        "{0}({1})",
+                        args.Token.Model.GetEdmEntitySet(typeof(Библиотека)).Name,
+                        ((KeyGuid)базовыйКласс.__PrimaryKey).Guid.ToString("D")));
+
+                det2Json = obj2Json.Serialize();
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Библиотека)).Name}",
+                        classJson,
+                        базовыйКласс),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Книга)).Name}",
+                        det1Json,
+                        детейл1),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Журнал)).Name}",
+                        det2Json,
+                        детейл2),
+                };
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK, HttpStatusCode.OK });
+
+                    classDynamicView.AddDetailInView(nameof(Библиотека.Книга), detail1DynamicView, true);
+                    classDynamicView.AddDetailInView(nameof(Библиотека.Журнал), detail2DynamicView, true);
+
+                    args.DataService.LoadObject(classDynamicView, базовыйКласс);
+
+                    Assert.Equal(newValue, базовыйКласс.Адрес = newValue);
+                    Assert.Equal(newValue, базовыйКласс.Книга[0].Название);
+                    Assert.Equal(newIntValue, базовыйКласс.Журнал[0].Номер);
+
                 }
             });
         }

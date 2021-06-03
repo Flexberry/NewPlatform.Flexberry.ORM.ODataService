@@ -12,27 +12,28 @@
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
     using System.Web.OData;
-    using System.Web.Script.Serialization;
+    using System.Web.OData.Extensions;
+    using System.Web.OData.Routing;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
 
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
 
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 
     using Newtonsoft.Json;
 
     using File = ICSSoft.STORMNET.FileType.File;
-    using System.Web.OData.Routing;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Formatter;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -45,14 +46,6 @@
         /// Файлы будут удалены из файловой системы в случае успешного сохранения объектов данных.
         /// </summary>
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
-
-        /// <summary>
-        /// Метаданные файлов удаленных из объектов данных.
-        /// Файлы будут удалены из файловой системы в случае успешного сохранения объектов данных.
-        /// </summary>
-        private List<object> _removingFileProperties = new List<object>();
-
-        private Dictionary<DataObject, bool> _newDataObjects = new Dictionary<DataObject, bool>();
 
         /// <summary>
         /// Создание сущности и всех связанных. При существовании в БД произойдёт обновление.
@@ -201,14 +194,7 @@
 
                 Init();
 
-                var obj = (DataObject)Activator.CreateInstance(type);
-                obj.SetExistObjectPrimaryKey(key);
-
-                // Раз объект данных удаляется, то и все ассоциированные с ним файлы должны быть удалены.
-                // Запоминаем метаданные всех ассоциированных файлов, кроме файлов соответствующих файловым свойствам типа File
-                // (файлы соответствующие свойствам типа File хранятся в БД, и из файловой системы просто нечего удалять).
-                // TODO: подумать как быть с детейлами, детейлами детейлов, и т д.
-                _removingFileDescriptions.AddRange(FileController.GetDataObjectFileDescriptions(obj, new List<Type> { typeof(File) }));
+                var obj = _dataObjectCache.CreateDataObject(type, key);
 
                 // Удаляем объект с заданным ключем.
                 // Детейлы удалятся вместе с агрегатором автоматически.
@@ -220,8 +206,40 @@
                 // В данный момент ReferentialConstraints не создаются в модели.
                 obj.SetStatus(ObjectStatus.Deleted);
 
+                // Раз объект данных удаляется, то и все ассоциированные с ним файлы должны быть удалены.
+                // Запоминаем метаданные всех ассоциированных файлов, кроме файлов соответствующих файловым свойствам типа File
+                // (файлы соответствующие свойствам типа File хранятся в БД, и из файловой системы просто нечего удалять).
+                // TODO: подумать как быть с детейлами, детейлами детейлов, и т д.
+                _removingFileDescriptions.AddRange(FileController.GetDataObjectFileDescriptions(obj, new List<Type> { typeof(File) }));
+
+                List<DataObject> objs = new List<DataObject>();
+
                 if (ExecuteCallbackBeforeDelete(obj))
-                    _dataService.UpdateObject(obj);
+                {
+                    string agregatorPropertyName = Information.GetAgregatePropertyName(type);
+                    if (!string.IsNullOrEmpty(agregatorPropertyName))
+                    {
+                        DataObject agregator = (DataObject)Information.GetPropValueByName(obj, agregatorPropertyName);
+
+                        if (agregator != null)
+                        {
+                            objs.Add(agregator);
+                        }
+                    }
+
+                    objs.Add(obj);
+
+                    if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                    {
+                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        dataObjectsToUpdate.AddRange(objs);
+                    }
+                    else
+                    {
+                        DataObject[] dataObjects = objs.ToArray();
+                        _dataService.UpdateObjects(ref dataObjects);
+                    }
+                }
 
                 // При успешном удалении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
@@ -244,9 +262,26 @@
         /// <returns>Http-ответ.</returns>
         private HttpResponseMessage InternalServerErrorMessage(Exception ex)
         {
+            return InternalServerErrorMessage(ex, _events, Request);
+        }
+
+        /// <summary>
+        /// Создаётся http-ответ с кодом 500 по-умолчанию, на возникшую в сервисе ошибку.
+        /// Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError.
+        /// </summary>
+        /// <param name="ex">Ошибка сервиса.</param>
+        /// <param name="events">The container with registered events.</param>
+        /// <param name="request">Original HTTP request message for create a response.</param>
+        /// <returns>Http-ответ.</returns>
+        public static HttpResponseMessage InternalServerErrorMessage(Exception ex, IEventHandlerContainer events, HttpRequestMessage request)
+        {
             HttpStatusCode code = HttpStatusCode.InternalServerError;
             Exception originalEx = ex;
-            ex = ExecuteCallbackAfterInternalServerError(ex, ref code);
+
+            if (events?.CallbackAfterInternalServerError != null)
+            {
+                ex = events?.CallbackAfterInternalServerError(ex, ref code);
+            }
 
             if (ex == null)
             {
@@ -287,7 +322,7 @@
             details.Insert(0, "[").Append("]");
             trace.Insert(0, $"{{{JsonConvert.ToString("trace")}: [").Append("]}");
 
-            HttpResponseMessage msg = Request.CreateResponse(code);
+            HttpResponseMessage msg = request.CreateResponse(code);
             msg.Content = new StringContent(
                 "{" +
                 $"{JsonConvert.ToString("error")}: " +
@@ -308,10 +343,10 @@
         {
             if (Request.Headers.Contains("Prefer"))
             {
-                var header = Request.Headers.FirstOrDefault(h => h.Key == "Prefer");
-                if (header.Value.Contains("return=minimal"))
+                KeyValuePair<string, IEnumerable<string>> header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
+                if (header.Value != null && header.Value.ToString().ToLower().Contains("return=minimal"))
                 {
-                    var result = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.NoContent);
                     result.Headers.Add("Preference-Applied", "return=minimal");
                     return result;
                 }
@@ -335,9 +370,16 @@
 
             Stream stream;
 
-            string json = (string)Request.Properties[PostPatchHandler.RequestContent];
+            string requestContentKey = PostPatchHandler.RequestContent;
+            if (Request.Properties.ContainsKey(PostPatchHandler.PropertyKeyBatchRequest) && (bool)Request.Properties[PostPatchHandler.PropertyKeyBatchRequest] == true)
+            {
+                requestContentKey = PostPatchHandler.RequestContent + $"_{PostPatchHandler.PropertyKeyContentId}_{Request.Properties[PostPatchHandler.PropertyKeyContentId]}";
+            }
 
-            Dictionary<string, object> props = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
+            string json = (string)Request.Properties[requestContentKey];
+
+            Dictionary<string, object> props =
+                JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings() { FloatParseHandling = FloatParseHandling.Decimal });
             var keys = props.Keys.ToArray();
             var odataBindNullList = new List<string>();
             foreach (var key in keys)
@@ -366,7 +408,7 @@
                 }
             }
 
-            json = new JavaScriptSerializer().Serialize(props);
+            json = JsonConvert.SerializeObject(props);
             Request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             IContentNegotiator negotiator = (IContentNegotiator)Configuration.Services.GetService(typeof(IContentNegotiator));
@@ -422,7 +464,8 @@
 
                 for (int i = 0; i < objs.Count; i++)
                 {
-                    if (_newDataObjects[objs[i]])
+                    ObjectStatus status = objs[i].GetStatus(false);
+                    if (status == ObjectStatus.Created)
                     {
                         if (!ExecuteCallbackBeforeCreate(objs[i]))
                         {
@@ -450,8 +493,15 @@
 
                 // Список объектов для обновления без UnAltered.
                 var objsArrSmall = objsArr.Where(t => t.GetStatus() != ObjectStatus.UnAltered).ToArray();
-
-                _dataService.UpdateObjects(ref objsArrSmall);
+                if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                {
+                    List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                    dataObjectsToUpdate.AddRange(objsArrSmall);
+                }
+                else
+                {
+                    _dataService.UpdateObjects(ref objsArrSmall);
+                }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
                 FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
@@ -467,36 +517,87 @@
         /// <summary>
         /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
         /// </summary>
-        /// <param name="objType"> Тип объекта.</param>
-        /// <param name="keyValue"> Значение ключа.</param>>
-        /// <returns> Объект данных.</returns>
+        /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
+        /// <param name="keyValue">Значение ключа.</param>>
+        /// <returns>Объект данных.</returns>
         private DataObject ReturnDataObject(Type objType, object keyValue)
         {
-            var view = _model.GetDataObjectDefaultView(objType);
-
-            // Проверим существование объекта в базе.
-            var ldef = SQLWhereLanguageDef.LanguageDef;
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-            lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
-            DataObject[] dobjs = _dataService.LoadObjects(lcs);
-            if (dobjs.Length == 1)
+            if (objType == null)
             {
-                _newDataObjects.Add(dobjs[0], false);
-                return dobjs[0];
+                throw new ArgumentNullException(nameof(objType));
+            }
+
+            if (keyValue != null)
+            {
+                DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
+                View view = _model.GetDataObjectDefaultView(objType);
+
+                if (dataObjectFromCache != null)
+                {
+                    // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
+                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
+                        && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
+                    {
+                        // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
+                        // TODO: удалить эту проверку после стабилизации версии 5.1.0.
+                        string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
+                        IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
+                        if (!ownProps.All(p => loadedProps.Contains(p.Name)))
+                        {
+                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                            View miniView = view.Clone();
+                            DetailInView[] miniViewDetails = miniView.Details;
+                            miniView.Details = new DetailInView[0];
+
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
+
+                            if (miniViewDetails.Length > 0)
+                            {
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, _dataObjectCache);
+                            }
+                        }
+                    }
+
+                    return dataObjectFromCache;
+                }
+
+                // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                View lightView = view.Clone();
+                DetailInView[] lightViewDetails = lightView.Details;
+                lightView.Details = new DetailInView[0];
+
+                // Проверим существование объекта в базе.
+                LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
+                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
+                lcs.ReturnTop = 2;
+                DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                if (dobjs.Length == 1)
+                {
+                    DataObject dataObject = dobjs[0];
+                    if (lightViewDetails.Any())
+                    {
+                        // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
+                        _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, _dataObjectCache);
+                    }
+
+                    return dataObject;
+                }
+            }
+
+            // Значение ключа автоматически создаётся.
+            DataObject obj;
+
+            if (keyValue != null)
+            {
+                obj = _dataObjectCache.CreateDataObject(objType, keyValue);
             }
             else
             {
-                // Значение ключа автоматически создаётся.
-                var obj = (DataObject)Activator.CreateInstance(objType);
-
-                if (keyValue != null)
-                {
-                    obj.__PrimaryKey = keyValue;
-                }
-
-                _newDataObjects.Add(obj, true);
-                return obj;
+                obj = (DataObject)Activator.CreateInstance(objType);
+                _dataObjectCache.AddDataObject(obj);
             }
+
+            return obj;
         }
 
         /// <summary>
@@ -521,7 +622,8 @@
             object value;
 
             // Получим значение ключа.
-            var keyProperty = entityType.Properties().FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
+            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
             if (key != null)
             {
                 value = key;
@@ -536,7 +638,7 @@
             DataObject obj = ReturnDataObject(objType, value);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
-            var objInList = dObjs.FirstOrDefault(o => o.__PrimaryKey.ToString() == obj.__PrimaryKey.ToString());
+            var objInList = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, obj, false));
             if (objInList == null)
             {
                 if (!endObject)
@@ -552,137 +654,188 @@
             }
 
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
-            foreach (var prop in entityType.Properties())
+            string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
+            IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
+
+            // Обрабатываем агрегатор первым.
+            List<IEdmProperty> changedProps = entityProps
+                .Where(ep => changedPropNames.Contains(ep.Name))
+                .OrderBy(ep => ep.Name != agregatorPropertyName)
+                .ToList();
+            foreach (var prop in changedProps)
             {
-                string dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
-                if (edmEntity.GetChangedPropertyNames().Contains(prop.Name))
+                string dataObjectPropName;
+                try
                 {
-                    // Обработка мастеров и детейлов.
-                    if (prop is EdmNavigationProperty)
+                    dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
+                }
+                catch (KeyNotFoundException)
+                {
+                    // Check if prop value is the link from master to pseudodetail (pseudoproperty).
+                    if (HasPseudoproperty(entityType, prop.Name))
                     {
-                        EdmNavigationProperty navProp = (EdmNavigationProperty)prop;
+                        continue;
+                    }
 
-                        edmEntity.TryGetPropertyValue(prop.Name, out value);
+                    throw;
+                }
 
-                        EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
+                // Обработка мастеров и детейлов.
+                if (prop is EdmNavigationProperty navProp)
+                {
+                    edmEntity.TryGetPropertyValue(prop.Name, out value);
 
-                        // var aggregator = Information.GetAgregatePropertyName(objType);
+                    EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
 
-                        // Обработка мастеров.
-                        if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
+                    // Обработка мастеров.
+                    if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
+                    {
+                        if (value is EdmEntityObject edmMaster)
                         {
-                            if (value != null && value is EdmEntityObject)
-                            {
-                                EdmEntityObject edmMaster = (EdmEntityObject)value;
-                                DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs);
+                            // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
+                            bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
+                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
 
-                                Information.SetPropValueByName(obj, dataObjectPropName, master);
-                            }
-                            else
-                            {
-                                Information.SetPropValueByName(obj, dataObjectPropName, null);
-                            }
-                        }
+                            Information.SetPropValueByName(obj, dataObjectPropName, master);
 
-                        // Обработка детейлов.
-                        if (edmMultiplicity == EdmMultiplicity.Many)
-                        {
-                            Type detType = Information.GetPropertyType(objType, dataObjectPropName);
-                            DetailArray detarr = (DetailArray)Information.GetPropValueByName(obj, dataObjectPropName);
-
-                            if (value != null && value is EdmEntityObjectCollection)
+                            if (dataObjectPropName == agregatorPropertyName)
                             {
-                                EdmEntityObjectCollection coll = (EdmEntityObjectCollection)value;
-                                if (coll != null && coll.Count > 0)
+                                master.AddDetail(obj);
+
+                                // Нужно обязательно обозначить детейловое свойство загруженным, поскольку мы вносим в него изменения.
+                                string detailPropName = Information.GetDetailArrayPropertyName(master.GetType(), obj.GetType());
+                                if (!string.IsNullOrEmpty(detailPropName) && !master.CheckLoadedProperty(detailPropName))
                                 {
-                                    foreach (var edmEnt in coll)
-                                    {
-                                        DataObject det = GetDataObjectByEdmEntity(
-                                            (EdmEntityObject)edmEnt,
-                                            null,
-                                            dObjs,
-                                            true);
-
-                                        if (det.__PrimaryKey == null)
-                                        {
-                                            detarr.AddObject(det);
-                                        }
-                                        else
-                                        {
-                                            detarr.SetByKey(det.__PrimaryKey, det);
-                                        }
-                                    }
+                                    master.AddLoadedProperties(detailPropName);
                                 }
                             }
-                            else
-                            {
-                                detarr.Clear();
-                            }
+                        }
+                        else
+                        {
+                            Information.SetPropValueByName(obj, dataObjectPropName, null);
                         }
                     }
-                    else
+
+                    // Обработка детейлов.
+                    if (edmMultiplicity == EdmMultiplicity.Many)
                     {
-                        // Обработка собственных свойств объекта (неключевых, т.к. ключ устанавливаем при начальной инициализации объекта obj).
-                        if (prop.Name != keyProperty.Name)
+                        DetailArray detarr = (DetailArray)Information.GetPropValueByName(obj, dataObjectPropName);
+
+                        if (value is EdmEntityObjectCollection coll)
                         {
-                            Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
-                            edmEntity.TryGetPropertyValue(prop.Name, out value);
-
-                            // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
-                            // значит свойство файловое, и его нужно обработать особым образом.
-                            if (FileController.HasDataObjectFileProvider(dataObjectPropertyType))
+                            if (coll != null && coll.Count > 0)
                             {
-                                IDataObjectFileProvider dataObjectFileProvider = FileController.GetDataObjectFileProvider(dataObjectPropertyType);
-
-                                // Обработка файловых свойств объектов данных.
-                                string serializedFileDescription = value as string;
-                                if (serializedFileDescription == null)
+                                foreach (var edmEnt in coll)
                                 {
-                                    // Файловое свойство было сброшено на клиенте.
-                                    // Ассоциированный файл должен быть удален, после успешного сохранения изменений.
-                                    // Для этого запоминаем метаданные ассоциированного файла, до того как свойство будет сброшено
-                                    // (для получения метаданных свойство будет дочитано в объект данных).
-                                    // Файловое свойство типа File хранит данные ассоциированного файла прямо в БД,
-                                    // соответственно из файловой системы просто нечего удалять,
-                                    // поэтому обходим его стороной, чтобы избежать лишных вычиток файлов из БД.
-                                    if (dataObjectPropertyType != typeof(File))
+                                    DataObject det = GetDataObjectByEdmEntity(
+                                        (EdmEntityObject)edmEnt,
+                                        null,
+                                        dObjs,
+                                        true);
+
+                                    if (det.__PrimaryKey == null)
                                     {
-                                        _removingFileDescriptions.Add(dataObjectFileProvider.GetFileDescription(obj, dataObjectPropName));
+                                        detarr.AddObject(det);
                                     }
-
-                                    // Сбрасываем файловое свойство в изменяемом объекте данных.
-                                    Information.SetPropValueByName(obj, dataObjectPropName, null);
-                                }
-                                else
-                                {
-                                    // Файловое свойство было изменено, но не сброшено.
-                                    // Если в метаданных файла присутствует FileUploadKey значит файл был загружен на сервер,
-                                    // но еще не был ассоциирован с объектом данных, и это нужно сделать.
-                                    FileDescription fileDescription = FileDescription.FromJson(serializedFileDescription);
-                                    if (!(string.IsNullOrEmpty(fileDescription.FileUploadKey) || string.IsNullOrEmpty(fileDescription.FileName)))
+                                    else
                                     {
-                                        Information.SetPropValueByName(obj, dataObjectPropName, dataObjectFileProvider.GetFileProperty(fileDescription));
-
-                                        // Файловое свойство типа File хранит данные ассоциированного файла прямо в БД,
-                                        // поэтому после успешного сохранения объекта данных, оссоциированный с ним файл должен быть удален из файловой системы.
-                                        // Для этого запоминаем описание загруженного файла.
-                                        if (dataObjectPropertyType == typeof(File))
-                                        {
-                                            _removingFileDescriptions.Add(fileDescription);
-                                        }
+                                        detarr.SetByKey(det.__PrimaryKey, det);
                                     }
                                 }
+                            }
+                        }
+                        else
+                        {
+                            detarr.Clear();
+                        }
+                    }
+                }
+                else
+                {
+                    // Обработка собственных свойств объекта (неключевых, т.к. ключ устанавливаем при начальной инициализации объекта obj).
+                    if (prop.Name != keyProperty.Name)
+                    {
+                        Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
+                        edmEntity.TryGetPropertyValue(prop.Name, out value);
+
+                        // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
+                        // значит свойство файловое, и его нужно обработать особым образом.
+                        if (FileController.HasDataObjectFileProvider(dataObjectPropertyType))
+                        {
+                            IDataObjectFileProvider dataObjectFileProvider = FileController.GetDataObjectFileProvider(dataObjectPropertyType);
+
+                            // Обработка файловых свойств объектов данных.
+                            string serializedFileDescription = value as string;
+                            if (serializedFileDescription == null)
+                            {
+                                // Файловое свойство было сброшено на клиенте.
+                                // Ассоциированный файл должен быть удален, после успешного сохранения изменений.
+                                // Для этого запоминаем метаданные ассоциированного файла, до того как свойство будет сброшено
+                                // (для получения метаданных свойство будет дочитано в объект данных).
+                                // Файловое свойство типа File хранит данные ассоциированного файла прямо в БД,
+                                // соответственно из файловой системы просто нечего удалять,
+                                // поэтому обходим его стороной, чтобы избежать лишных вычиток файлов из БД.
+                                if (dataObjectPropertyType != typeof(File))
+                                {
+                                    _removingFileDescriptions.Add(dataObjectFileProvider.GetFileDescription(obj, dataObjectPropName));
+                                }
+
+                                // Сбрасываем файловое свойство в изменяемом объекте данных.
+                                Information.SetPropValueByName(obj, dataObjectPropName, null);
                             }
                             else
                             {
-                                // Преобразование типов для примитивных свойств.
-                                if (value is DateTimeOffset)
-                                    value = ((DateTimeOffset)value).UtcDateTime;
-                                if (value is EdmEnumObject)
-                                    value = ((EdmEnumObject)value).Value;
+                                // Файловое свойство было изменено, но не сброшено.
+                                // Если в метаданных файла присутствует FileUploadKey значит файл был загружен на сервер,
+                                // но еще не был ассоциирован с объектом данных, и это нужно сделать.
+                                FileDescription fileDescription = FileDescription.FromJson(serializedFileDescription);
+                                fileDescription.FilePropertyType = dataObjectPropertyType;
+                                if (!(string.IsNullOrEmpty(fileDescription.FileUploadKey) || string.IsNullOrEmpty(fileDescription.FileName)))
+                                {
+                                    Information.SetPropValueByName(obj, dataObjectPropName, dataObjectFileProvider.GetFileProperty(fileDescription));
 
-                                Information.SetPropValueByName(obj, dataObjectPropName, value);
+                                    // Файловое свойство типа File хранит данные ассоциированного файла прямо в БД,
+                                    // поэтому после успешного сохранения объекта данных, оссоциированный с ним файл должен быть удален из файловой системы.
+                                    // Для этого запоминаем описание загруженного файла.
+                                    if (dataObjectPropertyType == typeof(File))
+                                    {
+                                        _removingFileDescriptions.Add(fileDescription);
+                                    }
+                                }
                             }
+                        }
+                        else
+                        {
+                            // Преобразование типов для примитивных свойств.
+                            if (value is DateTimeOffset)
+                                value = ((DateTimeOffset)value).UtcDateTime;
+                            if (value is EdmEnumObject)
+                                value = ((EdmEnumObject)value).Value;
+
+                            Information.SetPropValueByName(obj, dataObjectPropName, value);
+                        }
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(agregatorPropertyName))
+            {
+                DataObject agregator = (DataObject)Information.GetPropValueByName(obj, agregatorPropertyName);
+
+                if (agregator != null)
+                {
+                    DataObject existObject = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
+                    if (existObject == null)
+                    {
+                        if (!endObject)
+                        {
+                            // Добавляем объект в начало списка.
+                            dObjs.Insert(0, agregator);
+                        }
+                        else
+                        {
+                            // Добавляем в конец списка.
+                            dObjs.Add(agregator);
                         }
                     }
                 }

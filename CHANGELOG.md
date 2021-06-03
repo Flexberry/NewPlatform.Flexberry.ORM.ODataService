@@ -6,7 +6,76 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
 ### Fixed
+
+## [5.2.0] - 2021.06.03
+
+### Added
+ 1. Microsoft .NET Framework 4.6.1 compiled assemblies.
+ 2. Batch update MessageQuotas.MaxOperationsPerChangeset and MessageQuotas.MaxReceivedMessageSize parameters.
+
+### Changed
+ 1. Removing files through file providers.
+ 2. Add additional edm mapping into model builder.
+
+### Fixed
+ 1. Batch update InternalServerError event handling.
+ 2. SafeLoadDetails for models with TypeUsage.
+ 3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
+ 4. SafeLoadDetails for partial loaded agregator.
+
+## [5.1.1] - 2020.08.21
+
+### Added
+
+1. The maximum number of top level query operations and changesets allowed in a single batch parameter, set default as 1000.
+
+### Fixed
+
+1. Update and delete details by batch update.
+2. Exponential format for numeric values serialization issue.
+3. SafeLoadDetails add details DataCopy to DataCopy DetailArray.
+4. Load emty agregators in SafeLoadDetails.
+
+## [5.1.0] - 2020.05.03
+
+### Added
+
+1. Handle httpResponseException with OdataError wrapped in targetInvocationException.
+2. Support $batch request for transactional update data objects.
+3. Support for limits on master details.
+4. Support for limits on pseudodetails.
+5. Decode Excel export column name.
+6. HttpConfiguretion MapDataObjectRoute() extension method. 
+
+### Changed
+
+1. JavaScriptSerializer replaced with Newtonsoft.Json.JsonConvert for better performance.
+2. [BREAKINGCHANGE] Method MapODataServiceDataObjectRoute now requires HttpServer as parameter.
+3. At creation of dynamic views of the master in them are added with primary keys.
+4. Use common DataObjectCache for all sql queries per http request.
+5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
+6. Refactor `DataObjectControllerActivator` to simplify overriding DOC initialization.
+7. Mapping only selected properties on getting objects.
+8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions.
+9. [BREAKINGCHANGE] The namespace of api-controllers is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers.
+10. [BREAKINGCHANGE] The namespace of GenericCorsPolicyProvider is changed to NewPlatform.Flexberry.ORM.ODataService.Cors.
+11. [BREAKINGCHANGE] HttpConfiguration MapODataServiceDataObjectRoute extension method is marked obsolete.
+12. Code unification with Microsoft.AspNetCore.OData.
+
+### Fixed
+
+1. Fix error with POST request and header "Prefer".
+2. Getting objects by primary key with using `$select` and `$expand` query options.
+3. Loading masters with common DataObjectCache.
+4. Naming of details when exporting data to Excel.
+5. Call BS for agregator when details changed in batch requests.
+6. WebFile type support in batch requests.
+7. Fix error on creation DataObject with pseudodetail field defined.
+8. Loading masters with not stored property in batch requests.
+9. Using ObjectStatus instead of private collection to determine if object is created.
 
 ## [5.0.0] - 2018.12.14
 

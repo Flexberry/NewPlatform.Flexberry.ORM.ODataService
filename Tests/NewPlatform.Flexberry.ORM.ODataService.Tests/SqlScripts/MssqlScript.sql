@@ -1,4 +1,8 @@
-﻿CREATE TABLE [Driver] (
+﻿
+
+
+
+CREATE TABLE [Driver] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
 
@@ -46,6 +50,43 @@ CREATE TABLE [Лес] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [Son] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [SuspendersColor] VARCHAR(255)  NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [Parent] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [ТипПороды] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Название] VARCHAR(255)  NULL,
+
+	 [ДатаРегистрации] DATETIME  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [Порода] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Название] VARCHAR(255)  NULL,
+
+	 [ТипПороды_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [Иерархия_m0] UNIQUEIDENTIFIER  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [TestDetailWithCicle] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -55,6 +96,19 @@ CREATE TABLE [TestDetailWithCicle] (
 	 [Parent] UNIQUEIDENTIFIER  NULL,
 
 	 [TestMaster] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [Daughter] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [DressColor] VARCHAR(255)  NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [Parent] UNIQUEIDENTIFIER  NOT NULL,
 
 	 PRIMARY KEY ([primaryKey]))
 
@@ -236,6 +290,28 @@ CREATE TABLE [Книга] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [Person] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [Перелом] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Дата] DATETIME  NULL,
+
+	 [Тип] VARCHAR(8)  NULL,
+
+	 [Лапа_m0] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [БазовыйКласс] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -319,6 +395,35 @@ CREATE TABLE [Блоха] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [Лапа] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Цвет] VARCHAR(255)  NULL,
+
+	 [Размер] INT  NULL,
+
+	 [ДатаРождения] DATETIME  NULL,
+
+	 [БылиЛиПереломы] BIT  NULL,
+
+	 [Сторона] VARCHAR(11)  NULL,
+
+	 [Номер] INT  NULL,
+
+	 [РазмерDouble] FLOAT  NULL,
+
+	 [РазмерFloat] REAL  NULL,
+
+	 [РазмерDecimal] DECIMAL  NULL,
+
+	 [ТипЛапы_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [Кошка_m0] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [КлассСоСтрокКл] (
 
 	 [StoragePrimaryKey] VARCHAR(255)  NOT NULL,
@@ -337,6 +442,10 @@ CREATE TABLE [Берлога] (
 	 [Комфортность] INT  NULL,
 
 	 [Заброшена] BIT  NULL,
+
+	 [Сертификат] NVARCHAR(MAX)  NULL,
+
+	 [CertString] NVARCHAR(MAX)  NULL,
 
 	 [ЛесРасположения] UNIQUEIDENTIFIER  NULL,
 
@@ -363,6 +472,19 @@ CREATE TABLE [TestMaster] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [Котенок] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [КличкаКотенка] VARCHAR(255)  NULL,
+
+	 [Глупость] INT  NULL,
+
+	 [Кошка_m0] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Библиотека] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -378,7 +500,9 @@ CREATE TABLE [Детейл2] (
 
 	 [prop2] VARCHAR(255)  NULL,
 
-	 [Детейл] UNIQUEIDENTIFIER  NOT NULL,
+	 [Детейл_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [Детейл_m1] UNIQUEIDENTIFIER  NULL,
 
 	 PRIMARY KEY ([primaryKey]))
 
@@ -398,6 +522,17 @@ CREATE TABLE [Журнал] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [ТипЛапы] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Название] VARCHAR(255)  NULL,
+
+	 [Актуально] BIT  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [КлассStoredDerived] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -405,6 +540,44 @@ CREATE TABLE [КлассStoredDerived] (
 	 [StrAttr2] VARCHAR(255)  NULL,
 
 	 [StrAttr] VARCHAR(255)  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [Кошка] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Кличка] VARCHAR(255)  NULL,
+
+	 [ДатаРождения] DATETIME  NULL,
+
+	 [Тип] VARCHAR(11)  NULL,
+
+	 [ПородаСтрокой] VARCHAR(255)  NULL,
+
+	 [Агрессивная] BIT  NULL,
+
+	 [УсыСлева] INT  NULL,
+
+	 [УсыСправа] INT  NULL,
+
+	 [Порода_m0] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [ДетейлНаследник] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [prop3] VARCHAR(255)  NULL,
+
+	 [prop1] INT  NULL,
+
+	 [БазовыйКласс_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [БазовыйКласс_m1] UNIQUEIDENTIFIER  NULL,
 
 	 PRIMARY KEY ([primaryKey]))
 
@@ -610,6 +783,8 @@ CREATE TABLE [STORMAG] (
 
 	 [Email] varchar(80)  NULL,
 
+	 [Comment] varchar(MAX)  NULL,
+
 	 [CreateTime] datetime  NULL,
 
 	 [Creator] varchar(255)  NULL,
@@ -694,11 +869,23 @@ CREATE TABLE [STORMAuField] (
  ALTER TABLE [Лес] ADD CONSTRAINT [Лес_FСтрана_0] FOREIGN KEY ([Страна]) REFERENCES [Страна]
 CREATE INDEX Лес_IСтрана on [Лес] ([Страна])
 
+ ALTER TABLE [Son] ADD CONSTRAINT [Son_FPerson_0] FOREIGN KEY ([Parent]) REFERENCES [Person]
+CREATE INDEX Son_IParent on [Son] ([Parent])
+
+ ALTER TABLE [Порода] ADD CONSTRAINT [Порода_FТипПороды_0] FOREIGN KEY ([ТипПороды_m0]) REFERENCES [ТипПороды]
+CREATE INDEX Порода_IТипПороды_m0 on [Порода] ([ТипПороды_m0])
+
+ ALTER TABLE [Порода] ADD CONSTRAINT [Порода_FПорода_0] FOREIGN KEY ([Иерархия_m0]) REFERENCES [Порода]
+CREATE INDEX Порода_IИерархия_m0 on [Порода] ([Иерархия_m0])
+
  ALTER TABLE [TestDetailWithCicle] ADD CONSTRAINT [TestDetailWithCicle_FTestDetailWithCicle_0] FOREIGN KEY ([Parent]) REFERENCES [TestDetailWithCicle]
 CREATE INDEX TestDetailWithCicle_IParent on [TestDetailWithCicle] ([Parent])
 
  ALTER TABLE [TestDetailWithCicle] ADD CONSTRAINT [TestDetailWithCicle_FTestMaster_0] FOREIGN KEY ([TestMaster]) REFERENCES [TestMaster]
 CREATE INDEX TestDetailWithCicle_ITestMaster on [TestDetailWithCicle] ([TestMaster])
+
+ ALTER TABLE [Daughter] ADD CONSTRAINT [Daughter_FPerson_0] FOREIGN KEY ([Parent]) REFERENCES [Person]
+CREATE INDEX Daughter_IParent on [Daughter] ([Parent])
 
  ALTER TABLE [Медведь] ADD CONSTRAINT [Медведь_FСтрана_0] FOREIGN KEY ([Страна]) REFERENCES [Страна]
 CREATE INDEX Медведь_IСтрана on [Медведь] ([Страна])
@@ -724,6 +911,9 @@ CREATE INDEX Книга_IАвтор1 on [Книга] ([Автор1])
  ALTER TABLE [Книга] ADD CONSTRAINT [Книга_FБиблиотека_0] FOREIGN KEY ([Библиотека1]) REFERENCES [Библиотека]
 CREATE INDEX Книга_IБиблиотека1 on [Книга] ([Библиотека1])
 
+ ALTER TABLE [Перелом] ADD CONSTRAINT [Перелом_FЛапа_0] FOREIGN KEY ([Лапа_m0]) REFERENCES [Лапа]
+CREATE INDEX Перелом_IЛапа_m0 on [Перелом] ([Лапа_m0])
+
  ALTER TABLE [Наследник] ADD CONSTRAINT [Наследник_FМастер_0] FOREIGN KEY ([Мастер]) REFERENCES [Мастер]
 CREATE INDEX Наследник_IМастер on [Наследник] ([Мастер])
 
@@ -739,20 +929,41 @@ CREATE INDEX Мастер_IМастер2 on [Мастер] ([Мастер2])
  ALTER TABLE [Блоха] ADD CONSTRAINT [Блоха_FМедведь_0] FOREIGN KEY ([МедведьОбитания]) REFERENCES [Медведь]
 CREATE INDEX Блоха_IМедведьОбитания on [Блоха] ([МедведьОбитания])
 
+ ALTER TABLE [Лапа] ADD CONSTRAINT [Лапа_FТипЛапы_0] FOREIGN KEY ([ТипЛапы_m0]) REFERENCES [ТипЛапы]
+CREATE INDEX Лапа_IТипЛапы_m0 on [Лапа] ([ТипЛапы_m0])
+
+ ALTER TABLE [Лапа] ADD CONSTRAINT [Лапа_FКошка_0] FOREIGN KEY ([Кошка_m0]) REFERENCES [Кошка]
+CREATE INDEX Лапа_IКошка_m0 on [Лапа] ([Кошка_m0])
+
  ALTER TABLE [Берлога] ADD CONSTRAINT [Берлога_FЛес_0] FOREIGN KEY ([ЛесРасположения]) REFERENCES [Лес]
 CREATE INDEX Берлога_IЛесРасположения on [Берлога] ([ЛесРасположения])
 
  ALTER TABLE [Берлога] ADD CONSTRAINT [Берлога_FМедведь_0] FOREIGN KEY ([Медведь]) REFERENCES [Медведь]
 CREATE INDEX Берлога_IМедведь on [Берлога] ([Медведь])
 
- ALTER TABLE [Детейл2] ADD CONSTRAINT [Детейл2_FДетейл_0] FOREIGN KEY ([Детейл]) REFERENCES [Детейл]
-CREATE INDEX Детейл2_IДетейл on [Детейл2] ([Детейл])
+ ALTER TABLE [Котенок] ADD CONSTRAINT [Котенок_FКошка_0] FOREIGN KEY ([Кошка_m0]) REFERENCES [Кошка]
+CREATE INDEX Котенок_IКошка_m0 on [Котенок] ([Кошка_m0])
+
+ ALTER TABLE [Детейл2] ADD CONSTRAINT [Детейл2_FДетейл_0] FOREIGN KEY ([Детейл_m0]) REFERENCES [Детейл]
+CREATE INDEX Детейл2_IДетейл_m0 on [Детейл2] ([Детейл_m0])
+
+ ALTER TABLE [Детейл2] ADD CONSTRAINT [Детейл2_FДетейлНаследник_0] FOREIGN KEY ([Детейл_m1]) REFERENCES [ДетейлНаследник]
+CREATE INDEX Детейл2_IДетейл_m1 on [Детейл2] ([Детейл_m1])
 
  ALTER TABLE [Журнал] ADD CONSTRAINT [Журнал_FАвтор_0] FOREIGN KEY ([Автор2]) REFERENCES [Автор]
 CREATE INDEX Журнал_IАвтор2 on [Журнал] ([Автор2])
 
  ALTER TABLE [Журнал] ADD CONSTRAINT [Журнал_FБиблиотека_0] FOREIGN KEY ([Библиотека2]) REFERENCES [Библиотека]
 CREATE INDEX Журнал_IБиблиотека2 on [Журнал] ([Библиотека2])
+
+ ALTER TABLE [Кошка] ADD CONSTRAINT [Кошка_FПорода_0] FOREIGN KEY ([Порода_m0]) REFERENCES [Порода]
+CREATE INDEX Кошка_IПорода_m0 on [Кошка] ([Порода_m0])
+
+ ALTER TABLE [ДетейлНаследник] ADD CONSTRAINT [ДетейлНаследник_FБазовыйКласс_0] FOREIGN KEY ([БазовыйКласс_m0]) REFERENCES [БазовыйКласс]
+CREATE INDEX ДетейлНаследник_IБазовыйКласс_m0 on [ДетейлНаследник] ([БазовыйКласс_m0])
+
+ ALTER TABLE [ДетейлНаследник] ADD CONSTRAINT [ДетейлНаследник_FНаследник_0] FOREIGN KEY ([БазовыйКласс_m1]) REFERENCES [Наследник]
+CREATE INDEX ДетейлНаследник_IБазовыйКласс_m1 on [ДетейлНаследник] ([БазовыйКласс_m1])
 
  ALTER TABLE [STORMWEBSEARCH] ADD CONSTRAINT [STORMWEBSEARCH_FSTORMFILTERSETTING_0] FOREIGN KEY ([FilterSetting_m0]) REFERENCES [STORMFILTERSETTING]
 
@@ -771,3 +982,4 @@ CREATE INDEX Журнал_IБиблиотека2 on [Журнал] ([Библи�
  ALTER TABLE [STORMAuField] ADD CONSTRAINT [STORMAuField_FSTORMAuField_0] FOREIGN KEY ([MainChange_m0]) REFERENCES [STORMAuField]
 
  ALTER TABLE [STORMAuField] ADD CONSTRAINT [STORMAuField_FSTORMAuEntity_0] FOREIGN KEY ([AuditEntity_m0]) REFERENCES [STORMAuEntity]
+

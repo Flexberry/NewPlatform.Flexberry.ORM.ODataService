@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
@@ -20,14 +19,14 @@
     using System.Web.OData.Extensions;
     using System.Web.OData.Query;
     using System.Web.OData.Routing;
-    using Handlers;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.FunctionalLanguage;
-    using ICSSoft.STORMNET.FunctionalLanguage.SQLWhere;
     using ICSSoft.STORMNET.KeyGen;
+    using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.UserDataTypes;
+    using Microsoft.OData.Core;
     using Microsoft.OData.Core.UriParser.Semantic;
     using Microsoft.OData.Edm;
     using Microsoft.OData.Edm.Library;
@@ -35,13 +34,13 @@
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
+    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
+
     using ODataPath = System.Web.OData.Routing.ODataPath;
     using OrderByQueryOption = NewPlatform.Flexberry.ORM.ODataService.Expressions.OrderByQueryOption;
-    using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Unity.Configuration;
-    using ICSSoft.STORMNET.Security;
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -56,6 +55,11 @@
         /// Data service for all manipulations with data.
         /// </summary>
         private readonly IDataService _dataService;
+
+        /// <summary>
+        /// Data object cache for sync loading.
+        /// </summary>
+        private readonly DataObjectCache _dataObjectCache;
 
         /// <summary>
         /// The current EDM model.
@@ -94,14 +98,29 @@
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="dataService">Data service for all manipulations with data.</param>
+        /// <param name="dataObjectCache">DataObject cache.</param>
+        /// <param name="model">EDM model.</param>
+        /// <param name="events">The container with registered events.</param>
+        /// <param name="functions">The container with OData Service functions.</param>
         public DataObjectController(
             IDataService dataService,
+            DataObjectCache dataObjectCache,
             DataObjectEdmModel model,
             IEventHandlerContainer events,
             IFunctionContainer functions)
         {
-            Contract.Requires<ArgumentNullException>(dataService != null);
-            _dataService = dataService;
+            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService), "Contract assertion not met: dataService != null");
+
+            if (dataObjectCache != null)
+            {
+                _dataObjectCache = dataObjectCache;
+            }
+            else
+            {
+                _dataObjectCache = new DataObjectCache();
+                _dataObjectCache.StartCaching(false);
+            }
+
             _model = model;
             _events = events;
             _functions = functions;
@@ -178,7 +197,6 @@
             }
         }
 
-
         /// <summary>
         /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
         /// </summary>
@@ -226,6 +244,18 @@
         }
 
         /// <summary>
+        /// Проверяет, содержит ли исключение OdataError.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <returns>true - если содержит.</returns>
+        private bool HasOdataError(Exception exception)
+        {
+            HttpResponseException httpResponseException = exception as HttpResponseException;
+            ObjectContent content = httpResponseException?.Response?.Content as ObjectContent;
+            return content?.Value is ODataError;
+        }
+
+        /// <summary>
         /// Возвращает количество объектов для linq-выражения соответствующего параметрам запроса OData (только для $filter).
         /// </summary>
         /// <param name="type">Тип DataObject.</param>
@@ -267,18 +297,21 @@
             foreach (string column in colsOrder)
             {
                 var columnInfo = column.Split(new char[] { '/' }, 2);
-                par.PropertiesOrder.Add(columnInfo[0]);
-                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = columnInfo[0], Caption = columnInfo[1] });
+                var decodeColumnInfo0 = HttpUtility.UrlDecode(columnInfo[0]);
+                var decodeColumnInfo1 = HttpUtility.UrlDecode(columnInfo[1]);
+
+                par.PropertiesOrder.Add(decodeColumnInfo0);
+                par.HeaderCaptions.Add(new HeaderCaption { PropertyName = decodeColumnInfo0, Caption = decodeColumnInfo1 });
             }
 
             for (int i = 0; i < view.Details.Length; i++)
             {
                 DetailInView detail = view.Details[i];
-                detail.View.Name = $"ViewDetail{i}";
+                detail.View.Name = string.IsNullOrEmpty(detail.Name) ? $"ViewDetail{i}" : detail.Name;
                 var column = par.HeaderCaptions.FirstOrDefault(col => col.PropertyName == detail.Name);
                 if (column != null)
                 {
-                    column.MasterName = "View";
+                    column.MasterName = string.IsNullOrEmpty(view.Name) ? "View" : view.Name;
                     column.DetailName = detail.View.Name;
                 }
 
@@ -372,17 +405,16 @@
         /// <returns>Сущность.</returns>
         internal EdmEntityObject GetEdmObject(IEdmEntityType entityType, object obj, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView)
         {
-            if (level == 0 || obj == null || (obj is DataObject && ((DataObject)obj).__PrimaryKey == null))
+            if (level == 0 || obj == null || (obj is DataObject dataObject && dataObject.__PrimaryKey == null))
                 return null;
             EdmEntityObject entity = new EdmEntityObject(entityType);
 
-            Dictionary<string, ExpandedNavigationSelectItem> expandedProperties = new Dictionary<string, ExpandedNavigationSelectItem>();
-            Dictionary<string, SelectItem> selectedProperties = new Dictionary<string, SelectItem>();
+            var expandedProperties = new Dictionary<string, ExpandedNavigationSelectItem>();
+            var selectedProperties = new Dictionary<string, SelectItem>();
             IEnumerable<SelectItem> selectedItems = null;
-            EdmEntityObject edmObj = null;
             if (expandedNavigationSelectItem == null)
             {
-                if (QueryOptions != null && QueryOptions.SelectExpand != null)
+                if (QueryOptions?.SelectExpand != null)
                     selectedItems = QueryOptions.SelectExpand.SelectExpandClause.SelectedItems;
             }
             else
@@ -397,12 +429,12 @@
                     var expandedItem = CastExpandedNavigationSelectItem(item);
                     if (expandedItem == null)
                     {
-                        if (item is PathSelectItem && (item as PathSelectItem).SelectedPath.FirstSegment is PropertySegment)
+                        if (item is PathSelectItem pathSelectItem && pathSelectItem.SelectedPath.FirstSegment is PropertySegment propertySegment)
                         {
-                            string key = ((item as PathSelectItem).SelectedPath.FirstSegment as PropertySegment).Property.Name;
+                            string key = propertySegment.Property.Name;
                             if (!selectedProperties.ContainsKey(key))
                             {
-                                selectedProperties.Add(key, item);
+                                selectedProperties.Add(key, pathSelectItem);
                             }
                         }
                     }
@@ -415,34 +447,51 @@
 
             foreach (var prop in entityType.Properties())
             {
-                string dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
-                if (prop is EdmNavigationProperty)
+                string dataObjectPropName;
+                try
                 {
-                    if (expandedProperties.ContainsKey(prop.Name))
+                    dataObjectPropName = _model.GetDataObjectProperty(entityType.FullTypeName(), prop.Name).Name;
+                }
+                catch (KeyNotFoundException)
+                {
+                    // Check if prop value is the link from master to pseudodetail (pseudoproperty).
+                    if (HasPseudoproperty(entityType, prop.Name))
                     {
-                        var expandedItem = expandedProperties[prop.Name];
-                        var propPath = _properties.ContainsKey(expandedItem) ? _properties[expandedItem] : null;
-                        EdmNavigationProperty navProp = (EdmNavigationProperty)prop;
-                        if (navProp.TargetMultiplicity() == EdmMultiplicity.One || navProp.TargetMultiplicity() == EdmMultiplicity.ZeroOrOne)
+                        continue;
+                    }
+
+                    throw;
+                }
+
+                Type objectType = obj.GetType();
+                PropertyInfo propertyInfo = objectType.GetProperty(dataObjectPropName);
+                if (prop is EdmNavigationProperty navProp)
+                {
+                    if (expandedProperties.ContainsKey(navProp.Name))
+                    {
+                        var expandedItem = expandedProperties[navProp.Name];
+                        string propPath = _properties.ContainsKey(expandedItem) ? _properties[expandedItem] : null;
+                        EdmMultiplicity targetMultiplicity = navProp.TargetMultiplicity();
+                        if (targetMultiplicity == EdmMultiplicity.One || targetMultiplicity == EdmMultiplicity.ZeroOrOne)
                         {
-                            object master = obj.GetType().GetProperty(dataObjectPropName).GetValue(obj, null);
-                            edmObj = null;
+                            DataObject master = propertyInfo.GetValue(obj, null) as DataObject;
+                            EdmEntityObject edmObj = null;
                             if (dynamicView == null)
                             {
                                 View view;
                                 if (master == null)
                                 {
-                                    view = _model.GetDataObjectDefaultView(obj.GetType());
+                                    view = _model.GetDataObjectDefaultView(objectType);
                                     obj = LoadObject(view, (DataObject)obj);
                                 }
 
-                                master = obj.GetType().GetProperty(dataObjectPropName).GetValue(obj, null);
+                                master = propertyInfo.GetValue(obj, null) as DataObject;
                                 if (master != null)
                                 {
                                     view = _model.GetDataObjectDefaultView(master.GetType());
                                     if (view != null)
                                     {
-                                        master = LoadObject(view, (DataObject)master);
+                                        master = LoadObject(view, master);
                                         edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem);
                                     }
                                 }
@@ -453,26 +502,25 @@
                                 {
                                     if (!DynamicView.ContainsPoperty(dynamicView.View, propPath))
                                     {
-                                        _dataService.LoadObject(dynamicView.View, (DataObject)master);
+                                        _dataService.LoadObject(dynamicView.View, master, false, true, _dataObjectCache);
                                     }
 
                                     edmObj = GetEdmObject(_model.GetEdmEntityType(master.GetType()), master, level, expandedItem, dynamicView);
                                 }
                             }
 
-                            entity.TrySetPropertyValue(prop.Name, edmObj);
+                            entity.TrySetPropertyValue(navProp.Name, edmObj);
                         }
 
-                        if (navProp.TargetMultiplicity() == EdmMultiplicity.Many)
+                        if (targetMultiplicity == EdmMultiplicity.Many)
                         {
-                            DetailArray detail = null;
-                            View view = _model.GetDataObjectDefaultView(obj.GetType());
+                            View view = _model.GetDataObjectDefaultView(objectType);
                             if (dynamicView == null || !DynamicView.ContainsPoperty(dynamicView.View, propPath))
                             {
                                 obj = LoadObject(view, (DataObject)obj);
                             }
 
-                            detail = (DetailArray)obj.GetType().GetProperty(dataObjectPropName).GetValue(obj, null);
+                            var detail = (DetailArray)propertyInfo.GetValue(obj, null);
                             IEnumerable<DataObject> objs = detail.GetAllObjects();
                             if (expandedItem.SkipOption != null)
                                 objs = objs.Skip((int)expandedItem.SkipOption);
@@ -481,7 +529,7 @@
                             var coll = GetEdmCollection(objs, detail.ItemType, 1, expandedItem, dynamicView);
                             if (coll != null && coll.Count > 0)
                             {
-                                entity.TrySetPropertyValue(prop.Name, coll);
+                                entity.TrySetPropertyValue(navProp.Name, coll);
                             }
                         }
                     }
@@ -490,10 +538,10 @@
                 {
                     if (prop.Name == _model.KeyPropertyName)
                     {
-                        object key = obj.GetType().GetProperty(dataObjectPropName).GetValue(obj, null);
-                        if (key is KeyGuid)
+                        object key = propertyInfo.GetValue(obj, null);
+                        if (key is KeyGuid keyGuid)
                         {
-                            entity.TrySetPropertyValue(prop.Name, ((KeyGuid)key).Guid);
+                            entity.TrySetPropertyValue(prop.Name, keyGuid.Guid);
                         }
                         else
                         {
@@ -504,22 +552,25 @@
                         //KeyGuid keyGuid = (KeyGuid)obj.GetType().GetProperty(prop.Name).GetValue(obj, null);
                         //entity.TrySetPropertyValue(prop.Name, keyGuid.Guid);
                     }
-                    else
+
+                    // Обрабатывать свойство, если $select пуст, включен в $select или пустое значение недопустимо (например, Enum).
+                    else if (!selectedProperties.Any()
+                             || selectedProperties.ContainsKey(prop.Name)
+                             || !prop.Type.IsNullable)
                     {
                         object value;
-                        PropertyInfo propInfo = obj.GetType().GetProperty(dataObjectPropName);
-                        if (propInfo == null)
+                        if (propertyInfo == null)
                         {
-                            propInfo = obj.GetType().GetProperty(dataObjectPropName, BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                            if (propInfo == null)
+                            propertyInfo = objectType.GetProperty(dataObjectPropName, BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                            if (propertyInfo == null)
                                 continue;
-                            value = propInfo.GetValue(null);
+                            value = propertyInfo.GetValue(null);
                         }
                         else
                         {
                             try
                             {
-                                value = propInfo.GetValue(obj, null);
+                                value = propertyInfo.GetValue(obj, null);
                             }
                             catch (System.Exception)
                             {
@@ -527,7 +578,7 @@
                             }
                         }
 
-                        Type propType = propInfo.PropertyType;
+                        Type propType = propertyInfo.PropertyType;
                         if (propType == typeof(DataObject))
                             continue;
 
@@ -537,7 +588,7 @@
                         {
                             // Обработка файловых свойств объектов данных.
                             // ODataService будет возвращать строку с сериализованными метаданными файлового свойства.
-                            if (selectedProperties.Count() == 0 || (selectedProperties.Count() > 0 && selectedProperties.ContainsKey(dataObjectPropName)))
+                            if (!selectedProperties.Any() || (selectedProperties.Any() && selectedProperties.ContainsKey(dataObjectPropName)))
                             {
                                 value = FileController.GetDataObjectFileProvider(propType)
                                     .GetFileDescription((DataObject)obj, dataObjectPropName)
@@ -731,7 +782,17 @@
                 updatedSettings.HandleNullPropagation = HandleNullPropagationOptionHelper.GetDefaultHandleNullPropagationOption(query);
             }
 
-            FilterBinder binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+            FilterBinder binder;
+            try
+            {
+                binder = FilterBinder.Transform(filterClause, type, filter.Context.Model, assembliesResolver, updatedSettings);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogDebug($"Failed to transform: {QueryOptions.Context.Path}", ex);
+                throw;
+            }
+
             _filterDetailProperties = binder.FilterDetailProperties;
             if (binder.IsOfTypesList.Count > 0)
             {
@@ -942,7 +1003,8 @@
             View view = _model.GetDataObjectDefaultView(type);
             if (_dynamicView != null)
                 view = _dynamicView.View;
-            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, _dataService);
+            IEnumerable<View> resolvingViews;
+            view = DynamicView.GetViewWithPropertiesUsedInExpression(expr, type, view, _dataService, out resolvingViews);
             if (_lcsLoadingTypes.Count == 0)
                 _lcsLoadingTypes = _model.GetDerivedTypes(type).ToList();
 
@@ -958,7 +1020,7 @@
             LoadingCustomizationStruct lcs = new LoadingCustomizationStruct(null);
             if (expr != null)
             {
-                lcs = LinqToLcs.GetLcs(expr, view);
+                lcs = LinqToLcs.GetLcs(expr, view, resolvingViews);
             }
 
             lcs.View = view;
@@ -979,9 +1041,18 @@
         {
             type = _model.GetDataObjectType(Request.ODataProperties().Path.Segments.OfType<EntitySetPathSegment>().First().ToString());
             QueryOptions = new ODataQueryOptions(new ODataQueryContext(_model, type, Request.ODataProperties().Path), Request);
-            if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
+            try
             {
-                Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+                var selectExpandClause = QueryOptions.SelectExpand?.SelectExpandClause;
+                if (selectExpandClause != null)
+                {
+                    Request.ODataProperties().SelectExpandClause = selectExpandClause;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.LogDebug($"Failed to get {nameof(SelectExpandQueryOption.SelectExpandClause)}: {QueryOptions.Context.Path}", e);
+                throw;
             }
 
             CreateDynamicView();
@@ -998,7 +1069,6 @@
             View view = _model.GetDataObjectDefaultView(type);
             return LoadObject(type, view, key);
         }
-
 
         /// <summary>
         /// Возвращает объект DataObject для данного ключа.
@@ -1026,9 +1096,8 @@
         /// <returns> Объект данных.</returns>
         private DataObject LoadObject(Type objType, View view, object keyValue)
         {
-            var ldef = SQLWhereLanguageDef.LanguageDef;
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
-            lcs.LimitFunction = ldef.GetFunction(ldef.funcEQ, new VariableDef(ldef.GuidType, SQLWhereLanguageDef.StormMainObjectKey), keyValue);
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, _dynamicView.View);
+            lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
             int count = -1;
             DataObject[] dobjs = LoadObjects(lcs, out count);
             if (dobjs.Length > 0)
@@ -1063,7 +1132,7 @@
             {
                 if (!callGetObjectsCount)
                 {
-                    dobjs = _dataService.LoadObjects(lcs);
+                    dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
                 }
                 else
                 {
@@ -1227,6 +1296,14 @@
             if (parentName == null)
                 return itemName;
             return $"{parentName}.{itemName}";
+        }
+
+        private bool HasPseudoproperty(IEdmEntityType entityType, string propertyName)
+        {
+            Type masterType = EdmLibHelpers.GetClrType(entityType.ToEdmTypeReference(true), _model);
+            IDataObjectEdmModelBuilder builder = (_model as DataObjectEdmModel).EdmModelBuilder;
+
+            return builder.GetPseudoDetail(masterType, propertyName) != null;
         }
     }
 }

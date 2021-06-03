@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Model
+namespace NewPlatform.Flexberry.ORM.ODataService.Model
 {
     using System;
     using System.Collections.Generic;
@@ -50,10 +50,96 @@
         /// <param name="dataObjectType">Тип</param>
         /// <param name="view">Начальное представление</param>
         /// <param name="dataService">Сервис данных</param>
+        /// <param name="resolvingViews">Представления для разрешения сложных выражений, например, детейлов мастера.</param>
         /// <returns>Представление</returns>
-        public static View GetViewWithPropertiesUsedInExpression(Expression expr, Type dataObjectType, View view, IDataService dataService)
+        public static View GetViewWithPropertiesUsedInExpression(Expression expr, Type dataObjectType, View view, IDataService dataService, out IEnumerable<View> resolvingViews)
         {
-            var lcs = LinqToLcs.GetLcs(expr, dataObjectType);
+            resolvingViews = null;
+
+            List<View> agregatorsViews = null;
+            IEnumerable<MethodCallExpression> agregatorsExpressions = GetCastCallInExpression(expr)?.OfType<MethodCallExpression>();
+            if (agregatorsExpressions != null)
+            {
+                foreach (MethodCallExpression callExpression in agregatorsExpressions)
+                {
+                    if (callExpression.Arguments.Count != 2 || !(callExpression.Arguments[0] is MethodCallExpression))
+                    {
+                        throw new Exception("Linq expression parsing error");
+                    }
+
+                    MethodCallExpression firstArgument = callExpression.Arguments[0] as MethodCallExpression;
+
+                    if (firstArgument == null || firstArgument.Arguments.Count < 1 || !(firstArgument.Arguments[0] is MemberExpression))
+                    {
+                        throw new Exception("Linq expression parsing error");
+                    }
+
+                    MemberExpression expression = firstArgument.Arguments[0] as MemberExpression;
+
+                    Type agregatorType = expression.Expression.Type;
+
+                    if (agregatorType == view.DefineClassType)
+                    {
+                        // Если это собственный детейл класса, для которого строится ограничение, то никакой дополнительной логики не надо.
+                        continue;
+                    }
+
+                    // Если выражение содержит упоминание любого детейла, к которому применяется any, то надо вычислить представление агрегатора для метода LinqToLcs.GetLcs(...).
+                    View agregatorView = new View() { DefineClassType = agregatorType, Name = "DynamicFromODataServiceForAgregator" };
+
+                    if (!(callExpression.Arguments[1] is LambdaExpression) || (callExpression.Arguments[1] as LambdaExpression).Parameters.Count < 1)
+                    {
+                        throw new Exception("Linq expression parsing error");
+                    }
+
+                    // Добавим свойства в представление - выбрать все свойства из лямбды.
+                    LambdaExpression lambdaExpression = callExpression.Arguments[1] as LambdaExpression;
+                    List<string> properties = GetMembersFromLambdaExpression(lambdaExpression);
+
+                    View detailView = new View() { DefineClassType = lambdaExpression.Parameters[0].Type, Name = "DynamicFormOdataServiceForDetail" };
+
+                    foreach (string propName in properties)
+                    {
+                        string addProp;
+
+                        // Если добавляется первичный ключ мастера, то добавляем просто мастера, поскольку так работает LinqToLcs.
+                        if (propName.EndsWith(nameof(DataObject.__PrimaryKey)))
+                        {
+                            addProp = propName.Substring(0, propName.LastIndexOf(nameof(DataObject.__PrimaryKey)) - 1);
+                        }
+                        else
+                        {
+                            addProp = propName;
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(addProp) && !detailView.CheckPropname(addProp))
+                        {
+                            detailView.AddProperty(addProp);
+                        }
+                    }
+
+                    string detailname = expression.Member.Name;
+                    agregatorView.AddDetailInView(detailname, detailView, true);
+
+                    if (agregatorsViews == null)
+                    {
+                        agregatorsViews = new List<View>();
+                    }
+
+                    agregatorsViews.Add(agregatorView);
+                }
+            }
+
+            LoadingCustomizationStruct lcs;
+            if (agregatorsViews == null)
+            {
+                lcs = LinqToLcs.GetLcs(expr, dataObjectType);
+            }
+            else
+            {
+                lcs = LinqToLcs.GetLcs(expr, view, agregatorsViews);
+                resolvingViews = agregatorsViews;
+            }
 
             if (lcs.ColumnsSort != null)
             {
@@ -64,8 +150,193 @@
             }
 
             if (lcs.LimitFunction == null)
+            {
                 return view;
+            }
+
             return ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(view, lcs.LimitFunction, dataService);
+        }
+
+        /// <summary>
+        /// Рекурсивный поиск названий свойств, участвующих в выражении.
+        /// </summary>
+        /// <param name="expression">Выражение, по которому ищем.</param>
+        /// <returns>Список найденных свойств.</returns>
+        private static List<string> GetMembersFromLambdaExpression(Expression expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expression is UnaryExpression unaryExpression)
+            {
+                return GetMembersFromLambdaExpression(unaryExpression.Operand);
+            }
+
+            if (expression.NodeType == ExpressionType.Lambda && expression is LambdaExpression lambdaExpression)
+            {
+                return GetMembersFromLambdaExpression(lambdaExpression.Body);
+            }
+
+            if (expression.NodeType == ExpressionType.MemberAccess && expression is MemberExpression memberAccessExpression)
+            {
+                if (memberAccessExpression.Expression.NodeType == ExpressionType.Constant)
+                {
+                    return null;
+                }
+
+                // Вычислить длинные цепочки вида Медведь.ЛесОбитания.Наименование.
+                string propName = null;
+                Expression currentEpression = memberAccessExpression;
+                while (currentEpression is MemberExpression memberExpression)
+                {
+                    if (propName == null)
+                    {
+                        propName = memberExpression.Member.Name;
+                    }
+                    else
+                    {
+                        propName = $"{memberExpression.Member.Name}.{propName}";
+                    }
+
+                    currentEpression = memberExpression.Expression;
+                }
+
+                return new List<string> { propName };
+            }
+
+            if (expression is BinaryExpression binaryExpression)
+            {
+                List<string> leftMembers = GetMembersFromLambdaExpression(binaryExpression.Left);
+                List<string> rightMembers = GetMembersFromLambdaExpression(binaryExpression.Right);
+
+                List<string> retList = null;
+
+                if (leftMembers != null)
+                {
+                    retList = leftMembers;
+                }
+
+                if (rightMembers != null)
+                {
+                    if (retList != null)
+                    {
+                        retList.AddRange(rightMembers);
+                    }
+                    else
+                    {
+                        retList = rightMembers;
+                    }
+                }
+
+                return retList;
+            }
+
+            if (expression.NodeType == ExpressionType.Call && expression is MethodCallExpression methodCallExpression)
+            {
+                List<string> retList = null;
+                foreach (Expression argumentExpression in methodCallExpression.Arguments)
+                {
+                    List<string> argumentExpressionList = GetMembersFromLambdaExpression(argumentExpression);
+                    if (argumentExpressionList != null)
+                    {
+                        if (retList != null)
+                        {
+                            retList.AddRange(argumentExpressionList);
+                        }
+                        else
+                        {
+                            retList = argumentExpressionList;
+                        }
+                    }
+                }
+
+                return retList;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Получить список выражений с вызовом метода Cast.
+        /// </summary>
+        /// <param name="expression">Выражение, по которому пробегаемся.</param>
+        /// <returns>Список выражений, указывающих на Cast.</returns>
+        private static IEnumerable<Expression> GetCastCallInExpression(Expression expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            if (expression.NodeType == ExpressionType.Quote && expression is UnaryExpression unaryExpression)
+            {
+                return GetCastCallInExpression(unaryExpression.Operand);
+            }
+
+            if (expression.NodeType == ExpressionType.Lambda && expression is LambdaExpression lambdaExpression)
+            {
+                return GetCastCallInExpression(lambdaExpression.Body);
+            }
+
+            if (expression is BinaryExpression binaryExpression)
+            {
+                IEnumerable<Expression> expressionListLeft = GetCastCallInExpression(binaryExpression.Left);
+                IEnumerable<Expression> expressionListRight = GetCastCallInExpression(binaryExpression.Right);
+
+                List<Expression> retList = null;
+
+                if (expressionListLeft != null)
+                {
+                    retList = expressionListLeft as List<Expression>;
+                }
+
+                if (expressionListRight != null)
+                {
+                    if (retList != null)
+                    {
+                        retList.AddRange(expressionListRight);
+                    }
+                    else
+                    {
+                        retList = expressionListRight as List<Expression>;
+                    }
+                }
+
+                return retList;
+            }
+
+            if (expression.NodeType == ExpressionType.Call && expression is MethodCallExpression methodCallExpression)
+            {
+                if (methodCallExpression.Arguments.Count == 2 && methodCallExpression.Arguments[0] is MethodCallExpression && (methodCallExpression.Arguments[0] as MethodCallExpression).Method.Name == "Cast")
+                {
+                    return new List<Expression>() { methodCallExpression };
+                }
+                else
+                {
+                    List<Expression> retList = null;
+                    foreach (Expression argumentExpression in methodCallExpression.Arguments)
+                    {
+                        IEnumerable<Expression> argumentExpressionList = GetCastCallInExpression(argumentExpression);
+                        if (argumentExpressionList != null)
+                        {
+                            if (retList != null)
+                            {
+                                retList.AddRange(argumentExpressionList);
+                            }
+                            else
+                            {
+                                retList = argumentExpressionList as List<Expression>;
+                            }
+                        }
+                    }
+
+                    return retList;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -75,27 +346,21 @@
         /// <returns>Список свойств типа.</returns>
         public static List<string> GetProperties(Type dataObjectType)
         {
-            var keyPropertyName = Information.ExtractPropertyName<DataObject>(n => n.__PrimaryKey);
+            const string keyPropertyName = nameof(DataObject.__PrimaryKey);
             var excludedPropertiesNames = typeof(DataObject).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Where(n => n.Name != keyPropertyName)
                 .Select(n => n.Name)
                 .ToArray();
 
-            Type viewsAttribute = dataObjectType.GetNestedType("Views");
-            View defaultView = null;
-            if (viewsAttribute != null)
-            {
-                PropertyInfo[] viewProperties = dataObjectType.GetNestedType("Views").GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
-                if (viewProperties.Length > 0)
-                    defaultView = (View)(viewProperties.FirstOrDefault(x => x.Name.EndsWith("E")) ?? viewProperties.First()).GetValue(null);
-            }
+            // Выбрать свойства, которых нет в списке исключенных
+            // и которые не являются нехранимыми или содержатся в дефолтном представлении.
+            List<PropertyInfo> dataObjectProperties = dataObjectType
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => !excludedPropertiesNames.Contains(x.Name))
+                .Where(x => x.CustomAttributes.All(a => a.AttributeType != typeof(NotStoredAttribute)))
+                .ToList();
 
-            List<PropertyInfo> dataObjectProperties = new List<PropertyInfo>(dataObjectType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-            .Where(x => !excludedPropertiesNames.Contains(x.Name)
-            && (x.CustomAttributes.Where(a => a.AttributeType == typeof(NotStoredAttribute)).Count() == 0 ||
-            (defaultView != null && defaultView.Properties.Where(dvprop => dvprop.Name == x.Name).Count() > 0))));
-
-            List<string> properties = new List<string>(dataObjectProperties.Select(x => x.Name).ToArray());
+            List<string> properties = dataObjectProperties.Select(x => x.Name).ToList();
 
             if (dataObjectType.BaseType != typeof(DataObject) && dataObjectType.BaseType != typeof(object))
             {
@@ -240,7 +505,7 @@
                     }
 
                     p = pp - 1;
-                    var itemType = propTypes[0].GetProperty("Item", new [] { typeof(int) }).PropertyType;
+                    var itemType = propTypes[0].GetProperty("Item", new[] { typeof(int) }).PropertyType;
                     propList.AddRange(GetProperties(itemType));
                     view.AddDetailInView(detailSegment, Create(itemType, propList, cache).View, true, "", true, "", null);
                 }
@@ -252,6 +517,7 @@
                         {
                             view.AddMasterInView(prop);
                             view.AddProperty(prop, prop, true, string.Empty);
+                            view.AddProperty($"{prop}.{nameof(DataObject.__PrimaryKey)}");
                         }
                         else
                         {

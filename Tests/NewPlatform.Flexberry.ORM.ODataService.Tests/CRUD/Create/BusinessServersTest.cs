@@ -3,18 +3,19 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Script.Serialization;
 
     using ICSSoft.STORMNET.Business;
 
-    using Xunit;
-
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+
+    using Newtonsoft.Json;
+
+    using Xunit;
 
     /// <summary>
     /// Класс тестов для тестирования бизнес-серверов.
     /// </summary>
-    
+
     public class BusinessServersTest : BaseODataServiceIntegratedTest
     {
         /// <summary>
@@ -42,7 +43,7 @@
             {
                 // ------------------ Только создания объектов ------------------
                 // Подготовка тестовых данных в формате OData.
-                var controller = new Controllers.DataObjectController(args.DataService, args.Token.Model, args.Token.Events, args.Token.Functions);
+                var controller = new Controllers.DataObjectController(args.DataService, null, args.Token.Model, args.Token.Events, args.Token.Functions);
                 System.Web.OData.EdmEntityObject edmObj = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Медведь)), медв, 1, null);
                 var edmЛес1 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес1, 1, null);
                 var edmЛес2 = controller.GetEdmObject(args.Token.Model.GetEdmEntityType(typeof(Лес)), лес2, 1, null);
@@ -68,7 +69,7 @@
 
                 // В ответе приходит объект с созданной сущностью.
                 // Преобразуем полученный объект в словарь.
-                Dictionary<string, object> receivedObjs = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(receivedJsonObjs);
+                Dictionary<string, object> receivedObjs = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedJsonObjs);
                 Assert.Equal("Object created.", receivedObjs["ПолеБС"]);
 
                 // Проверяем что созданы зависимые объекты, вычитав с помощью args.DataService
