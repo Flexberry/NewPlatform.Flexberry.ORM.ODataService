@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.2.0-beta01</version>
+    <version>5.2.0</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
-    <licenseUrl>http://flexberry.ru/License-FlexberryOrm-Runtime</licenseUrl>
-    <projectUrl>http://flexberry.net/FlexberryORM</projectUrl>
+    <licenseUrl>https://flexberry.ru/License-FlexberryOrm-Runtime</licenseUrl>
+    <projectUrl>https://flexberry.net/ru/developers-flexberry-orm.html</projectUrl>
     <iconUrl>https://flexberry.net/img/logo-color.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
@@ -23,8 +23,10 @@
       Fixed
       1. Batch update InternalServerError event handling.
       2. SafeLoadDetails for models with TypeUsage.
+      3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
+      4. SafeLoadDetails for partial loaded agregator.
     </releaseNotes>
-    <copyright>Copyright New Platform Ltd 2020</copyright>
+    <copyright>Copyright New Platform Ltd 2021</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Cors" version="5.2.3" />

@@ -10,6 +10,22 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.0] - 2021.06.03
+
+### Added
+ 1. Microsoft .NET Framework 4.6.1 compiled assemblies.
+ 2. Batch update MessageQuotas.MaxOperationsPerChangeset and MessageQuotas.MaxReceivedMessageSize parameters.
+
+### Changed
+ 1. Removing files through file providers.
+ 2. Add additional edm mapping into model builder.
+
+### Fixed
+ 1. Batch update InternalServerError event handling.
+ 2. SafeLoadDetails for models with TypeUsage.
+ 3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
+ 4. SafeLoadDetails for partial loaded agregator.
+
 ## [5.1.1] - 2020.08.21
 
 ### Added

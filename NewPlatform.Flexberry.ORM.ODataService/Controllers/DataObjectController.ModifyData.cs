@@ -544,7 +544,17 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache, true, true, _dataObjectCache);
+                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                            View miniView = view.Clone();
+                            DetailInView[] miniViewDetails = miniView.Details;
+                            miniView.Details = new DetailInView[0];
+
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
+
+                            if (miniViewDetails.Length > 0)
+                            {
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, _dataObjectCache);
+                            }
                         }
                     }
 
@@ -554,10 +564,7 @@
                 // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
                 View lightView = view.Clone();
                 DetailInView[] lightViewDetails = lightView.Details;
-                foreach (DetailInView detailInView in lightViewDetails)
-                {
-                    lightView.RemoveDetail(detailInView.Name);
-                }
+                lightView.Details = new DetailInView[0];
 
                 // Проверим существование объекта в базе.
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
@@ -694,6 +701,13 @@
                             if (dataObjectPropName == agregatorPropertyName)
                             {
                                 master.AddDetail(obj);
+
+                                // Нужно обязательно обозначить детейловое свойство загруженным, поскольку мы вносим в него изменения.
+                                string detailPropName = Information.GetDetailArrayPropertyName(master.GetType(), obj.GetType());
+                                if (!string.IsNullOrEmpty(detailPropName) && !master.CheckLoadedProperty(detailPropName))
+                                {
+                                    master.AddLoadedProperties(detailPropName);
+                                }
                             }
                         }
                         else
