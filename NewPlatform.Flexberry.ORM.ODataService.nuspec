@@ -7,7 +7,7 @@
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
     <licenseUrl>http://flexberry.ru/License-FlexberryOrm-Runtime</licenseUrl>
-    <projectUrl>http://flexberry.net/FlexberryORM</projectUrl>
+    <projectUrl>https://flexberry.net/ru/developers-flexberry-orm.html</projectUrl>
     <iconUrl>https://flexberry.net/img/logo-color.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
