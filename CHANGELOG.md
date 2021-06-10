@@ -10,7 +10,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [6.0.0] - 2021.06.11
+## [6.1.0] - 2021.06.11
+
+### Added
+
+1. Netstandard 2.0 implementation.
+
+## [6.0.0] - 2021.06.06
 
 ### Changed
 

@@ -1,6 +1,6 @@
 # Flexberry ORM ODataService
 
-[![CI](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/main.yml/badge.svg)](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/main.yml)
+[![CI](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml/badge.svg)](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml)
 
 В этом репозитории располагается исходный код `Flexberry ORM ODataService` - серверного компонета для реализации публикации данных по протоколу [OData V4](http://www.odata.org/) для Microsoft .NET Framework и .NET Core.
 
