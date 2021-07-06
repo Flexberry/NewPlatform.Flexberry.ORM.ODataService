@@ -126,20 +126,6 @@ jobs:
       - name: Install apt-get packages
         run: sudo apt-get install -y doxygen
 
-      - name: Tune ssh-keys
-        env:
-            PRIVATE_KEY: ${{ secrets.OPENSSH_PRIVATE_KEY }}
-        run: |
-          set -x
-          export PRIVATE_KEY
-          # Setup SSH agent
-          export SSH_AUTH_SOCK=/tmp/ssh_agent.sock
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          # Start ssh agent
-          ssh-agent -a $SSH_AUTH_SOCK #> /dev/null
-          ssh-add - <<< "${PRIVATE_KEY}"
-
       - name: Update documentation
         run: |
           [ $GITHUB_EVENT_NAME == 'push' ] && 
