@@ -43,6 +43,11 @@
         /// <param name="dataObjectCache">Кеш объектов данных, в нём хранятся состояния детейлов, которые не надо затирать. В него же будут добавлены новые зачитанные детейлы.</param>
         public static void SafeLoadDetails(this IDataService dataService, View view, DataObject[] agregators, DataObjectCache dataObjectCache)
         {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
             if (view == null)
             {
                 throw new ArgumentNullException(nameof(view));
@@ -51,6 +56,11 @@
             if (agregators == null)
             {
                 throw new ArgumentNullException(nameof(agregators));
+            }
+
+            if (dataObjectCache == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCache));
             }
 
             if (agregators.Length == 0)
@@ -105,36 +115,34 @@
                 {
                     DataObject agregator = (DataObject)Information.GetPropValueByName(detail, agregatorPropertyName);
                     object detailPrimaryKey = detail.__PrimaryKey;
+
+                    // Необходимо игнорировать объекты-пустышки, которые проинициализированы только первичным ключом.
                     DataObject detailFromCache = dataObjectCache.GetLivingDataObject(detail.GetType(), detailPrimaryKey);
+                    bool detailFromCacheIsEmpty = detailFromCache == null || !detailFromCache.GetLoadedProperties().Any();
+                    DataObject detailForAdd = detailFromCacheIsEmpty
+                        ? detail
+                        : detailFromCache;
 
-                    DataObject detailForAdd = detailFromCache ?? detail;
+                    agregator.AddDetail(detailForAdd);
 
-                    if (detailForAdd != null)
+                    DataObject agregatorDataCopy = agregator.GetDataCopy();
+                    DataObject detailDataCopy = detailForAdd.GetDataCopy();
+
+                    if (agregatorDataCopy != null && detailDataCopy != null)
                     {
-                        agregator.AddDetail(detailForAdd);
-
-                        DataObject agregatorDataCopy = agregator.GetDataCopy();
-                        DataObject detailDataCopy = detailForAdd.GetDataCopy();
-
-                        if (agregatorDataCopy != null && detailDataCopy != null)
-                        {
-                            agregatorDataCopy.AddDetail(detailDataCopy);
-                        }
+                        agregatorDataCopy.AddDetail(detailDataCopy);
                     }
 
-                    if (detailFromCache == null)
+                    if (detailFromCacheIsEmpty)
                     {
                         dataObjectCache.AddDataObject(detail);
                     }
                 }
 
                 // Детейлы второго и последующих уровней нужно обработать аналогичным образом.
-                if (details != null && details.Length > 0)
+                if (details.Any() && secondDetailsInView.Any())
                 {
-                    foreach (DetailInView secondDetailInView in secondDetailsInView)
-                    {
-                        dataService.SafeLoadDetails(secondDetailInView.View, details, dataObjectCache);
-                    }
+                    dataService.SafeLoadDetails(detailInView.View, details, dataObjectCache);
                 }
             }
         }
