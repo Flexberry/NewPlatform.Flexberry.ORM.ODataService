@@ -733,11 +733,11 @@
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
 
-                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
 
                             if (miniViewDetails.Length > 0)
                             {
-                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, _dataObjectCache);
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
                             }
                         }
                     }

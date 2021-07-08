@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+1. SafeLoadDetails for partial loaded detail.
 
 ## [6.1.0] - 2021.06.12
 
