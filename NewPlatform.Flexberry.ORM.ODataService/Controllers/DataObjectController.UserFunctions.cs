@@ -237,9 +237,9 @@
 #endif
 
 #if NETFRAMEWORK
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
 #elif NETSTANDARD
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
 #endif
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
