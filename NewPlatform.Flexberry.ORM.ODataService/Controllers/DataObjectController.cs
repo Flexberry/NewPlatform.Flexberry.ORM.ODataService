@@ -249,7 +249,7 @@
         internal static Dictionary<string, string> GetColsConfigOrderDictionary(NameValueCollection queryParams)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            var colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
+            List<string> colsOrder = queryParams.Get("colsOrder").Split(',').ToList();
 
             foreach (string column in colsOrder)
             {
