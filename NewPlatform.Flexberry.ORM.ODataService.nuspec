@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>6.2.0-beta05</version>
+    <version>6.2.0-beta06</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -12,6 +12,9 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
+      Add
+      1. Support IExportStringedObjectViewService interface call for fast excel export.
+
       Fixed
       1. SafeLoadDetails for partial loaded detail.
       2. Custom batch handler settings such as ODataMessageQuotas.
