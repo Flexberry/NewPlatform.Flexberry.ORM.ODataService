@@ -134,7 +134,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                                 }
                             }
                         }
-
                     }
 
                     string detailname = expression.Member.Name;
