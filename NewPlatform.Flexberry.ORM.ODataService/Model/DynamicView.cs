@@ -112,10 +112,29 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                             addProp = propName;
                         }
 
-                        if (!string.IsNullOrWhiteSpace(addProp) && !detailView.CheckPropname(addProp))
+                        if (!string.IsNullOrWhiteSpace(addProp))
                         {
-                            detailView.AddProperty(addProp);
+                            string[] props = addProp.Split('.');
+
+                            string currentProp = string.Empty;
+                            foreach (var prop in props)
+                            {
+                                if (string.IsNullOrWhiteSpace(currentProp))
+                                {
+                                    currentProp = prop;
+                                }
+                                else
+                                {
+                                    currentProp += $".{prop}";
+                                }
+
+                                if (!detailView.CheckPropname(currentProp))
+                                {
+                                    detailView.AddProperty(currentProp);
+                                }
+                            }
                         }
+
                     }
 
                     string detailname = expression.Member.Name;
