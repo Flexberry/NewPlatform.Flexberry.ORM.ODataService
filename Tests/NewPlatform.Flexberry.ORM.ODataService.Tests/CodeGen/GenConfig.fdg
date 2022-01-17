@@ -24,7 +24,7 @@
       }
     },
     "Backend": {
-      "AspNet": true,
+      "AspNet": false,
       "AspNetCore": true,
       "Java": false
     },
