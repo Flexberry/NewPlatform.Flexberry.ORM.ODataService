@@ -2,6 +2,32 @@
 
 
 
+CREATE TABLE "LegoPanelAngle"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"Angle" NUMBER(10) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "MainClass"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"AgrClass1" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "Driver"
 (
 
@@ -12,6 +38,21 @@ CREATE TABLE "Driver"
 	"CarCount" NUMBER(10) NULL,
 
 	"Documents" NUMBER(1) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "DetailsClass1"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"DetailCl1Name" NVARCHAR2(255) NULL,
+
+	"DetailsClass2" RAW(16) NOT NULL,
+
+	"AgrClass1" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -111,6 +152,23 @@ CREATE TABLE "TestDetailWithCicle"
 	"Parent" RAW(16) NULL,
 
 	"TestMaster" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoBlockCustomPanel"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Orientation" NVARCHAR2(255) NULL,
+
+	"Position" NVARCHAR2(255) NULL,
+
+	"PanelAngle" RAW(16) NULL,
+
+	"Block" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -227,6 +285,19 @@ CREATE TABLE "Медведь"
 ) ;
 
 
+CREATE TABLE "LegoBlockColor"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"ColorNumber" NUMBER(10) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "Детейл"
 (
 
@@ -318,12 +389,59 @@ CREATE TABLE "Книга"
 ) ;
 
 
+CREATE TABLE "LegoBlock"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Width" NUMBER(10) NULL,
+
+	"Height" NUMBER(10) NULL,
+
+	"Depth" NUMBER(10) NULL,
+
+	"Configuration" NVARCHAR2(255) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"BlockId" NUMBER(10) NULL,
+
+	"Material" RAW(16) NULL,
+
+	"Color" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "Person"
 (
 
 	"primaryKey" RAW(16) NOT NULL,
 
 	"Name" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoSocketStandard"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "AgrClass1"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"AgrCl1Name" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -379,6 +497,25 @@ CREATE TABLE "Мастер2"
 ) ;
 
 
+CREATE TABLE "LegoDevice"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Description" NVARCHAR2(255) NULL,
+
+	"Electricity" NUMBER(1) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"BlockId" NUMBER(10) NULL,
+
+	"Color" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "Наследник"
 (
 
@@ -393,6 +530,19 @@ CREATE TABLE "Наследник"
 	"Мастер" RAW(16) NULL,
 
 	"Master" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "DetailsClass2"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"DetailCl2Name" NVARCHAR2(255) NULL,
+
+	"AgrClass2" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -436,6 +586,27 @@ CREATE TABLE "Блоха"
 	"Кличка" NVARCHAR2(255) NULL,
 
 	"МедведьОбитания" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoPatent"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"Date" DATE NULL,
+
+	"Authors" NVARCHAR2(255) NULL,
+
+	"Description" NVARCHAR2(255) NULL,
+
+	"LegoBlock" RAW(16) NULL,
+
+	"LegoDevice" RAW(16) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -543,12 +714,62 @@ CREATE TABLE "Котенок"
 ) ;
 
 
+CREATE TABLE "AgrClass2"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"AgrCl2Name" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "Библиотека"
 (
 
 	"primaryKey" RAW(16) NOT NULL,
 
 	"Адрес" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoMaterial"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoBlockBottomPanel"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"WidthCount" NUMBER(10) NULL,
+
+	"HeightCount" NUMBER(10) NULL,
+
+	"Block" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoBlockTopPanelHole"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Position" NVARCHAR2(255) NULL,
+
+	"TopPanel" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -581,6 +802,23 @@ CREATE TABLE "Журнал"
 	"Автор2" RAW(16) NOT NULL,
 
 	"Библиотека2" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "LegoBlockTopPanel"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"WidthCount" NUMBER(10) NULL,
+
+	"HeightCount" NUMBER(10) NULL,
+
+	"SocketStandard" RAW(16) NULL,
+
+	"Block" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -965,6 +1203,21 @@ CREATE TABLE "STORMAuField"
 
 
 
+ALTER TABLE "MainClass"
+	ADD CONSTRAINT "MainClass_FAgrClass1_0" FOREIGN KEY ("AgrClass1") REFERENCES "AgrClass1" ("primaryKey");
+
+CREATE INDEX "MainClass_IAgrClass1" on "MainClass" ("AgrClass1");
+
+ALTER TABLE "DetailsClass1"
+	ADD CONSTRAINT "DetailsClass1_FDetailsClass2_0" FOREIGN KEY ("DetailsClass2") REFERENCES "DetailsClass2" ("primaryKey");
+
+CREATE INDEX "DetailsClass1_IDetailsClass2" on "DetailsClass1" ("DetailsClass2");
+
+ALTER TABLE "DetailsClass1"
+	ADD CONSTRAINT "DetailsClass1_FAgrClass1_0" FOREIGN KEY ("AgrClass1") REFERENCES "AgrClass1" ("primaryKey");
+
+CREATE INDEX "DetailsClass1_IAgrClass1" on "DetailsClass1" ("AgrClass1");
+
 ALTER TABLE "Лес"
 	ADD CONSTRAINT "Лес_FСтрана_0" FOREIGN KEY ("Страна") REFERENCES "Страна" ("primaryKey");
 
@@ -994,6 +1247,16 @@ ALTER TABLE "TestDetailWithCicle"
 	ADD CONSTRAINT "TestDetailWithCicle_FTest_5002" FOREIGN KEY ("TestMaster") REFERENCES "TestMaster" ("primaryKey");
 
 CREATE INDEX "TestDetailWithCicle_ITest_3425" on "TestDetailWithCicle" ("TestMaster");
+
+ALTER TABLE "LegoBlockCustomPanel"
+	ADD CONSTRAINT "LegoBlockCustomPanel_FLeg_5205" FOREIGN KEY ("PanelAngle") REFERENCES "LegoPanelAngle" ("primaryKey");
+
+CREATE INDEX "LegoBlockCustomPanel_IPan_9519" on "LegoBlockCustomPanel" ("PanelAngle");
+
+ALTER TABLE "LegoBlockCustomPanel"
+	ADD CONSTRAINT "LegoBlockCustomPanel_FLeg_1816" FOREIGN KEY ("Block") REFERENCES "LegoBlock" ("primaryKey");
+
+CREATE INDEX "LegoBlockCustomPanel_IBlock" on "LegoBlockCustomPanel" ("Block");
 
 ALTER TABLE "Daughter"
 	ADD CONSTRAINT "Daughter_FPerson_0" FOREIGN KEY ("Parent") REFERENCES "Person" ("primaryKey");
@@ -1040,10 +1303,25 @@ ALTER TABLE "Книга"
 
 CREATE INDEX "Книга_IБиблио_4875" on "Книга" ("Библиотека1");
 
+ALTER TABLE "LegoBlock"
+	ADD CONSTRAINT "LegoBlock_FLegoMaterial_0" FOREIGN KEY ("Material") REFERENCES "LegoMaterial" ("primaryKey");
+
+CREATE INDEX "LegoBlock_IMaterial" on "LegoBlock" ("Material");
+
+ALTER TABLE "LegoBlock"
+	ADD CONSTRAINT "LegoBlock_FLegoBlockColor_0" FOREIGN KEY ("Color") REFERENCES "LegoBlockColor" ("primaryKey");
+
+CREATE INDEX "LegoBlock_IColor" on "LegoBlock" ("Color");
+
 ALTER TABLE "Перелом"
 	ADD CONSTRAINT "Перелом_FЛапа_0" FOREIGN KEY ("Лапа_m0") REFERENCES "Лапа" ("primaryKey");
 
 CREATE INDEX "Перелом_IЛапа_m0" on "Перелом" ("Лапа_m0");
+
+ALTER TABLE "LegoDevice"
+	ADD CONSTRAINT "LegoDevice_FLegoBlockColor_0" FOREIGN KEY ("Color") REFERENCES "LegoBlockColor" ("primaryKey");
+
+CREATE INDEX "LegoDevice_IColor" on "LegoDevice" ("Color");
 
 ALTER TABLE "Наследник"
 	ADD CONSTRAINT "Наследник_FМас_278" FOREIGN KEY ("Мастер") REFERENCES "Мастер" ("primaryKey");
@@ -1054,6 +1332,11 @@ ALTER TABLE "Наследник"
 	ADD CONSTRAINT "Наследник_FMaster_0" FOREIGN KEY ("Master") REFERENCES "Master" ("primaryKey");
 
 CREATE INDEX "Наследник_IMaster" on "Наследник" ("Master");
+
+ALTER TABLE "DetailsClass2"
+	ADD CONSTRAINT "DetailsClass2_FAgrClass2_0" FOREIGN KEY ("AgrClass2") REFERENCES "AgrClass2" ("primaryKey");
+
+CREATE INDEX "DetailsClass2_IAgrClass2" on "DetailsClass2" ("AgrClass2");
 
 ALTER TABLE "Car"
 	ADD CONSTRAINT "Car_FDriver_0" FOREIGN KEY ("driver") REFERENCES "Driver" ("primaryKey");
@@ -1069,6 +1352,16 @@ ALTER TABLE "Блоха"
 	ADD CONSTRAINT "Блоха_FМедведь_0" FOREIGN KEY ("МедведьОбитания") REFERENCES "Медведь" ("primaryKey");
 
 CREATE INDEX "Блоха_IМедвед_6073" on "Блоха" ("МедведьОбитания");
+
+ALTER TABLE "LegoPatent"
+	ADD CONSTRAINT "LegoPatent_FLegoBlock_0" FOREIGN KEY ("LegoBlock") REFERENCES "LegoBlock" ("primaryKey");
+
+CREATE INDEX "LegoPatent_ILegoBlock" on "LegoPatent" ("LegoBlock");
+
+ALTER TABLE "LegoPatent"
+	ADD CONSTRAINT "LegoPatent_FLegoDevice_0" FOREIGN KEY ("LegoDevice") REFERENCES "LegoDevice" ("primaryKey");
+
+CREATE INDEX "LegoPatent_ILegoDevice" on "LegoPatent" ("LegoDevice");
 
 ALTER TABLE "Лапа"
 	ADD CONSTRAINT "Лапа_FТипЛапы_0" FOREIGN KEY ("ТипЛапы_m0") REFERENCES "ТипЛапы" ("primaryKey");
@@ -1095,6 +1388,16 @@ ALTER TABLE "Котенок"
 
 CREATE INDEX "Котенок_IКошка_m0" on "Котенок" ("Кошка_m0");
 
+ALTER TABLE "LegoBlockBottomPanel"
+	ADD CONSTRAINT "LegoBlockBottomPanel_FLeg_6473" FOREIGN KEY ("Block") REFERENCES "LegoBlock" ("primaryKey");
+
+CREATE INDEX "LegoBlockBottomPanel_IBlock" on "LegoBlockBottomPanel" ("Block");
+
+ALTER TABLE "LegoBlockTopPanelHole"
+	ADD CONSTRAINT "LegoBlockTopPanelHole_FLe_1402" FOREIGN KEY ("TopPanel") REFERENCES "LegoBlockTopPanel" ("primaryKey");
+
+CREATE INDEX "LegoBlockTopPanelHole_ITo_4968" on "LegoBlockTopPanelHole" ("TopPanel");
+
 ALTER TABLE "Детейл2"
 	ADD CONSTRAINT "Детейл2_FДетейл_0" FOREIGN KEY ("Детейл_m0") REFERENCES "Детейл" ("primaryKey");
 
@@ -1114,6 +1417,16 @@ ALTER TABLE "Журнал"
 	ADD CONSTRAINT "Журнал_FБибли_9226" FOREIGN KEY ("Библиотека2") REFERENCES "Библиотека" ("primaryKey");
 
 CREATE INDEX "Журнал_IБибли_1176" on "Журнал" ("Библиотека2");
+
+ALTER TABLE "LegoBlockTopPanel"
+	ADD CONSTRAINT "LegoBlockTopPanel_FLegoSo_7170" FOREIGN KEY ("SocketStandard") REFERENCES "LegoSocketStandard" ("primaryKey");
+
+CREATE INDEX "LegoBlockTopPanel_ISocket_2174" on "LegoBlockTopPanel" ("SocketStandard");
+
+ALTER TABLE "LegoBlockTopPanel"
+	ADD CONSTRAINT "LegoBlockTopPanel_FLegoBlock_0" FOREIGN KEY ("Block") REFERENCES "LegoBlock" ("primaryKey");
+
+CREATE INDEX "LegoBlockTopPanel_IBlock" on "LegoBlockTopPanel" ("Block");
 
 ALTER TABLE "Кошка"
 	ADD CONSTRAINT "Кошка_FПорода_0" FOREIGN KEY ("Порода_m0") REFERENCES "Порода" ("primaryKey");
