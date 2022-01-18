@@ -16,8 +16,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Audit.Objects;
-
-
+    
+    
     // *** Start programmer edit section *** (Using statements)
 
     // *** End programmer edit section *** (Using statements)
@@ -113,13 +113,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         
         private string fEditor;
         
-        private NewPlatform.Flexberry.ORM.ODataService.Tests.Страна fСтранаРождения;
-        
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Лес fЛесОбитания;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fМама;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fПапа;
+        
+        private NewPlatform.Flexberry.ORM.ODataService.Tests.Страна fСтранаРождения;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfБерлога fБерлога;
         
@@ -496,40 +496,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// Медведь
         ///Аудит включен для тестирования оффлайн-сервиса аудита в OData.
         /// </summary>
-        // *** Start programmer edit section *** (Медведь.СтранаРождения CustomAttributes)
-
-        // *** End programmer edit section *** (Медведь.СтранаРождения CustomAttributes)
-        [PropertyStorage(new string[] {
-                "Страна"})]
-        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Страна СтранаРождения
-        {
-            get
-            {
-                // *** Start programmer edit section *** (Медведь.СтранаРождения Get start)
-
-                // *** End programmer edit section *** (Медведь.СтранаРождения Get start)
-                NewPlatform.Flexberry.ORM.ODataService.Tests.Страна result = this.fСтранаРождения;
-                // *** Start programmer edit section *** (Медведь.СтранаРождения Get end)
-
-                // *** End programmer edit section *** (Медведь.СтранаРождения Get end)
-                return result;
-            }
-            set
-            {
-                // *** Start programmer edit section *** (Медведь.СтранаРождения Set start)
-
-                // *** End programmer edit section *** (Медведь.СтранаРождения Set start)
-                this.fСтранаРождения = value;
-                // *** Start programmer edit section *** (Медведь.СтранаРождения Set end)
-
-                // *** End programmer edit section *** (Медведь.СтранаРождения Set end)
-            }
-        }
-        
-        /// <summary>
-        /// Медведь
-        ///Аудит включен для тестирования оффлайн-сервиса аудита в OData.
-        /// </summary>
         // *** Start programmer edit section *** (Медведь.ЛесОбитания CustomAttributes)
 
         // *** End programmer edit section *** (Медведь.ЛесОбитания CustomAttributes)
@@ -625,6 +591,40 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Медведь.Папа Set end)
 
                 // *** End programmer edit section *** (Медведь.Папа Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Медведь
+        ///Аудит включен для тестирования оффлайн-сервиса аудита в OData.
+        /// </summary>
+        // *** Start programmer edit section *** (Медведь.СтранаРождения CustomAttributes)
+
+        // *** End programmer edit section *** (Медведь.СтранаРождения CustomAttributes)
+        [PropertyStorage(new string[] {
+                "Страна"})]
+        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Страна СтранаРождения
+        {
+            get
+            {
+                // *** Start programmer edit section *** (Медведь.СтранаРождения Get start)
+
+                // *** End programmer edit section *** (Медведь.СтранаРождения Get start)
+                NewPlatform.Flexberry.ORM.ODataService.Tests.Страна result = this.fСтранаРождения;
+                // *** Start programmer edit section *** (Медведь.СтранаРождения Get end)
+
+                // *** End programmer edit section *** (Медведь.СтранаРождения Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (Медведь.СтранаРождения Set start)
+
+                // *** End programmer edit section *** (Медведь.СтранаРождения Set start)
+                this.fСтранаРождения = value;
+                // *** Start programmer edit section *** (Медведь.СтранаРождения Set end)
+
+                // *** End programmer edit section *** (Медведь.СтранаРождения Set end)
             }
         }
         
