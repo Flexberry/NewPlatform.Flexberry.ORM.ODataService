@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.1.1</version>
+    <version>5.1.2</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -12,13 +12,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
-      Added
-      1.  The maximum number of top level query operations and changesets allowed in a single batch parameter, set default as 1000.
       Fixed
-      1. Update and delete details by batch update.
-      2. Exponential format for numeric values serialization issue.
-      3. SafeLoadDetails add details DataCopy to DataCopy DetailArray.
-      4. Load emty agregators in SafeLoadDetails.
+      1. Add in dynamic view master master prop
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2020</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
