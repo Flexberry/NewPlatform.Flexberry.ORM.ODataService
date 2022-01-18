@@ -5,6 +5,7 @@
   "OnlineCrpUrl": null,
   "OneShotToken": null,
   "GenPath": "CodeGenOdata",
+  "BeforeGenScriptPath": "BeforeGen.cmd",
   "AfterGenScriptPath": "AfterGen.cmd",
   "GenerationItems": {
     "Validate": false,
