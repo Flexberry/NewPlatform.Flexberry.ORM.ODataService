@@ -1308,7 +1308,7 @@
                 Count = count;
             }
 
-            if (!IncludeCount || count != 0)
+            if (!IncludeCount || count > 0)
             {
                 _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
                 _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, false) : _objsStringView;
