@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.2.1] - 2022.02.04
+
+### Fixed
+ 1. CallbackBeforeGet with count equals true.
+
 ## [5.2.0] - 2021.06.03
 
 ### Added

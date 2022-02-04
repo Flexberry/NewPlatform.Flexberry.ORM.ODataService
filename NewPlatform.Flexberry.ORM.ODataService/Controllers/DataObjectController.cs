@@ -974,7 +974,7 @@
                 Count = count;
             }
 
-            if (!IncludeCount || count != 0)
+            if (!IncludeCount || count > 0)
                 _objs = LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
 
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();

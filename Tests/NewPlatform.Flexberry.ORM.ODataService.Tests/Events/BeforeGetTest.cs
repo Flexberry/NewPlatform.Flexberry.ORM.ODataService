@@ -1,11 +1,15 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Events
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using Xunit;
 
@@ -25,6 +29,16 @@
         {
             this.lcs = lcs;
             return true;
+        }
+
+        /// <summary>
+        /// Блокирует получение объектов.
+        /// </summary>
+        /// <param name="lcs">LCS.</param>
+        /// <returns>false</returns>
+        public bool FalseBeforeGet(ref LoadingCustomizationStruct lcs)
+        {
+            return false;
         }
 
         /// <summary>
@@ -65,6 +79,35 @@
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                     Assert.NotNull(this.lcs);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Проверяет, что результат BeforeGet не игнорируется при параметре count=true.
+        /// </summary>
+        [Fact]
+        public void TestCountAndBeforeGet()
+        {
+            ActODataService(args =>
+            {
+                // Arrange.
+                Медведь медведь1 = new Медведь() { ПорядковыйНомер = 1 };
+                Медведь медведь2 = new Медведь() { ПорядковыйНомер = 2 };
+
+                DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2 };
+
+                args.DataService.UpdateObjects(ref newDataObjects);
+                args.Token.Events.CallbackBeforeGet = FalseBeforeGet;
+
+                string requestUrl = string.Format("http://localhost/odata/{0}?$count=true", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name);
+
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                    Assert.Empty((JArray)receivedDict["value"]);
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 }
             });
         }
