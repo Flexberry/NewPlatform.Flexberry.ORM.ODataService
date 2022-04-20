@@ -164,6 +164,7 @@
                 args.DataService.UpdateObjects(ref newDataObjects);
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
 
+                // Act.
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}",
                 args.Token.Model.GetEdmEntitySet(typeof(Берлога)).Name,
@@ -171,6 +172,7 @@
 
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
+                    // Assert.
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
@@ -210,6 +212,7 @@
                 args.DataService.UpdateObjects(ref newDataObjects);
                 ExternalLangDef.LanguageDef.DataService = args.DataService;
 
+                // Act.
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}",
                 args.Token.Model.GetEdmEntitySet(typeof(Car)).Name,
@@ -217,6 +220,7 @@
 
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
+                    // Assert.
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
