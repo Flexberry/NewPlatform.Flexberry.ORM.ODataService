@@ -224,51 +224,5 @@
                 }
             });
         }
-
-
-        [Fact]
-        public void TestFilterByEnumDetailMaster2()
-        {
-            ActODataService(args =>
-            {
-                // Arrange.
-                Driver driver1 = new Driver { CarCount = 2, Documents = true, Name = "Driver1" };
-                Driver driver2 = new Driver { CarCount = 2, Documents = true, Name = "Driver2" };
-                Driver driver3 = new Driver { CarCount = 2, Documents = true, Name = "Driver3" };
-
-                Car car1d1 = new Car { Model = "ВАЗ", TipCar = tTip.sedan };
-                Car car2d1 = new Car { Model = "ГАЗ", TipCar = tTip.sedan };
-
-                Car car1d2 = new Car { Model = "BMW", TipCar = tTip.crossover };
-                Car car2d2 = new Car { Model = "Porsche", TipCar = tTip.sedan };
-
-                Car car1d3 = new Car { Model = "Lamborghini", TipCar = tTip.crossover };
-                Car car2d3 = new Car { Model = "Subaru", TipCar = tTip.sedan };
-
-                driver1.Car.AddRange(car1d1, car2d1);
-                driver2.Car.AddRange(car1d2, car2d2);
-                driver3.Car.AddRange(car1d3, car2d3);
-
-                DataObject[] newDataObjects = new DataObject[] { driver1, driver2, driver3, car1d1, car2d1, car1d2, car2d2, car1d3, car2d3 };
-
-                args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
-                string requestUrl = string.Format(
-                "http://localhost/odata/{0}?$filter={1}",
-                args.Token.Model.GetEdmEntitySet(typeof(Car)).Name,
-                "TipCar eq NewPlatform.Flexberry.ORM.ODataService.Tests.tTip'crossover'");
-
-                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
-                {
-                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
-                    Assert.Equal(4, ((JArray)receivedDict["value"]).Count);
-                }
-            });
-        }
-
-
     }
 }

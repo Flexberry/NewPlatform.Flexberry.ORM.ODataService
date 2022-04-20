@@ -270,6 +270,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                     }
                 }
 
+                if (methodCallExpression.Arguments.Count == 0 && methodCallExpression.Object is Expression methodCallExpressionObject)
+                {
+                    if (methodCallExpressionObject != null)
+                    {
+                        return GetMembersFromLambdaExpression(methodCallExpressionObject);
+                    }
+                }
+
                 return retList;
             }
 
