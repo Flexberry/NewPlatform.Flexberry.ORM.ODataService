@@ -19,6 +19,7 @@
       1. SafeLoadDetails for partial loaded detail.
       2. Custom batch handler settings such as ODataMessageQuotas.
       3. CallbackBeforeGet with count equals true.
+      4. Fix create detail view.
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2021</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
