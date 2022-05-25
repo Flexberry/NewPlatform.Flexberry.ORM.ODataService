@@ -169,6 +169,7 @@
 
         private void BuildEdmEntityTypes()
         {
+            List<string> collectionNames = new List<string>();
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
@@ -187,6 +188,12 @@
                     baseEdmEntityType,
                     dataObjectType.IsAbstract,
                     !dataObjectType.IsSealed);
+
+                if (collectionNames.Contains(edmEntityType.Name))
+                {
+                    throw new Exception($"Класс с PublishName {edmEntityType.Name} уже добавлен.");
+                }
+                collectionNames.Add(edmEntityType.Name);
 
                 BuildOwnProperties(edmEntityType, dataObjectType);
 
@@ -254,6 +261,11 @@
 
                 if (!typeSettings.EnableCollection)
                     continue;
+
+                if (_registeredCollections.ContainsKey(typeSettings.CollectionName))
+                {
+                    throw new Exception($"Класс в PublishName {typeSettings.CollectionName} уже добавлен.");
+                }
 
                 EdmEntityType edmEntityType = _registeredEdmEntityTypes[dataObjectType];
                 EdmEntitySet edmEntitySet = container.AddEntitySet(typeSettings.CollectionName, edmEntityType);
