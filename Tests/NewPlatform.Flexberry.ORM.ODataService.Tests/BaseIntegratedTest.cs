@@ -168,8 +168,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             _tempDbNamePrefix = tempDbNamePrefix;
             _databaseName = _tempDbNamePrefix + "_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + "_" + Guid.NewGuid().ToString("N");
-            bool watchdogEmptyTest = true;
-            _dataServices.Add(CreatePostgresDataService($"{connectionStringPostgres};Database={_databaseName}"));
+            bool watchdogEmptyTest = false;
 
             if (!string.IsNullOrWhiteSpace(PostgresScript) && connectionStringPostgres != PoolingFalseConst)
             {
