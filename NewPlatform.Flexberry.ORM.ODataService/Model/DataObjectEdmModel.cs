@@ -169,7 +169,7 @@
 
         private void BuildEdmEntityTypes()
         {
-            List<string> collectionNames = new List<string>();
+            IDictionary<string, Type> collectionNames = new Dictionary<string, Type>();
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
@@ -189,11 +189,13 @@
                     dataObjectType.IsAbstract,
                     !dataObjectType.IsSealed);
 
-                if (collectionNames.Contains(edmEntityType.Name))
+                if (collectionNames.ContainsKey(edmEntityType.Name))
                 {
-                    throw new Exception($"Класс с PublishName {edmEntityType.Name} уже добавлен.");
+                    throw new Exception($"The class with PublishName {edmEntityType.Name} is already added. " +
+                        $"PublishName {edmEntityType.Name} repeated in classes {dataObjectType.Name} and {collectionNames[edmEntityType.Name].Name}.");
                 }
-                collectionNames.Add(edmEntityType.Name);
+
+                collectionNames.Add(edmEntityType.Name, dataObjectType);
 
                 BuildOwnProperties(edmEntityType, dataObjectType);
 
@@ -264,7 +266,8 @@
 
                 if (_registeredCollections.ContainsKey(typeSettings.CollectionName))
                 {
-                    throw new Exception($"Класс в PublishName {typeSettings.CollectionName} уже добавлен.");
+                    throw new Exception($"The class in PublishName {typeSettings.CollectionName} is already added. " +
+                        $"PublishName {typeSettings.CollectionName} repeated in classes {dataObjectType.Name} and {_registeredCollections[typeSettings.CollectionName].Name}.");
                 }
 
                 EdmEntityType edmEntityType = _registeredEdmEntityTypes[dataObjectType];
