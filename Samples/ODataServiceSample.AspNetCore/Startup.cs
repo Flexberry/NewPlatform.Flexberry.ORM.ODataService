@@ -17,6 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using NewPlatform.Flexberry.ORM.ODataService.Tests;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
@@ -71,6 +72,8 @@
                 unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
 
                 unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+
+                unityContainer.RegisterType<BaseOfflineManager, DummyOfflineManager>();
             }
 
             services.AddMvcCore(options =>

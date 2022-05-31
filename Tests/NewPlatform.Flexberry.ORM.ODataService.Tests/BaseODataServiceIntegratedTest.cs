@@ -24,6 +24,7 @@
     using System.Web.Http.Cors;
     using Microsoft.AspNet.OData.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
 #endif
@@ -140,6 +141,7 @@
                     config.MapODataServiceFileRoute("File", fileControllerPath);
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
                     container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
+                    container.RegisterType<BaseOfflineManager, DummyOfflineManager>();
 
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
