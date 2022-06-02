@@ -430,8 +430,18 @@
 
                 var edmObj = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView);
 #if NETFRAMEWORK
+                if (obj == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+
                 return Request.CreateResponse(HttpStatusCode.OK, edmObj);
 #elif NETSTANDARD
+                if (obj == null)
+                {
+                    return NotFound(edmObj);
+                }
+
                 return Ok(edmObj);
 #endif
             }
