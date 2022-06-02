@@ -33,15 +33,6 @@
         {
             ActODataService(args =>
             {
-                DataObject[] countries = new DataObject[2];
-                int countriesCount = countries.Length;
-                for (int i = 0; i < countriesCount; i++)
-                {
-                    countries[i] = new Страна { Название = string.Format("Страна №{0}", i), __PrimaryKey = new Guid($"8dcd3aa3-11c2-456d-902c-03323e1ae63{i}") };
-                }
-
-                args.DataService.UpdateObjects(ref countries);
-
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name, "8dcd3aa3-11c2-456d-902c-03323e1ae635");
 
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
