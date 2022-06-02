@@ -1251,7 +1251,7 @@
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 #elif NETSTANDARD
-            NameValueCollection queryParams = QueryHelpers.QueryToNameValueCollection(Request.Query);
+            NameValueCollection queryParams = WebUtilities.QueryHelpers.QueryToNameValueCollection(Request.Query);
             bool isForExcel = HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 #endif
             bool isExport = _model.ExportStringedObjectViewService != null || _model.ODataExportService != null || _model.ExportService != null;

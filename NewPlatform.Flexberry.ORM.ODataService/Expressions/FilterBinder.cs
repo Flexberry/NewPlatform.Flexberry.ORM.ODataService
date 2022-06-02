@@ -62,7 +62,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         private static readonly Expression _ordinalStringComparisonConstant = Expression.Constant(StringComparison.Ordinal);
 
         private static readonly MethodInfo _enumTryParseMethod = typeof(Enum).GetMethods()
-                        .Single(m => m.Name == "TryParse" && m.GetParameters().Length == 2);
+                        .First(m => m.Name == "TryParse" && m.GetParameters().Length == 2);
 
         private static Dictionary<BinaryOperatorKind, ExpressionType> _binaryOperatorMapping = new Dictionary<BinaryOperatorKind, ExpressionType>
         {
