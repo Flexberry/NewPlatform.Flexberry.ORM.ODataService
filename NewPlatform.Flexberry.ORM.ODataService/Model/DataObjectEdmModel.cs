@@ -73,11 +73,6 @@
         private readonly IDictionary<Type, string> _aliasesTypeToName = new Dictionary<Type, string>();
 
         /// <summary>
-        /// Словарь, в котором ключ алиас пространства имен, а значение - сам тип.
-        /// </summary>
-        private readonly IDictionary<string, Type> _aliasesNamespaceToType = new Dictionary<string, Type>();
-
-        /// <summary>
         /// Словарь, в котором составной ключ - это алиас полного имени типа и алиас свойства, а значение - само свойство.
         /// </summary>
         private readonly IDictionary<string, IDictionary<string, PropertyInfo>> _aliasesNameToProperty = new Dictionary<string, IDictionary<string, PropertyInfo>>();
@@ -744,8 +739,6 @@
             var name = type.Namespace;
             if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNamespaceBuilder != null)
                 name = EdmModelBuilder.EntityTypeNamespaceBuilder(type);
-            if (!_aliasesNamespaceToType.ContainsKey(name))
-                _aliasesNamespaceToType.Add(name, type);
             return name;
         }
 
