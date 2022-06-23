@@ -25,6 +25,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                             .UseStartup<TestStartup>();
             return webHostBuilder;
         }
+
+        /// <inheritdoc/>
+        /// <remarks>https://github.com/dotnet/AspNetCore.Docs/issues/7063 .</remarks>
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.UseContentRoot(".");
+            base.ConfigureWebHost(builder);
+        }
     }
 }
 #endif
