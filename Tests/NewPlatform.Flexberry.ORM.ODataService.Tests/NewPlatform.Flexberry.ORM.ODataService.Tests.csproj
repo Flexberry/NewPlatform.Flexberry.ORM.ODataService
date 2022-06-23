@@ -49,6 +49,8 @@
 
   <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP))">
     <PackageReference Include="dotMorten.Microsoft.SqlServer.Types" Version="1.3.0" />
+    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
@@ -114,7 +116,6 @@
 
   <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP))">
     <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.csproj" />
-    <ProjectReference Include="..\..\Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
