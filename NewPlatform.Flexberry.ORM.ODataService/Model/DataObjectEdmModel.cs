@@ -169,7 +169,8 @@
 
         private void BuildEdmEntityTypes()
         {
-            IDictionary<string, Type> collectionNames = new Dictionary<string, Type>();
+            IDictionary<string, Type> collectionFullNames = new Dictionary<string, Type>();
+            //IDictionary<string, Type> collectionNames = new Dictionary<string, Type>();
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
@@ -189,13 +190,20 @@
                     dataObjectType.IsAbstract,
                     !dataObjectType.IsSealed);
 
-                if (collectionNames.ContainsKey(edmEntityType.Name))
+                if (collectionFullNames.ContainsKey(edmEntityType.FullName))
                 {
-                    throw new Exception($"The class with PublishName {edmEntityType.Name} is already added. " +
-                        $"PublishName {edmEntityType.Name} repeated in classes {dataObjectType.Name} and {collectionNames[edmEntityType.Name].Name}.");
+                    if (edmEntityType.Namespace.Length == 0)
+                    {
+                        throw new Exception($"The class with PublishName {edmEntityType.Name} is already added. " +
+                            $"PublishName {edmEntityType.Name} repeated in classes {dataObjectType.Name} and {collectionFullNames[edmEntityType.FullName].Name}.");
+                    }
+                    else
+                    {
+                        throw new Exception($"Class named {edmEntityType.Name} has already been added.");
+                    }
                 }
 
-                collectionNames.Add(edmEntityType.Name, dataObjectType);
+                collectionFullNames.Add(edmEntityType.FullName, dataObjectType);
 
                 BuildOwnProperties(edmEntityType, dataObjectType);
 
@@ -263,12 +271,6 @@
 
                 if (!typeSettings.EnableCollection)
                     continue;
-
-                if (_registeredCollections.ContainsKey(typeSettings.CollectionName))
-                {
-                    throw new Exception($"The class in PublishName {typeSettings.CollectionName} is already added. " +
-                        $"PublishName {typeSettings.CollectionName} repeated in classes {dataObjectType.Name} and {_registeredCollections[typeSettings.CollectionName].Name}.");
-                }
 
                 EdmEntityType edmEntityType = _registeredEdmEntityTypes[dataObjectType];
                 EdmEntitySet edmEntitySet = container.AddEntitySet(typeSettings.CollectionName, edmEntityType);

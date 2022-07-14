@@ -26,7 +26,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** Start programmer edit section *** (Daughter CustomAttributes)
 
     // *** End programmer edit section *** (Daughter CustomAttributes)
-    [PublishName("Child")]
+    [PublishName("Daughter")]
     [AutoAltered()]
     [ICSSoft.STORMNET.NotStored(false)]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
