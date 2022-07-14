@@ -170,7 +170,7 @@
         private void BuildEdmEntityTypes()
         {
             IDictionary<string, Type> collectionFullNames = new Dictionary<string, Type>();
-            //IDictionary<string, Type> collectionNames = new Dictionary<string, Type>();
+
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
