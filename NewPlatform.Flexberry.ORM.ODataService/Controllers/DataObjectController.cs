@@ -417,7 +417,7 @@
 #if NETFRAMEWORK
         public HttpResponseMessage GetGuid()
 #elif NETSTANDARD
-        public OkObjectResult GetGuid()
+        public ActionResult GetGuid()
 #endif
         {
             try
