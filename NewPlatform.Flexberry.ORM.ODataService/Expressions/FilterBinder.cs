@@ -2115,11 +2115,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             }
 
             SingleValuePropertyAccessNode[] propertyNodes = new SingleValuePropertyAccessNode[0];
-            var binaryNode = node as BinaryOperatorNode;
 
-            if (binaryNode != null)
+            if (node is BinaryOperatorNode binaryNode)
             {
-                if (binaryNode.Left is SingleValuePropertyAccessNode)
+                if (binaryNode.Left is SingleValuePropertyAccessNode && binaryNode.Right is SingleValuePropertyAccessNode)
                 {
                     propertyNodes = new SingleValuePropertyAccessNode[] { binaryNode.Left as SingleValuePropertyAccessNode, binaryNode.Right as SingleValuePropertyAccessNode };
                 }
