@@ -1,4 +1,4 @@
-﻿ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
+namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
     using System.Collections.Generic;
     using System.Net;
