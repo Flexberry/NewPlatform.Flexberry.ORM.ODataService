@@ -2114,22 +2114,23 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 return;
             }
 
-            SingleValuePropertyAccessNode[] propertyNodes = new SingleValuePropertyAccessNode[0];
+            List<SingleValuePropertyAccessNode> propertyNodes = new List<SingleValuePropertyAccessNode>();
 
             if (node is BinaryOperatorNode binaryNode)
             {
-                if (binaryNode.Left is SingleValuePropertyAccessNode && binaryNode.Right is SingleValuePropertyAccessNode)
-                {
-                    propertyNodes = new SingleValuePropertyAccessNode[] { binaryNode.Left as SingleValuePropertyAccessNode, binaryNode.Right as SingleValuePropertyAccessNode };
-                }
-                else if (binaryNode.Left is SingleValueFunctionCallNode)
-                {
-                    GetFilterDetailPropertiesFromNode(binaryNode.Left, navigationPropertyName, filterDetailProperties);
+                SingleValueNode[] nodes = new SingleValueNode[]{ binaryNode.Left, binaryNode.Right };
 
-                    if (binaryNode.Right is SingleValueFunctionCallNode)
+                foreach (SingleValueNode singleValueNode in nodes)
+                {
+                    if (singleValueNode is SingleValuePropertyAccessNode singleValuePropertyAccessNode)
                     {
-                        GetFilterDetailPropertiesFromNode(binaryNode.Right, navigationPropertyName, filterDetailProperties);
+                        propertyNodes.Add(singleValuePropertyAccessNode);
                     }
+                    else if (singleValueNode is SingleValueFunctionCallNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(singleValueNode, navigationPropertyName, filterDetailProperties);
+                    }
+
                 }
             }
 
@@ -2137,7 +2138,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             if (functionCallNode != null && functionCallNode.Name == "contains")
             {
                 var parameters = functionCallNode.Parameters.ToList();
-                propertyNodes = new SingleValuePropertyAccessNode[] { parameters[0] as SingleValuePropertyAccessNode, parameters[1] as SingleValuePropertyAccessNode };
+                propertyNodes.Add(parameters[0] as SingleValuePropertyAccessNode);
+                propertyNodes.Add(parameters[1] as SingleValuePropertyAccessNode);
             }
 
             foreach (var propertyNode in propertyNodes)
