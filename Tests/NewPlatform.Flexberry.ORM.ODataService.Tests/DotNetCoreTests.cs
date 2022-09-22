@@ -32,7 +32,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             HttpClient client = _factory.CreateClient();
 
             // Arrange & Act
-            var response = await client.GetAsync("/odata/$metadata");
+            //var response = await client.GetAsync("/odata/$metadata");
+            //args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name;
+            //var response = await client.GetAsync("/odata/медведьs");
+            var response = await client.GetAsync("/odata/Mедведьs");
+            string content = response.Content.ReadAsStringAsync().Result;
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

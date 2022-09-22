@@ -368,7 +368,7 @@
                     return attr.TypePublishName.Substring(0, lastPos);
                 }
 
-                return string.Empty;
+                return "q.w.e";
             }
 
             return dataObjectType.Namespace;

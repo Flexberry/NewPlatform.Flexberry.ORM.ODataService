@@ -49,7 +49,8 @@
                 args.DataService.UpdateObjects(ref countries);
 
                 // Формируем URL запроса к OData-сервису.
-                string requestUrl = string.Format("http://localhost/odata/{0}?{1}", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name, "$count=true");
+                //string requestUrl = string.Format("http://localhost/odata/{0}?{1}", args.Token.Model.GetEdmEntitySet(typeof(Страна)).Name, "$count=true");
+                string requestUrl = "http://localhost/odata/$metadata";
 
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
