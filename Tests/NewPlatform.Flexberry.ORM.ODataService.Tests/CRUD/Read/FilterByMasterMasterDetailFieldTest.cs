@@ -62,8 +62,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 args.Token.Model.GetEdmEntitySet(typeof(MainClass)).Name,
                 "AgrClass1/DetailsClass1/any(f:f/DetailsClass2/AgrClass2/__PrimaryKey eq " + agrClass2Pk + ")");
 
+                // Act.
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
+                    // Assert.
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
                     Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
@@ -73,7 +75,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
         }
 
         /// <summary>
-        /// Tests filtering data by master field.
+        /// Tests filtering data by masters field in details.
         /// </summary>
         [Fact]
         public void TestFilterByDetailTwinMasterFields()
@@ -98,8 +100,50 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                 "Берлога/any(f:(contains(f/ЛесРасположения/Название,'Тёмный') and contains(f/ПодходитДляПороды/Название,'Бурый')))");
 
+                // Act.
                 using (var response = args.HttpClient.GetAsync(requestUrl).Result)
                 {
+                    // Assert.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Tests filtering data and select.
+        /// </summary>
+        [Fact]
+        public void TestFilterByDetailAndSelect()
+        {
+            ActODataService(args =>
+            {
+                // Arrange.
+                Порода breed = new Порода() { Название = "Бурый" };
+                Лес forest = new Лес() { Название = "Тёмный" };
+                string forestPkString = ((KeyGuid)forest.__PrimaryKey).Guid.ToString("D");
+                Берлога den = new Берлога() { Наименование = "Под ёлкой", ПодходитДляПороды = breed, ЛесРасположения = forest };
+
+                Медведь bear = new Медведь() { ПорядковыйНомер = 1 };
+                bear.Берлога.Add(den);
+
+                DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
+
+                args.DataService.UpdateObjects(ref newDataObjects);
+                ExternalLangDef.LanguageDef.DataService = args.DataService;
+
+                string requestUrl = string.Format(
+                "http://localhost/odata/{0}?$filter={1}&$select={2}",
+                args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                "Берлога/any(f:f/ЛесРасположения/__PrimaryKey%20eq%20" + forestPkString + ")",
+                "__PrimaryKey,ПорядковыйНомер");
+
+                // Act.
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Assert.
                     string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
                     Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
                     Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
