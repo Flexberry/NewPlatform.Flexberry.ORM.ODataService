@@ -205,7 +205,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 Страна country = new Страна() { Название = "Гана" };
                 string countryPkString = ((KeyGuid)country.__PrimaryKey).Guid.ToString("D");
                 Лес forest = new Лес() { Название = "Тёмный", Страна = country };
-                string forestPkString = ((KeyGuid)forest.__PrimaryKey).Guid.ToString("D");
                 Берлога den = new Берлога() { Наименование = "Под ёлкой", ПодходитДляПороды = breed, ЛесРасположения = forest };
 
                 Медведь bear = new Медведь() { ПорядковыйНомер = 1 };
@@ -220,6 +219,46 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 "http://localhost/odata/{0}?$filter={1}&$select={2}",
                 args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
                 "Берлога/any(f:f/ЛесРасположения/Страна/__PrimaryKey%20eq%20" + countryPkString + ")",
+                "__PrimaryKey,ПорядковыйНомер");
+
+                // Act.
+                using (var response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Assert.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+                    Dictionary<string, object> receivedDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(receivedStr);
+                    Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Tests filtering details by master master property.
+        /// </summary>
+        [Fact]
+        public void TestFilterByDetailMasterMasterProperty()
+        {
+            ActODataService(args =>
+            {
+                // Arrange.
+                Порода breed = new Порода() { Название = "Бурый" };
+                Страна country = new Страна() { Название = "Гана" };
+                Лес forest = new Лес() { Название = "Тёмный", Страна = country };
+                Берлога den = new Берлога() { Наименование = "Под ёлкой", ПодходитДляПороды = breed, ЛесРасположения = forest };
+
+                Медведь bear = new Медведь() { ПорядковыйНомер = 1 };
+                bear.Берлога.Add(den);
+
+                DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
+
+                args.DataService.UpdateObjects(ref newDataObjects);
+                ExternalLangDef.LanguageDef.DataService = args.DataService;
+
+                string requestUrl = string.Format(
+                "http://localhost/odata/{0}?$filter={1}&$select={2}",
+                args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                "Берлога/any(f:f/ЛесРасположения/Страна/Название%20eq%20'Гана')",
                 "__PrimaryKey,ПорядковыйНомер");
 
                 // Act.
