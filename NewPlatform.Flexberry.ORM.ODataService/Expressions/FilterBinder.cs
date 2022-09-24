@@ -2118,7 +2118,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
             if (node is BinaryOperatorNode binaryNode)
             {
-                SingleValueNode[] nodes = new SingleValueNode[]{ binaryNode.Left, binaryNode.Right };
+                SingleValueNode[] nodes = new SingleValueNode[] { binaryNode.Left, binaryNode.Right };
 
                 foreach (SingleValueNode singleValueNode in nodes)
                 {
@@ -2126,11 +2126,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     {
                         propertyNodes.Add(singleValuePropertyAccessNode);
                     }
-                    else if (singleValueNode is SingleValueFunctionCallNode)
+                    else if (singleValueNode is SingleValueFunctionCallNode || singleValueNode is BinaryOperatorNode)
                     {
                         GetFilterDetailPropertiesFromNode(singleValueNode, navigationPropertyName, filterDetailProperties);
                     }
-
+                    else if (singleValueNode is ConvertNode convertNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(convertNode.Source, navigationPropertyName, filterDetailProperties);
+                    }
                 }
             }
 
@@ -2161,6 +2164,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     if (!filterDetailProperties.Contains(nameProperty))
                     {
                         filterDetailProperties.Add(nameProperty);
+
+                        // Для случая использования первичного ключа нужно добавить ещё свойство самого мастера, чтобы оптимизированный запрос без лишнего JOIN отрабатывал корректно.
+                        if (masters.Last() == "__PrimaryKey")
+                        {
+                            masters.RemoveAt(masters.Count - 1);
+                            filterDetailProperties.Add(string.Join(".", masters.ToArray()));
+                        }
                     }
                 }
             }
