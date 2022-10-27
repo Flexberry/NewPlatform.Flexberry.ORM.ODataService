@@ -14,7 +14,8 @@
     <releaseNotes>
       Add
       1. Support IExportStringedObjectViewService interface call for fast excel export.
-	  2. Support of actions with void response (it returns 204 No Content code).
+      2. Add DisabledDataObjectFileAccessor realization.
+      3. Support of actions with void response (it returns 204 No Content code).
 
       Fixed
       1. SafeLoadDetails for partial loaded detail.
