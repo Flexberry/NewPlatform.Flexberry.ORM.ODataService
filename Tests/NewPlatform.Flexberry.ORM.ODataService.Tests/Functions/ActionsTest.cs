@@ -85,6 +85,22 @@
                     parametersTypes));
             }
 
+            if (!container.IsRegistered("ActionNoReply"))
+            {
+                parametersTypes = new Dictionary<string, Type> { { "entitySet", typeof(string) }, { "query", typeof(string) } };
+                container.Register(new Action(
+                    "ActionNoReply",
+                    (queryParameters, parameters) =>
+                    {
+                        var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
+                        var uri = $"http://a/b/c?{parameters["query"]}";
+                        var lcs = queryParameters.CreateLcs(type, uri);
+                        var dobjs = dataService.LoadObjects(lcs);
+                    },
+                    typeof(void),
+                    parametersTypes));
+            }
+
             if (!container.IsRegistered("ActionEnum"))
             {
                 parametersTypes = new Dictionary<string, Type> { { "пол", typeof(tПол) } };
@@ -264,6 +280,29 @@
                 {
                     // Убедимся, что запрос завершился успешно.
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку исполнения экшена, что возвращает VOID.
+        /// </summary>
+        [Fact]
+        public void TestActionWithNoReply()
+        {
+            ActODataService(args =>
+            {
+                args.Token.Functions.RegisterAction(new Func<QueryParameters, string, string, IEnumerable<DataObject>>(AddWithQueryParameters));
+                RegisterODataActions(args.Token.Functions, args.DataService);
+
+                string requestUrl = $"http://localhost/odata/ActionNoReply";
+                string json = "{\"entitySet\": \"Странаs\", \"query\": \"$filter=Название eq 'Страна №2'\"}";
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
                 }
             });
         }
