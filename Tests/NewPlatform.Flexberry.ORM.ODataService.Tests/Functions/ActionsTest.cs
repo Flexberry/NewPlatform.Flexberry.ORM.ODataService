@@ -292,7 +292,6 @@
         {
             ActODataService(args =>
             {
-                args.Token.Functions.RegisterAction(new Func<QueryParameters, string, string, IEnumerable<DataObject>>(AddWithQueryParameters));
                 RegisterODataActions(args.Token.Functions, args.DataService);
 
                 string requestUrl = $"http://localhost/odata/ActionNoReply";
