@@ -16,7 +16,7 @@
         /// <summary>
         /// The handler for the function.
         /// </summary>
-        public DelegateODataFunction Handler { get; set; }
+        public MulticastDelegate Handler { get; set; }
 
         /// <summary>
         /// The return type of the function.
@@ -36,6 +36,31 @@
         /// <param name="returnType">The return type of the function.</param>
         /// <param name="parametersTypes">The arguments of the function.</param>
         public Function(string functionName, DelegateODataFunction handler, Type returnType, Dictionary<string, Type> parametersTypes = null)
+            : this(functionName, returnType, handler, parametersTypes)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Function"/> class.
+        /// </summary>
+        /// <param name="functionName">The name of the function.</param>
+        /// <param name="handler">The handler for the function.</param>
+        /// <param name="returnType">The return type of the function.</param>
+        /// <param name="parametersTypes">The arguments of the function.</param>
+        protected Function(string functionName, DelegateODataNoReplyFunction handler, Type returnType, Dictionary<string, Type> parametersTypes = null)
+            : this(functionName, returnType, handler, parametersTypes)
+        {
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Function"/> class.
+        /// </summary>
+        /// <param name="functionName">The name of the function.</param>
+        /// <param name="handler">The handler for the function.</param>
+        /// <param name="returnType">The return type of the function.</param>
+        /// <param name="parametersTypes">The arguments of the function.</param>
+        private Function(string functionName, Type returnType, MulticastDelegate handler, Dictionary<string, Type> parametersTypes = null)
         {
             if (functionName == null)
             {

@@ -174,7 +174,7 @@
                 }
             }
 
-            var result = function.Handler(queryParameters, parameters);
+            var result = ((DelegateODataFunction)function.Handler)(queryParameters, parameters);
             if (result == null)
             {
                 const string msg = "Result is null.";
