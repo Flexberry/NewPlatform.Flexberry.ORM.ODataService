@@ -93,9 +93,7 @@
                     (queryParameters, parameters) =>
                     {
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
-                        var uri = $"http://a/b/c?{parameters["query"]}";
-                        var lcs = queryParameters.CreateLcs(type, uri);
-                        var dobjs = dataService.LoadObjects(lcs);
+                        System.Diagnostics.Debug.WriteLine("Void method was executed.");
                     },
                     typeof(void),
                     parametersTypes));
