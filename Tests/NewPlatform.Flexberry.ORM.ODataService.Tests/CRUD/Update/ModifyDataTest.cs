@@ -1288,65 +1288,119 @@
         }
 
         /// <summary>
-        /// Test batch delete master and nulling object.
+        /// Test batch delete master to self and nulling object.
         /// </summary>
         [Fact]
-        public void ButchDeleteAndNullingTest()
+        public void ButchDeleteAndNullingLinkToSelfTest()
         {
             ActODataService(args =>
             {
-                string[] блохаPropertiesNames =
-                {
-                    Information.ExtractPropertyPath<Блоха>(x => x.__PrimaryKey),
-                };
                 string[] медведьPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ЦветГлаз),
                 };
-                var блохаDynamicView = new View(new ViewAttribute("блохаDynamicView", блохаPropertiesNames), typeof(Блоха));
                 var медведьDynamicView = new View(new ViewAttribute("медведьDynamicView", медведьPropertiesNames), typeof(Медведь));
 
-                var медведь = new Медведь();
-                var блоха = new Блоха() { МедведьОбитания = медведь };
+                var testName = "Test";
+                var медведь1 = new Медведь();
+                var медведь2 = new Медведь() { Мама = медведь1, ЦветГлаз = testName };
 
-                var objs = new DataObject[] { медведь, блоха };
+                var objs = new DataObject[] { медведь1, медведь2 };
                 args.DataService.UpdateObjects(ref objs);
 
                 const string baseUrl = "http://localhost/odata";
 
-                string requestJsonDataБлоха = блоха.ToJson(блохаDynamicView, args.Token.Model);
-                DataObjectDictionary objJsonБлоха = DataObjectDictionary.Parse(requestJsonDataБлоха, блохаDynamicView, args.Token.Model);
+                string requestJsonDataМедведь2 = медведь2.ToJson(медведьDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonМедведь2 = DataObjectDictionary.Parse(requestJsonDataМедведь2, медведьDynamicView, args.Token.Model);
 
-                objJsonБлоха.Add($"{nameof(Блоха.МедведьОбитания)}@odata.bind", null);
+                objJsonМедведь2.Add($"{nameof(Медведь.Мама)}@odata.bind", null);
 
-                requestJsonDataБлоха = objJsonБлоха.Serialize();
+                requestJsonDataМедведь2 = objJsonМедведь2.Serialize();
 
-                медведь.SetStatus(ObjectStatus.Deleted);
+                медведь1.SetStatus(ObjectStatus.Deleted);
+
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        requestJsonDataМедведь2,
+                        медведь2),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        string.Empty,
+                        медведь1),
+                };
+
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Медведь), медведьDynamicView);
+                    var медведиObj = args.DataService.LoadObjects(lcs);
+                    var медведи = медведиObj.Cast<Медведь>().ToList();
+
+                    Assert.Equal(1, медведиObj.Length);
+                    Assert.Equal(testName, медведи[0].ЦветГлаз);
+                    Assert.Null(медведи[0].Мама);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Test batch delete master to self and nulling object reverse order.
+        /// </summary>
+        [Fact]
+        public void ButchDeleteAndNullingLinkToSelfReverseTest()
+        {
+            ActODataService(args =>
+            {
+                string[] медведьPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ЦветГлаз),
+                };
+                var медведьDynamicView = new View(new ViewAttribute("медведьDynamicView", медведьPropertiesNames), typeof(Медведь));
+
+                var testName = "Test";
+                var медведь1 = new Медведь();
+                var медведь2 = new Медведь() { Мама = медведь1, ЦветГлаз = testName };
+
+                var objs = new DataObject[] { медведь1, медведь2 };
+                args.DataService.UpdateObjects(ref objs);
+
+                const string baseUrl = "http://localhost/odata";
+
+                string requestJsonDataМедведь2 = медведь2.ToJson(медведьDynamicView, args.Token.Model);
+                DataObjectDictionary objJsonМедведь2 = DataObjectDictionary.Parse(requestJsonDataМедведь2, медведьDynamicView, args.Token.Model);
+
+                objJsonМедведь2.Add($"{nameof(Медведь.Мама)}@odata.bind", null);
+
+                requestJsonDataМедведь2 = objJsonМедведь2.Serialize();
+
+                медведь1.SetStatus(ObjectStatus.Deleted);
 
                 string[] changesets = new[]
                 {
                     CreateChangeset(
                         $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
                         string.Empty,
-                        медведь),
+                        медведь1),
                     CreateChangeset(
-                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Блоха)).Name}",
-                        requestJsonDataБлоха,
-                        блоха),
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name}",
+                        requestJsonDataМедведь2,
+                        медведь2),
                 };
 
                 HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
-                    args.DataService.LoadObject(блохаDynamicView, блоха);
-                    var медведьОбитания = блоха.МедведьОбитания;
-
-                    Assert.Null(медведьОбитания);
-
                     LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Медведь), медведьDynamicView);
-                    var медведи = args.DataService.LoadObjects(lcs);
+                    var медведиObj = args.DataService.LoadObjects(lcs);
+                    var медведи = медведиObj.Cast<Медведь>().ToList();
 
-                    Assert.Equal(0, медведи.Length);
+                    Assert.Equal(1, медведиObj.Length);
+                    Assert.Equal(testName, медведи[0].ЦветГлаз);
+                    Assert.Null(медведи[0].Мама);
                 }
             });
         }
