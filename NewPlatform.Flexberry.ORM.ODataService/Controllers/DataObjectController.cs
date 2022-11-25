@@ -1380,27 +1380,43 @@
         {
             basePartedExportParam = partedExportService.InitExportStream(basePartedExportParam);
             int portionSize = basePartedExportParam.GetPortionSize();
-            int currentPosition = 0;
+            if (portionSize <= 0)
+            {
+                throw new Exception("Portion size for parted export should have positive value.");
+            }
+
+            int currentPosition = 1;
             bool canRead = true;
+            int currentIterationNumber = 0;
+            int commonCount = 0;
 
             while (canRead)
             {
-                PrepareDataObjects(isStringedObjectViewExport, new RowNumberDef(currentPosition, currentPosition + portionSize - 1), portionSize);
-                currentPosition = currentPosition + portionSize;
-                canRead = _objs.Length > 0 || _objsStringView.Length > 0;
-                if (canRead)
+                if (currentIterationNumber > 0 && commonCount == 0)
                 {
-                    if (isStringedObjectViewExport)
-                    {
-                        basePartedExportParam.SetNextPortionOfStringedData(_objsStringView);
-                    }
-                    else
-                    {
-                        basePartedExportParam.SetNextPortionOfData(_objs);
-                    }
+                    commonCount = PrepareDataObjectsGetCount(isStringedObjectViewExport, null, 0, false);
                 }
 
+                int currentPortionSize = commonCount > 0 
+                        ? ((currentPosition + portionSize) <= commonCount ? portionSize : (commonCount - currentPosition))
+                        : portionSize;
+
+                PrepareDataObjects(isStringedObjectViewExport, new RowNumberDef(currentPosition, currentPosition + currentPortionSize - 1), currentPortionSize, currentIterationNumber == 0);
+                currentPosition = currentPosition + portionSize;
+                canRead = _objs.Length > 0 || _objsStringView.Length > 0;
+
+                if (isStringedObjectViewExport)
+                {
+                    basePartedExportParam.SetNextPortionOfStringedData(_objsStringView);
+                }
+                else
+                {
+                    basePartedExportParam.SetNextPortionOfData(_objs);
+                }
+
+                // TODO: передавать флаг, что была последняя вычитанная порция.
                 basePartedExportParam = partedExportService.AddPartedDataToExportStream(basePartedExportParam);
+                currentIterationNumber++;
             }
 
             return basePartedExportParam.ExportMemoryStream;
@@ -1415,13 +1431,13 @@
         /// Формирует массив объектов.
         /// </summary>
         /// <param name="isStringedObjectViewExport">Флаг, указывающий, что будет использоваться тип ObjectStringDataView.</param>
-        private void PrepareDataObjects(bool isStringedObjectViewExport, RowNumberDef loadRowNumber = null, int loadReturnTop = 0)
+        private void PrepareDataObjects(bool isStringedObjectViewExport, RowNumberDef loadRowNumber = null, int loadReturnTop = 0, bool callExecuteCallbackBeforeGet = true)
         {
             _objs = new DataObject[0];
             _objsStringView = new ObjectStringDataView[0];
 
             int count = -1;
-            bool callExecuteCallbackBeforeGet = true;
+            bool callExecuteCallbackBeforeGetLocal = callExecuteCallbackBeforeGet;
             IncludeCount = false;
             int returnTop = _lcs.ReturnTop;
             RowNumberDef rowNumber = _lcs.RowNumber;
@@ -1429,13 +1445,8 @@
             if (QueryOptions.Count != null && QueryOptions.Count.Value)
             {
                 IncludeCount = true;
-                _lcs.RowNumber = loadRowNumber;
-                _lcs.ReturnTop = loadReturnTop;
-                _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, true);
-                _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, true) : _objsStringView;
-                _lcs.RowNumber = rowNumber;
-                _lcs.ReturnTop = returnTop;
-                callExecuteCallbackBeforeGet = false;
+                count = PrepareDataObjectsGetCount(isStringedObjectViewExport, loadRowNumber, loadReturnTop, callExecuteCallbackBeforeGetLocal);
+                callExecuteCallbackBeforeGetLocal = false;
                 Count = count;
             }
 
@@ -1447,8 +1458,8 @@
                     _lcs.ReturnTop = loadReturnTop;
                 }
 
-                _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
-                _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, false) : _objsStringView;
+                _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGetLocal, false);
+                _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGetLocal, false) : _objsStringView;
 
                 if (loadRowNumber != null)
                 {
@@ -1456,6 +1467,21 @@
                     _lcs.ReturnTop = returnTop;
                 }
             }
+        }
+
+        private int PrepareDataObjectsGetCount(bool isStringedObjectViewExport, RowNumberDef loadRowNumber, int loadReturnTop, bool callExecuteCallbackBeforeGet = false)
+        {
+            int count = -1;
+            int returnTop = _lcs.ReturnTop;
+            RowNumberDef rowNumber = _lcs.RowNumber;
+            _lcs.RowNumber = loadRowNumber;
+            _lcs.ReturnTop = loadReturnTop;
+            _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, true);
+            _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, true) : _objsStringView;
+            _lcs.RowNumber = rowNumber;
+            _lcs.ReturnTop = returnTop;
+
+            return count;
         }
 
         /// <summary>
