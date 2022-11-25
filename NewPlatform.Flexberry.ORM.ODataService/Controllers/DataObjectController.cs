@@ -490,6 +490,42 @@
             return _dataService.GetObjectsCount(lcs);
         }
 
+#if NETFRAMEWORK
+        internal HttpResponseMessage CreateExcel(NameValueCollection queryParams, bool? isStringedObjectViewExport = null)
+#elif NETSTANDARD
+        internal IActionResult CreateExcel(NameValueCollection queryParams, bool? isStringedObjectViewExport = null)
+#endif
+        {
+            ExportParams par = FormParameterForExcel(queryParams);
+            MemoryStream result = GetMemoryStreamFromExcelExportService(par, queryParams, isStringedObjectViewExport);
+
+#if NETFRAMEWORK
+            HttpResponseMessage msg;
+            if (result != null)
+            {
+                msg = Request.CreateResponse(HttpStatusCode.OK);
+                RawOutputFormatter.PrepareHttpResponseMessage(ref msg, "application/ms-excel", _model, result.ToArray());
+                msg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                msg.Content.Headers.ContentDisposition.FileName = "list.xlsx";
+            }
+            else
+            {
+                msg = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+
+            return msg;
+#elif NETSTANDARD
+            if (result != null)
+            {
+                return File(result.ToArray(), "application/ms-excel", "list.xlsx");
+            }
+            else
+            {
+                throw CustomException(new Exception("Export service filed."));
+            }
+#endif
+        }
+
         /// <summary>
         /// Exports data as a file with .xlsx content.
         /// </summary>
@@ -562,7 +598,7 @@
         /// <param name="queryParams">Параметры запроса.</param>
         /// <param name="isStringedObjectViewExport">Флаг, определяющий, что экспорт проходит в формате StringedObjectView.</param>
         /// <returns>Данные для формирования файла excel.</returns>
-        internal MemoryStream GetMemoryStreamFromExcelExportService(ExportParams exportParams, NameValueCollection queryParams, bool isStringedObjectViewExport)
+        internal MemoryStream GetMemoryStreamFromExcelExportService(ExportParams exportParams, NameValueCollection queryParams, bool? isStringedObjectViewExport)
         {
             MemoryStream result = null;
             DataObjectEdmModel currentModel = _model;
@@ -576,6 +612,11 @@
             {
                 if (TypeAllowsPartExport(exportStringedObjectViewService.GetType()))
                 {
+                    if (isStringedObjectViewExport == null)
+                    {
+                        throw new ArgumentNullException(nameof(isStringedObjectViewExport));
+                    }
+
                     IPartedExportService partedExportService = (IPartedExportService)exportStringedObjectViewService;
                     BasePartedExportParam basePartedExportParam = partedExportService.GetEmptyBasePartedExportParam();
                     if (basePartedExportParam is not BasePartedExportStringedObjectViewServiceParam)
@@ -585,11 +626,15 @@
 
                     ((BasePartedExportStringedObjectViewServiceParam)basePartedExportParam).Parameters = exportParams;
 
-                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport);
+                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport.Value);
                 }
                 else
                 {
-                    PrepareDataObjects(isStringedObjectViewExport);
+                    if (isStringedObjectViewExport != null)
+                    {
+                        PrepareDataObjects(isStringedObjectViewExport.Value);
+                    }
+
                     result = exportStringedObjectViewService.CreateExportStream(exportParams, _objsStringView);
                 }
             }
@@ -597,6 +642,11 @@
             {
                 if (TypeAllowsPartExport(exportService.GetType()))
                 {
+                    if (isStringedObjectViewExport == null)
+                    {
+                        throw new ArgumentNullException(nameof(isStringedObjectViewExport));
+                    }
+
                     IPartedExportService partedExportService = (IPartedExportService)exportService;
                     BasePartedExportParam basePartedExportParam = partedExportService.GetEmptyBasePartedExportParam();
                     if (basePartedExportParam is not BasePartedExportServiceParam)
@@ -607,11 +657,15 @@
                     ((BasePartedExportServiceParam)basePartedExportParam).Parameters = exportParams;
                     ((BasePartedExportServiceParam)basePartedExportParam).DataService = _dataService;
 
-                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport);
+                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport.Value);
                 }
                 else
                 {
-                    PrepareDataObjects(isStringedObjectViewExport);
+                    if (isStringedObjectViewExport != null)
+                    {
+                        PrepareDataObjects(isStringedObjectViewExport.Value);
+                    }
+
                     result = exportService.CreateExportStream(_dataService, exportParams, _objs);
                 }
             }
@@ -619,6 +673,11 @@
             {
                 if (TypeAllowsPartExport(odataExportService.GetType()))
                 {
+                    if (isStringedObjectViewExport == null)
+                    {
+                        throw new ArgumentNullException(nameof(isStringedObjectViewExport));
+                    }
+
                     IPartedExportService partedExportService = (IPartedExportService)odataExportService;
                     BasePartedExportParam basePartedExportParam = partedExportService.GetEmptyBasePartedExportParam();
                     if (basePartedExportParam is not BasePartedOdataExportServiceParam)
@@ -629,11 +688,15 @@
                     ((BasePartedOdataExportServiceParam)basePartedExportParam).Parameters = exportParams;
                     ((BasePartedOdataExportServiceParam)basePartedExportParam).QueryParams = queryParams;
 
-                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport);
+                    return ProcessPartedExport(partedExportService, basePartedExportParam, isStringedObjectViewExport.Value);
                 }
                 else
                 {
-                    PrepareDataObjects(isStringedObjectViewExport);
+                    if (isStringedObjectViewExport != null)
+                    {
+                        PrepareDataObjects(isStringedObjectViewExport.Value);
+                    }
+
                     result = odataExportService.CreateExportStream(_dataService, exportParams, _objs, queryParams);
                 }
             }
@@ -1299,34 +1362,7 @@
 
             if (isExport && isForExcel)
             {
-                ExportParams par = FormParameterForExcel(queryParams);
-                MemoryStream result = GetMemoryStreamFromExcelExportService(par, queryParams, isStringedObjectViewExport);
-
-#if NETFRAMEWORK
-                HttpResponseMessage msg;
-                if (result != null)
-                {
-                    msg = Request.CreateResponse(HttpStatusCode.OK);
-                    RawOutputFormatter.PrepareHttpResponseMessage(ref msg, "application/ms-excel", _model, result.ToArray());
-                    msg.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                    msg.Content.Headers.ContentDisposition.FileName = "list.xlsx";
-                }
-                else
-                {
-                    msg = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                }
-
-                return msg;
-#elif NETSTANDARD
-                if (result != null)
-                {
-                    return File(result.ToArray(), "application/ms-excel", "list.xlsx");
-                }
-                else
-                {
-                    throw CustomException(new Exception("Export service filed."));
-                }
-#endif
+                return CreateExcel(queryParams, isStringedObjectViewExport);
             }
             else
             {
@@ -1387,11 +1423,12 @@
             int count = -1;
             bool callExecuteCallbackBeforeGet = true;
             IncludeCount = false;
+            int returnTop = _lcs.ReturnTop;
+            RowNumberDef rowNumber = _lcs.RowNumber;
+
             if (QueryOptions.Count != null && QueryOptions.Count.Value)
             {
                 IncludeCount = true;
-                int returnTop = _lcs.ReturnTop;
-                var rowNumber = _lcs.RowNumber;
                 _lcs.RowNumber = loadRowNumber;
                 _lcs.ReturnTop = loadReturnTop;
                 _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, true);
@@ -1404,8 +1441,20 @@
 
             if (!IncludeCount || count > 0)
             {
+                if (loadRowNumber != null)
+                {
+                    _lcs.RowNumber = loadRowNumber;
+                    _lcs.ReturnTop = loadReturnTop;
+                }
+
                 _objs = isStringedObjectViewExport ? _objs : LoadObjects(_lcs, out count, callExecuteCallbackBeforeGet, false);
                 _objsStringView = isStringedObjectViewExport ? LoadObjectsFast(_lcs, out count, callExecuteCallbackBeforeGet, false) : _objsStringView;
+
+                if (loadRowNumber != null)
+                {
+                    _lcs.RowNumber = rowNumber;
+                    _lcs.ReturnTop = returnTop;
+                }
             }
         }
 

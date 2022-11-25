@@ -26,7 +26,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.1.0-beta03" />
   </ItemGroup>
 
 </Project>
