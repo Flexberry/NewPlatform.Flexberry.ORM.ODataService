@@ -10,6 +10,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [6.1.1] - 2022.12.07
+
+### Fixed
+
+1. Fix user function Edm.Binary response.
+
 ## [6.1.0] - 2021.06.12
 
 ### Added
