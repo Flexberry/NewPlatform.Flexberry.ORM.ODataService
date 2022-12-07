@@ -92,6 +92,14 @@
                     parametersTypes));
             }
 
+            if (!container.IsRegistered("FunctionBinary"))
+            {
+                container.Register(new Function(
+                    "FunctionBinary",
+                    (queryParameters, parameters) => new byte[] { 0x0, 0x1, 0x2 },
+                    typeof(byte[])));
+            }
+
             if (!container.IsRegistered("FunctionString"))
             {
                 parametersTypes = new Dictionary<string, Type> { { "stringParam", typeof(string) } };
@@ -336,6 +344,35 @@
                         Assert.Equal(expectedResult[intParam].Берлога[i].Наименование, (string)((JArray)receivedDict["Берлога"])[i].ToObject<Dictionary<string, object>>()["Наименование"]);
                         Assert.Equal(1, ((JArray)receivedDict["Берлога"])[i].ToObject<Dictionary<string, object>>().Count);
                     }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку возвращаемых функциями OData значений c типом byte[] (Edm.Binary).
+        /// </summary>
+        [Fact]
+        public void TestFunctionBinary()
+        {
+            ActODataService(args =>
+            {
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = $"http://localhost/odata/FunctionBinary()";
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    string returnValue = "AAEC";
+
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    // Получим строку с ответом.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    Assert.Equal(returnValue, receivedStr);
                 }
             });
         }
