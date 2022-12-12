@@ -273,7 +273,7 @@
         {
             bool isAfterGetDeniedTypesExist = false;
 
-            Type[] deniedTypes = model.ExcelExportAfterGetDeniedTypes;
+            Type[] deniedTypes = model.ExcelExportAfterGetDeniedTypes ?? new Type[0];
             Type[] lcsTypes = lcs.LoadingTypes;
 
             IEnumerable<Type> intersection = lcsTypes.Intersect(deniedTypes);
@@ -638,7 +638,10 @@
             }
 
             resultLcs.View.Properties = resultProperies.ToArray();
-            resultLcs.View = ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(resultLcs.View, resultLcs.LimitFunction, _dataService);
+            if (resultLcs.LimitFunction != null)
+            {
+                resultLcs.View = ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(resultLcs.View, resultLcs.LimitFunction, _dataService);
+            }
 
             return resultLcs;
         }
