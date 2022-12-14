@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 1. SafeLoadDetails for partial loaded detail.
 2. Fix create detail view.
+3. Fix user function Edm.Binary response.
 
 ## [6.1.0] - 2021.06.12
 

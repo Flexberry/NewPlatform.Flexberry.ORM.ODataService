@@ -15,6 +15,18 @@
       Changed
       1. Upgrade `Microsoft.AspNet.OData` to `7.5.14`
       2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.5.14`
+
+      Add
+      1. Support IExportStringedObjectViewService interface call for fast excel export.
+      2. Add DisabledDataObjectFileAccessor realization.
+      3. Support of actions with void response (it returns 204 No Content code).
+
+      Fixed
+      1. SafeLoadDetails for partial loaded detail.
+      2. Custom batch handler settings such as ODataMessageQuotas.
+      3. CallbackBeforeGet with count equals true.
+      4. Fix create detail view.
+      5. Fix view creation in case with filters by detail (twin master field contains, pk eq const).
     </releaseNotes>
     <copyright>Copyright New Platform Ltd 2022</copyright>
     <tags>Flexberry ORM OData ODataService</tags>

@@ -65,6 +65,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Лес fЛесРасположения;
         
+        private NewPlatform.Flexberry.ORM.ODataService.Tests.Порода fПодходитДляПороды;
+        
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fМедведь;
         
         // *** Start programmer edit section *** (Берлога CustomMembers)
@@ -291,6 +293,39 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Берлога.ЛесРасположения Set end)
 
                 // *** End programmer edit section *** (Берлога.ЛесРасположения Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Берлога.
+        /// </summary>
+        // *** Start programmer edit section *** (Берлога.ПодходитДляПороды CustomAttributes)
+
+        // *** End programmer edit section *** (Берлога.ПодходитДляПороды CustomAttributes)
+        [PropertyStorage(new string[] {
+                "ДляКакойПороды"})]
+        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Порода ПодходитДляПороды
+        {
+            get
+            {
+                // *** Start programmer edit section *** (Берлога.ПодходитДляПороды Get start)
+
+                // *** End programmer edit section *** (Берлога.ПодходитДляПороды Get start)
+                NewPlatform.Flexberry.ORM.ODataService.Tests.Порода result = this.fПодходитДляПороды;
+                // *** Start programmer edit section *** (Берлога.ПодходитДляПороды Get end)
+
+                // *** End programmer edit section *** (Берлога.ПодходитДляПороды Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (Берлога.ПодходитДляПороды Set start)
+
+                // *** End programmer edit section *** (Берлога.ПодходитДляПороды Set start)
+                this.fПодходитДляПороды = value;
+                // *** Start programmer edit section *** (Берлога.ПодходитДляПороды Set end)
+
+                // *** End programmer edit section *** (Берлога.ПодходитДляПороды Set end)
             }
         }
         

@@ -2102,36 +2102,74 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                 var it = firstNode.Source as ResourceRangeVariableReferenceNode;
                 if (it != null && it.Name == "$it")
                 {
-                    var binaryNode = anyNode.Body as BinaryOperatorNode;
-                    var propertyNodes = new SingleValuePropertyAccessNode[0];
-                    if (binaryNode != null)
+                    GetFilterDetailPropertiesFromNode(anyNode.Body, firstNode.NavigationProperty.Name, FilterDetailProperties);
+                }
+            }
+        }
+
+        private void GetFilterDetailPropertiesFromNode(SingleValueNode node, string navigationPropertyName, List<string> filterDetailProperties)
+        {
+            if (node == null)
+            {
+                return;
+            }
+
+            List<SingleValuePropertyAccessNode> propertyNodes = new List<SingleValuePropertyAccessNode>();
+
+            if (node is BinaryOperatorNode binaryNode)
+            {
+                SingleValueNode[] nodes = new SingleValueNode[] { binaryNode.Left, binaryNode.Right };
+
+                foreach (SingleValueNode singleValueNode in nodes)
+                {
+                    if (singleValueNode is SingleValuePropertyAccessNode singleValuePropertyAccessNode)
                     {
-                        propertyNodes = new SingleValuePropertyAccessNode[] { binaryNode.Left as SingleValuePropertyAccessNode, binaryNode.Right as SingleValuePropertyAccessNode };
+                        propertyNodes.Add(singleValuePropertyAccessNode);
+                    }
+                    else if (singleValueNode is SingleValueFunctionCallNode || singleValueNode is BinaryOperatorNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(singleValueNode, navigationPropertyName, filterDetailProperties);
+                    }
+                    else if (singleValueNode is ConvertNode convertNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(convertNode.Source, navigationPropertyName, filterDetailProperties);
+                    }
+                }
+            }
+
+            var functionCallNode = node as SingleValueFunctionCallNode;
+            if (functionCallNode != null && functionCallNode.Name == "contains")
+            {
+                var parameters = functionCallNode.Parameters.ToList();
+                propertyNodes.Add(parameters[0] as SingleValuePropertyAccessNode);
+                propertyNodes.Add(parameters[1] as SingleValuePropertyAccessNode);
+            }
+
+            foreach (var propertyNode in propertyNodes)
+            {
+                if (propertyNode != null)
+                {
+                    var masters = new List<string>();
+                    var navigationNode = propertyNode.Source as SingleNavigationNode;
+                    while (navigationNode != null)
+                    {
+                        masters.Insert(0, navigationNode.NavigationProperty.Name);
+                        navigationNode = navigationNode.Source as SingleNavigationNode;
                     }
 
-                    var functionCallNode = anyNode.Body as SingleValueFunctionCallNode;
-                    if (functionCallNode != null && functionCallNode.Name == "contains")
-                    {
-                        var parameters = functionCallNode.Parameters.ToList();
-                        propertyNodes = new SingleValuePropertyAccessNode[] { parameters[0] as SingleValuePropertyAccessNode, parameters[1] as SingleValuePropertyAccessNode };
-                    }
+                    masters.Insert(0, navigationPropertyName);
+                    masters.Add(propertyNode.Property.Name);
+                    var nameProperty = string.Join(".", masters.ToArray());
 
-                    foreach (var propertyNode in propertyNodes)
+                    if (!filterDetailProperties.Contains(nameProperty))
                     {
-                        if (propertyNode != null)
+                        filterDetailProperties.Add(nameProperty);
+
+                        // Для случая использования первичного ключа нужно добавить ещё свойство самого мастера, чтобы оптимизированный запрос без лишнего JOIN отрабатывал корректно.
+                        if (masters.Last() == "__PrimaryKey")
                         {
-                            var masters = new List<string>();
-                            var navigationNode = propertyNode.Source as SingleNavigationNode;
-                            while (navigationNode != null)
-                            {
-                                masters.Insert(0, navigationNode.NavigationProperty.Name);
-                                navigationNode = navigationNode.Source as SingleNavigationNode;
-                            }
-
-                            masters.Insert(0, firstNode.NavigationProperty.Name);
-                            masters.Add(propertyNode.Property.Name);
-                            var nameProperty = string.Join(".", masters.ToArray());
-                            FilterDetailProperties.Add(nameProperty);
+                            masters.RemoveAt(masters.Count - 1);
+                            filterDetailProperties.Add(string.Join(".", masters.ToArray()));
                         }
                     }
                 }
