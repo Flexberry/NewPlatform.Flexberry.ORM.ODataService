@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,29 @@
 
     /// <summary>
     /// The <see cref="IExceptionFilter"/> implementation for unhandled exceptions.
+    /// 
+    /// It can be set on Startup.cs somehow like:
+    /// public virtual void ConfigureServices(IServiceCollection services)
+    /// {
+    /// 	...
+    /// 	services.AddMvcCore(options =>
+    /// 	{
+    /// 		 options.Filters.Add&#60;CustomExceptionFilter&#62;();
+    /// 		...
+    ///     })...
+    /// }
+    /// 
+    /// Also global delegate for error processing can be added.
+    /// 
     /// </summary>
     public class CustomExceptionFilter : IExceptionFilter
     {
+        /// <summary>
+        /// Delegate for executing after global error occured.
+        /// Some OData errors on .Net Core and higher return straight from MS code and only custom exception filter can catch and process them.
+        /// </summary>
+        public static FilterDelegateAfterInternalServerError CallbackAfterInternalServerError { get; set; }
+
         private readonly bool exceptionDataAllowed;
 
         /// <summary>
@@ -33,6 +54,12 @@
             {
                 statusCode = customException.StatusCode;
                 exception = customException.InnerException;
+            }
+
+            if (CallbackAfterInternalServerError != null)
+            {
+                HttpStatusCode statusCodeForDelegate = HttpStatusCode.InternalServerError;
+                exception = CallbackAfterInternalServerError(exception, ref statusCodeForDelegate);
             }
 
             object error = GetError(statusCode, exception);
