@@ -40,7 +40,7 @@
         <dependency id="Microsoft.Spatial" version="7.10.0" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0" />
-        <dependency id="Newtonsoft.Json" version="12.0.3" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-alpha01" />
