@@ -153,7 +153,10 @@
                 else
                     _typeHierarchy[baseDataObjectType].Add(dataObjectType);
 
-                var typeFullName = $"{GetEntityTypeNamespace(dataObjectType)}.{GetEntityTypeName(dataObjectType)}";
+                string nameSpace = GetEntityTypeNamespace(dataObjectType);
+                string typeName = GetEntityTypeName(dataObjectType);
+
+                var typeFullName = string.IsNullOrEmpty(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
                 if (!_aliasesNameToProperty.ContainsKey(typeFullName))
                 {
                     _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
@@ -721,7 +724,7 @@
             var nameSpace = GetEntityTypeNamespace(type);
             if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNameBuilder != null)
                 name = EdmModelBuilder.EntityTypeNameBuilder(type);
-            var fullname = $"{nameSpace}.{name}";
+            var fullname = string.IsNullOrEmpty(nameSpace) ? name : $"{nameSpace}.{name}";
             if (!_aliasesNameToType.ContainsKey(fullname))
                 _aliasesNameToType.Add(fullname, type);
             if (!_aliasesTypeToName.ContainsKey(type))
@@ -739,6 +742,14 @@
             var name = type.Namespace;
             if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNamespaceBuilder != null)
                 name = EdmModelBuilder.EntityTypeNamespaceBuilder(type);
+
+#if NETSTANDARD
+            // On NetStandard there are extra checks that lead to exceptions if name is empty or null.
+            if (name == string.Empty)
+            {
+                return "____";
+            }
+#endif
             return name;
         }
 
@@ -752,7 +763,9 @@
             var name = prop.Name;
             if (name != KeyPropertyName && prop.DeclaringType != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityPropertyNameBuilder != null)
                 name = EdmModelBuilder.EntityPropertyNameBuilder(prop);
-            var typeFullName = $"{GetEntityTypeNamespace(prop.DeclaringType)}.{GetEntityTypeName(prop.DeclaringType)}";
+            string nameSpace = GetEntityTypeNamespace(prop.DeclaringType);
+            string typeName = GetEntityTypeName(prop.DeclaringType);
+            string typeFullName = string.IsNullOrEmpty(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
             if (!_aliasesNameToProperty.ContainsKey(typeFullName))
             {
                 _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
