@@ -77,7 +77,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Тест проверки получения метаданных без ошибки.
         /// </summary>
         [Fact]
         public void GetFullMetadataTest()
