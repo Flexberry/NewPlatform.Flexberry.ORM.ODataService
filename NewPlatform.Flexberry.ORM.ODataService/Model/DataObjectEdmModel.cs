@@ -743,13 +743,12 @@
             if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNamespaceBuilder != null)
                 name = EdmModelBuilder.EntityTypeNamespaceBuilder(type);
 
-#if NETSTANDARD
-            // On NetStandard there are extra checks that lead to exceptions if name is empty or null.
+            // There are extra checks on MS libraries that lead to exceptions if name is empty or null.
             if (name == string.Empty)
             {
                 return "____";
             }
-#endif
+
             return name;
         }
 
