@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>6.3.0-alpha03</version>
+    <version>7.0.0-alpha01</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -14,7 +14,7 @@
     <releaseNotes>
 		Changed
 		1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
-		2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2-alpha01`
+		2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2-beta01`
 		3. Added stubbed namespace for entities with publish name.
 
 		Add
@@ -44,19 +44,25 @@
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-alpha01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-alpha01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
         <group targetFramework=".NET6.0">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-alpha01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
+      <group targetFramework=".NET7.0">
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="6.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
@@ -104,5 +110,14 @@
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
+  
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
   </files>
 </package>
