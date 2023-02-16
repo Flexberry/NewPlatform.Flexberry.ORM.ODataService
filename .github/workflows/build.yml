@@ -13,6 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  XUNIT_RUNNER: "2.4.1"
+  CONFIGURATION: "Debug"
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build-postgres"
@@ -42,7 +46,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Several .NET Core versions will be used during the test run.
+      # The lowest version gets installed first in order to prevent
+      # "a newer version is already installed" install errors.
+
+      - name: Install .NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln -NonInteractive
@@ -91,7 +105,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Several .NET Core versions will be used during the test run.
+      # The lowest version gets installed first in order to prevent
+      # "a newer version is already installed" install errors.
+
+      - name: Install .NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln -NonInteractive
