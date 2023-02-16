@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -65,7 +64,6 @@
 
 #if NETFRAMEWORK
         /// <summary>
-
         /// if set to true then use synchronous mode for call subrequests.
         /// </summary>
         private readonly bool isSyncMode;
