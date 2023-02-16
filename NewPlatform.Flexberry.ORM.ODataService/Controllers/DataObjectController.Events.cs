@@ -4,7 +4,7 @@
     using System.Net;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
 
     /// <summary>

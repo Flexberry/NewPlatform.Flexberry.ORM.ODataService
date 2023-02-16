@@ -18,7 +18,6 @@ CREATE TABLE [Лес] (
 
 	 PRIMARY KEY ([primaryKey]))
 
-
 CREATE TABLE [КлассСМножТипов] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -737,7 +736,6 @@ CREATE TABLE [Перелом] (
 
 	 PRIMARY KEY ([primaryKey]))
 
-
 CREATE TABLE [Лапа] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -1070,9 +1068,6 @@ CREATE TABLE [STORMAuField] (
 	 [AuditEntity_m0] uniqueidentifier  NOT NULL,
 
 	 PRIMARY KEY ([primaryKey]))
-
-
-
 
  ALTER TABLE [Лес] ADD CONSTRAINT [Лес_FСтрана_0] FOREIGN KEY ([Страна]) REFERENCES [Страна]
 CREATE INDEX Лес_IСтрана on [Лес] ([Страна])

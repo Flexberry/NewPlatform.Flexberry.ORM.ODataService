@@ -5,6 +5,7 @@
     <Configurations>Debug;Release</Configurations>
     <LangVersion>latest</LangVersion>
     <RootNamespace>NewPlatform.Flexberry.ORM.ODataService</RootNamespace>
+
     <AssemblyName>NewPlatform.Flexberry.ORM.ODataService</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
@@ -34,11 +35,11 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net461' ">
+
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.5.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
@@ -58,7 +59,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <ProjectReference Include="..\NewPlatform.Flexberry.ORM.ODataServiceCore.Common\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.csproj" />
   </ItemGroup>
 
 </Project>

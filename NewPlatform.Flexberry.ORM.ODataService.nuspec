@@ -68,7 +68,6 @@
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" />
-
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />

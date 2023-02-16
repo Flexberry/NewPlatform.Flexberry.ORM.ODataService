@@ -237,7 +237,7 @@
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
                     var берлоги = медведь.Берлога.Cast<Берлога>();
-
+                    
                     Assert.Equal(2, берлоги.Count());
 
                     var комфортнаяБерлога = берлоги.FirstOrDefault(б => б.Комфортность == 1);
