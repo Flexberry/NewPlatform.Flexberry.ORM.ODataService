@@ -10,6 +10,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [7.0.0] - 2023.02.17
+
+### Added
+1. Added stubbed namespace for entities with publish name.
+2. Added .net6 and .net7 as target frameworks.
+
+### Changed
+1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
+2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2`
+
 ## [6.2.0] - 2023.02.16
 
 ### Added
