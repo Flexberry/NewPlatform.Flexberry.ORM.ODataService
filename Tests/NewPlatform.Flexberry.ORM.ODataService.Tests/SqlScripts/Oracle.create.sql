@@ -20,7 +20,6 @@ CREATE TABLE "Лес"
 	 PRIMARY KEY ("primaryKey")
 ) ;
 
-
 CREATE TABLE "КлассСМножТипов"
 (
 
@@ -837,7 +836,6 @@ CREATE TABLE "Перелом"
 	 PRIMARY KEY ("primaryKey")
 ) ;
 
-
 CREATE TABLE "Лапа"
 (
 
@@ -881,7 +879,6 @@ CREATE TABLE "Кошка"
 	"Тип" NVARCHAR2(11) NULL,
 
 	"ПородаСтрокой" NVARCHAR2(255) NULL,
-
 	"Агрессивная" NUMBER(1) NULL,
 
 	"УсыСлева" NUMBER(10) NULL,
@@ -1243,6 +1240,7 @@ CREATE INDEX "TestDetailWithCicle_ITest_3425" on "TestDetailWithCicle" ("TestMas
 ALTER TABLE "Детейл"
 	ADD CONSTRAINT "Детейл_FБазов_7676" FOREIGN KEY ("БазовыйКласс_m0") REFERENCES "БазовыйКласс" ("primaryKey");
 
+
 CREATE INDEX "Детейл_IБазов_4616" on "Детейл" ("БазовыйКласс_m0");
 
 ALTER TABLE "Детейл"
@@ -1384,6 +1382,7 @@ ALTER TABLE "LegoBlockTopPanel"
 	ADD CONSTRAINT "LegoBlockTopPanel_FLegoBlock_0" FOREIGN KEY ("Block") REFERENCES "LegoBlock" ("primaryKey");
 
 CREATE INDEX "LegoBlockTopPanel_IBlock" on "LegoBlockTopPanel" ("Block");
+
 
 ALTER TABLE "ДетейлНаследник"
 	ADD CONSTRAINT "ДетейлНаслед_2684" FOREIGN KEY ("БазовыйКласс_m0") REFERENCES "БазовыйКласс" ("primaryKey");
