@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>7.0.0-beta01</version>
+    <version>7.0.0</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -12,11 +12,14 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
+		Added
+		1. Added stubbed namespace for entities with publish name.
+		2. Added .net6 and .net7 as target frameworks.
+
 		Changed
 		1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
-		2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2-beta01`
-		3. Added stubbed namespace for entities with publish name.
-	  </releaseNotes>
+		2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2`
+	</releaseNotes>
     <copyright>Copyright New Platform Ltd 2023</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
@@ -28,31 +31,31 @@
         <dependency id="Microsoft.OData.Edm" version="7.10.0" />
         <dependency id="Microsoft.Spatial" version="7.10.0" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="6.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="6.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="6.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
         <group targetFramework=".NET6.0">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="6.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NET7.0">
-        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2-beta01" />
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="6.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
     </dependencies>
