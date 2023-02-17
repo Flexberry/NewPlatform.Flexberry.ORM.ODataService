@@ -341,7 +341,10 @@
             {
                 int lastPos = attr.TypePublishName.LastIndexOf(".");
                 if (lastPos < 0)
+                {
                     return attr.TypePublishName;
+                }
+
                 return attr.TypePublishName.Substring(lastPos + 1);
             }
 
@@ -360,9 +363,12 @@
             if (attr != null)
             {
                 int lastPos = attr.TypePublishName.LastIndexOf(".");
-                if (lastPos < 0)
-                    return string.Empty;
-                return attr.TypePublishName.Substring(0, lastPos);
+                if (lastPos >= 0)
+                {
+                    return attr.TypePublishName.Substring(0, lastPos);
+                }
+
+                return string.Empty;
             }
 
             return dataObjectType.Namespace;

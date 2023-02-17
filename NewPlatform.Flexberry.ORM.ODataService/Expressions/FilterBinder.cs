@@ -6,24 +6,29 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Linq;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Web.Http.Dispatcher;
-    using System.Web.OData.Query;
     using System.Xml.Linq;
-    using ICSSoft.STORMNET.Business.LINQProvider;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Core.UriParser.Semantic;
-    using Microsoft.OData.Core.UriParser.TreeNodeKinds;
+    using Microsoft.AspNet.OData.Query;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
+    using Microsoft.OData.UriParser;
     using Microsoft.Spatial;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+#if NETFRAMEWORK
+    using System.Data.Linq;
+
+    using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
+#elif NETSTANDARD
+    using Microsoft.AspNet.OData.Common;
+
+    using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
+#endif
 
     /// <summary>
     /// Translates an OData $filter parse tree represented by <see cref="FilterClause"/> to
@@ -33,6 +38,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     internal class FilterBinder
     {
         public List<string> FilterDetailProperties = new List<string>();
+
         /// <summary>
         /// Выражение linq, после преобразования из $filter.
         /// </summary>
@@ -81,6 +87,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
         private Dictionary<string, ParameterExpression> _lambdaParameters;
 
         private ODataQuerySettings _querySettings;
+
         private IAssembliesResolver _assembliesResolver;
 
         private FilterBinder(IEdmModel model, IAssembliesResolver assembliesResolver, ODataQuerySettings querySettings)
@@ -617,13 +624,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     case QueryNodeKind.CollectionPropertyAccess:
                         return BindCollectionPropertyAccessNode(node as CollectionPropertyAccessNode);
 
-                    case QueryNodeKind.EntityCollectionCast:
-                        return BindEntityCollectionCastNode(node as EntityCollectionCastNode);
+                    //-solo-case QueryNodeKind.EntityCollectionCast:
+                    //-solo-return BindEntityCollectionCastNode(node as EntityCollectionCastNode);
 
-                    case QueryNodeKind.CollectionFunctionCall:
-                    case QueryNodeKind.EntityCollectionFunctionCall:
-                    case QueryNodeKind.CollectionOpenPropertyAccess:
-                    case QueryNodeKind.CollectionPropertyCast:
                     // Unused or have unknown uses.
                     default:
                         throw Error.NotSupported(SRResources.QueryNodeBindingNotSupported, node.Kind, typeof(FilterBinder).Name);
@@ -642,11 +645,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     case QueryNodeKind.Convert:
                         return BindConvertNode(node as ConvertNode);
 
-                    case QueryNodeKind.EntityRangeVariableReference:
-                        return BindRangeVariable((node as EntityRangeVariableReferenceNode).RangeVariable);
+                    // The QueryNodeKind.ResourceRangeVariableReference enum value represents the Microsoft OData v5.7.0 QueryNodeKind.EntityRangeVariableReference enum value here.
+                    case QueryNodeKind.ResourceRangeVariableReference:
+                        return BindRangeVariable((node as ResourceRangeVariableReferenceNode).RangeVariable);
 
-                    case QueryNodeKind.NonentityRangeVariableReference:
-                        return BindRangeVariable((node as NonentityRangeVariableReferenceNode).RangeVariable);
+                    //-solo-case QueryNodeKind.NonentityRangeVariableReference:
+                    //-solo-return BindRangeVariable((node as NonentityRangeVariableReferenceNode).RangeVariable);
 
                     case QueryNodeKind.SingleValuePropertyAccess:
                         return BindPropertyAccessQueryNode(node as SingleValuePropertyAccessNode);
@@ -670,18 +674,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     case QueryNodeKind.All:
                         return BindAllNode(node as AllNode);
 
-                    case QueryNodeKind.SingleEntityCast:
-                        return BindSingleEntityCastNode(node as SingleEntityCastNode);
+                    //-solo-case QueryNodeKind.SingleEntityCast:
+                    //-solo-return BindSingleEntityCastNode(node as SingleEntityCastNode);
 
-                    case QueryNodeKind.SingleEntityFunctionCall:
-                        return BindSingleEntityFunctionCallNode(node as SingleEntityFunctionCallNode);
+                    //-solo-case QueryNodeKind.SingleEntityFunctionCall:
+                    //-solo-return BindSingleEntityFunctionCallNode(node as SingleEntityFunctionCallNode);
 
-                    case QueryNodeKind.NamedFunctionParameter:
-                    case QueryNodeKind.ParameterAlias:
-                    case QueryNodeKind.EntitySet:
-                    case QueryNodeKind.KeyLookup:
-                    case QueryNodeKind.SearchTerm:
-                    case QueryNodeKind.SingleValueCast:
                     // Unused or have unknown uses.
                     default:
                         throw Error.NotSupported(SRResources.QueryNodeBindingNotSupported, node.Kind, typeof(FilterBinder).Name);
@@ -763,6 +761,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             return prop;
         }
 
+        /*-solo-
         private Expression BindSingleEntityFunctionCallNode(SingleEntityFunctionCallNode node)
         {
             switch (node.Name)
@@ -836,6 +835,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             Expression source = BindCastSourceNode(node.Source);
             return OfType(source, clrType);
         }
+        */
 
         private Expression BindCastSourceNode(QueryNode sourceNode)
         {
@@ -1141,7 +1141,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     }
                     catch (ArgumentException e)
                     {
+#if NETFRAMEWORK
                         if (e.ParamName == null)
+#endif
+#if NETSTANDARD
+                        if (e.ParamName == "propertyName")
+#endif
                         {
                             PropertyInfo pi = source.Type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
                             if (pi == null)
@@ -2093,39 +2098,78 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     }
                 }
 
-                var it = firstNode.Source as EntityRangeVariableReferenceNode;
+                // The ResourceRangeVariableReferenceNode type represents the Microsoft OData v5.7.0 EntityRangeVariableReferenceNode type here.
+                var it = firstNode.Source as ResourceRangeVariableReferenceNode;
                 if (it != null && it.Name == "$it")
                 {
-                    var binaryNode = anyNode.Body as BinaryOperatorNode;
-                    var propertyNodes = new SingleValuePropertyAccessNode[0];
-                    if (binaryNode != null)
+                    GetFilterDetailPropertiesFromNode(anyNode.Body, firstNode.NavigationProperty.Name, FilterDetailProperties);
+                }
+            }
+        }
+
+        private void GetFilterDetailPropertiesFromNode(SingleValueNode node, string navigationPropertyName, List<string> filterDetailProperties)
+        {
+            if (node == null)
+            {
+                return;
+            }
+
+            List<SingleValuePropertyAccessNode> propertyNodes = new List<SingleValuePropertyAccessNode>();
+
+            if (node is BinaryOperatorNode binaryNode)
+            {
+                SingleValueNode[] nodes = new SingleValueNode[] { binaryNode.Left, binaryNode.Right };
+
+                foreach (SingleValueNode singleValueNode in nodes)
+                {
+                    if (singleValueNode is SingleValuePropertyAccessNode singleValuePropertyAccessNode)
                     {
-                        propertyNodes = new SingleValuePropertyAccessNode[] { binaryNode.Left as SingleValuePropertyAccessNode, binaryNode.Right as SingleValuePropertyAccessNode };
+                        propertyNodes.Add(singleValuePropertyAccessNode);
+                    }
+                    else if (singleValueNode is SingleValueFunctionCallNode || singleValueNode is BinaryOperatorNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(singleValueNode, navigationPropertyName, filterDetailProperties);
+                    }
+                    else if (singleValueNode is ConvertNode convertNode)
+                    {
+                        GetFilterDetailPropertiesFromNode(convertNode.Source, navigationPropertyName, filterDetailProperties);
+                    }
+                }
+            }
+
+            var functionCallNode = node as SingleValueFunctionCallNode;
+            if (functionCallNode != null && functionCallNode.Name == "contains")
+            {
+                var parameters = functionCallNode.Parameters.ToList();
+                propertyNodes.Add(parameters[0] as SingleValuePropertyAccessNode);
+                propertyNodes.Add(parameters[1] as SingleValuePropertyAccessNode);
+            }
+
+            foreach (var propertyNode in propertyNodes)
+            {
+                if (propertyNode != null)
+                {
+                    var masters = new List<string>();
+                    var navigationNode = propertyNode.Source as SingleNavigationNode;
+                    while (navigationNode != null)
+                    {
+                        masters.Insert(0, navigationNode.NavigationProperty.Name);
+                        navigationNode = navigationNode.Source as SingleNavigationNode;
                     }
 
-                    var functionCallNode = anyNode.Body as SingleValueFunctionCallNode;
-                    if (functionCallNode != null && functionCallNode.Name == "contains")
-                    {
-                        var parameters = functionCallNode.Parameters.ToList();
-                        propertyNodes = new SingleValuePropertyAccessNode[] { parameters[0] as SingleValuePropertyAccessNode, parameters[1] as SingleValuePropertyAccessNode };
-                    }
+                    masters.Insert(0, navigationPropertyName);
+                    masters.Add(propertyNode.Property.Name);
+                    var nameProperty = string.Join(".", masters.ToArray());
 
-                    foreach (var propertyNode in propertyNodes)
+                    if (!filterDetailProperties.Contains(nameProperty))
                     {
-                        if (propertyNode != null)
+                        filterDetailProperties.Add(nameProperty);
+
+                        // Для случая использования первичного ключа нужно добавить ещё свойство самого мастера, чтобы оптимизированный запрос без лишнего JOIN отрабатывал корректно.
+                        if (masters.Last() == "__PrimaryKey")
                         {
-                            var masters = new List<string>();
-                            var navigationNode = propertyNode.Source as SingleNavigationNode;
-                            while (navigationNode != null)
-                            {
-                                masters.Insert(0, navigationNode.NavigationProperty.Name);
-                                navigationNode = navigationNode.Source as SingleNavigationNode;
-                            }
-
-                            masters.Insert(0, firstNode.NavigationProperty.Name);
-                            masters.Add(propertyNode.Property.Name);
-                            var nameProperty = string.Join(".", masters.ToArray());
-                            FilterDetailProperties.Add(nameProperty);
+                            masters.RemoveAt(masters.Count - 1);
+                            filterDetailProperties.Add(string.Join(".", masters.ToArray()));
                         }
                     }
                 }
@@ -2272,10 +2316,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                             {
                                 convertedExpression = Expression.Call(source, "ToString", typeArguments: null, arguments: null);
                             }
+#if NETFRAMEWORK
                             else if (sourceType == typeof(Binary))
                             {
                                 convertedExpression = Expression.Call(source, "ToArray", typeArguments: null, arguments: null);
                             }
+#endif
                             else if (sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDateTime)
                                 || sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableDecimal)
                                 || sourceType == typeof(ICSSoft.STORMNET.UserDataTypes.NullableInt))

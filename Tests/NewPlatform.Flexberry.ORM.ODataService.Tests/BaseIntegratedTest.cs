@@ -1,4 +1,4 @@
-﻿[assembly: Xunit.CollectionBehavior(DisableTestParallelization = true)]
+﻿[assembly: Xunit.CollectionBehavior(MaxParallelThreads = 1, DisableTestParallelization = true)]
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
@@ -11,9 +11,31 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using ICSSoft.STORMNET.Business;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
+    using Xunit;
+    using Xunit.Abstractions;
 
+#if NETFRAMEWORK
+    /// <summary>
+    /// Base class for integration tests.
+    /// </summary>
     public abstract class BaseIntegratedTest : IDisposable
     {
+#endif
+#if NETCOREAPP
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using ODataServiceSample.AspNetCore;
+    using ICSSoft.Services;
+    using Unity;
+
+    /// <summary>
+    /// Base class for integration tests.
+    /// </summary>
+    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>, IDisposable
+    {
+        protected readonly WebApplicationFactory<Startup> _factory;
+#endif
+        protected ITestOutputHelper _output;
+
         private const string PoolingFalseConst = "Pooling=false;";
 
         private static string connectionStringOracle;
@@ -75,7 +97,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             get
             {
                 if (_disposed)
+                {
                     throw new ObjectDisposedException(null);
+                }
 
                 return _dataServices;
             }
@@ -85,9 +109,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             // ADO.NET doesn't close the connection with pooling. We have to disable it explicitly.
             // http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
-            connectionStringPostgres = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringPostgres"]}";
-            connectionStringMssql = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringMssql"]}";
-            connectionStringOracle = $"{PoolingFalseConst}{ConfigurationManager.ConnectionStrings["ConnectionStringOracle"]}";
+            connectionStringPostgres = $"{PoolingFalseConst}{GetConnectionString("ConnectionStringPostgres")}";
+            connectionStringMssql = $"{PoolingFalseConst}{GetConnectionString("ConnectionStringMssql")}";
+            connectionStringOracle = $"{PoolingFalseConst}{GetConnectionString("ConnectionStringOracle")}";
         }
 
         /// <summary>
@@ -98,6 +122,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             Dispose(true);
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>
@@ -105,49 +130,102 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
+#endif
+#if NETCOREAPP
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
+        /// </summary>
+        /// <param name="factory">Web application factory.</param>
+        /// <param name="output">Unit tests debug output.</param>
+        /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
+        /// <param name="useGisDataService">Use DataService with Gis support.</param>
+        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
+        {
+            _factory = factory;
+            _output = output;
+
+            if (output != null)
+            {
+                IUnityContainer container = UnityFactory.GetContainer();
+                container.RegisterInstance(_output);
+            }
+#endif
             _useGisDataService = useGisDataService;
             if (!(tempDbNamePrefix != null))
+            {
                 throw new ArgumentNullException();
+            }
+
             if (!(tempDbNamePrefix != string.Empty))
+            {
                 throw new ArgumentException();
+            }
+
             if (!tempDbNamePrefix.All(char.IsLetterOrDigit))
+            {
                 throw new ArgumentException();
+            }
+
             _tempDbNamePrefix = tempDbNamePrefix;
             _databaseName = _tempDbNamePrefix + "_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + "_" + Guid.NewGuid().ToString("N");
+            bool watchdogEmptyTest = false;
 
             if (!string.IsNullOrWhiteSpace(PostgresScript) && connectionStringPostgres != PoolingFalseConst)
             {
                 if (!(tempDbNamePrefix.Length <= 12)) // Max length is 63 (-18 -32).
+                {
                     throw new ArgumentException();
+                }
+
                 if (!char.IsLetter(tempDbNamePrefix[0])) // Database names must have an alphabetic first character.
-                    throw new ArgumentException();                
+                {
+                    throw new ArgumentException();
+                }
+
+                watchdogEmptyTest = true;
+
                 using (var conn = new NpgsqlConnection(connectionStringPostgres))
                 {
                     conn.Open();
                     using (var cmd = new NpgsqlCommand(string.Format("CREATE DATABASE \"{0}\" ENCODING = 'UTF8' CONNECTION LIMIT = -1;", _databaseName), conn))
+                    {
                         cmd.ExecuteNonQuery();
+                    }
                 }
 
                 using (var conn = new NpgsqlConnection($"{connectionStringPostgres};Database={_databaseName}"))
                 {
                     conn.Open();
                     using (var cmd = new NpgsqlCommand("CREATE EXTENSION postgis;", conn) { CommandTimeout = 60 })
+                    {
                         cmd.ExecuteNonQuery();
+                    }
+
                     using (var cmd = new NpgsqlCommand(PostgresScript, conn))
+                    {
                         cmd.ExecuteNonQuery();
+                    }
+
                     _dataServices.Add(CreatePostgresDataService($"{connectionStringPostgres};Database={_databaseName}"));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(MssqlScript) && connectionStringMssql != PoolingFalseConst)
             {
-                if (!(tempDbNamePrefix.Length <= 64))// Max is 128.
+                if (!(tempDbNamePrefix.Length <= 64)) // Max is 128.
+                {
                     throw new ArgumentException();
+                }
+
+                watchdogEmptyTest = true;
+
                 using (var connection = new SqlConnection(connectionStringMssql))
                 {
                     connection.Open();
                     using (var command = new SqlCommand($"CREATE DATABASE {_databaseName} COLLATE Cyrillic_General_CI_AS", connection))
+                    {
                         command.ExecuteNonQuery();
+                    }
                 }
 
                 using (var connection = new SqlConnection($"{connectionStringMssql};Database={_databaseName}"))
@@ -166,7 +244,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             if (!string.IsNullOrWhiteSpace(OracleScript) && connectionStringOracle != PoolingFalseConst)
             {
                 if (!(tempDbNamePrefix.Length <= 8)) // Max length is 30 (-18 -4).
+                {
                     throw new ArgumentException();
+                }
+
+                watchdogEmptyTest = true;
 
                 using (var connection = new OracleConnection(connectionStringOracle))
                 {
@@ -187,7 +269,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                             {
                                 Thread.Sleep(1000);
                                 if (ex.Message.Contains("conflicts with another user or role name "))
+                                {
                                     continue;
+                                }
+
                                 throw;
                             }
 
@@ -211,13 +296,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                         {
                             command.CommandText = cmdText.Trim();
                             if (!string.IsNullOrWhiteSpace(command.CommandText))
+                            {
                                 command.ExecuteNonQuery();
+                            }
                         }
 
                         _dataServices.Add(CreateOracleDataService($"{ConnectionStringOracleDataSource};User Id={_tmpUserNameOracle};Password={_tmpUserNameOracle};"));
                     }
                 }
             }
+
+            AssertWatchdog(watchdogEmptyTest);
         }
 
         /// <summary>
@@ -261,7 +350,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
@@ -269,27 +360,35 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 {
                     foreach (var ds in _dataServices)
                     {
-                        if (ds is PostgresDataService || ds.GetType().IsSubclassOf(typeof(PostgresDataService)))
+                        if (ds is PostgresDataService)
                         {
-                            using (var conn = new NpgsqlConnection(connectionStringPostgres))
+                            using (var connection = new NpgsqlConnection(connectionStringPostgres))
                             {
-                                conn.Open();
-                                using (var command = new NpgsqlCommand($"DROP DATABASE \"{_databaseName}\";", conn))
+                                connection.Open();
+                                using (var command = connection.CreateCommand())
+                                {
+                                    command.CommandText = $"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = \'{_databaseName}\' AND pid <> pg_backend_pid();";
                                     command.ExecuteNonQuery();
+                                    command.CommandText = $"DROP DATABASE \"{_databaseName}\";";
+                                    command.ExecuteNonQuery();
+                                }
                             }
                         }
 
-                        if (ds is MSSQLDataService || ds.GetType().IsSubclassOf(typeof(MSSQLDataService)))
+                        if (ds is MSSQLDataService)
                         {
                             using (var connection = new SqlConnection(connectionStringMssql))
                             {
                                 connection.Open();
-                                using (var command = new SqlCommand($"DROP DATABASE {_databaseName}", connection))
+                                using (var command = connection.CreateCommand())
+                                {
+                                    command.CommandText = $"DROP DATABASE {_databaseName}";
                                     command.ExecuteNonQuery();
+                                }
                             }
                         }
 
-                        if (ds is OracleDataService || ds.GetType().IsSubclassOf(typeof(OracleDataService)))
+                        if (ds is OracleDataService)
                         {
                             using (var connection = new OracleConnection(connectionStringOracle))
                             {
@@ -312,6 +411,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             _disposed = true;
         }
 
+        /// <summary>
+        /// Проверить создание сервисов данных.
+        /// </summary>
+        /// <param name="notEmpty"><see langword="true"/> если сервисы данных созданы.</param>
+        protected virtual void AssertWatchdog(bool notEmpty)
+        {
+            Assert.True(notEmpty);
+        }
+
         private static string ConnectionStringOracleDataSource
         {
             get
@@ -322,6 +430,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // http://stackoverflow.com/questions/9033356/connection-still-idle-after-close
                 return $"{PoolingFalseConst}{dataSource};";
             }
+        }
+
+        private static string GetConnectionString(string name)
+        {
+            return Environment.GetEnvironmentVariable(name) ?? ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
     }
 }

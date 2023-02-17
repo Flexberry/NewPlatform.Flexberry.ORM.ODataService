@@ -41,8 +41,13 @@
         /// <param name="view">Представление агрегатора с детейлами. Чтение будет идти по массиву Details представлений детейлов, включая детейлы второго и последующих уровней.</param>
         /// <param name="agregators">Агрегаторы, для которых дочитываются детейлы.</param>
         /// <param name="dataObjectCache">Кеш объектов данных, в нём хранятся состояния детейлов, которые не надо затирать. В него же будут добавлены новые зачитанные детейлы.</param>
-        public static void SafeLoadDetails(this IDataService dataService, View view, DataObject[] agregators, DataObjectCache dataObjectCache)
+        public static void SafeLoadDetails(this IDataService dataService, View view, IList<DataObject> agregators, DataObjectCache dataObjectCache)
         {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
             if (view == null)
             {
                 throw new ArgumentNullException(nameof(view));
@@ -53,7 +58,12 @@
                 throw new ArgumentNullException(nameof(agregators));
             }
 
-            if (agregators.Length == 0)
+            if (dataObjectCache == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCache));
+            }
+
+            if (agregators.Count == 0)
             {
                 return;
             }
@@ -80,7 +90,9 @@
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(detailView.DefineClassType, detailView);
                 lcs.LoadingTypes = TypeUsageProvider.TypeUsage.GetUsageTypes(view.DefineClassType, detailInView.Name);
                 Type agregatorKeyType = agregators[0].__PrimaryKey.GetType();
-                object[] keys = agregators.Select(d => d.__PrimaryKey).ToArray();
+
+                // Производим обработку только тех агрегаторов, для которых ранее не был загружен детейл.
+                object[] keys = agregators.Where(a => !a.CheckLoadedProperty(detailInView.Name)).Select(d => d.__PrimaryKey).ToArray();
                 lcs.LimitFunction = FunctionBuilder.BuildIn(agregatorPropertyName, SQLWhereLanguageDef.LanguageDef.GetObjectTypeForNetType(agregatorKeyType), keys);
 
                 // Нужно соблюсти единственность инстанций агрегаторов при вычитке, поэтому реализуем отдельный кеш. Смешивать с кешем dataObjectCache нельзя, поскольку в предстоящей выборке будут те же самые детейлы (значения в кеше затрутся).
@@ -92,7 +104,7 @@
                 }
 
                 // Вычитываются детейлы одного типа, но для нескольких инстанций агрегаторов (оптимизируем количество SQL-запросов).
-                DataObject[] details = dataService.LoadObjects(lcs, agregatorCache);
+                DataObject[] loadedDetails = dataService.LoadObjects(lcs, agregatorCache);
                 agregatorCache.StopCaching();
 
                 foreach (DataObject agregator in agregators)
@@ -101,40 +113,42 @@
                 }
 
                 // Ввиду того, что агрегаторы нам пришли готовые с пустыми коллекциями детейлов, заполняем детейлы по агрегаторам значениями из кеша или из базы.
-                foreach (DataObject detail in details)
+                // На загрузку детейлов второго уровня передаем только детейлы отсутствующие в кэше.
+                List<DataObject> toLoadSecondDetails = new List<DataObject>();
+                foreach (DataObject loadedDetail in loadedDetails)
                 {
-                    DataObject agregator = (DataObject)Information.GetPropValueByName(detail, agregatorPropertyName);
-                    object detailPrimaryKey = detail.__PrimaryKey;
-                    DataObject detailFromCache = dataObjectCache.GetLivingDataObject(detail.GetType(), detailPrimaryKey);
+                    DataObject agregator = (DataObject)Information.GetPropValueByName(loadedDetail, agregatorPropertyName);
+                    object detailPrimaryKey = loadedDetail.__PrimaryKey;
 
-                    DataObject detailForAdd = detailFromCache ?? detail;
+                    DataObject detailFromCache = dataObjectCache.GetLivingDataObject(loadedDetail.GetType(), detailPrimaryKey);
 
-                    if (detailForAdd != null)
+                    // Необходимо игнорировать объекты-пустышки, которые проинициализированы только первичным ключом.
+                    bool detailFromCacheIsEmpty = detailFromCache == null || !detailFromCache.GetLoadedProperties().Any();
+                    DataObject detailForAdd = detailFromCacheIsEmpty
+                        ? loadedDetail
+                        : detailFromCache;
+
+                    agregator.AddDetail(detailForAdd);
+
+                    DataObject agregatorDataCopy = agregator.GetDataCopy();
+                    DataObject detailDataCopy = detailForAdd.GetDataCopy();
+
+                    if (agregatorDataCopy != null && detailDataCopy != null)
                     {
-                        agregator.AddDetail(detailForAdd);
-
-                        DataObject agregatorDataCopy = agregator.GetDataCopy();
-                        DataObject detailDataCopy = detailForAdd.GetDataCopy();
-
-                        if (agregatorDataCopy != null && detailDataCopy != null)
-                        {
-                            agregatorDataCopy.AddDetail(detailDataCopy);
-                        }
+                        agregatorDataCopy.AddDetail(detailDataCopy);
                     }
 
-                    if (detailFromCache == null)
+                    if (detailFromCacheIsEmpty)
                     {
-                        dataObjectCache.AddDataObject(detail);
+                        dataObjectCache.AddDataObject(loadedDetail);
+                        toLoadSecondDetails.Add(loadedDetail);
                     }
                 }
 
                 // Детейлы второго и последующих уровней нужно обработать аналогичным образом.
-                if (details != null && details.Length > 0)
+                if (toLoadSecondDetails.Any() && secondDetailsInView.Any())
                 {
-                    foreach (DetailInView secondDetailInView in secondDetailsInView)
-                    {
-                        dataService.SafeLoadDetails(secondDetailInView.View, details, dataObjectCache);
-                    }
+                    dataService.SafeLoadDetails(detailInView.View, toLoadSecondDetails, dataObjectCache);
                 }
             }
         }

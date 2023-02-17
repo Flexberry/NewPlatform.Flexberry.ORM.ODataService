@@ -27,8 +27,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     // *** Start programmer edit section *** (Лес CustomAttributes)
 
     // *** End programmer edit section *** (Лес CustomAttributes)
-    [BusinessServer("NewPlatform.Flexberry.ORM.ODataService.Tests.ЛесБС, NewPlatform.Flexberry.ORM.ODa" +
-        "taService.Tests.BusinessServers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
+    [BusinessServer("NewPlatform.Flexberry.ORM.ODataService.Tests.ForestBS, NewPlatform.Flexberry.ORM." +
+        "ODataService.Tests.BusinessServers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
     [AutoAltered()]
     [AccessType(ICSSoft.STORMNET.AccessType.none)]
     [View("ЛесE", new string[] {

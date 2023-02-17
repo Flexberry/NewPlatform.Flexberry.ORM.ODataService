@@ -5,13 +5,12 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.OData.Extensions;
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
 
-    using Microsoft.OData.Core;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.OData;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
@@ -23,11 +22,27 @@
 
     using Action = ODataService.Functions.Action;
 
+#if NETFRAMEWORK
+    using System.Web.Http;
+#endif
+
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
     /// </summary>
     public class ActionsTest : BaseODataServiceIntegratedTest
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="output">Вывод отладочной информации.</param>
+        public ActionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
+        {
+        }
+#endif
+
         /// <summary>
         /// Осуществляет регистрацию пользовательских OData-actions.
         /// </summary>
@@ -70,6 +85,20 @@
                     parametersTypes));
             }
 
+            if (!container.IsRegistered("ActionNoReply"))
+            {
+                parametersTypes = new Dictionary<string, Type> { { "entitySet", typeof(string) }, { "query", typeof(string) } };
+                container.Register(new Action(
+                    "ActionNoReply",
+                    (queryParameters, parameters) =>
+                    {
+                        var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
+                        System.Diagnostics.Debug.WriteLine("Void method was executed.");
+                    },
+                    typeof(void),
+                    parametersTypes));
+            }
+
             if (!container.IsRegistered("ActionEnum"))
             {
                 parametersTypes = new Dictionary<string, Type> { { "пол", typeof(tПол) } };
@@ -105,8 +134,12 @@
                     "ActionODataHttpResponseException",
                     (queryParameters, parameters) =>
                     {
+#if NETFRAMEWORK
                         throw new HttpResponseException(queryParameters.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             new ODataError() { ErrorCode = "400", Message = "Сообщение об ошибке" }));
+#else
+                        throw new ODataException("Сообщение об ошибке");
+#endif
                     },
                     typeof(IEnumerable<DataObject>),
                     parametersTypes));
@@ -250,6 +283,28 @@
         }
 
         /// <summary>
+        /// Осуществляет проверку исполнения экшена, что возвращает VOID.
+        /// </summary>
+        [Fact]
+        public void TestActionWithNoReply()
+        {
+            ActODataService(args =>
+            {
+                RegisterODataActions(args.Token.Functions, args.DataService);
+
+                string requestUrl = $"http://localhost/odata/ActionNoReply";
+                string json = "{\"entitySet\": \"Странаs\", \"query\": \"$filter=Название eq 'Страна №2'\"}";
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
         /// Осуществляет проверку проброса исключения, содержащего ODataError.
         /// </summary>
         [Fact]
@@ -268,8 +323,21 @@
                     // Проверим, что возвращается код ошибки, указанный в функции.
                     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
+#if NETFRAMEWORK
                     // Проверим сообщение об ошибке.
                     Assert.Equal("Сообщение об ошибке", ((ODataError)((ObjectContent)response.Content).Value).Message);
+#else
+                    // Получим строку с ответом.
+                    string receivedStr = response.Content.ReadAsStringAsync().Result.Beautify();
+
+                    JObject jObject = JObject.Parse(receivedStr);
+                    var error = jObject["error"];
+
+                    Assert.NotNull(error);
+                    string errorMessage = error["message"].ToString();
+
+                    Assert.Equal("Сообщение об ошибке", errorMessage);
+#endif
                 }
             });
         }

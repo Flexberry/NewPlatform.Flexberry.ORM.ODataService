@@ -5,13 +5,16 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.Data.Linq;
     using System.Globalization;
-    using System.Web.Http;
-    using System.Web.OData.Properties;
     using System.Xml.Linq;
-    using ValidationException=System.ComponentModel.DataAnnotations.ValidationException;
+    using Microsoft.AspNet.OData.Common;
+
+#if NETFRAMEWORK
+    using System.Data.Linq;
+#endif
+
+
+    using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
     /// <summary>
     /// Вспомогательные методы для работы примитивными значениями.
@@ -71,10 +74,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
                 return str.ToCharArray();
             }
+#if NETFRAMEWORK
             else if (type == typeof(Binary))
             {
                 return new Binary((byte[])value);
             }
+#endif
             else if (type == typeof(XElement))
             {
                 if (str == null)

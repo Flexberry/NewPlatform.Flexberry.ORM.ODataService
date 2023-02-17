@@ -6,34 +6,37 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Formatting;
     using System.Text;
-    using System.Web.Http;
-    using System.Web.Http.Results;
-    using System.Web.Http.Validation;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
-
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.FunctionalLanguage;
-
+    using Microsoft.AspNet.OData;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
-    using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Files.Providers;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
-    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
-
     using Newtonsoft.Json;
-
     using File = ICSSoft.STORMNET.FileType.File;
+    using KeySegment = Microsoft.OData.UriParser.KeySegment;
+
+#if NETFRAMEWORK
+    using System.Net.Http.Formatting;
+    using System.Web.Http;
+    using System.Web.Http.Results;
+    using System.Web.Http.Validation;
+    using NewPlatform.Flexberry.ORM.ODataService.Events;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+#endif
+#if NETSTANDARD
+    using Microsoft.AspNet.OData.Formatter;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Formatters;
+    using Microsoft.Extensions.Primitives;
+    using NewPlatform.Flexberry.ORM.ODataService.Middleware;
+#endif
 
     /// <summary>
     /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
@@ -41,9 +44,9 @@
     public partial class DataObjectController
     {
         /// <summary>
-        /// Метаданные файлов, загруженных во временную папку <see cref="FileController.UploadsDirectoryPath"/>,
-        /// и привязанных к свойствам обрабатываемых объектов данных.
-        /// Файлы будут удалены из файловой системы в случае успешного сохранения объектов данных.
+        /// Метаданные файлов, временно загруженных в каталог файлового хранилища и привязанных к свойствам обрабатываемых объектов данных.
+        /// Файлы будут удалены из файловой системы <see cref="IDataObjectFileAccessor.RemoveFileUploadDirectories"/>
+        /// в случае успешного сохранения объектов данных.
         /// </summary>
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
 
@@ -52,7 +55,11 @@
         /// </summary>
         /// <param name="edmEntity"> Создаваемая сущность. </param>
         /// <returns> Созданная сущность. </returns>
+#if NETFRAMEWORK
         public HttpResponseMessage Post([FromBody] EdmEntityObject edmEntity)
+#elif NETSTANDARD
+        public IActionResult Post([FromBody] EdmEntityObject edmEntity)
+#endif
         {
             try
             {
@@ -71,23 +78,29 @@
                     return responseForPreferMinimal;
                 }
 
-                var result = Request.CreateResponse(System.Net.HttpStatusCode.Created, edmEntity);
-                /*
-                //Для вставки произвольных метаданых в JSON-ответ сервера OData можно использовать следующий код:
-                var taskResult = result.Content.ReadAsStringAsync().Result; // получить string JSON-ответа
-                // ... выполнить необходимые действия с JSON
-                result.Content = new StringContent(taskResult, Encoding.UTF8, "application/json"); // вставить обратно окончательный JSON-ответ
-                */
+#if NETFRAMEWORK
+                var result = Request.CreateResponse(HttpStatusCode.Created, edmEntity);
                 if (Request.Headers.Contains("Prefer"))
                 {
                     result.Headers.Add("Preference-Applied", "return=representation");
                 }
+#elif NETSTANDARD
+                var result = new ObjectResult(edmEntity) { StatusCode = StatusCodes.Status201Created };
+                if (Request.Headers.ContainsKey("Prefer"))
+                {
+                    Response.Headers.Add("Preference-Applied", "return=representation");
+                }
+#endif
 
                 return result;
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
@@ -98,7 +111,11 @@
         /// <param name="key"> Ключ обновляемой сущности. </param>
         /// <param name="edmEntity">Обновляемая сущность. </param>
         /// <returns>Обновлённая сущность.</returns>
+#if NETFRAMEWORK
         public HttpResponseMessage Patch([FromODataUri] Guid key, [FromBody] EdmEntityObject edmEntity)
+#elif NETSTANDARD
+        public IActionResult Patch([FromODataUri] Guid key, [FromBody] EdmEntityObject edmEntity)
+#endif
         {
             try
             {
@@ -114,21 +131,37 @@
 
                 IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
 
+#if NETFRAMEWORK
                 var dictionary = Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
                     (Dictionary<string, object>)Request.Properties[ExtendedODataEntityDeserializer.Dictionary] :
                     new Dictionary<string, object>();
+#elif NETSTANDARD
+                var dictionary = Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
+                    (Dictionary<string, object>)Request.HttpContext.Items[ExtendedODataEntityDeserializer.Dictionary] :
+                    new Dictionary<string, object>();
+#endif
 
                 foreach (var prop in entityType.Properties())
                 {
                     if (!dictionary.ContainsKey(prop.Name) && edmEntity.GetChangedPropertyNames().Contains(prop.Name) && prop is EdmNavigationProperty)
                     {
-                        return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, "Error processing request stream. Deep updates are not supported in PUT or PATCH operations.");
+                        const string msg = "Error processing request stream. Deep updates are not supported in PUT or PATCH operations.";
+#if NETFRAMEWORK
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, msg);
+#elif NETSTANDARD
+                        return BadRequest(msg);
+#endif
                     }
 
                     if (dictionary.ContainsKey(prop.Name) && dictionary[prop.Name] == null &&
                         (!prop.Type.IsNullable || prop.Type.IsCollection()))
                     {
-                        return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, $"The property {prop.Name} can not be null.");
+                        string msg = $"The property {prop.Name} can not be null.";
+#if NETFRAMEWORK
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, msg);
+#elif NETSTANDARD
+                        return BadRequest(msg);
+#endif
                     }
                 }
 
@@ -141,19 +174,35 @@
                     return responseForPreferMinimal;
                 }
 
+#if NETFRAMEWORK
                 if (!Request.Headers.Contains("Prefer"))
                 {
-                    return Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    return Request.CreateResponse(HttpStatusCode.NoContent);
                 }
+#elif NETSTANDARD
+                if (!Request.Headers.ContainsKey("Prefer"))
+                {
+                    return NoContent();
+                }
+#endif
 
                 edmEntity = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, null);
-                var result = Request.CreateResponse(System.Net.HttpStatusCode.OK, edmEntity);
+#if NETFRAMEWORK
+                var result = Request.CreateResponse(HttpStatusCode.OK, edmEntity);
                 result.Headers.Add("Preference-Applied", "return=representation");
+#elif NETSTANDARD
+                var result = Ok(edmEntity);
+                Response.Headers.Add("Preference-Applied", "return=representation");
+#endif
                 return result;
             }
             catch (Exception ex)
             {
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
@@ -163,10 +212,14 @@
         /// <returns>
         /// Результат выполнения запроса типа <see cref="StatusCodeResult"/>, соответствующий статусу <see cref="HttpStatusCode.NoContent"/>.
         /// </returns>
+#if NETFRAMEWORK
         public HttpResponseMessage DeleteString()
+#elif NETSTANDARD
+        public NoContentResult DeleteString()
+#endif
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
-            string key = odataPath.Segments[1].ToString().Trim().Replace("'", string.Empty);
+            var keySegment = ODataPath.Segments[1] as KeySegment;
+            string key = keySegment.Keys.First().Value.ToString().Trim().Replace("'", string.Empty);
             return DeleteEntity(key);
         }
 
@@ -176,14 +229,22 @@
         /// <returns>
         /// Результат выполнения запроса типа <see cref="StatusCodeResult"/>, соответствующий статусу <see cref="HttpStatusCode.NoContent"/>.
         /// </returns>
+#if NETFRAMEWORK
         public HttpResponseMessage DeleteGuid()
+#elif NETSTANDARD
+        public NoContentResult DeleteGuid()
+#endif
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
-            Guid key = new Guid(odataPath.Segments[1].ToString());
+            var keySegment = ODataPath.Segments[1] as KeySegment;
+            Guid key = new Guid(keySegment.Keys.First().Value.ToString());
             return DeleteEntity(key);
         }
 
+#if NETFRAMEWORK
         private HttpResponseMessage DeleteEntity(object key)
+#elif NETSTANDARD
+        private NoContentResult DeleteEntity(object key)
+#endif
         {
             try
             {
@@ -193,8 +254,7 @@
                 }
 
                 Init();
-
-                var obj = _dataObjectCache.CreateDataObject(type, key);
+                var obj = DataObjectCache.CreateDataObject(type, key);
 
                 // Удаляем объект с заданным ключем.
                 // Детейлы удалятся вместе с агрегатором автоматически.
@@ -210,7 +270,8 @@
                 // Запоминаем метаданные всех ассоциированных файлов, кроме файлов соответствующих файловым свойствам типа File
                 // (файлы соответствующие свойствам типа File хранятся в БД, и из файловой системы просто нечего удалять).
                 // TODO: подумать как быть с детейлами, детейлами детейлов, и т д.
-                _removingFileDescriptions.AddRange(FileController.GetDataObjectFileDescriptions(obj, new List<Type> { typeof(File) }));
+                var descriptions = _dataObjectFileAccessor.GetDataObjectFileDescriptions(_dataService, obj, new List<Type> { typeof(File) });
+                _removingFileDescriptions.AddRange(descriptions);
 
                 List<DataObject> objs = new List<DataObject>();
 
@@ -229,10 +290,18 @@
 
                     objs.Add(obj);
 
-                    if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                    if (IsBatchChangeSetRequest)
                     {
+#if NETFRAMEWORK
                         List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        List<DataObject> allProcessedObjects = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
+
+#elif NETSTANDARD
+                        List<DataObject> dataObjectsToUpdate = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                        List<DataObject> allProcessedObjects = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
+#endif
                         dataObjectsToUpdate.AddRange(objs);
+                        allProcessedObjects.Add(obj);
                     }
                     else
                     {
@@ -242,18 +311,27 @@
                 }
 
                 // При успешном удалении вычищаем из файловой системы, файлы подлежащие удалению.
-                FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
+                _dataObjectFileAccessor.RemoveFileUploadDirectories(_removingFileDescriptions);
                 ExecuteCallbackAfterDelete(obj);
 
-                return Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+#if NETFRAMEWORK
+                return Request.CreateResponse(HttpStatusCode.NoContent);
+#elif NETSTANDARD
+                return NoContent();
+#endif
             }
             catch (Exception ex)
             {
                 _removingFileDescriptions.Clear();
+#if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
+#elif NETSTANDARD
+                throw CustomException(ex);
+#endif
             }
         }
 
+#if NETFRAMEWORK
         /// <summary>
         /// Создаётся http-ответ с кодом 500 по-умолчанию, на возникшую в сервисе ошибку.
         /// Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError.
@@ -338,7 +416,9 @@
             LogService.LogError(originalEx.Message, originalEx);
             return msg;
         }
+#endif
 
+#if NETFRAMEWORK
         private HttpResponseMessage TestPreferMinimal()
         {
             if (Request.Headers.Contains("Prefer"))
@@ -354,7 +434,27 @@
 
             return null;
         }
+#elif NETSTANDARD
 
+        private NoContentResult TestPreferMinimal()
+        {
+            if (Request.Headers.ContainsKey("Prefer"))
+            {
+                KeyValuePair<string, StringValues> header = Request.Headers.FirstOrDefault(h => h.Key.ToLower() == "prefer");
+                if (header.Value.ToString() != null && header.Value.ToString().ToLower().Contains("return=minimal"))
+                {
+                    NoContentResult result = NoContent();
+                    Request.Headers.Add("Preference-Applied", "return=minimal");
+
+                    return result;
+                }
+            }
+
+            return null;
+        }
+#endif
+
+#if NETFRAMEWORK
         /// <summary>
         /// Заменяет в теле запроса представление навигационных свойств с Имя_Связи@odata.bind:null на представление Имя_Связи:null.
         /// </summary>
@@ -441,6 +541,81 @@
 
             return edmEntity;
         }
+#elif NETSTANDARD
+        /// <summary>
+        /// Заменяет в теле запроса представление навигационных свойств с Имя_Связи@odata.bind:null на представление Имя_Связи:null.
+        /// </summary>
+        /// <returns>Возвращается EdmEntityObject преобразованный из JSON-строки.</returns>
+        private EdmEntityObject ReplaceOdataBindNull()
+        {
+            if (!Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.OdataBindNull))
+            {
+                if (Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
+                    throw (Exception)Request.HttpContext.Items[ExtendedODataEntityDeserializer.ReadException];
+                throw new Exception("ReplaceOdataBindNull: edmEntity is null.");
+            }
+
+            string json = (string)Request.HttpContext.Items[RequestHeadersHookMiddleware.PropertyKeyRequestContent];
+
+            Dictionary<string, object> props = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            var keys = props.Keys.ToArray();
+            var odataBindNullList = new List<string>();
+            foreach (var key in keys)
+            {
+                var p = key.IndexOf("@odata.bind");
+                if (p != -1 && props[key] == null)
+                {
+                    props.Remove(key);
+                    var newKey = key.Substring(0, p);
+                    if (props.ContainsKey(newKey))
+                    {
+                        props.Remove(newKey);
+                    }
+
+                    var type = (EdmEntityTypeReference)Request.HttpContext.Items[ExtendedODataEntityDeserializer.OdataBindNull];
+
+                    var prop = type.FindNavigationProperty(newKey);
+                    if (prop.Type.IsCollection())
+                    {
+                        odataBindNullList.Add(newKey);
+                    }
+                    else
+                    {
+                        props.Add(newKey, null);
+                    }
+                }
+            }
+
+            json = JsonConvert.SerializeObject(props);
+            Request.Body = new StringContent(json, Encoding.UTF8, "application/json").ReadAsStreamAsync().Result;
+
+            var ictx = new InputFormatterContext(
+                HttpContext,
+                string.Empty,
+                ModelState,
+                MetadataProvider.GetMetadataForType(typeof(EdmEntityObject)),
+                (x, y) => new StreamReader(x, y));
+
+            IList<ODataInputFormatter> formatters = ODataInputFormatterFactory.Create();
+
+            // The JSON input formatter is the first formatter in the OData input formatters list.
+            InputFormatterResult formatterResult = formatters.First().ReadRequestBodyAsync(ictx, Encoding.UTF8).Result;
+
+            var edmEntity = (EdmEntityObject)formatterResult.Model;
+
+            if (edmEntity == null && Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.ReadException))
+            {
+                throw (Exception)Request.HttpContext.Items[ExtendedODataEntityDeserializer.ReadException];
+            }
+
+            foreach (var prop in odataBindNullList)
+            {
+                edmEntity.TrySetPropertyValue(prop, null);
+            }
+
+            return edmEntity;
+        }
+#endif
 
         /// <summary>
         /// Общая логика модификации данных: вставка и обновление в зависимости от статуса.
@@ -493,10 +668,17 @@
 
                 // Список объектов для обновления без UnAltered.
                 var objsArrSmall = objsArr.Where(t => t.GetStatus() != ObjectStatus.UnAltered).ToArray();
-                if (Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey))
+                if (IsBatchChangeSetRequest)
                 {
+#if NETFRAMEWORK
                     List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                    List<DataObject> allProcessedObjects = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
+#elif NETSTANDARD
+                    List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.HttpContext.Items[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
+                    List<DataObject> allProcessedObjects = (List<DataObject>)Request.HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
+#endif
                     dataObjectsToUpdate.AddRange(objsArrSmall);
+                    allProcessedObjects.Add(obj);
                 }
                 else
                 {
@@ -504,7 +686,8 @@
                 }
 
                 // При успешном обновлении вычищаем из файловой системы, файлы подлежащие удалению.
-                FileController.RemoveFileUploadDirectories(_removingFileDescriptions);
+                _dataObjectFileAccessor.RemoveFileUploadDirectories(_removingFileDescriptions);
+
                 return obj;
             }
             catch (Exception)
@@ -529,7 +712,7 @@
 
             if (keyValue != null)
             {
-                DataObject dataObjectFromCache = _dataObjectCache.GetLivingDataObject(objType, keyValue);
+                DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
                 View view = _model.GetDataObjectDefaultView(objType);
 
                 if (dataObjectFromCache != null)
@@ -548,12 +731,11 @@
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
-
-                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, _dataObjectCache);
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
 
                             if (miniViewDetails.Length > 0)
                             {
-                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, _dataObjectCache);
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
                             }
                         }
                     }
@@ -570,14 +752,14 @@
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
                 lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
                 lcs.ReturnTop = 2;
-                DataObject[] dobjs = _dataService.LoadObjects(lcs, _dataObjectCache);
+                DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
                 if (dobjs.Length == 1)
                 {
                     DataObject dataObject = dobjs[0];
                     if (lightViewDetails.Any())
                     {
                         // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
-                        _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, _dataObjectCache);
+                        _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, DataObjectCache);
                     }
 
                     return dataObject;
@@ -589,12 +771,12 @@
 
             if (keyValue != null)
             {
-                obj = _dataObjectCache.CreateDataObject(objType, keyValue);
+                obj = DataObjectCache.CreateDataObject(objType, keyValue);
             }
             else
             {
                 obj = (DataObject)Activator.CreateInstance(objType);
-                _dataObjectCache.AddDataObject(obj);
+                DataObjectCache.AddDataObject(obj);
             }
 
             return obj;
@@ -760,9 +942,9 @@
 
                         // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
                         // значит свойство файловое, и его нужно обработать особым образом.
-                        if (FileController.HasDataObjectFileProvider(dataObjectPropertyType))
+                        if (_dataObjectFileAccessor.HasDataObjectFileProvider(dataObjectPropertyType))
                         {
-                            IDataObjectFileProvider dataObjectFileProvider = FileController.GetDataObjectFileProvider(dataObjectPropertyType);
+                            IDataObjectFileProvider dataObjectFileProvider = _dataObjectFileAccessor.GetDataObjectFileProvider(dataObjectPropertyType);
 
                             // Обработка файловых свойств объектов данных.
                             string serializedFileDescription = value as string;
@@ -777,7 +959,8 @@
                                 // поэтому обходим его стороной, чтобы избежать лишных вычиток файлов из БД.
                                 if (dataObjectPropertyType != typeof(File))
                                 {
-                                    _removingFileDescriptions.Add(dataObjectFileProvider.GetFileDescription(obj, dataObjectPropName));
+                                    var fileDescription = dataObjectFileProvider.GetFileDescription(_dataService, obj, dataObjectPropName);
+                                    _removingFileDescriptions.Add(fileDescription);
                                 }
 
                                 // Сбрасываем файловое свойство в изменяемом объекте данных.
@@ -792,7 +975,8 @@
                                 fileDescription.FilePropertyType = dataObjectPropertyType;
                                 if (!(string.IsNullOrEmpty(fileDescription.FileUploadKey) || string.IsNullOrEmpty(fileDescription.FileName)))
                                 {
-                                    Information.SetPropValueByName(obj, dataObjectPropName, dataObjectFileProvider.GetFileProperty(fileDescription));
+                                    var fileProperty = dataObjectFileProvider.GetFileProperty(_dataService, fileDescription);
+                                    Information.SetPropValueByName(obj, dataObjectPropName, fileProperty);
 
                                     // Файловое свойство типа File хранит данные ассоциированного файла прямо в БД,
                                     // поэтому после успешного сохранения объекта данных, оссоциированный с ним файл должен быть удален из файловой системы.

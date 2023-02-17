@@ -5,15 +5,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Web.OData;
 
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
 
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter;
     using Microsoft.OData.Edm;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Library.Expressions;
-    using Microsoft.OData.Edm.Library.Values;
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
@@ -35,6 +33,11 @@
         /// <summary>
         /// Service to export data from ORM.
         /// </summary>
+        public IExportStringedObjectViewService ExportStringedObjectViewService { get; set; }
+
+        /// <summary>
+        /// Service to export data from ORM.
+        /// </summary>
         public IODataExportService ODataExportService { get; set; }
 
         /// <summary>
@@ -51,6 +54,11 @@
         /// Описание свойства ключа.
         /// </summary>
         public PropertyInfo KeyProperty => _metadata.KeyProperty;
+
+        /// <summary>
+        /// Типы объектов непредназначенные для вызова события AfterGet перед отправкой выгруженных данных.
+        /// </summary>
+        public Type[] ExcelExportAfterGetDeniedTypes { get; set; }
 
         private const string DefaultNamespace = "DataObject";
 
@@ -100,6 +108,16 @@
                 if (container.IsRegistered<IExportService>())
                 {
                     ExportService = container.Resolve<IExportService>();
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>())
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
                 }
 
                 if (container.IsRegistered<IODataExportService>("Export"))
@@ -205,7 +223,7 @@
                         for (int i = 0; i < enumNames.Length; i++)
                         {
                             int intValue = (int)enumValues.GetValue(i);
-                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmIntegerConstant(intValue)));
+                            edmEnumType.AddMember(new EdmEnumMember(edmEnumType, enumNames[i], new EdmEnumMemberValue(intValue)));
                         }
 
                         _registeredEnums.Add(propertyType, edmEnumType);
@@ -617,7 +635,9 @@
 
                 edmAction = new EdmAction(DefaultNamespace, action.Name, returnEdmTypeReference);
                 edmAction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddActionImport(action.Name, edmAction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)));
+
+                // The EdmPathExpression type represents the Microsoft OData v5.7.0 EdmEntitySetReferenceExpression type here.
+                entityContainer.AddActionImport(action.Name, edmAction, new EdmPathExpression(GetEdmEntitySet(returnEntityType).Name));
             }
 
             AddElement(edmAction);
@@ -672,7 +692,9 @@
 
                 edmFunction = new EdmFunction(DefaultNamespace, function.Name, returnEdmTypeReference, true, null, true);
                 edmFunction.AddParameter("bindingParameter", returnEdmTypeReference);
-                entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmEntitySetReferenceExpression(GetEdmEntitySet(returnEntityType)), true);
+
+                // The EdmPathExpression type represents the Microsoft OData v5.7.0 EdmEntitySetReferenceExpression type here.
+                entityContainer.AddFunctionImport(function.Name, edmFunction, new EdmPathExpression(GetEdmEntitySet(returnEntityType).Name));
             }
 
             AddElement(edmFunction);

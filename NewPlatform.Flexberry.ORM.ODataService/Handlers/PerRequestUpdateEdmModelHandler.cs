@@ -1,11 +1,12 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
+﻿#if NETFRAMEWORK
+namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
 {
     using System;
     using System.Net.Http;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData.Routing;
 
     using NewPlatform.Flexberry.ORM.ODataService.Model;
 
@@ -72,3 +73,4 @@
         }
     }
 }
+#endif
