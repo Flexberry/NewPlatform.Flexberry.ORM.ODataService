@@ -2,6 +2,17 @@
 
 
 
+CREATE TABLE [LegoPanelAngle] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [Angle] INT  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Driver] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -100,6 +111,21 @@ CREATE TABLE [TestDetailWithCicle] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoBlockCustomPanel] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Orientation] VARCHAR(255)  NULL,
+
+	 [Position] VARCHAR(255)  NULL,
+
+	 [PanelAngle] UNIQUEIDENTIFIER  NULL,
+
+	 [Block] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Daughter] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -119,7 +145,7 @@ CREATE TABLE [КлассСМножТипов] (
 
 	 [PropertyGeography] geography  NULL,
 
-	 [PropertyEnum] VARCHAR(6)  NULL,
+	 [PropertyEnum] VARCHAR(0)  NULL,
 
 	 [PropertyBool] BIT  NULL,
 
@@ -205,6 +231,17 @@ CREATE TABLE [Медведь] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoBlockColor] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [ColorNumber] INT  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Детейл] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -226,7 +263,7 @@ CREATE TABLE [ДочернийКласс] (
 
 	 [PropertyGeography] geography  NULL,
 
-	 [PropertyEnum] VARCHAR(6)  NULL,
+	 [PropertyEnum] VARCHAR(0)  NULL,
 
 	 [PropertyBool] BIT  NULL,
 
@@ -290,7 +327,39 @@ CREATE TABLE [Книга] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoBlock] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Width] INT  NULL,
+
+	 [Height] INT  NULL,
+
+	 [Top] INT  NULL,
+
+	 [Configuration] VARCHAR(255)  NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [BlockId] INT  NULL,
+
+	 [Material] UNIQUEIDENTIFIER  NULL,
+
+	 [Color] UNIQUEIDENTIFIER  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Person] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [LegoSocketStandard] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
 
@@ -305,7 +374,7 @@ CREATE TABLE [Перелом] (
 
 	 [Дата] DATETIME  NULL,
 
-	 [Тип] VARCHAR(8)  NULL,
+	 [Тип] VARCHAR(0)  NULL,
 
 	 [Лапа_m0] UNIQUEIDENTIFIER  NOT NULL,
 
@@ -341,6 +410,23 @@ CREATE TABLE [Мастер2] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoDevice] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Description] VARCHAR(255)  NULL,
+
+	 [Electricity] BIT  NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [BlockId] INT  NULL,
+
+	 [Color] UNIQUEIDENTIFIER  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Наследник] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -366,7 +452,7 @@ CREATE TABLE [Car] (
 
 	 [Model] VARCHAR(255)  NULL,
 
-	 [TipCar] VARCHAR(9)  NULL,
+	 [TipCar] VARCHAR(0)  NULL,
 
 	 [driver] UNIQUEIDENTIFIER  NOT NULL,
 
@@ -395,6 +481,25 @@ CREATE TABLE [Блоха] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoPatent] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [Date] DATETIME  NULL,
+
+	 [Authors] VARCHAR(255)  NULL,
+
+	 [Description] VARCHAR(255)  NULL,
+
+	 [/BaseLegoBlock_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [/BaseLegoBlock_m1] UNIQUEIDENTIFIER  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Лапа] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -407,7 +512,7 @@ CREATE TABLE [Лапа] (
 
 	 [БылиЛиПереломы] BIT  NULL,
 
-	 [Сторона] VARCHAR(11)  NULL,
+	 [Сторона] VARCHAR(0)  NULL,
 
 	 [Номер] INT  NULL,
 
@@ -494,6 +599,39 @@ CREATE TABLE [Библиотека] (
 	 PRIMARY KEY ([primaryKey]))
 
 
+CREATE TABLE [LegoMaterial] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [LegoBlockBottomPanel] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [WidthCount] INT  NULL,
+
+	 [HeightCount] INT  NULL,
+
+	 [Block] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [LegoBlockTopPanelHole] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Position] VARCHAR(255)  NULL,
+
+	 [TopPanel] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
 CREATE TABLE [Детейл2] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -518,6 +656,21 @@ CREATE TABLE [Журнал] (
 	 [Автор2] UNIQUEIDENTIFIER  NOT NULL,
 
 	 [Библиотека2] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [LegoBlockTopPanel] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [WidthCount] INT  NULL,
+
+	 [HeightCount] INT  NULL,
+
+	 [SocketStandard] UNIQUEIDENTIFIER  NULL,
+
+	 [Block] UNIQUEIDENTIFIER  NOT NULL,
 
 	 PRIMARY KEY ([primaryKey]))
 
@@ -552,7 +705,7 @@ CREATE TABLE [Кошка] (
 
 	 [ДатаРождения] DATETIME  NULL,
 
-	 [Тип] VARCHAR(11)  NULL,
+	 [Тип] VARCHAR(0)  NULL,
 
 	 [ПородаСтрокой] VARCHAR(255)  NULL,
 
@@ -884,6 +1037,12 @@ CREATE INDEX TestDetailWithCicle_IParent on [TestDetailWithCicle] ([Parent])
  ALTER TABLE [TestDetailWithCicle] ADD CONSTRAINT [TestDetailWithCicle_FTestMaster_0] FOREIGN KEY ([TestMaster]) REFERENCES [TestMaster]
 CREATE INDEX TestDetailWithCicle_ITestMaster on [TestDetailWithCicle] ([TestMaster])
 
+ ALTER TABLE [LegoBlockCustomPanel] ADD CONSTRAINT [LegoBlockCustomPanel_FLegoPanelAngle_0] FOREIGN KEY ([PanelAngle]) REFERENCES [LegoPanelAngle]
+CREATE INDEX LegoBlockCustomPanel_IPanelAngle on [LegoBlockCustomPanel] ([PanelAngle])
+
+ ALTER TABLE [LegoBlockCustomPanel] ADD CONSTRAINT [LegoBlockCustomPanel_FLegoBlock_0] FOREIGN KEY ([Block]) REFERENCES [LegoBlock]
+CREATE INDEX LegoBlockCustomPanel_IBlock on [LegoBlockCustomPanel] ([Block])
+
  ALTER TABLE [Daughter] ADD CONSTRAINT [Daughter_FPerson_0] FOREIGN KEY ([Parent]) REFERENCES [Person]
 CREATE INDEX Daughter_IParent on [Daughter] ([Parent])
 
@@ -911,8 +1070,17 @@ CREATE INDEX Книга_IАвтор1 on [Книга] ([Автор1])
  ALTER TABLE [Книга] ADD CONSTRAINT [Книга_FБиблиотека_0] FOREIGN KEY ([Библиотека1]) REFERENCES [Библиотека]
 CREATE INDEX Книга_IБиблиотека1 on [Книга] ([Библиотека1])
 
+ ALTER TABLE [LegoBlock] ADD CONSTRAINT [LegoBlock_FLegoMaterial_0] FOREIGN KEY ([Material]) REFERENCES [LegoMaterial]
+CREATE INDEX LegoBlock_IMaterial on [LegoBlock] ([Material])
+
+ ALTER TABLE [LegoBlock] ADD CONSTRAINT [LegoBlock_FLegoBlockColor_0] FOREIGN KEY ([Color]) REFERENCES [LegoBlockColor]
+CREATE INDEX LegoBlock_IColor on [LegoBlock] ([Color])
+
  ALTER TABLE [Перелом] ADD CONSTRAINT [Перелом_FЛапа_0] FOREIGN KEY ([Лапа_m0]) REFERENCES [Лапа]
 CREATE INDEX Перелом_IЛапа_m0 on [Перелом] ([Лапа_m0])
+
+ ALTER TABLE [LegoDevice] ADD CONSTRAINT [LegoDevice_FLegoBlockColor_0] FOREIGN KEY ([Color]) REFERENCES [LegoBlockColor]
+CREATE INDEX LegoDevice_IColor on [LegoDevice] ([Color])
 
  ALTER TABLE [Наследник] ADD CONSTRAINT [Наследник_FМастер_0] FOREIGN KEY ([Мастер]) REFERENCES [Мастер]
 CREATE INDEX Наследник_IМастер on [Наследник] ([Мастер])
@@ -929,6 +1097,12 @@ CREATE INDEX Мастер_IМастер2 on [Мастер] ([Мастер2])
  ALTER TABLE [Блоха] ADD CONSTRAINT [Блоха_FМедведь_0] FOREIGN KEY ([МедведьОбитания]) REFERENCES [Медведь]
 CREATE INDEX Блоха_IМедведьОбитания on [Блоха] ([МедведьОбитания])
 
+ ALTER TABLE [LegoPatent] ADD CONSTRAINT [LegoPatent_FLegoBlock_0] FOREIGN KEY ([/BaseLegoBlock_m0]) REFERENCES [LegoBlock]
+CREATE INDEX LegoPatent_I/BaseLegoBlock_m0 on [LegoPatent] ([/BaseLegoBlock_m0])
+
+ ALTER TABLE [LegoPatent] ADD CONSTRAINT [LegoPatent_FLegoDevice_0] FOREIGN KEY ([/BaseLegoBlock_m1]) REFERENCES [LegoDevice]
+CREATE INDEX LegoPatent_I/BaseLegoBlock_m1 on [LegoPatent] ([/BaseLegoBlock_m1])
+
  ALTER TABLE [Лапа] ADD CONSTRAINT [Лапа_FТипЛапы_0] FOREIGN KEY ([ТипЛапы_m0]) REFERENCES [ТипЛапы]
 CREATE INDEX Лапа_IТипЛапы_m0 on [Лапа] ([ТипЛапы_m0])
 
@@ -944,6 +1118,12 @@ CREATE INDEX Берлога_IМедведь on [Берлога] ([Медведь
  ALTER TABLE [Котенок] ADD CONSTRAINT [Котенок_FКошка_0] FOREIGN KEY ([Кошка_m0]) REFERENCES [Кошка]
 CREATE INDEX Котенок_IКошка_m0 on [Котенок] ([Кошка_m0])
 
+ ALTER TABLE [LegoBlockBottomPanel] ADD CONSTRAINT [LegoBlockBottomPanel_FLegoBlock_0] FOREIGN KEY ([Block]) REFERENCES [LegoBlock]
+CREATE INDEX LegoBlockBottomPanel_IBlock on [LegoBlockBottomPanel] ([Block])
+
+ ALTER TABLE [LegoBlockTopPanelHole] ADD CONSTRAINT [LegoBlockTopPanelHole_FLegoBlockTopPanel_0] FOREIGN KEY ([TopPanel]) REFERENCES [LegoBlockTopPanel]
+CREATE INDEX LegoBlockTopPanelHole_ITopPanel on [LegoBlockTopPanelHole] ([TopPanel])
+
  ALTER TABLE [Детейл2] ADD CONSTRAINT [Детейл2_FДетейл_0] FOREIGN KEY ([Детейл_m0]) REFERENCES [Детейл]
 CREATE INDEX Детейл2_IДетейл_m0 on [Детейл2] ([Детейл_m0])
 
@@ -955,6 +1135,12 @@ CREATE INDEX Журнал_IАвтор2 on [Журнал] ([Автор2])
 
  ALTER TABLE [Журнал] ADD CONSTRAINT [Журнал_FБиблиотека_0] FOREIGN KEY ([Библиотека2]) REFERENCES [Библиотека]
 CREATE INDEX Журнал_IБиблиотека2 on [Журнал] ([Библиотека2])
+
+ ALTER TABLE [LegoBlockTopPanel] ADD CONSTRAINT [LegoBlockTopPanel_FLegoSocketStandard_0] FOREIGN KEY ([SocketStandard]) REFERENCES [LegoSocketStandard]
+CREATE INDEX LegoBlockTopPanel_ISocketStandard on [LegoBlockTopPanel] ([SocketStandard])
+
+ ALTER TABLE [LegoBlockTopPanel] ADD CONSTRAINT [LegoBlockTopPanel_FLegoBlock_0] FOREIGN KEY ([Block]) REFERENCES [LegoBlock]
+CREATE INDEX LegoBlockTopPanel_IBlock on [LegoBlockTopPanel] ([Block])
 
  ALTER TABLE [Кошка] ADD CONSTRAINT [Кошка_FПорода_0] FOREIGN KEY ([Порода_m0]) REFERENCES [Порода]
 CREATE INDEX Кошка_IПорода_m0 on [Кошка] ([Порода_m0])
