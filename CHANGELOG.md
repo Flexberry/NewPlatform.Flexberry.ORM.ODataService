@@ -9,8 +9,34 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+
+## [7.0.0] - 2023.02.17
+
+### Added
+1. Added stubbed namespace for entities with publish name.
+2. Added .net6 and .net7 as target frameworks.
+
+### Changed
+1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
+2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2`
+
+## [6.2.0] - 2023.02.16
+
+### Added
+1. Support IExportStringedObjectViewService interface call for fast excel export.
+2. Add DisabledDataObjectFileAccessor realization.
+3. Support of actions with void response (it returns 204 No Content code).
+
+### Changed
+
+### Fixed
 1. SafeLoadDetails for partial loaded detail.
-2. Fix create detail view.
+2. Custom batch handler settings such as ODataMessageQuotas.
+3. CallbackBeforeGet with count equals true.
+4. Fix create detail view.
+5. Fix view creation in case with filters by detail (twin master field contains, pk eq const).
+6. Fix create detail view.
+7. Fix user function Edm.Binary response.
 
 ## [6.1.0] - 2021.06.12
 

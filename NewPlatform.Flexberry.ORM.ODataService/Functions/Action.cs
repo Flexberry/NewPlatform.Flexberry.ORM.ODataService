@@ -20,5 +20,17 @@
         {
         }
 
+        /// <inheritdoc /> 
+        public Action(string actionName, DelegateODataNoReplyFunction handler, Type returnType, Dictionary<string, Type> parametersTypes = null)
+            : base(actionName, handler, returnType, parametersTypes)
+        {
+        }
+
+        /// <inheritdoc /> 
+        public Action(string actionName, DelegateODataNoReplyFunction handler, Dictionary<string, Type> parametersTypes = null)
+            : this(actionName, handler, typeof(void), parametersTypes)
+        {
+        }
+
     }
 }
