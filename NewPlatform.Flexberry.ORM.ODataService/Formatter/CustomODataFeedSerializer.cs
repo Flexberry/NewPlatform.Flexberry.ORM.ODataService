@@ -4,6 +4,8 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Formatter.Serialization;
     using Microsoft.OData;
@@ -69,14 +71,27 @@
         /// <param name="writeContext">The <see cref="ODataSerializerContext"/>.</param>
         public override void WriteObject(object graph, Type type, ODataMessageWriter messageWriter, ODataSerializerContext writeContext)
         {
-            if (graph is EnumerableQuery<IEdmEntityObject>)
+            if (graph is EnumerableQuery<IEdmEntityObject> query)
             {
-                var list = ((EnumerableQuery<IEdmEntityObject>)graph).AsIList();
+                var list = query.AsIList();
                 var entityCollectionType = new EdmCollectionTypeReference((EdmCollectionType)((EdmEntitySet)writeContext.NavigationSource).Type);
                 graph = new EdmEntityObjectCollection(entityCollectionType, list);
             }
 
             base.WriteObject(graph, type, messageWriter, writeContext);
+        }
+
+        /// <inheritdoc />
+        public override Task WriteObjectAsync(object graph, Type type, ODataMessageWriter messageWriter, ODataSerializerContext writeContext)
+        {
+            if (graph is EnumerableQuery<IEdmEntityObject> query)
+            {
+                var list = query.AsIList();
+                var entityCollectionType = new EdmCollectionTypeReference((EdmCollectionType)((EdmEntitySet)writeContext.NavigationSource).Type);
+                graph = new EdmEntityObjectCollection(entityCollectionType, list);
+            }
+
+            return base.WriteObjectAsync(graph, type, messageWriter, writeContext);
         }
     }
 }

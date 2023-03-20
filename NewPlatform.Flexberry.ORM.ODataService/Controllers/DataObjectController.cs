@@ -273,7 +273,7 @@
         {
             bool isAfterGetDeniedTypesExist = false;
 
-            Type[] deniedTypes = model.ExcelExportAfterGetDeniedTypes;
+            Type[] deniedTypes = model.ExcelExportAfterGetDeniedTypes ?? new Type[0];
             Type[] lcsTypes = lcs.LoadingTypes;
 
             IEnumerable<Type> intersection = lcsTypes.Intersect(deniedTypes);
@@ -648,7 +648,10 @@
             }
 
             resultLcs.View.Properties = resultProperies.ToArray();
-            resultLcs.View = ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(resultLcs.View, resultLcs.LimitFunction, _dataService);
+            if (resultLcs.LimitFunction != null)
+            {
+                resultLcs.View = ViewPropertyAppender.GetViewWithPropertiesUsedInFunction(resultLcs.View, resultLcs.LimitFunction, _dataService);
+            }
 
             return resultLcs;
         }
@@ -1261,7 +1264,7 @@
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 #elif NETSTANDARD
-            NameValueCollection queryParams = QueryHelpers.QueryToNameValueCollection(Request.Query);
+            NameValueCollection queryParams = WebUtilities.QueryHelpers.QueryToNameValueCollection(Request.Query);
             bool isForExcel = HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 #endif
             bool isExport = _model.ExportStringedObjectViewService != null || _model.ODataExportService != null || _model.ExportService != null;

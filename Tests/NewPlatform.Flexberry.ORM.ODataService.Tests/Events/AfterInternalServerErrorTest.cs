@@ -1,12 +1,13 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Events
 {
+    using System;
     using System.Net;
     using System.Net.Http;
-
     using ICSSoft.STORMNET;
-
+#if NETCOREAPP
+    using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+#endif
     using Xunit;
-    using System;
 
     /// <summary>
     /// Класс тестов для тестирования логики после возникновения исключения.
@@ -48,7 +49,11 @@
         {
             ActODataService(args =>
             {
+#if NETFRAMEWORK
                 args.Token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
+#elif NETCOREAPP
+                CustomExceptionFilter.CallbackAfterInternalServerError = AfterInternalServerError;
+#endif
 
                 Медведь медв = new Медведь { Вес = 48, Пол = tПол.Мужской };
                 Медведь медв2 = new Медведь { Вес = 148, Пол = tПол.Мужской };
