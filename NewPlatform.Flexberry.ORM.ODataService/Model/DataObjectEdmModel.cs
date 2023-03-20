@@ -167,6 +167,7 @@
 
         private void BuildEdmEntityTypes()
         {
+            // Collection for storing FullNames.
             IDictionary<string, Type> collectionFullNames = new Dictionary<string, Type>();
 
             foreach (Type dataObjectType in _metadata.Types)
@@ -188,6 +189,7 @@
                     dataObjectType.IsAbstract,
                     !dataObjectType.IsSealed);
 
+                // Check if the FullName already contains.
                 if (collectionFullNames.ContainsKey(edmEntityType.FullName))
                 {
                     if (edmEntityType.Namespace.Length == 0)
