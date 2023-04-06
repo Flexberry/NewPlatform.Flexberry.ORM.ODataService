@@ -14,10 +14,10 @@
     public class OfflineAuditService : AuditService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditService" /> class.
+        /// Initializes a new instance of the <see cref="OfflineAuditService"/> class.
         /// </summary>
-        /// <param name="currentUse">
-        /// Сервис доступа к данным текущего пользовтаеля.
+        /// <param name="currentUser">
+        /// Service for approach to data of current user.
         /// </param>
         public OfflineAuditService(ICurrentUser currentUser)
             : base(currentUser)
