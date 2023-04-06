@@ -1,4 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿#if NETFRAMEWORK
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 // Branch of https://github.com/OData/WebApi/blob/v5.7.0/OData/src/System.Web.OData/OData/ExpressionHelpers.cs
 
@@ -8,10 +9,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Web.OData.Formatter;
-    using System.Web.OData.Query.Expressions;
-    using Microsoft.OData.Core.UriParser;
     using Microsoft.OData.Edm;
+    using Microsoft.OData.UriParser;
 
     /// <summary>
     /// Класс содержащий вспомогательные методы для работы с linq-выражениями.
@@ -97,3 +96,4 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
     }
 }
+#endif

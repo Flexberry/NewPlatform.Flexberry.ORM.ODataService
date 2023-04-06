@@ -1,10 +1,8 @@
 # Flexberry ORM ODataService
 
-[![Build Status Master](https://travis-ci.org/Flexberry/NewPlatform.Flexberry.ORM.ODataService.svg?branch=master)](https://travis-ci.org/Flexberry/NewPlatform.Flexberry.ORM.ODataService)
+[![CI](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml/badge.svg)](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml)
 
-[![Build Status Develop](https://travis-ci.org/Flexberry/NewPlatform.Flexberry.ORM.ODataService.svg?branch=develop)](https://travis-ci.org/Flexberry/NewPlatform.Flexberry.ORM.ODataService)
-
-В этом репозитории располагается исходный код `Flexberry ORM ODataService` - серверного компонета для реализации публикации данных по протоколу [OData V4](http://www.odata.org/) для `Microsoft .NET Framework`.
+В этом репозитории располагается исходный код `Flexberry ORM ODataService` - серверного компонета для реализации публикации данных по протоколу [OData V4](http://www.odata.org/) для Microsoft .NET Framework и .NET Core.
 
 ## Ключевые особенности
 

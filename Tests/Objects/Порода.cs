@@ -41,9 +41,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         
         private string fНазвание;
         
-        private NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды fТипПороды;
-        
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Порода fИерархия;
+        
+        private NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды fТипПороды;
         
         // *** Start programmer edit section *** (Порода CustomMembers)
 
@@ -85,37 +85,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <summary>
         /// Порода.
         /// </summary>
-        // *** Start programmer edit section *** (Порода.ТипПороды CustomAttributes)
-
-        // *** End programmer edit section *** (Порода.ТипПороды CustomAttributes)
-        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды ТипПороды
-        {
-            get
-            {
-                // *** Start programmer edit section *** (Порода.ТипПороды Get start)
-
-                // *** End programmer edit section *** (Порода.ТипПороды Get start)
-                NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды result = this.fТипПороды;
-                // *** Start programmer edit section *** (Порода.ТипПороды Get end)
-
-                // *** End programmer edit section *** (Порода.ТипПороды Get end)
-                return result;
-            }
-            set
-            {
-                // *** Start programmer edit section *** (Порода.ТипПороды Set start)
-
-                // *** End programmer edit section *** (Порода.ТипПороды Set start)
-                this.fТипПороды = value;
-                // *** Start programmer edit section *** (Порода.ТипПороды Set end)
-
-                // *** End programmer edit section *** (Порода.ТипПороды Set end)
-            }
-        }
-        
-        /// <summary>
-        /// Порода.
-        /// </summary>
         // *** Start programmer edit section *** (Порода.Иерархия CustomAttributes)
 
         // *** End programmer edit section *** (Порода.Иерархия CustomAttributes)
@@ -141,6 +110,37 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Порода.Иерархия Set end)
 
                 // *** End programmer edit section *** (Порода.Иерархия Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Порода.
+        /// </summary>
+        // *** Start programmer edit section *** (Порода.ТипПороды CustomAttributes)
+
+        // *** End programmer edit section *** (Порода.ТипПороды CustomAttributes)
+        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды ТипПороды
+        {
+            get
+            {
+                // *** Start programmer edit section *** (Порода.ТипПороды Get start)
+
+                // *** End programmer edit section *** (Порода.ТипПороды Get start)
+                NewPlatform.Flexberry.ORM.ODataService.Tests.ТипПороды result = this.fТипПороды;
+                // *** Start programmer edit section *** (Порода.ТипПороды Get end)
+
+                // *** End programmer edit section *** (Порода.ТипПороды Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (Порода.ТипПороды Set start)
+
+                // *** End programmer edit section *** (Порода.ТипПороды Set start)
+                this.fТипПороды = value;
+                // *** Start programmer edit section *** (Порода.ТипПороды Set end)
+
+                // *** End programmer edit section *** (Порода.ТипПороды Set end)
             }
         }
         

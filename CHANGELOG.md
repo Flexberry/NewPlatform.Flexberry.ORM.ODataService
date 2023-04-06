@@ -10,6 +10,62 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [7.0.0] - 2023.02.17
+
+### Added
+1. Added stubbed namespace for entities with publish name.
+2. Added .net6 and .net7 as target frameworks.
+
+### Changed
+1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
+2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2`
+
+## [6.2.0] - 2023.02.16
+
+### Added
+1. Support IExportStringedObjectViewService interface call for fast excel export.
+2. Add DisabledDataObjectFileAccessor realization.
+3. Support of actions with void response (it returns 204 No Content code).
+
+### Changed
+
+### Fixed
+1. SafeLoadDetails for partial loaded detail.
+2. Custom batch handler settings such as ODataMessageQuotas.
+3. CallbackBeforeGet with count equals true.
+4. Fix create detail view.
+5. Fix view creation in case with filters by detail (twin master field contains, pk eq const).
+6. Fix create detail view.
+7. Fix user function Edm.Binary response.
+
+## [6.1.0] - 2021.06.12
+
+### Added
+
+1. Netstandard 2.0 implementation.
+
+## [6.0.0] - 2021.06.06
+
+### Changed
+
+ 1. Update dependencies: `Microsoft.AspNet.OData` (`NewPlatform.Flexberry.AspNetCore.OData`) to `7.5.1`, `Microsoft.OData.Core` to `7.7.2`, `NewPlatform.Flexberry.ORM` to `6.0`.
+
+## [5.2.0] - 2021.06.03
+
+### Added
+ 1. Microsoft .NET Framework 4.6.1 compiled assemblies.
+ 2. Batch update MessageQuotas.MaxOperationsPerChangeset and MessageQuotas.MaxReceivedMessageSize parameters.
+
+### Changed
+ 1. Removing files through file providers.
+ 2. Add additional edm mapping into model builder.
+
+### Fixed
+ 1. Batch update InternalServerError event handling.
+ 2. SafeLoadDetails for models with TypeUsage.
+ 3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
+ 4. SafeLoadDetails for partial loaded agregator.
+
 ## [5.1.1] - 2020.08.21
 
 ### Added

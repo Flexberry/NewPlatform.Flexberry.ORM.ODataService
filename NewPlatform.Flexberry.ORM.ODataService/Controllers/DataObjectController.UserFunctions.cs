@@ -5,17 +5,27 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using System.Net.Http;
     using System.Reflection;
-    using System.Web.Http;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
-    using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
+    using Microsoft.OData.UriParser;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+
+#if NETFRAMEWORK
+    using System.Net.Http;
+    using System.Web.Http;
+    using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+#endif
+#if NETSTANDARD
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NewPlatform.Flexberry.ORM.ODataService.Middleware;
+    using NewPlatform.Flexberry.ORM.ODataService.WebUtilities;
+#endif
 
     /// <summary>
     /// OData controller class.
@@ -26,8 +36,13 @@
         /// <summary>
         /// The container with OData Service functions.
         /// </summary>
+#if NETFRAMEWORK
         private readonly IFunctionContainer _functions;
+#elif NETSTANDARD
+        private IFunctionContainer _functions => ManagementToken?.Functions;
+#endif
 
+#if NETFRAMEWORK
         /// <summary>
         /// Выполняет пользовательскую функцию.
         /// Имя "GetODataFunctionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectAction"/>.
@@ -71,23 +86,75 @@
                 return ResponseMessage(InternalServerErrorMessage(ex));
             }
         }
+#elif NETSTANDARD
+        /// <summary>
+        /// Выполняет пользовательскую функцию.
+        /// Имя "GetODataFunctionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectActionImpl"/>.
+        /// </summary>
+        /// <returns>
+        /// Результат выполнения пользовательской функции, преобразованный к типам сущностей EDM-модели или к примитивным типам.
+        /// После преобразования создаётся результат HTTP для ответа.
+        /// </returns>
+        [CustomEnableQuery]
+        public IActionResult GetODataFunctionsExecute()
+        {
+            try
+            {
+                try
+                {
+                    QueryOptions = CreateODataQueryOptions(typeof(DataObject));
+                    return ExecuteUserFunction(new QueryParameters(this));
+                }
+                catch (ODataException oDataException)
+                {
+                    return BadRequest(new ODataError() { ErrorCode = StatusCodes.Status400BadRequest.ToString(), Message = oDataException.Message });
+                }
+                catch (TargetInvocationException ex)
+                {
+                    if (ex.InnerException is ODataException oDataException)
+                    {
+                        return BadRequest(new ODataError() { ErrorCode = StatusCodes.Status400BadRequest.ToString(), Message = oDataException.Message });
+                    }
+
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw CustomException(ex);
+            }
+        }
+#endif
 
         /// <summary>
         /// Выполняет пользовательскую функцию.
         /// </summary>
         /// <param name="queryParameters">Параметры запроса.</param>
         /// <returns>Результат выполнения пользовательской функции, преобразованный к типам сущностей EDM-модели или к примитивным типам.</returns>
+#if NETFRAMEWORK
         internal IHttpActionResult ExecuteUserFunction(QueryParameters queryParameters)
+#elif NETSTANDARD
+        internal IActionResult ExecuteUserFunction(QueryParameters queryParameters)
+#endif
         {
             queryParameters.Count = null;
             queryParameters.Request = Request;
-            ODataPath odataPath = Request.ODataProperties().Path;
-            UnboundFunctionPathSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as UnboundFunctionPathSegment;
 
-            if (segment == null || !_functions.IsRegistered(segment.FunctionName))
-                return SetResult("Function not found");
+            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment type here.
+            OperationImportSegment segment = ODataPath.Segments[ODataPath.Segments.Count - 1] as OperationImportSegment;
 
-            Function function = _functions.GetFunction(segment.FunctionName);
+            // The OperationImportSegment.Identifier property represents the Microsoft OData v5.7.0 UnboundFunctionPathSegment.FunctionName property here.
+            if (segment == null || !_functions.IsRegistered(segment.Identifier))
+            {
+                const string msg = "Function not found";
+#if NETFRAMEWORK
+                return SetResult(msg);
+#elif NETSTANDARD
+                return Ok(msg);
+#endif
+            }
+
+            Function function = _functions.GetFunction(segment.Identifier);
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             foreach (string parameterName in function.ParametersTypes.Keys)
             {
@@ -107,10 +174,15 @@
                 }
             }
 
-            var result = function.Handler(queryParameters, parameters);
+            var result = ((DelegateODataFunction)function.Handler)(queryParameters, parameters);
             if (result == null)
             {
-                return SetResult("Result is null.");
+                const string msg = "Result is null.";
+#if NETFRAMEWORK
+                return SetResult(msg);
+#elif NETSTANDARD
+                return Ok(msg);
+#endif
             }
 
             if (!(result is string) && result is IEnumerable)
@@ -135,7 +207,11 @@
                     QueryOptions = queryOpt;
                     if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                     {
+#if NETFRAMEWORK
                         Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#elif NETSTANDARD
+                        Request.HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#endif
                     }
 
                     this.type = type;
@@ -154,19 +230,58 @@
                         }
                     }
 
+#if NETFRAMEWORK
                     NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
+#elif NETSTANDARD
+                    NameValueCollection queryParams = QueryHelpers.QueryToNameValueCollection(Request.Query);
+#endif
 
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+#if NETFRAMEWORK
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+#elif NETSTANDARD
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
+#endif
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
-                        return ResponseMessage(CreateExcel(queryParams));
+                        var excel = CreateExcel(queryParams);
+#if NETFRAMEWORK
+                        return ResponseMessage(excel);
+#elif NETSTANDARD
+                        return excel;
+#endif
                     }
 
                     var coll = GetEdmCollection((IEnumerable)result, type, 1, null, _dynamicView);
+#if NETFRAMEWORK
                     return SetResult(coll);
+#elif NETSTANDARD
+                    return Ok(coll);
+#endif
                 }
 
+                if (result.GetType().IsArray && type == typeof(byte))
+                {
+                    const string mimeType = "text/plain";
+
+                    var b1 = (byte[])result;
+                    var s = Convert.ToBase64String(b1);
+                    var b2 = System.Text.Encoding.UTF8.GetBytes(s);
+
+#if NETFRAMEWORK
+                    HttpResponseMessage msg = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    RawOutputFormatter.PrepareHttpResponseMessage(ref msg, mimeType, _model, b2);
+
+                    return ResponseMessage(msg);
+#elif NETSTANDARD
+                    return File(b2, mimeType);
+#endif
+                }
+
+#if NETFRAMEWORK
                 return SetResult(result);
+#elif NETSTANDARD
+                return Ok(result);
+#endif
             }
 
             if (result is DataObject)
@@ -174,16 +289,29 @@
                 QueryOptions = CreateODataQueryOptions(result.GetType());
                 if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
                 {
+#if NETFRAMEWORK
                     Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#elif NETSTANDARD
+                    Request.HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
+#endif
                 }
 
                 this.type = result.GetType();
                 CreateDynamicView();
                 var entityType = _model.GetEdmEntityType(this.type);
-                return SetResult(GetEdmObject(entityType, result, 1, null, _dynamicView));
+                var edmObj = GetEdmObject(entityType, result, 1, null, _dynamicView);
+#if NETFRAMEWORK
+                return SetResult(edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
             }
 
+#if NETFRAMEWORK
             return SetResultPrimitive(result.GetType(), result);
+#elif NETSTANDARD
+            return Ok(result);
+#endif
         }
     }
 }

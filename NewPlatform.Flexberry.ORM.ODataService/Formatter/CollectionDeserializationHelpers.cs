@@ -1,19 +1,18 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿#if NETFRAMEWORK
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
 namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using System.Web.Http;
-    using System.Web.OData.Properties;
+    using Microsoft.AspNet.OData;
     using Microsoft.OData.Edm;
-    using System;
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-    using System.Web.OData;
 
     internal static class CollectionDeserializationHelpers
     {
@@ -219,3 +218,4 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
         }
     }
 }
+#endif

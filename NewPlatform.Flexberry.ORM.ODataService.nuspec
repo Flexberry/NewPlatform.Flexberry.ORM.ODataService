@@ -2,51 +2,67 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>5.2.0-beta02</version>
+    <version>7.0.0</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
     <licenseUrl>http://flexberry.ru/License-FlexberryOrm-Runtime</licenseUrl>
-    <projectUrl>http://flexberry.net/FlexberryORM</projectUrl>
+    <projectUrl>https://flexberry.net/ru/developers-flexberry-orm.html</projectUrl>
     <iconUrl>https://flexberry.net/img/logo-color.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
-      Added
-      1. Microsoft .NET Framework 4.6.1 compiled assemblies.
-      2. Batch update MessageQuotas.MaxOperationsPerChangeset and MessageQuotas.MaxReceivedMessageSize parameters.
+		Added
+		1. Added stubbed namespace for entities with publish name.
+		2. Added .net6 and .net7 as target frameworks.
 
-      Changed
-      1. Removing files through file providers.
-      2. Add additional edm mapping into model builder.
-
-      Fixed
-      1. Batch update InternalServerError event handling.
-      2. SafeLoadDetails for models with TypeUsage.
-      3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
-    </releaseNotes>
-    <copyright>Copyright New Platform Ltd 2020</copyright>
+		Changed
+		1. Upgrade `Microsoft.AspNet.OData` to `7.6.1`
+		2. Upgrade `NewPlatform.Flexberry.AspNetCore.OData` to `7.6.2`
+	</releaseNotes>
+    <copyright>Copyright New Platform Ltd 2023</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
-      <dependency id="Microsoft.AspNet.Cors" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.OData" version="5.7.0" />
-      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
-      <dependency id="Microsoft.AspNet.WebApi.Cors" version="5.2.3" />
-      <dependency id="Microsoft.OData.Core" version="[6.15.0, 7.0.0)" />
-      <dependency id="Microsoft.OData.Edm" version="6.15.0" />
-      <dependency id="Microsoft.Spatial" version="6.15.0" />
-      <dependency id="NewPlatform.Flexberry.LockService" version="2.0.0" />
-      <dependency id="NewPlatform.Flexberry.ORM" version="5.0.0" />
-      <dependency id="NewPlatform.Flexberry.UserSettingsService" version="3.0.0" />
-      <dependency id="Newtonsoft.Json" version="8.0.3" />
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Microsoft.AspNet.OData" version="7.6.1" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.7" />
+        <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.7" />
+        <dependency id="Microsoft.OData.Core" version="7.10.0" />
+        <dependency id="Microsoft.OData.Edm" version="7.10.0" />
+        <dependency id="Microsoft.Spatial" version="7.10.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
+        <group targetFramework=".NET6.0">
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
+      <group targetFramework=".NET7.0">
+        <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.xml" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi\bin\$configuration$\net45\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" target="lib\net45\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" />
@@ -54,11 +70,44 @@
 
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.xml" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.dll" />
-    <file src="NewPlatform.Flexberry.ORM.ODataService.Cors\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Cors.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.dll" />
     <file src="NewPlatform.Flexberry.ORM.ODataService.WebApi\bin\$configuration$\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" target="lib\net461\NewPlatform.Flexberry.ORM.ODataService.WebApi.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\netstandard2.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
+
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
+    <file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\netcoreapp3.1\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
+
+	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
+  
+    <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
+	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
   </files>
 </package>

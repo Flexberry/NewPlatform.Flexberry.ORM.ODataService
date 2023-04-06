@@ -1,40 +1,50 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Formatter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Web.OData;
-    using System.Web.OData.Formatter.Deserialization;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Formatter.Deserialization;
+    using Microsoft.OData.Edm;
 
     /// <inheritdoc/>
     public class ExtendedODataDeserializerProvider : DefaultODataDeserializerProvider
     {
-        /// <inheritdoc/>
-        public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(Microsoft.OData.Edm.IEdmTypeReference edmType)
+        public ExtendedODataDeserializerProvider(IServiceProvider rootContainer)
+            : base(rootContainer)
         {
-            return Instance.GetEdmTypeDeserializer(edmType);
+            _instance = new DefaultODataDeserializerProvider(rootContainer);
+        }
+
+        /// <inheritdoc/>
+        public override ODataEdmTypeDeserializer GetEdmTypeDeserializer(IEdmTypeReference edmType)
+        {
+            return _instance.GetEdmTypeDeserializer(edmType);
         }
 
         /// <inheritdoc/>
         public override ODataDeserializer GetODataDeserializer(
-             Microsoft.OData.Edm.IEdmModel model,
              Type type,
-             System.Net.Http.HttpRequestMessage request)
+#if NETFRAMEWORK
+             System.Net.Http.HttpRequestMessage request
+#endif
+#if NETSTANDARD
+             Microsoft.AspNetCore.Http.HttpRequest request
+#endif
+            )
         {
             if (type == typeof(Uri))
             {
-                return base.GetODataDeserializer(model, type, request);
+                return base.GetODataDeserializer(type, request);
             }
 
             if (type == typeof(ODataActionParameters) ||
                 type == typeof(ODataUntypedActionParameters))
             {
-                return new ExtendedODataActionPayloadDeserializer(Instance);
+                return new ExtendedODataActionPayloadDeserializer(_instance);
             }
 
-            return new ExtendedODataEntityDeserializer(Instance);
+            return new ExtendedODataEntityDeserializer(_instance);
         }
+
+        private readonly DefaultODataDeserializerProvider _instance;
     }
 }

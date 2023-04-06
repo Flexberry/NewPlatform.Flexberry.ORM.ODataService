@@ -40,6 +40,12 @@
     public delegate void DelegateAfterGet(ref DataObject[] objs);
 
     /// <summary>
+    /// Тип делегата, вызываемого после вычитывания объектов с использованием данных в формате ObjectStringDataView.
+    /// </summary>
+    /// <param name="objs">Вычитанные объекты.</param>
+    public delegate void DelegateAfterExportGet(ref ObjectStringDataView[] objs);
+
+    /// <summary>
     /// Тип делегата, вызываемого после создания объекта.
     /// </summary>
     /// <param name="obj">Объект после создания.</param>

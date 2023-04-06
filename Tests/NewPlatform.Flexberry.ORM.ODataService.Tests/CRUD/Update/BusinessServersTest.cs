@@ -1,13 +1,10 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Web.OData.Batch;
+
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
@@ -24,6 +21,18 @@
     /// </summary>
     public class BusinessServersTest : BaseODataServiceIntegratedTest
     {
+#if NETCOREAPP
+        /// <summary>
+        /// Конструктор по-умолчанию.
+        /// </summary>
+        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="output">Вывод отладочной информации.</param>
+        public BusinessServersTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
+        {
+        }
+#endif
+
         /// <summary>
         /// Осуществляет проверку того, что при POST запросах происходит вызов бизнес-сервера.
         /// </summary>
@@ -228,7 +237,7 @@
                     args.DataService.LoadObject(Медведь.Views.МедведьE, медведь);
 
                     var берлоги = медведь.Берлога.Cast<Берлога>();
-
+                    
                     Assert.Equal(2, берлоги.Count());
 
                     var комфортнаяБерлога = берлоги.FirstOrDefault(б => б.Комфортность == 1);

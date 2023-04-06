@@ -32,6 +32,11 @@
         public DelegateAfterGet CallbackAfterGet { get; set; }
 
         /// <summary>
+        /// Делегат для вызова логики после вычитывания объектов с использованием данных в формате ObjectStringDataView.
+        /// </summary>
+        public DelegateAfterExportGet CallbackAfterExportGet { get; set; }
+
+        /// <summary>
         /// Делегат для вызова логики после сохранения объекта.
         /// </summary>
         public DelegateAfterCreate CallbackAfterCreate { get; set; }
@@ -48,6 +53,9 @@
 
         /// <summary>
         /// Делегат, вызываемый после возникновения исключения.
+        /// В версиях .Net Core и выше не все исключения, происходящие в Odata, отлавливаются данным делегатом. 
+        /// Некоторые исключения генерируются напрямую из MS-кода. Для их перехвата можно воспользоваться делегатом в CustomExceptionFilter
+        /// (или добавить собственную реализацию IExceptionFilter).
         /// </summary>
         public DelegateAfterInternalServerError CallbackAfterInternalServerError { get; set; }
     }
