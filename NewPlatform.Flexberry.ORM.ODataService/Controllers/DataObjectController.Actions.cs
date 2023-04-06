@@ -2,27 +2,27 @@
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
     using System.Reflection;
-    using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Query;
-    using System.Web.OData.Routing;
-    using Expressions;
     using ICSSoft.STORMNET;
-    using Microsoft.OData.Core;
-    using Microsoft.OData.Edm.Library;
-    using Microsoft.OData.Edm.Values;
-    using NewPlatform.Flexberry.ORM.ODataService.Formatter;
+    using Microsoft.AspNet.OData;
+    using Microsoft.OData.UriParser;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+
     using Action = NewPlatform.Flexberry.ORM.ODataService.Functions.Action;
+
+#if NETFRAMEWORK
+    using System.Web.Http;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+    using System.Net.Http;
+    using System.Net;
+#endif
+#if NETSTANDARD
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData;
+    using NewPlatform.Flexberry.ORM.ODataService.Middleware;
+#endif
 
     /// <summary>
     /// OData controller class.
@@ -30,6 +30,7 @@
     /// </summary>
     public partial class DataObjectController
     {
+#if NETFRAMEWORK
         /// <summary>
         /// Выполняет action.
         /// Имя "PostODataActionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectAction"/>.
@@ -74,27 +75,99 @@
                 return ResponseMessage(InternalServerErrorMessage(ex));
             }
         }
-
-        private IHttpActionResult ExecuteAction(ODataActionParameters parameters)
+#elif NETSTANDARD
+        /// <summary>
+        /// Выполняет action.
+        /// Имя "PostODataActionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectActionImpl"/>.
+        /// </summary>
+        /// <param name="parameters">Параметры action.</param>
+        /// <returns>
+        /// Результат выполнения action, преобразованный к типам сущностей EDM-модели или к примитивным типам.
+        /// В случае, если зарегистрированый action не возвращает результат, будет возвращён только код 200 OK.
+        /// После преобразования создаётся результат HTTP для ответа.
+        /// </returns>
+        public IActionResult PostODataActionsExecute(ODataActionParameters parameters)
         {
-            ODataPath odataPath = Request.ODataProperties().Path;
-            UnboundActionPathSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as UnboundActionPathSegment;
-            if (segment == null || !_functions.IsRegistered(segment.ActionName))
+            try
             {
-                return SetResult("Action not found");
+                try
+                {
+                    QueryOptions = CreateODataQueryOptions(typeof(DataObject));
+                    return ExecuteAction(parameters);
+                }
+                catch (ODataException oDataException)
+                {
+                    return BadRequest(new ODataError() { ErrorCode = StatusCodes.Status400BadRequest.ToString(), Message = oDataException.Message });
+                }
+                catch (TargetInvocationException ex)
+                {
+                    if (ex.InnerException is ODataException oDataException)
+                    {
+                        return BadRequest(new ODataError() { ErrorCode = StatusCodes.Status400BadRequest.ToString(), Message = oDataException.Message });
+                    }
+
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw CustomException(ex);
+            }
+        }
+#endif
+
+#if NETFRAMEWORK
+        private IHttpActionResult ExecuteAction(ODataActionParameters parameters)
+#elif NETSTANDARD
+        private IActionResult ExecuteAction(ODataActionParameters parameters)
+#endif
+        {
+            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundActionPathSegment here.
+            OperationImportSegment segment = ODataPath.Segments[ODataPath.Segments.Count - 1] as OperationImportSegment;
+
+            // The OperationImportSegment.Identifier property represents the Microsoft OData v5.7.0 UnboundActionPathSegment.ActionName property here.
+            if (segment == null || !_functions.IsRegistered(segment.Identifier))
+            {
+                const string msg = "Action not found";
+#if NETFRAMEWORK
+                return SetResult(msg);
+#elif NETSTANDARD
+                return Ok(msg);
+#endif
             }
 
-            Action action = _functions.GetFunction(segment.ActionName) as Action;
+            Action action = _functions.GetFunction(segment.Identifier) as Action;
             if (action == null)
             {
-                return SetResult("Action not found");
+                const string msg = "Action not found";
+#if NETFRAMEWORK
+                return SetResult(msg);
+#elif NETSTANDARD
+                return Ok(msg);
+#endif
             }
 
             QueryParameters queryParameters = new QueryParameters(this);
             queryParameters.Count = null;
             queryParameters.Request = Request;
+#if NETFRAMEWORK
             queryParameters.RequestBody = (string)Request.Properties[PostPatchHandler.RequestContent];
-            var result = action.Handler(queryParameters, parameters);
+#elif NETSTANDARD
+            queryParameters.RequestBody = (string)Request.HttpContext.Items[RequestHeadersHookMiddleware.PropertyKeyRequestContent];
+#endif
+
+            MulticastDelegate multicastDelegate = action.Handler;
+            if (multicastDelegate is DelegateODataNoReplyFunction)
+            {
+                ((DelegateODataNoReplyFunction)action.Handler)(queryParameters, parameters);
+#if NETFRAMEWORK
+                return StatusCode(HttpStatusCode.NoContent);
+#elif NETSTANDARD
+                return NoContent();
+#endif
+            }
+
+            var result = ((DelegateODataFunction)action.Handler)(queryParameters, parameters);
             if (action.ReturnType == typeof(void))
             {
                 return Ok();
@@ -102,13 +175,23 @@
 
             if (result == null)
             {
-                return SetResult("Result is null.");
+                const string msg = "Result is null.";
+#if NETFRAMEWORK
+                return SetResult(msg);
+#elif NETSTANDARD
+                return Ok(msg);
+#endif
             }
 
             if (result is DataObject)
             {
                 var entityType = _model.GetEdmEntityType(result.GetType());
-                return SetResult(GetEdmObject(entityType, result, 1, null));
+                var edmObj = GetEdmObject(entityType, result, 1, null);
+#if NETFRAMEWORK
+                return SetResult(edmObj);
+#elif NETSTANDARD
+                return Ok(edmObj);
+#endif
             }
 
             if (!(result is string) && result is IEnumerable)
@@ -129,11 +212,19 @@
                 if (type != null && (type.IsSubclassOf(typeof(DataObject)) || type == typeof(DataObject)))
                 {
                     var coll = GetEdmCollection((IEnumerable)result, type, 1, null);
+#if NETFRAMEWORK
                     return SetResult(coll);
+#elif NETSTANDARD
+                    return Ok(coll);
+#endif
                 }
             }
 
+#if NETFRAMEWORK
             return SetResultPrimitive(result.GetType(), result);
+#elif NETSTANDARD
+            return Ok(result);
+#endif
         }
     }
 }

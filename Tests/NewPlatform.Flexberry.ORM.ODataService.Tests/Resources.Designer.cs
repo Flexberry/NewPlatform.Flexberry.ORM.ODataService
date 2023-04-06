@@ -162,44 +162,32 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests {
         ///
         ///
         ///
+        ///
         ///CREATE TABLE Driver (
-        ///
         /// primaryKey UUID NOT NULL,
-        ///
         /// Name VARCHAR(255) NULL,
-        ///
         /// CarCount INT NULL,
-        ///
         /// Documents BOOLEAN NULL,
-        ///
         /// PRIMARY KEY (primaryKey));
         ///
         ///
         ///CREATE TABLE Страна (
-        ///
         /// primaryKey UUID NOT NULL,
-        ///
         /// Название VARCHAR(255) NULL,
-        ///
         /// PRIMARY KEY (primaryKey));
         ///
         ///
         ///CREATE TABLE Master (
-        ///
         /// primaryKey UUID NOT NULL,
-        ///
         /// property VARCHAR(255) NULL,
-        ///
         /// PRIMARY KEY (primaryKey));
         ///
         ///
         ///CREATE TABLE Лес (
-        ///
         /// primaryKey UUID NOT NULL,
-        ///
         /// Название VARCHAR(255) NULL,
-        ///
-        /// Площадь INT  [rest of string was truncated]&quot;;.
+        /// Площадь INT NULL,
+        /// Заповедник BOOLEAN [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PostgresScript {
             get {

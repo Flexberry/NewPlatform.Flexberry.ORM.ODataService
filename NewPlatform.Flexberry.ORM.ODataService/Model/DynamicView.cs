@@ -112,9 +112,27 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                             addProp = propName;
                         }
 
-                        if (!string.IsNullOrWhiteSpace(addProp) && !detailView.CheckPropname(addProp))
+                        if (!string.IsNullOrWhiteSpace(addProp))
                         {
-                            detailView.AddProperty(addProp);
+                            string[] props = addProp.Split('.');
+
+                            string currentProp = string.Empty;
+                            foreach (var prop in props)
+                            {
+                                if (string.IsNullOrWhiteSpace(currentProp))
+                                {
+                                    currentProp = prop;
+                                }
+                                else
+                                {
+                                    currentProp += $".{prop}";
+                                }
+
+                                if (!detailView.CheckPropname(currentProp))
+                                {
+                                    detailView.AddProperty(currentProp);
+                                }
+                            }
                         }
                     }
 
@@ -249,6 +267,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
                         {
                             retList = argumentExpressionList;
                         }
+                    }
+                }
+
+                if (methodCallExpression.Arguments.Count == 0 && methodCallExpression.Object is Expression methodCallExpressionObject)
+                {
+                    if (methodCallExpressionObject != null)
+                    {
+                        return GetMembersFromLambdaExpression(methodCallExpressionObject);
                     }
                 }
 
