@@ -1,6 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers
 {
-    using ICSSoft.Services;
+    using System;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using NewPlatform.Flexberry.Services;
@@ -18,9 +18,9 @@
         /// Initializes a new instance of the <see cref="LockController"/> class.
         /// </summary>
         /// <param name="lockService">The lock service.</param>
-        public LockController(ILockService lockService = null)
+        public LockController(ILockService lockService)
         {
-            _lockService = UnityFactoryHelper.ResolveRequiredIfNull(lockService);
+            _lockService = lockService ?? throw new ArgumentNullException(nameof(lockService));
         }
 
         /// <summary>

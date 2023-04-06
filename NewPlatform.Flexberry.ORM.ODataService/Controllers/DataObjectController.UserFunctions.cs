@@ -174,7 +174,7 @@
                 }
             }
 
-            var result = function.Handler(queryParameters, parameters);
+            var result = ((DelegateODataFunction)function.Handler)(queryParameters, parameters);
             if (result == null)
             {
                 const string msg = "Result is null.";
@@ -237,9 +237,9 @@
 #endif
 
 #if NETFRAMEWORK
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
 #elif NETSTANDARD
-                    if ((_model.ExportService != null || _model.ODataExportService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
+                    if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
 #endif
                     {
                         _objs = (result as IEnumerable).Cast<DataObject>().ToArray();
@@ -256,6 +256,24 @@
                     return SetResult(coll);
 #elif NETSTANDARD
                     return Ok(coll);
+#endif
+                }
+
+                if (result.GetType().IsArray && type == typeof(byte))
+                {
+                    const string mimeType = "text/plain";
+
+                    var b1 = (byte[])result;
+                    var s = Convert.ToBase64String(b1);
+                    var b2 = System.Text.Encoding.UTF8.GetBytes(s);
+
+#if NETFRAMEWORK
+                    HttpResponseMessage msg = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    RawOutputFormatter.PrepareHttpResponseMessage(ref msg, mimeType, _model, b2);
+
+                    return ResponseMessage(msg);
+#elif NETSTANDARD
+                    return File(b2, mimeType);
 #endif
                 }
 

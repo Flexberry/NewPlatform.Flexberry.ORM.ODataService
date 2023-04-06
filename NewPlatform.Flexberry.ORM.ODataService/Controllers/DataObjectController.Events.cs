@@ -4,7 +4,6 @@
     using System.Net;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-
     using NewPlatform.Flexberry.ORM.ODataService.Events;
 
     /// <summary>
@@ -73,6 +72,15 @@
         internal void ExecuteCallbackAfterGet(ref DataObject[] objs)
         {
             _events.CallbackAfterGet?.Invoke(ref objs);
+        }
+
+        /// <summary>
+        /// Вызов делегата после вычитывания объектов. Обработчики принимают данные в формате ObjectStringDataView.
+        /// </summary>
+        /// <param name="objs">Объект после создания.</param>
+        internal void ExecuteCallbackAfterExportGet(ref ObjectStringDataView[] objs)
+        {
+            _events.CallbackAfterExportGet?.Invoke(ref objs);
         }
 
         /// <summary>

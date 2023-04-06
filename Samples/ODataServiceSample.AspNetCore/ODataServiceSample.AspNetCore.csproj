@@ -11,11 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0-beta02" />
-    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0-beta02" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="6.0.0-beta12" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0-beta11" />
-    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0-beta02" />
+    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM" Version="7.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

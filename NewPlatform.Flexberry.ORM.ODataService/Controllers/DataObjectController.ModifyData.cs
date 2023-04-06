@@ -254,7 +254,6 @@
                 }
 
                 Init();
-
                 var obj = DataObjectCache.CreateDataObject(type, key);
 
                 // Удаляем объект с заданным ключем.
@@ -728,7 +727,16 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            _dataService.LoadObject(view, dataObjectFromCache, true, true, DataObjectCache);
+                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                            View miniView = view.Clone();
+                            DetailInView[] miniViewDetails = miniView.Details;
+                            miniView.Details = new DetailInView[0];
+                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
+
+                            if (miniViewDetails.Length > 0)
+                            {
+                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
+                            }
                         }
                     }
 
@@ -738,10 +746,7 @@
                 // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
                 View lightView = view.Clone();
                 DetailInView[] lightViewDetails = lightView.Details;
-                foreach (DetailInView detailInView in lightViewDetails)
-                {
-                    lightView.RemoveDetail(detailInView.Name);
-                }
+                lightView.Details = new DetailInView[0];
 
                 // Проверим существование объекта в базе.
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);

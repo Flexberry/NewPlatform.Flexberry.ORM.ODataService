@@ -28,25 +28,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public enum tПол
     {
         
-        /// <summary>
-        /// 
-        /// </summary>
         // *** Start programmer edit section *** (tПол.Мужской CustomAttributes)
 
         // *** End programmer edit section *** (tПол.Мужской CustomAttributes)
         Мужской,
         
-        /// <summary>
-        /// 
-        /// </summary>
         // *** Start programmer edit section *** (tПол.Женский CustomAttributes)
 
         // *** End programmer edit section *** (tПол.Женский CustomAttributes)
         Женский,
         
-        /// <summary>
-        /// 
-        /// </summary>
         // *** Start programmer edit section *** (tПол.НеПонятно CustomAttributes)
 
         // *** End programmer edit section *** (tПол.НеПонятно CustomAttributes)

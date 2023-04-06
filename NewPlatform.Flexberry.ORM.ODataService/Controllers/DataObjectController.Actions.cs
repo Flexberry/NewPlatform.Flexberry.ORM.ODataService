@@ -14,6 +14,8 @@
 #if NETFRAMEWORK
     using System.Web.Http;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+    using System.Net.Http;
+    using System.Net;
 #endif
 #if NETSTANDARD
     using Microsoft.AspNetCore.Http;
@@ -153,7 +155,19 @@
 #elif NETSTANDARD
             queryParameters.RequestBody = (string)Request.HttpContext.Items[RequestHeadersHookMiddleware.PropertyKeyRequestContent];
 #endif
-            var result = action.Handler(queryParameters, parameters);
+
+            MulticastDelegate multicastDelegate = action.Handler;
+            if (multicastDelegate is DelegateODataNoReplyFunction)
+            {
+                ((DelegateODataNoReplyFunction)action.Handler)(queryParameters, parameters);
+#if NETFRAMEWORK
+                return StatusCode(HttpStatusCode.NoContent);
+#elif NETSTANDARD
+                return NoContent();
+#endif
+            }
+
+            var result = ((DelegateODataFunction)action.Handler)(queryParameters, parameters);
             if (action.ReturnType == typeof(void))
             {
                 return Ok();

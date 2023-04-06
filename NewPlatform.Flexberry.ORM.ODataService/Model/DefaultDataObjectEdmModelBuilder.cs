@@ -324,7 +324,7 @@
 
             string typeName = BuildEntityTypeName(dataObjectType);
             string nameSpace = BuildEntityTypeNamespace(dataObjectType);
-            return string.Concat(_useNamespaceInEntitySetName ? $"{nameSpace}.{typeName}".Replace(".", string.Empty) : typeName, "s"/* "Aliases"*/).Replace("_", string.Empty);
+            return string.Concat((_useNamespaceInEntitySetName && !string.IsNullOrEmpty(nameSpace)) ? $"{nameSpace}.{typeName}".Replace(".", string.Empty) : typeName, "s"/* "Aliases"*/).Replace("_", string.Empty);
             //return string.Concat(_useNamespaceInEntitySetName ? dataObjectType.FullName.Replace(".", string.Empty) : dataObjectType.Name, "s"/* "Aliases"*/).Replace("_", string.Empty);
         }
 
@@ -344,7 +344,7 @@
                 {
                     return attr.TypePublishName;
                 }
-                
+
                 return attr.TypePublishName.Substring(lastPos + 1);
             }
 
@@ -367,6 +367,8 @@
                 {
                     return attr.TypePublishName.Substring(0, lastPos);
                 }
+
+                return string.Empty;
             }
 
             return dataObjectType.Namespace;

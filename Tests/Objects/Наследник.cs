@@ -33,9 +33,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         
         private double fСвойство;
         
-        private NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер fМастер;
-        
         private NewPlatform.Flexberry.ORM.ODataService.Tests.Master fMaster;
+        
+        private NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер fМастер;
         
         // *** Start programmer edit section *** (Наследник CustomMembers)
 
@@ -76,39 +76,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <summary>
         /// Наследник.
         /// </summary>
-        // *** Start programmer edit section *** (Наследник.Мастер CustomAttributes)
-        [PublishName("MasterAlias")]
-        // *** End programmer edit section *** (Наследник.Мастер CustomAttributes)
-        [PropertyStorage(new string[] {
-                "Мастер"})]
-        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер Мастер
-        {
-            get
-            {
-                // *** Start programmer edit section *** (Наследник.Мастер Get start)
-
-                // *** End programmer edit section *** (Наследник.Мастер Get start)
-                NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер result = this.fМастер;
-                // *** Start programmer edit section *** (Наследник.Мастер Get end)
-
-                // *** End programmer edit section *** (Наследник.Мастер Get end)
-                return result;
-            }
-            set
-            {
-                // *** Start programmer edit section *** (Наследник.Мастер Set start)
-
-                // *** End programmer edit section *** (Наследник.Мастер Set start)
-                this.fМастер = value;
-                // *** Start programmer edit section *** (Наследник.Мастер Set end)
-
-                // *** End programmer edit section *** (Наследник.Мастер Set end)
-            }
-        }
-        
-        /// <summary>
-        /// Наследник.
-        /// </summary>
         // *** Start programmer edit section *** (Наследник.Master CustomAttributes)
 
         // *** End programmer edit section *** (Наследник.Master CustomAttributes)
@@ -136,6 +103,39 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 // *** Start programmer edit section *** (Наследник.Master Set end)
 
                 // *** End programmer edit section *** (Наследник.Master Set end)
+            }
+        }
+        
+        /// <summary>
+        /// Наследник.
+        /// </summary>
+        // *** Start programmer edit section *** (Наследник.Мастер CustomAttributes)
+        [PublishName("MasterAlias")]
+        // *** End programmer edit section *** (Наследник.Мастер CustomAttributes)
+        [PropertyStorage(new string[] {
+                "Мастер"})]
+        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер Мастер
+        {
+            get
+            {
+                // *** Start programmer edit section *** (Наследник.Мастер Get start)
+
+                // *** End programmer edit section *** (Наследник.Мастер Get start)
+                NewPlatform.Flexberry.ORM.ODataService.Tests.Мастер result = this.fМастер;
+                // *** Start programmer edit section *** (Наследник.Мастер Get end)
+
+                // *** End programmer edit section *** (Наследник.Мастер Get end)
+                return result;
+            }
+            set
+            {
+                // *** Start programmer edit section *** (Наследник.Мастер Set start)
+
+                // *** End programmer edit section *** (Наследник.Мастер Set start)
+                this.fМастер = value;
+                // *** Start programmer edit section *** (Наследник.Мастер Set end)
+
+                // *** End programmer edit section *** (Наследник.Мастер Set end)
             }
         }
     }
