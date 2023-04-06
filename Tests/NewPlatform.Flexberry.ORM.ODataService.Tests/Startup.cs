@@ -6,6 +6,7 @@ namespace ODataServiceSample.AspNetCore
     using System.Linq;
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
@@ -15,6 +16,7 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.AspNetCore.Hosting.Server.Features;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -64,10 +66,11 @@ namespace ODataServiceSample.AspNetCore
             {
                 IUnityContainer unityContainer = UnityFactory.GetContainer();
 
-                IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
+                var securityManager = new EmptySecurityManager();
+                var mockAuditService = new Mock<IAuditService>();
+                IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = CustomizationString };
 
                 unityContainer.RegisterInstance(dataService);
-                ExternalLangDef.LanguageDef.DataService = dataService;
 
                 unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
 

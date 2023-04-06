@@ -18,7 +18,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
-
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Http;
@@ -70,22 +70,25 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
+                    IUnityContainer container;
 #if NETFRAMEWORK
-                    RegisterCustomUser(UnityFactory.GetContainer());
+                    container = UnityFactory.GetContainer();
 #elif NETCOREAPP
-                    RegisterCustomUser(args.UnityContainer);
+                    container = args.UnityContainer;
 #endif
+                    RegisterCustomUser(container);
+                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
 
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeCreate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         return dobj is Страна country && country.Название == login;
                     };
 
                     args.Token.Events.CallbackAfterCreate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         if (!(dobj is Страна country && country.Название == login))
                         {
                             throw new Exception("Incorrect data");
@@ -165,11 +168,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
+                    IUnityContainer container;
 #if NETFRAMEWORK
-                    RegisterCustomUser(UnityFactory.GetContainer());
+                    container = UnityFactory.GetContainer();
 #elif NETCOREAPP
-                    RegisterCustomUser(args.UnityContainer);
+                    container = args.UnityContainer;
 #endif
+                    RegisterCustomUser(container);
+                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
 
                     // Создаем объекты и кладем их в базу данных.
                     DataObject[] countries = new DataObject[ThreadCount];
@@ -183,13 +189,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeUpdate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         return dobj is Страна country && country.Название == login;
                     };
 
                     args.Token.Events.CallbackAfterUpdate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         if (!(dobj is Страна country && country.Название == login))
                         {
                             throw new Exception("Incorrect data");
@@ -225,11 +231,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
+                    IUnityContainer container;
 #if NETFRAMEWORK
-                    RegisterCustomUser(UnityFactory.GetContainer());
+                    container = UnityFactory.GetContainer();
 #elif NETCOREAPP
-                    RegisterCustomUser(args.UnityContainer);
+                    container = args.UnityContainer;
 #endif
+                    RegisterCustomUser(container);
+                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
 
                     // Создаем объекты и кладем их в базу данных.
                     DataObject[] countries = new DataObject[ThreadCount];
@@ -243,7 +252,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeDelete = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
 
                         // Возьмем объект из эталона.
                         var preparedCountry = countries.FirstOrDefault(x => PKHelper.EQDataObject(dobj, x, true));
@@ -252,7 +261,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
 
                     args.Token.Events.CallbackAfterDelete = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
 
                         // Возьмем объект из эталона.
                         var preparedCountry = countries.FirstOrDefault(x => PKHelper.EQDataObject(dobj, x, true));
@@ -291,22 +300,25 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
+                    IUnityContainer container;
 #if NETFRAMEWORK
-                    RegisterCustomUser(UnityFactory.GetContainer());
+                    container = UnityFactory.GetContainer();
 #elif NETCOREAPP
-                    RegisterCustomUser(args.UnityContainer);
+                    container = args.UnityContainer;
 #endif
+                    RegisterCustomUser(container);
+                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
 
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeUpdate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         return dobj is Кошка cat && cat.Кличка == login;
                     };
 
                     args.Token.Events.CallbackAfterUpdate = dobj =>
                     {
-                        string login = CurrentUserService.CurrentUser.Login;
+                        string login = currentUser.Login;
                         if (!(dobj is Кошка cat && cat.Кличка == login))
                         {
                             throw new Exception("Incorrect data");
@@ -338,7 +350,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
 #if NETCOREAPP
             container.RegisterType<IActionContextAccessor, ActionContextAccessor>();
   #endif
-            container.RegisterType<CurrentUserService.IUser, WebHttpUser>();
+            container.RegisterType<ICurrentUser, WebHttpUser>();
         }
 
         private static void MultiThreadMethodCreate(object sender)

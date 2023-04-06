@@ -11,13 +11,12 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
 #endif
-
-    using static ICSSoft.Services.CurrentUserService;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
 
     /// <summary>
     /// Класс, представляющий текущего аутентифицированного пользователя на основе заголовков.
     /// </summary>
-    public class WebHttpUser : IUser
+    public class WebHttpUser : ICurrentUser
     {
         private readonly IHttpContextAccessor contextAccessor;
 

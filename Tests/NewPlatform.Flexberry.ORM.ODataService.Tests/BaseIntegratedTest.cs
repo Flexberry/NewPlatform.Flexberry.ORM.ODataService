@@ -9,6 +9,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Linq;
     using System.Threading;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Security;
+    using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
     using Xunit;
@@ -316,9 +319,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="MSSQLDataService"/> instance.</returns>
         protected virtual MSSQLDataService CreateMssqlDataService(string connectionString)
         {
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+
             if (_useGisDataService)
-                return new GisMSSQLDataService { CustomizationString = connectionString };
-            return new MSSQLDataService { CustomizationString = connectionString };
+                return new GisMSSQLDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
+
+            return new MSSQLDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -328,9 +335,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="PostgresDataService"/> instance.</returns>
         protected virtual PostgresDataService CreatePostgresDataService(string connectionString)
         {
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+
             if (_useGisDataService)
-                return new GisPostgresDataService { CustomizationString = connectionString };
-            return new PostgresDataService { CustomizationString = connectionString };
+                return new GisPostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
+            
+            return new PostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -340,7 +351,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="OracleDataService"/> instance.</returns>
         protected virtual OracleDataService CreateOracleDataService(string connectionString)
         {
-            return new OracleDataService { CustomizationString = connectionString };
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+            return new OracleDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>

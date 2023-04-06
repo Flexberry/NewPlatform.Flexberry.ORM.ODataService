@@ -5,6 +5,8 @@
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Audit.Objects;
     using ICSSoft.STORMNET.Security;
+    using Moq;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using Xunit;
     using Xunit.Abstractions;
@@ -131,11 +133,11 @@
         /// <returns>Returns instance of the <see cref="OfflineAuditService" /> class that will be used for the test.</returns>
         protected AuditService GetAuditServiceForTest()
         {
-            return new OfflineAuditService
+            Mock<ICurrentUser> mockCurrentUser = new Mock<ICurrentUser>();
+            return new OfflineAuditService(mockCurrentUser.Object)
             {
                 AppSetting = new AuditAppSetting { AuditEnabled = true },
-                ApplicationMode = AppMode.Win,
-                Audit = new Audit()
+                Audit = new EmptyAudit(),
             };
         }
     }

@@ -3,6 +3,7 @@
     using System;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business.Audit;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
 
     /// <summary>
     /// Implementation of <see cref="AuditService"/> for offline audit mode.
@@ -12,6 +13,17 @@
     /// <seealso cref="AuditService" />
     public class OfflineAuditService : AuditService
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuditService" /> class.
+        /// </summary>
+        /// <param name="currentUse">
+        /// Сервис доступа к данным текущего пользовтаеля.
+        /// </param>
+        public OfflineAuditService(ICurrentUser currentUser)
+            : base(currentUser)
+        {
+        }
+
         /// <summary>
         /// Adds audit information for specified new data object.
         /// Does nothing in order to preserve data at <see cref="IDataObjectWithAuditFields"/> fields.

@@ -4,20 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
     using Microsoft.AspNet.OData.Query;
-
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.Services;
 
     public class DefaultOfflineManager : BaseOfflineManager
     {
         private readonly ILockService _lockService;
 
-        private readonly CurrentUserService.IUser _currentUser;
+        private readonly ICurrentUser _currentUser;
 
-        public DefaultOfflineManager(ILockService lockService, CurrentUserService.IUser currentUser)
+        public DefaultOfflineManager(ILockService lockService, ICurrentUser currentUser)
         {
             _lockService = lockService ?? throw new ArgumentNullException(nameof(lockService), "Contract assertion not met: lockService != null");
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser), "Contract assertion not met: currentUser != null");
