@@ -1291,7 +1291,7 @@
         /// Test batch delete master to self and nulling object.
         /// </summary>
         [Fact]
-        public void ButchDeleteAndNullingLinkToSelfTest()
+        public void BatchDeleteAndNullingLinkToSelfTest()
         {
             ActODataService(args =>
             {
@@ -1350,7 +1350,7 @@
         /// Test batch delete master to self and nulling object reverse order.
         /// </summary>
         [Fact]
-        public void ButchDeleteAndNullingLinkToSelfReverseTest()
+        public void BatchDeleteAndNullingLinkToSelfReverseTest()
         {
             ActODataService(args =>
             {
