@@ -1227,7 +1227,7 @@
         /// Test batch nulling object and delete master.
         /// </summary>
         [Fact]
-        public void ButchNullingAndDeleteTest()
+        public void BatchNullingAndDeleteTest()
         {
             ActODataService(args =>
             {
