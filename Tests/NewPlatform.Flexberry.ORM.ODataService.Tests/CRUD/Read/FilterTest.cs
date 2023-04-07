@@ -21,19 +21,6 @@
     /// </summary>
     public class FilterTest : BaseODataServiceIntegratedTest
     {
-        /// <summary>
-        /// Initialize new instance of <see cref="FilterTest"/>.
-        /// </summary>
-        public FilterTest()
-            : base()
-        {
-            DataObjectsAssembliesNames = new[]
-            {
-                typeof(Car).Assembly
-            };
-
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, UseNamespaceInEntitySetName) { PropertyFilter = PropertyFilter };
-        }
 
 #if NETCOREAPP
         /// <summary>
@@ -44,6 +31,12 @@
         public FilterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
+            DataObjectsAssembliesNames = new[]
+            {
+                typeof(Car).Assembly
+            };
+
+            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, UseNamespaceInEntitySetName) { PropertyFilter = PropertyFilter };
         }
 #endif
 
@@ -335,7 +328,7 @@
         }
 
         /// <summary>
-        /// Test FilteredProperty is absend in response. Filter is <see cref="PropertyFilter"/>.
+        /// Test FilteredProperty is absent in response. Filter is <see cref="PropertyFilter"/>.
         /// </summary>
         [Fact]
         public void TestFilteredProperty()
