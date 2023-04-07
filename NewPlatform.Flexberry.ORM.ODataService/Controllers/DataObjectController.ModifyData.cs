@@ -254,7 +254,6 @@
                 }
 
                 Init();
-
                 var obj = DataObjectCache.CreateDataObject(type, key);
 
                 // Удаляем объект с заданным ключем.
@@ -732,7 +731,6 @@
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
-
                             _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
 
                             if (miniViewDetails.Length > 0)
