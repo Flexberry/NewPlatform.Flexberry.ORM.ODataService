@@ -7,6 +7,7 @@ namespace ODataServiceSample.AspNetCore
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
     using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
@@ -67,8 +68,9 @@ namespace ODataServiceSample.AspNetCore
                 IUnityContainer unityContainer = UnityFactory.GetContainer();
 
                 var securityManager = new EmptySecurityManager();
-                var mockAuditService = new Mock<IAuditService>();
-                IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = CustomizationString };
+                Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
+                Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
+                IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
                 unityContainer.RegisterInstance(dataService);
 

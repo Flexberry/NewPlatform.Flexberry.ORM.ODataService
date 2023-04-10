@@ -61,7 +61,6 @@
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string лес1Pk = ((KeyGuid)лес1.__PrimaryKey).Guid.ToString("D");
 
@@ -111,8 +110,6 @@
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 string лес1Pk = ((KeyGuid)лес1.__PrimaryKey).Guid.ToString("D");
                 string медведь1Pk = ((KeyGuid)медведь1.__PrimaryKey).Guid.ToString("D");
 
@@ -162,7 +159,6 @@
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, лес3, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, берлога5, берлога6 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 // Act.
                 string requestUrl = string.Format(
@@ -210,7 +206,6 @@
                 DataObject[] newDataObjects = new DataObject[] { driver1, driver2, driver3, car1d1, car2d1, car1d2, car2d2, car1d3, car2d3 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 // Act.
                 string requestUrl = string.Format(

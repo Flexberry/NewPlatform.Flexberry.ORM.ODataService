@@ -56,8 +56,6 @@
                     return;
                 }
 
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 DateTime date = new DateTimeOffset(DateTime.Now).UtcDateTime;
                 КлассСМножествомТипов класс = new КлассСМножествомТипов() { PropertyEnum = Цифра.Семь, PropertyDateTime = date, PropertyGeography = "LINESTRING(0 0,1 1,1 2)".CreateGeography(), PropertyInt = 5};
                 var objs = new DataObject[] { класс };

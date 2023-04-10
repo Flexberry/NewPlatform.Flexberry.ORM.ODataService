@@ -17,7 +17,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
     using ICSSoft.STORMNET.FunctionalLanguage;
 
     using Microsoft.AspNetCore.Http;
+#if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Infrastructure;
+#endif
     using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
@@ -349,7 +351,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
             container.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
 #if NETCOREAPP
             container.RegisterType<IActionContextAccessor, ActionContextAccessor>();
-  #endif
+#endif
             container.RegisterType<ICurrentUser, WebHttpUser>();
         }
 

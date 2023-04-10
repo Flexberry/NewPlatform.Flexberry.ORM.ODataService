@@ -144,7 +144,6 @@
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
-                    ExternalLangDef.LanguageDef.DataService = dataService;
                     action(args);
                 }
             }
@@ -179,7 +178,6 @@
                 container.RegisterInstance(fileAccessor);
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
-                ExternalLangDef.LanguageDef.DataService = dataService;
                 action(args);
             }
         }

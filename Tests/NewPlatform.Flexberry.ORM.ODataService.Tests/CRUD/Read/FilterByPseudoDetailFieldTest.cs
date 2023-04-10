@@ -64,7 +64,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}",
@@ -101,7 +100,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
@@ -138,7 +136,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
@@ -186,7 +183,6 @@
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
