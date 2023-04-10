@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+
     using ICSSoft.STORMNET;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
@@ -59,7 +60,7 @@
 
                 Assert.Equal(property1Value, dt.Свойство1);
                 Assert.Equal(наследник.__PrimaryKey, dt.__PrimaryKey);
-                Assert.NotNull(dt.Свойство1);
+                Assert.NotNull(property1Value);
             });
         }
 
