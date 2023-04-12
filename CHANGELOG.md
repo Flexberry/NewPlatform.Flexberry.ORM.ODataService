@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [7.1.0] - 2023.04.12
+
+### Changed
+1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.0`.
+
 ## [7.0.0] - 2023.02.17
 
 ### Added
