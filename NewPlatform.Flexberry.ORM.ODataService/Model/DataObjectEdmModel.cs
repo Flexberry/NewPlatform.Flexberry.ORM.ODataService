@@ -153,10 +153,7 @@
                 else
                     _typeHierarchy[baseDataObjectType].Add(dataObjectType);
 
-                string nameSpace = GetEntityTypeNamespace(dataObjectType);
-                string typeName = GetEntityTypeName(dataObjectType);
-
-                var typeFullName = string.IsNullOrEmpty(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
+                var typeFullName = $"{GetEntityTypeNamespace(dataObjectType)}.{GetEntityTypeName(dataObjectType)}";
                 if (!_aliasesNameToProperty.ContainsKey(typeFullName))
                 {
                     _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
@@ -724,7 +721,7 @@
             var nameSpace = GetEntityTypeNamespace(type);
             if (type != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityTypeNameBuilder != null)
                 name = EdmModelBuilder.EntityTypeNameBuilder(type);
-            var fullname = string.IsNullOrEmpty(nameSpace) ? name : $"{nameSpace}.{name}";
+            var fullname = $"{nameSpace}.{name}";
             if (!_aliasesNameToType.ContainsKey(fullname))
                 _aliasesNameToType.Add(fullname, type);
             if (!_aliasesTypeToName.ContainsKey(type))
@@ -762,9 +759,7 @@
             var name = prop.Name;
             if (name != KeyPropertyName && prop.DeclaringType != typeof(DataObject) && EdmModelBuilder != null && EdmModelBuilder.EntityPropertyNameBuilder != null)
                 name = EdmModelBuilder.EntityPropertyNameBuilder(prop);
-            string nameSpace = GetEntityTypeNamespace(prop.DeclaringType);
-            string typeName = GetEntityTypeName(prop.DeclaringType);
-            string typeFullName = string.IsNullOrEmpty(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
+            var typeFullName = $"{GetEntityTypeNamespace(prop.DeclaringType)}.{GetEntityTypeName(prop.DeclaringType)}";
             if (!_aliasesNameToProperty.ContainsKey(typeFullName))
             {
                 _aliasesNameToProperty.Add(typeFullName, new Dictionary<string, PropertyInfo>());
