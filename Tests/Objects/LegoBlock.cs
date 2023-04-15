@@ -48,12 +48,22 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         private NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfLegoBlockCustomPanel fCustomPanels;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfLegoBlockTopPanel fTopPanels;
-        
+
         // *** Start programmer edit section *** (LegoBlock CustomMembers)
+
+        [NotStored]
+        [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.PostgresDataService), "'Association'")]
+        public override string AssocType
+        {
+            get
+            {
+                return base.AssocType;
+            }
+        }
 
         // *** End programmer edit section *** (LegoBlock CustomMembers)
 
-        
+
         /// <summary>
         /// Width.
         /// </summary>
