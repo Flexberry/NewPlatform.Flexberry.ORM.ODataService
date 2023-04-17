@@ -76,7 +76,7 @@
             ActODataService(args =>
             {
                 LegoBlock block = new LegoBlock { Name = "Легосити" };
-                LegoPatent patent = new LegoPatent { Name = "ZeroM", BaseLegoBlock = block };
+                LegoPatent patent = new LegoPatent { Name = "ZeroM", BaseLegoBlock = block, Date = DateTime.Now };
                 var objs = new DataObject[] { block, patent };
                 args.DataService.UpdateObjects(ref objs);
 
