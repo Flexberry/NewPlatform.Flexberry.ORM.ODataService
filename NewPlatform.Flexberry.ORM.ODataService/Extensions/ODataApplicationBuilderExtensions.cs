@@ -80,9 +80,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                     var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
 
                     //Modify the response in some way.
-                    if (context.Response.ContentType.Contains("application/json")
+                    if (context.Response.ContentType != null &&
+                        (context.Response.ContentType.Contains("application/json")
                         || context.Response.ContentType.Contains("application/xml")
-                        || context.Response.ContentType.Contains("multipart/mixed"))
+                        || context.Response.ContentType.Contains("multipart/mixed")))
                     {
                         responseBody = responseBody
                             .Replace("(____.", "(")
