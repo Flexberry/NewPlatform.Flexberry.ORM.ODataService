@@ -7,8 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.1-beta01`.
 
 ### Fixed
+1. Fixed problem with metadata when inheritance and PublishName is used (for Net Standart 2.0, Net Core 3.1, Net 6.0, Net 7.0).
 
 ## [7.1.0] - 2023.04.12
 
