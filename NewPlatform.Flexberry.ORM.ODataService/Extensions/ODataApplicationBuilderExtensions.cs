@@ -66,9 +66,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
         /// <returns>Formed task.</returns>
         public static async Task RewriteResponse(HttpContext context, Func<Task> next)
         {
+            /* Same code for NETFRAMEWORK is placed on NewPlatform.Flexberry.ORM.ODataService.Handlers.PostPatchHandler.*/
             using (var responseBodyStream = new MemoryStream())
             {
-                var bodyStream = context.Response.Body;
+                Stream bodyStream = context.Response.Body;
 
                 try
                 {
@@ -77,7 +78,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                     await next();
 
                     responseBodyStream.Seek(0, SeekOrigin.Begin);
-                    var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
+                    using StreamReader sr = new StreamReader(responseBodyStream);
+                    var responseBody = sr.ReadToEnd();
 
                     //Modify the response in some way.
                     if (context.Response.ContentType != null &&
@@ -92,9 +94,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                             .Replace(" Namespace=\"____\"", " Namespace=\"\"");
                     }
 
-                    using (var newStream = new MemoryStream())
+                    using (MemoryStream newStream = new MemoryStream())
                     {
-                        var sw = new StreamWriter(newStream);
+                        using StreamWriter sw = new StreamWriter(newStream);
                         sw.Write(responseBody);
                         sw.Flush();
 

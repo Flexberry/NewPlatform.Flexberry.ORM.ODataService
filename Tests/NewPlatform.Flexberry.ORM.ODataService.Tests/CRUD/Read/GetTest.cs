@@ -98,9 +98,7 @@
 
                     Assert.Equal(1, ((JArray)receivedDict["value"]).Count);
                     Assert.Contains("@odata.type", receivedStr);
-#if NETCOREAPP
                     Assert.DoesNotContain("____", receivedStr);
-#endif
                 }
             });
         }
