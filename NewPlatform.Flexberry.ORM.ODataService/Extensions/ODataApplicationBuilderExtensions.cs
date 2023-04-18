@@ -78,8 +78,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                     await next();
 
                     responseBodyStream.Seek(0, SeekOrigin.Begin);
-                    using StreamReader sr = new StreamReader(responseBodyStream);
-                    var responseBody = sr.ReadToEnd();
+                    var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
 
                     //Modify the response in some way.
                     if (context.Response.ContentType != null &&

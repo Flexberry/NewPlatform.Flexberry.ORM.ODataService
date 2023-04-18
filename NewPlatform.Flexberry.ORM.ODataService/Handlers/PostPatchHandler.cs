@@ -96,26 +96,27 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Handlers
             {
                 HttpContent content = response.Content;
                 Stream contentStream = await content.ReadAsStreamAsync();
-                using StreamReader sr = new StreamReader(contentStream);
-                string responseStr = sr.ReadToEnd();
-
-                responseStr = responseStr
+                string responseStr = new StreamReader(contentStream).ReadToEnd();
+                if (!string.IsNullOrEmpty(responseStr) && responseStr.Length > 3)
+                {
+                    responseStr = responseStr
                    .Replace("(____.", "(")
                    .Replace("\"____.", "\"")
                    .Replace("____.", ".")
                    .Replace(" Namespace=\"____\"", " Namespace=\"\"");
 
-                using (MemoryStream newStream = new MemoryStream())
-                {
-                    using StreamWriter sw = new StreamWriter(newStream);
-                    sw.Write(responseStr);
-                    sw.Flush();
-                    newStream.Seek(0, SeekOrigin.Begin);
+                    using (MemoryStream newStream = new MemoryStream())
+                    {
+                        using StreamWriter sw = new StreamWriter(newStream);
+                        sw.Write(responseStr);
+                        sw.Flush();
+                        newStream.Seek(0, SeekOrigin.Begin);
 
-                    contentStream.Position = 0;
-                    contentStream.SetLength(0);
+                        contentStream.Position = 0;
+                        contentStream.SetLength(responseStr.Length);
 
-                    await newStream.CopyToAsync(contentStream);
+                        await newStream.CopyToAsync(contentStream);
+                    }
                 }
             }
         }
