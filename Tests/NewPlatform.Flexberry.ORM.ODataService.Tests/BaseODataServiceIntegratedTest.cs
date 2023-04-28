@@ -89,7 +89,7 @@
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, null, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 
         /// <summary>

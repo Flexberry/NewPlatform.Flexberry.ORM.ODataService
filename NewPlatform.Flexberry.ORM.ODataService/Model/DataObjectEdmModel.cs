@@ -92,38 +92,11 @@
         public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            var container = UnityFactory.GetContainer();
-            if (container != null)
+            if (serviceProvider != null)
             {
-                if (container.IsRegistered<IExportService>("Export"))
-                {
-                    ExportService = container.Resolve<IExportService>("Export");
-                }
-
-                if (container.IsRegistered<IExportService>())
-                {
-                    ExportService = container.Resolve<IExportService>();
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>())
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
-                }
-
-                if (container.IsRegistered<IODataExportService>("Export"))
-                {
-                    ODataExportService = container.Resolve<IODataExportService>("Export");
-                }
-
-                if (container.IsRegistered<IODataExportService>())
-                {
-                    ODataExportService = container.Resolve<IODataExportService>();
-                }
+                ExportService = serviceProvider.GetService<IExportService>();
+                ExportStringedObjectViewService = serviceProvider.GetService<IExportStringedObjectViewService>();
+                ODataExportService = serviceProvider.GetService<IODataExportService>();
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
