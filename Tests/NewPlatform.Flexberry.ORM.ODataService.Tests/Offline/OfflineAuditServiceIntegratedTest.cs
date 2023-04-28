@@ -114,7 +114,7 @@
         /// <returns>The <see cref="MSSQLDataService" /> instance.</returns>
         protected override MSSQLDataService CreateMssqlDataService(string connectionString)
         {
-            return new MSSQLDataService(new EmptySecurityManager(), GetAuditServiceForTest(), businessServerProvider) { CustomizationString = connectionString };
+            return new MSSQLDataService(new EmptySecurityManager(), GetAuditServiceForTest()) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -124,7 +124,7 @@
         /// <returns>The <see cref="PostgresDataService" /> instance.</returns>
         protected override PostgresDataService CreatePostgresDataService(string connectionString)
         {
-            return new PostgresDataService(new EmptySecurityManager(), GetAuditServiceForTest(), businessServerProvider) { CustomizationString = connectionString };
+            return new PostgresDataService(new EmptySecurityManager(), GetAuditServiceForTest()) { CustomizationString = connectionString };
         }
 
         /// <summary>

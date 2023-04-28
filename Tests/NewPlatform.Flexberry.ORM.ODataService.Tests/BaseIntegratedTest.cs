@@ -344,10 +344,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             var securityManager = new EmptySecurityManager();
             var mockAuditService = new Mock<IAuditService>();
 
-            if (_useGisDataService)
-                return new GisMSSQLDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
-
-            return new MSSQLDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
+            return new MSSQLDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -360,10 +357,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             var securityManager = new EmptySecurityManager();
             var mockAuditService = new Mock<IAuditService>();
 
-            if (_useGisDataService)
-                return new GisPostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
-            
-            return new PostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
+            return new PostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -375,7 +369,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             var securityManager = new EmptySecurityManager();
             var mockAuditService = new Mock<IAuditService>();
-            return new OracleDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
+            return new OracleDataService(securityManager, mockAuditService.Object) { CustomizationString = connectionString };
         }
 
         /// <summary>
