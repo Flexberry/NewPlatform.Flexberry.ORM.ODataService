@@ -6,17 +6,14 @@
     using System.Linq;
     using System.Reflection;
 
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
 
     using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Formatter;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OData.Edm;
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-
-    using Unity;
 
     using Action = Functions.Action;
 
@@ -89,7 +86,7 @@
         private readonly IDictionary<Type, EdmEntitySet> _registeredEntitySets = new Dictionary<Type, EdmEntitySet>();
         private readonly IDictionary<Type, IList<Type>> _typeHierarchy = new Dictionary<Type, IList<Type>>();
 
-        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
+        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IServiceProvider serviceProvider = null, IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
             EdmModelBuilder = edmModelBuilder;
             if (serviceProvider != null)
