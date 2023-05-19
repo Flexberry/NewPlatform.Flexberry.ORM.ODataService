@@ -9,6 +9,7 @@
     using ICSSoft.STORMNET.KeyGen;
 
     using Microsoft.OData.Edm;
+    using Unity;
 
     /// <summary>
     /// Default implementation of <see cref="IDataObjectEdmModelBuilder"/>.
@@ -35,7 +36,7 @@
         /// <summary>
         /// Service provider for resolving DataObjectEdmModel.
         /// </summary>
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IUnityContainer _container;
 
         /// <summary>
         /// Additional mapping of CLR type to edm primitive type. When it's required on the application side.
@@ -80,19 +81,19 @@
         /// Initializes a new instance of the <see cref="DefaultDataObjectEdmModelBuilder"/> class.
         /// </summary>
         /// <param name="searchAssemblies">The list of assemblies for searching types to expose.</param>
-        /// <param name="serviceProvider">Service provider for resolving DataObjectEdmModel.</param>
+        /// <param name="container">Unity container for resolving dependencies.</param>
         /// <param name="useNamespaceInEntitySetName">Is need to add the whole type namespace for EDM entity set.</param>
         /// <param name="pseudoDetailDefinitions">A collection of pseudodetail links.</param>
         /// <param name="additionalMapping">Additional mapping of CLR type to edm primitive type.</param>
         public DefaultDataObjectEdmModelBuilder(
             IEnumerable<Assembly> searchAssemblies,
-            IServiceProvider serviceProvider = null,
+            IUnityContainer container = null,
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
             Dictionary<Type, IEdmPrimitiveType> additionalMapping = null)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
-            _serviceProvider = serviceProvider;
+            _container = container;
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
             _pseudoDetailDefinitions = pseudoDetailDefinitions ?? new PseudoDetailDefinitions();
 
@@ -118,7 +119,7 @@
 
             var typeFilter = TypeFilter ?? (t => true);
 
-            foreach (Assembly assembly in _searchAssemblies)
+            foreach (Assembly assembly in _searchAssemblies.Where(x => !x.FullName.Contains("UserSettingsService")))
             {
                 IEnumerable<Type> dataObjectTypes = assembly
                     .GetTypes()
@@ -151,7 +152,7 @@
                 }
             }
 
-            return new DataObjectEdmModel(meta, _serviceProvider, this);
+            return new DataObjectEdmModel(meta, this, _container);
         }
 
         /// <summary>

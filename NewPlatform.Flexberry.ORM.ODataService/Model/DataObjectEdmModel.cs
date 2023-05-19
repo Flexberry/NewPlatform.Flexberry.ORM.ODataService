@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
     using ICSSoft.STORMNET;
 
     using Microsoft.AspNet.OData;
@@ -14,7 +13,7 @@
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-
+    using Unity;
     using Action = Functions.Action;
 
     /// <summary>
@@ -86,14 +85,40 @@
         private readonly IDictionary<Type, EdmEntitySet> _registeredEntitySets = new Dictionary<Type, EdmEntitySet>();
         private readonly IDictionary<Type, IList<Type>> _typeHierarchy = new Dictionary<Type, IList<Type>>();
 
-        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IServiceProvider serviceProvider = null, IDataObjectEdmModelBuilder edmModelBuilder = null)
+        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null, IUnityContainer container = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            if (serviceProvider != null)
+            if (container != null)
             {
-                ExportService = serviceProvider.GetService<IExportService>();
-                ExportStringedObjectViewService = serviceProvider.GetService<IExportStringedObjectViewService>();
-                ODataExportService = serviceProvider.GetService<IODataExportService>();
+                if (container.IsRegistered<IExportService>("Export"))
+                {
+                    ExportService = container.Resolve<IExportService>("Export");
+                }
+
+                if (container.IsRegistered<IExportService>())
+                {
+                    ExportService = container.Resolve<IExportService>();
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
+                }
+
+                if (container.IsRegistered<IExportStringedObjectViewService>())
+                {
+                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
+                }
+
+                if (container.IsRegistered<IODataExportService>("Export"))
+                {
+                    ODataExportService = container.Resolve<IODataExportService>("Export");
+                }
+
+                if (container.IsRegistered<IODataExportService>())
+                {
+                    ODataExportService = container.Resolve<IODataExportService>();
+                }
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
