@@ -21,9 +21,9 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
-        /// <param name="factory">Фабрика для приложения.</param>
-        public CustomizationEdmModelNames(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
-            : base(factory, output)
+        /// <param name="fixtureData">Данные для теста.</param>
+        public CustomizationEdmModelNames(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
+            : base(fixtureData, output)
         {
         }
 #endif

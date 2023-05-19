@@ -72,8 +72,8 @@
         }
 #endif
 #if NETCOREAPP
-        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
-            : base(factory, output, "ODataDB", useGisDataService)
+        public BaseODataServiceIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(fixtureData, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
@@ -98,12 +98,11 @@
         /// <param name="e">Исключение, которое возникло внутри ODataService.</param>
         /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
-        public static Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
+        public Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
         {
-            IUnityContainer container = UnityFactory.GetContainer();
-            if (container.IsRegistered<ITestOutputHelper>())
+            if (_container.IsRegistered<ITestOutputHelper>())
             {
-                ITestOutputHelper output = container.Resolve<ITestOutputHelper>();
+                ITestOutputHelper output = _container.Resolve<ITestOutputHelper>();
                 output.WriteLine(e.ToString());
             }
 
@@ -168,16 +167,14 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                IUnityContainer container = UnityFactory.GetContainer();
-
-                ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
-                container.RegisterInstance(dataService);
+                ManagementToken token = (ManagementToken)_container.Resolve(typeof(ManagementToken));
+                _container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
 
                 var fileAccessor = (IDataObjectFileAccessor)_factory.Services.GetService(typeof(IDataObjectFileAccessor));
-                container.RegisterInstance(fileAccessor);
+                _container.RegisterInstance(fileAccessor);
 
-                var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
                 action(args);
             }
         }

@@ -31,7 +31,7 @@
         }
 #endif
 #if NETCOREAPP
-        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output) : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
+        public CreateWithPseudoDetailDefinedTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output) : base(fixtureData, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
 #endif

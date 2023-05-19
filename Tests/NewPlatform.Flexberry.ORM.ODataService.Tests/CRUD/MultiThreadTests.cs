@@ -54,10 +54,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
-        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="fixtureData">Данные для теста.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public MultiThreadTests(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
-            : base(factory, output)
+        public MultiThreadTests(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
+            : base(fixtureData, output)
         {
         }
 #endif
@@ -71,15 +71,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
             ActODataService(
                 args =>
                 {
-                    // Arrange.
-                    IUnityContainer container;
-#if NETFRAMEWORK
-                    container = UnityFactory.GetContainer();
-#elif NETCOREAPP
-                    container = args.UnityContainer;
-#endif
-                    RegisterCustomUser(container);
-                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
+                    RegisterCustomUser(_container);
+                    ICurrentUser currentUser = _container.Resolve<ICurrentUser>();
 
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeCreate = dobj =>
@@ -126,11 +119,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
-#if NETFRAMEWORK
-                    RegisterCustomUser(UnityFactory.GetContainer());
-#elif NETCOREAPP
-                    RegisterCustomUser(args.UnityContainer);
-#endif
+                    RegisterCustomUser(_container);
 
                     // Создаем объекты и кладем их в базу данных.
                     DataObject[] countries = new DataObject[ThreadCount];
@@ -170,14 +159,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
-                    IUnityContainer container;
-#if NETFRAMEWORK
-                    container = UnityFactory.GetContainer();
-#elif NETCOREAPP
-                    container = args.UnityContainer;
-#endif
-                    RegisterCustomUser(container);
-                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
+                    RegisterCustomUser(_container);
+                    ICurrentUser currentUser = _container.Resolve<ICurrentUser>();
 
                     // Создаем объекты и кладем их в базу данных.
                     DataObject[] countries = new DataObject[ThreadCount];
@@ -233,14 +216,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
-                    IUnityContainer container;
-#if NETFRAMEWORK
-                    container = UnityFactory.GetContainer();
-#elif NETCOREAPP
-                    container = args.UnityContainer;
-#endif
-                    RegisterCustomUser(container);
-                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
+                    RegisterCustomUser(_container);
+                    ICurrentUser currentUser = _container.Resolve<ICurrentUser>();
 
                     // Создаем объекты и кладем их в базу данных.
                     DataObject[] countries = new DataObject[ThreadCount];
@@ -302,14 +279,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
                 args =>
                 {
                     // Arrange.
-                    IUnityContainer container;
-#if NETFRAMEWORK
-                    container = UnityFactory.GetContainer();
-#elif NETCOREAPP
-                    container = args.UnityContainer;
-#endif
-                    RegisterCustomUser(container);
-                    ICurrentUser currentUser = container.Resolve<ICurrentUser>();
+                    RegisterCustomUser(_container);
+                    ICurrentUser currentUser = _container.Resolve<ICurrentUser>();
 
                     // Регистрация событий.
                     args.Token.Events.CallbackBeforeUpdate = dobj =>

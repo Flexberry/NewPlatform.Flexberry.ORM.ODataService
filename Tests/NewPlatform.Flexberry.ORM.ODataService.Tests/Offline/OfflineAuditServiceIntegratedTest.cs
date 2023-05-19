@@ -30,8 +30,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
         /// </summary>
-        public OfflineAuditServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
-            : base(factory, output, "offline")
+        public OfflineAuditServiceIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output)
+            : base(fixtureData, output, "offline")
         {
         }
 #endif

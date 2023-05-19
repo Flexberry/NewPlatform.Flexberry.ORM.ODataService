@@ -17,6 +17,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Oracle.ManagedDataAccess.Client;
     using Xunit;
     using Xunit.Abstractions;
+    using Unity;
+    using ICSSoft.Services;
 
 #if NETFRAMEWORK
     /// <summary>
@@ -28,16 +30,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
     using ODataServiceSample.AspNetCore;
-    using ICSSoft.Services;
-    using Unity;
 
     /// <summary>
     /// Base class for integration tests.
     /// </summary>
-    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>, IDisposable
+    public abstract class BaseIntegratedTest : IClassFixture<TestFixtureData>, IDisposable
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
+        protected readonly IUnityContainer _container;
         /// <summary>
         /// Provider for injection to data services for test purposes.
         /// </summary>
@@ -155,6 +156,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
+            _container = UnityFactory.GetContainer();
 #endif
 #if NETCOREAPP
         /// <summary>
@@ -164,15 +166,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="output">Unit tests debug output.</param>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
-        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
+        protected BaseIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
-            _factory = factory;
+            if (fixtureData == null)
+            {
+                throw new ArgumentNullException(nameof(fixtureData));
+            }
+
+            _factory = fixtureData.factory;
+            _container = fixtureData.unityContainer;
             _output = output;
 
             if (output != null)
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-                container.RegisterInstance(_output);
+                _container.RegisterInstance(_output);
             }
 #endif
             _useGisDataService = useGisDataService;
