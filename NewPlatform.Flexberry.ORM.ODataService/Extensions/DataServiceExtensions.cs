@@ -88,7 +88,33 @@
                 // Нужно гарантировать, что у загруженных детейлов будет проставлена ссылка на агрегатора, поэтому добавим свойство в представление (если уже есть, то второй раз не добавится).
                 detailView.AddProperty(agregatorPropertyName);
                 LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(detailView.DefineClassType, detailView);
-                lcs.LoadingTypes = TypeUsageProvider.TypeUsage.GetUsageTypes(view.DefineClassType, detailInView.Name);
+                Type[] usageTypes = TypeUsageProvider.TypeUsage.GetUsageTypes(view.DefineClassType, detailInView.Name);
+                List<Type> storedTypes = new List<Type>();
+                foreach (var usageType in usageTypes)
+                {
+                    if (Information.IsStoredType(usageType))
+                    {
+                        storedTypes.Add(usageType);
+                    }
+                }
+
+                if (!storedTypes.Any())
+                {
+                    foreach (DataObject agregator in agregators)
+                    {
+                        Type agregatorType = agregator.GetType();
+                        Type[] usageTypesFromAgregator = TypeUsageProvider.TypeUsage.GetUsageTypes(agregatorType, detailInView.Name);
+                        foreach (Type usageTypeFromAgregator in usageTypesFromAgregator)
+                        {
+                            if (Information.IsStoredType(usageTypeFromAgregator) && !storedTypes.Contains(usageTypeFromAgregator))
+                            {
+                                storedTypes.Add(usageTypeFromAgregator);
+                            }
+                        }
+                    }
+                }
+
+                lcs.LoadingTypes = storedTypes.ToArray();
                 Type agregatorKeyType = agregators[0].__PrimaryKey.GetType();
 
                 // Производим обработку только тех агрегаторов, для которых ранее не был загружен детейл.
