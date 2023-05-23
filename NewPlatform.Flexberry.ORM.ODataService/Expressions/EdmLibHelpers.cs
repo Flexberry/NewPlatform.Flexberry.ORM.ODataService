@@ -351,7 +351,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
         private static string EdmFullName(this Type clrType)
         {
-            return string.IsNullOrEmpty(clrType.Namespace) ? clrType.EdmName() : string.Format(CultureInfo.InvariantCulture, "{0}.{1}", clrType.Namespace, clrType.EdmName());
+            return string.Format(CultureInfo.InvariantCulture, "{0}.{1}", clrType.Namespace, clrType.EdmName());
         }
 
         private static IEdmPrimitiveType GetPrimitiveType(EdmPrimitiveTypeKind primitiveKind)

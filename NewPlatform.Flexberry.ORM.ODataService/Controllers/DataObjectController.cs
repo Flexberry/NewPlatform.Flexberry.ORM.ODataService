@@ -871,14 +871,7 @@
                         }
                         else
                         {
-                            try
-                            {
-                                value = propertyInfo.GetValue(obj, null);
-                            }
-                            catch (System.Exception)
-                            {
-                                continue;
-                            }
+                            value = propertyInfo.GetValue(obj, null);
                         }
 
                         Type propType = propertyInfo.PropertyType;

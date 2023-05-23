@@ -98,6 +98,7 @@
 
                     Assert.True(!string.IsNullOrEmpty(receivedData));
                     Assert.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>", receivedData);
+                    Assert.DoesNotContain("____", receivedData);
                 }
             });
         }

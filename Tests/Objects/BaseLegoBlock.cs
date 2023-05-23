@@ -39,12 +39,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         private NewPlatform.Flexberry.ORM.ODataService.Tests.LegoBlockColor fColor;
         
         private NewPlatform.Flexberry.ORM.ODataService.Tests.DetailArrayOfLegoPatent fPatents;
-        
+
         // *** Start programmer edit section *** (BaseLegoBlock CustomMembers)
 
+        [NotStored]
+        public virtual string AssocType
+        {
+            get
+            {
+                return GetType().Name;
+            }
+        }
         // *** End programmer edit section *** (BaseLegoBlock CustomMembers)
 
-        
+
         /// <summary>
         /// Name.
         /// </summary>
