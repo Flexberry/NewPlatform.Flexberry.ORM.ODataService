@@ -35,10 +35,7 @@ namespace NewPlatform.Flexberry.ORM.IntegratedTests
             : base(messageSink)
         {
             var container = new UnityContainer();
-            IServiceProvider serviceProvider = new UnityServiceProvider(container);
-            IBusinessServerProvider businessServerProvider = new BusinessServerProvider(serviceProvider);
-            IDataService ds = new MSSQLDataService(new Mock<ISecurityManager>().Object, new Mock<IAuditService>().Object, businessServerProvider);
-            BaseIntegratedTest.BSProvider = businessServerProvider;
+            IDataService ds = new MSSQLDataService(new Mock<ISecurityManager>().Object, new Mock<IAuditService>().Object);
 
             DataServiceProvider.DataService = ds;
             ExternalLangDef.LanguageDef = new ExternalLangDef(ds);

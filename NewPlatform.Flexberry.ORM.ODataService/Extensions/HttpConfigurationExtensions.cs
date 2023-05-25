@@ -83,6 +83,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
 
             // Model.
             DataObjectEdmModel model = builder.Build();
+            config.DependencyResolver.GetService(typeof(DataObjectEdmModel));
 
             // DataService for batch requests support.
             IDataService dataService = (IDataService)config.DependencyResolver.GetService(typeof(IDataService));

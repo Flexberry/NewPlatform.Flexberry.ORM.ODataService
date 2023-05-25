@@ -5,19 +5,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
 
     using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Formatter;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OData.Edm;
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-
     using Unity;
-
     using Action = Functions.Action;
 
     /// <summary>
@@ -89,10 +85,9 @@
         private readonly IDictionary<Type, EdmEntitySet> _registeredEntitySets = new Dictionary<Type, EdmEntitySet>();
         private readonly IDictionary<Type, IList<Type>> _typeHierarchy = new Dictionary<Type, IList<Type>>();
 
-        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
+        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null, IUnityContainer container = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            var container = UnityFactory.GetContainer();
             if (container != null)
             {
                 if (container.IsRegistered<IExportService>("Export"))

@@ -18,10 +18,10 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
-        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="fixtureData">Данные для теста.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public AfterInternalServerErrorTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
-            : base(factory, output)
+        public AfterInternalServerErrorTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
+            : base(fixtureData, output)
         {
         }
 #endif

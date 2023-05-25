@@ -26,10 +26,10 @@
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
-        /// <param name="factory">Фабрика для приложения.</param>
+        /// <param name="fixtureData">Данные для теста.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
-            : base(factory, output)
+        public SkipTopOrderByTest(TestFixtureData fixtureData, ITestOutputHelper output)
+            : base(fixtureData, output)
         {
         }
 #endif
