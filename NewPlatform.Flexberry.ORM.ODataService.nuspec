@@ -32,31 +32,31 @@
         <dependency id="Microsoft.OData.Edm" version="7.10.0" />
         <dependency id="Microsoft.Spatial" version="7.10.0" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-alpha02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-alpha02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETCoreApp3.1">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-alpha02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
         <group targetFramework=".NET6.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-alpha02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NET7.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.1.0" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-alpha02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
     </dependencies>
