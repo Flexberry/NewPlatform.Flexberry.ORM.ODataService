@@ -69,7 +69,8 @@ namespace ODataServiceSample.AspNetCore
             IUnityContainer unityContainer = UnityFactory.GetContainer();
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
-            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object) { CustomizationString = CustomizationString };
+            Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
+            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
