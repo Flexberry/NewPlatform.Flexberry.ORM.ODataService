@@ -85,40 +85,18 @@
         private readonly IDictionary<Type, EdmEntitySet> _registeredEntitySets = new Dictionary<Type, EdmEntitySet>();
         private readonly IDictionary<Type, IList<Type>> _typeHierarchy = new Dictionary<Type, IList<Type>>();
 
-        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null, IUnityContainer container = null)
+        public DataObjectEdmModel(
+            DataObjectEdmMetadata metadata,
+            DataObjectEdmModelDependencies dependencies = null,
+            IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            if (container != null)
+
+            if (dependencies != null)
             {
-                if (container.IsRegistered<IExportService>("Export"))
-                {
-                    ExportService = container.Resolve<IExportService>("Export");
-                }
-
-                if (container.IsRegistered<IExportService>())
-                {
-                    ExportService = container.Resolve<IExportService>();
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>())
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
-                }
-
-                if (container.IsRegistered<IODataExportService>("Export"))
-                {
-                    ODataExportService = container.Resolve<IODataExportService>("Export");
-                }
-
-                if (container.IsRegistered<IODataExportService>())
-                {
-                    ODataExportService = container.Resolve<IODataExportService>();
-                }
+                ExportService = dependencies.ExportServiceNamed ?? dependencies.ExportService;
+                ExportStringedObjectViewService = dependencies.ExportStringedObjectViewServiceNamed ?? dependencies.ExportStringedObjectViewService;
+                ODataExportService = dependencies.ODataExportServiceNamed ?? dependencies.ODataExportService;
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");

@@ -81,6 +81,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(Lock).Assembly,
             };
 
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>();
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());

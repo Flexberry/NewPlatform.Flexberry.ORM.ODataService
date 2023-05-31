@@ -152,10 +152,8 @@
                 }
             }
 
-            object fromProvider = _serviceProvider.GetService(typeof(DataObjectEdmModel));
-            var dataObjectEdmModel = fromProvider == null
-                ? new DataObjectEdmModel(meta, this)
-                : (DataObjectEdmModel)fromProvider;
+            object fromProvider = _serviceProvider.GetService(typeof(DataObjectEdmModelDependencies));
+            var dataObjectEdmModel = new DataObjectEdmModel(meta, (DataObjectEdmModelDependencies)fromProvider, this);
 
             return dataObjectEdmModel;
         }
