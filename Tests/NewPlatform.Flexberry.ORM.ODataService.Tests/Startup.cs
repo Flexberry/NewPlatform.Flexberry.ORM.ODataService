@@ -73,20 +73,10 @@ namespace ODataServiceSample.AspNetCore
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
-            var assemblies = new[]
-            {
-                    typeof(Медведь).Assembly,
-                    typeof(ApplicationLog).Assembly,
-                    typeof(UserSetting).Assembly,
-                    typeof(Lock).Assembly,
-            };
-
             unityContainer.RegisterType<DataObjectEdmModelDependencies>();
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-            unityContainer.RegisterFactory<IDataObjectEdmModelBuilder>(
-                new Func<IUnityContainer, object>(o => new DefaultDataObjectEdmModelBuilder(assemblies, new UnityServiceProvider(o), false)), FactoryLifetime.Singleton);
 
             _serviceProvider = serviceProvider;
 

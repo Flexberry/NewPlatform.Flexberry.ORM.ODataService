@@ -94,9 +94,9 @@
 
             if (dependencies != null)
             {
-                ExportService = dependencies.ExportServiceNamed ?? dependencies.ExportService;
-                ExportStringedObjectViewService = dependencies.ExportStringedObjectViewServiceNamed ?? dependencies.ExportStringedObjectViewService;
-                ODataExportService = dependencies.ODataExportServiceNamed ?? dependencies.ODataExportService;
+                ExportService = dependencies.ExportService ?? dependencies.ExportServiceNamed;
+                ExportStringedObjectViewService = dependencies.ExportStringedObjectViewService ?? dependencies.ExportStringedObjectViewServiceNamed;
+                ODataExportService = dependencies.ODataExportService ?? dependencies.ODataExportServiceNamed;
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
