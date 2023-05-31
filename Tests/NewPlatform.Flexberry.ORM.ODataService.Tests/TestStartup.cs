@@ -56,7 +56,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 };
 
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _unityContainer, false, pseudoDetailDefinitions);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false, pseudoDetailDefinitions);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 

@@ -28,7 +28,7 @@
         [Fact]
         public void TestRegisteringHierarchy()
         {
-            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly });
+            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly }, null);
 
             DataObjectEdmModel model = builder.Build();
 

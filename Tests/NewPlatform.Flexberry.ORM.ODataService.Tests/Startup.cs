@@ -43,7 +43,7 @@ namespace ODataServiceSample.AspNetCore
 
         public IConfiguration Configuration { get; }
 
-        protected IUnityContainer _unityContainer;
+        protected IServiceProvider _serviceProvider;
 
         public string CustomizationString => "";
 
@@ -66,17 +66,28 @@ namespace ODataServiceSample.AspNetCore
             */
 
             // Configure Flexberry services via Unity.
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
+            IUnityContainer unityContainer = new UnityContainer();
+            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
+            var assemblies = new[]
+            {
+                    typeof(Медведь).Assembly,
+                    typeof(ApplicationLog).Assembly,
+                    typeof(UserSetting).Assembly,
+                    typeof(Lock).Assembly,
+            };
+
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+            unityContainer.RegisterFactory<IDataObjectEdmModelBuilder>(
+                new Func<IUnityContainer, object>(o => new DefaultDataObjectEdmModelBuilder(assemblies, new UnityServiceProvider(o), false)), FactoryLifetime.Singleton);
 
-            _unityContainer = unityContainer;
+            _serviceProvider = serviceProvider;
 
             services.AddMvcCore(options =>
             {
@@ -127,7 +138,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _unityContainer, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
