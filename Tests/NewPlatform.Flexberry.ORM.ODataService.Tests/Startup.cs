@@ -18,6 +18,7 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
+    using NewPlatform.Flexberry;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -27,7 +28,7 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
     using NewPlatform.Flexberry.Services;
     using Unity;
-
+    using Unity.Injection;
     using LockService = NewPlatform.Flexberry.Services.LockService;
 
     public class Startup
@@ -43,7 +44,7 @@ namespace ODataServiceSample.AspNetCore
 
         public IConfiguration Configuration { get; }
 
-        protected IUnityContainer _unityContainer;
+        protected IServiceProvider _serviceProvider;
 
         public string CustomizationString => "";
 
@@ -66,17 +67,26 @@ namespace ODataServiceSample.AspNetCore
             */
 
             // Configure Flexberry services via Unity.
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
+            IUnityContainer unityContainer = new UnityContainer();
+            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
+                new InjectionConstructor(
+                    new ResolvedParameter<IExportService>(),
+                    new ResolvedParameter<IExportService>("Export"),
+                    new ResolvedParameter<IExportStringedObjectViewService>(),
+                    new ResolvedParameter<IExportStringedObjectViewService>("ExportStringedObjectView"),
+                    new ResolvedParameter<IODataExportService>(),
+                    new ResolvedParameter<IODataExportService>("Export")));
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
 
-            _unityContainer = unityContainer;
+            _serviceProvider = serviceProvider;
 
             services.AddMvcCore(options =>
             {
@@ -127,7 +137,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _unityContainer, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });

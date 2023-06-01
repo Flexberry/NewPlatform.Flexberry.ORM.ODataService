@@ -34,9 +34,9 @@
         private readonly PseudoDetailDefinitions _pseudoDetailDefinitions;
 
         /// <summary>
-        /// Service provider for resolving DataObjectEdmModel.
+        /// Container for dependency injection.
         /// </summary>
-        private readonly IUnityContainer _container;
+        private IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Additional mapping of CLR type to edm primitive type. When it's required on the application side.
@@ -87,13 +87,13 @@
         /// <param name="additionalMapping">Additional mapping of CLR type to edm primitive type.</param>
         public DefaultDataObjectEdmModelBuilder(
             IEnumerable<Assembly> searchAssemblies,
-            IUnityContainer container = null,
+            IServiceProvider serviceProvider,
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
             Dictionary<Type, IEdmPrimitiveType> additionalMapping = null)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
-            _container = container;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
             _pseudoDetailDefinitions = pseudoDetailDefinitions ?? new PseudoDetailDefinitions();
 
@@ -152,7 +152,10 @@
                 }
             }
 
-            return new DataObjectEdmModel(meta, this, _container);
+            object fromProvider = _serviceProvider.GetService(typeof(DataObjectEdmModelDependencies));
+            var dataObjectEdmModel = new DataObjectEdmModel(meta, (DataObjectEdmModelDependencies)fromProvider, this);
+
+            return dataObjectEdmModel;
         }
 
         /// <summary>
