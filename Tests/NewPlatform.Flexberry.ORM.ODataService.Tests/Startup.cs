@@ -44,7 +44,9 @@ namespace ODataServiceSample.AspNetCore
 
         public IConfiguration Configuration { get; }
 
-        protected IServiceProvider _serviceProvider;
+        public static IServiceProvider _serviceProvider;
+
+        public static IUnityContainer _unityContainer;
 
         public string CustomizationString => "";
 
@@ -74,7 +76,7 @@ namespace ODataServiceSample.AspNetCore
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
-            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
                 new InjectionConstructor(
                     unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
                     unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
@@ -86,6 +88,7 @@ namespace ODataServiceSample.AspNetCore
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
 
+            _unityContainer = unityContainer;
             _serviceProvider = serviceProvider;
 
             services.AddMvcCore(options =>

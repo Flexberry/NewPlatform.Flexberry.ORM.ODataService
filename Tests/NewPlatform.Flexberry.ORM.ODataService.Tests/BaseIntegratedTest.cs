@@ -38,7 +38,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
-        protected readonly IUnityContainer _container;
+        public static IUnityContainer _container;
+
+        public static IServiceProvider _serviceProvider;
+
         /// <summary>
         /// Provider for injection to data services for test purposes.
         /// </summary>
@@ -156,7 +159,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
-            _container = UnityFactory.GetContainer();
+            _container = new UnityContainer();
+            _serviceProvider = new UnityServiceProvider(_container);
 #endif
 #if NETCOREAPP
         /// <summary>
@@ -175,6 +179,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             _factory = fixtureData.factory;
             _container = fixtureData.unityContainer;
+            _serviceProvider = new UnityServiceProvider(_container);
             _output = output;
 
             if (output != null)

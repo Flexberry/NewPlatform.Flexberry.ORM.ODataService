@@ -83,16 +83,16 @@
             bool useNamespaceInEntitySetName = false,
             PseudoDetailDefinitions pseudoDetailDefinitions = null)
         {
-            IUnityContainer unityContainer = new UnityContainer();
-            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
             DataObjectsAssembliesNames = new[]
             {
                 typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
-            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(null);
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+
+
+            _container.RegisterInstance<DataObjectEdmModelDependencies>(null);
+            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, _serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 
         /// <summary>
