@@ -3,16 +3,16 @@
     using ICSSoft.STORMNET;
 
     using Xunit;
-
     using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Unity;
+    using System;
+    using ICSSoft.Services;
 
-    
     public class DefaultDataObjectModelBuilderTest
     {
         private class H1 : DataObject
         {
         }
-
         private class H2 : H1
         {
         }
@@ -28,7 +28,10 @@
         [Fact]
         public void TestRegisteringHierarchy()
         {
-            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly }, null);
+            IUnityContainer unityContainer = new UnityContainer();
+            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
+
+            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly }, serviceProvider);
 
             DataObjectEdmModel model = builder.Build();
 

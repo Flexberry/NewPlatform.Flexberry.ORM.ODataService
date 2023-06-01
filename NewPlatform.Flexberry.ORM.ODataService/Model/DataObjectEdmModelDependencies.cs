@@ -1,13 +1,24 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Model
 {
+    using System;
+
+    /// <summary>
+    /// Designed to pass the <see cref="IServiceProvider"/> interface to the <see cref="DataObjectEdmModel"/>,
+    /// which doesn't support named entities, but allows third-party DI in the future.
+    /// </summary>
     public class DataObjectEdmModelDependencies
     {
-        public IExportService ExportService;
-        public IExportService ExportServiceNamed;
-        public IExportStringedObjectViewService ExportStringedObjectViewService;
-        public IExportStringedObjectViewService ExportStringedObjectViewServiceNamed;
-        public IODataExportService ODataExportService;
-        public IODataExportService ODataExportServiceNamed;
+        public IExportService ExportService { get; private set; }
+
+        public IExportService ExportServiceNamed { get; private set; }
+
+        public IExportStringedObjectViewService ExportStringedObjectViewService { get; private set; }
+
+        public IExportStringedObjectViewService ExportStringedObjectViewServiceNamed { get; private set; }
+
+        public IODataExportService ODataExportService { get; private set; }
+
+        public IODataExportService ODataExportServiceNamed { get; private set; }
 
         public DataObjectEdmModelDependencies(
             IExportService exportService,
