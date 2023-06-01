@@ -76,8 +76,11 @@ namespace ODataServiceSample.AspNetCore
 
             unityContainer.RegisterType<DataObjectEdmModelDependencies>(
                 new InjectionConstructor(
+                    new ResolvedParameter<IExportService>(),
                     new ResolvedParameter<IExportService>("Export"),
+                    new ResolvedParameter<IExportStringedObjectViewService>(),
                     new ResolvedParameter<IExportStringedObjectViewService>("ExportStringedObjectView"),
+                    new ResolvedParameter<IODataExportService>(),
                     new ResolvedParameter<IODataExportService>("Export")));
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));

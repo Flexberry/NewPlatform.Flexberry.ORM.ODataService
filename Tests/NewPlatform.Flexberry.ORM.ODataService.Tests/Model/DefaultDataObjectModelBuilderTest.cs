@@ -1,18 +1,18 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Model
 {
-    using ICSSoft.STORMNET;
-
-    using Xunit;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
-    using Unity;
     using System;
     using ICSSoft.Services;
+    using ICSSoft.STORMNET;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Unity;
+    using Xunit;
 
     public class DefaultDataObjectModelBuilderTest
     {
         private class H1 : DataObject
         {
         }
+
         private class H2 : H1
         {
         }
