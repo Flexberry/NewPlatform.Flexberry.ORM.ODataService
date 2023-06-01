@@ -30,6 +30,7 @@
         {
             IUnityContainer unityContainer = new UnityContainer();
             IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
+            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(null);
 
             var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly }, serviceProvider);
 

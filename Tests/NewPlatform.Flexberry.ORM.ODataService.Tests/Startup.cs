@@ -74,14 +74,14 @@ namespace ODataServiceSample.AspNetCore
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
 
-            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
+            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(
                 new InjectionConstructor(
-                    new ResolvedParameter<IExportService>(),
-                    new ResolvedParameter<IExportService>("Export"),
-                    new ResolvedParameter<IExportStringedObjectViewService>(),
-                    new ResolvedParameter<IExportStringedObjectViewService>("ExportStringedObjectView"),
-                    new ResolvedParameter<IODataExportService>(),
-                    new ResolvedParameter<IODataExportService>("Export")));
+                    unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
+                    unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>() ? unityContainer.Resolve<IExportStringedObjectViewService>() : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? unityContainer.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                    unityContainer.IsRegistered<IODataExportService>() ? unityContainer.Resolve<IODataExportService>() : null,
+                    unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
