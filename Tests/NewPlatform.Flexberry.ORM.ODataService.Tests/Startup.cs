@@ -2,16 +2,13 @@
 namespace ODataServiceSample.AspNetCore
 {
     using System;
-    using System.IO;
     using System.Linq;
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
-    using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Server.Features;
@@ -51,7 +48,6 @@ namespace ODataServiceSample.AspNetCore
             // Configure Flexberry services via Unity.
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
-            Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
             IBusinessServerProvider businessServerProvider = unityContainer.Resolve<IBusinessServerProvider>();
             IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = CustomizationString };
 
@@ -81,7 +77,7 @@ namespace ODataServiceSample.AspNetCore
 
                     return dataService;
                 });
-                
+
                 services.AddSingleton<ILockService, LockService>();
             }
             */

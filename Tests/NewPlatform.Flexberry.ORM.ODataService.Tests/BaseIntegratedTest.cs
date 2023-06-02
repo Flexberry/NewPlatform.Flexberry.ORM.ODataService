@@ -8,6 +8,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
@@ -15,10 +16,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
+    using Unity;
     using Xunit;
     using Xunit.Abstractions;
-    using Unity;
-    using ICSSoft.Services;
 
 #if NETFRAMEWORK
     /// <summary>
@@ -29,8 +29,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #endif
 #if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
-    using ODataServiceSample.AspNetCore;
     using Microsoft.Practices.Unity.Configuration;
+    using ODataServiceSample.AspNetCore;
 
     /// <summary>
     /// Base class for integration tests.
@@ -144,12 +144,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
-        // TODO: сделать код не повторяющимся.
-            _container = new UnityContainer();
-            _serviceProvider = new UnityServiceProvider(_container);
-            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
-            businessServerProvider = _container.Resolve<IBusinessServerProvider>();
 #endif
+
 #if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
@@ -161,12 +157,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
             _factory = factory;
+#endif
+
             _container = new UnityContainer();
+#if NETCOREAPP
             _container.LoadConfiguration();
+#endif
             _serviceProvider = new UnityServiceProvider(_container);
             _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
-
+#if NETCOREAPP
             CustomWebApplicationFactory<Startup>._unityContainer = _container;
 
             _output = output;

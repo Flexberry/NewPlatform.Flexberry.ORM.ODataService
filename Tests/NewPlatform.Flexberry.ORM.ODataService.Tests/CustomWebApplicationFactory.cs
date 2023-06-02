@@ -3,7 +3,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
     using System.IO;
-    using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Unity.Microsoft.DependencyInjection;

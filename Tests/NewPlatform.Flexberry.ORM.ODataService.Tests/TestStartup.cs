@@ -1,6 +1,7 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using ICSSoft.Services;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
     using ODataServiceSample.AspNetCore;
-    using System;
     using Unity;
 
     /// <summary>
@@ -41,7 +41,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //IUnityContainer unityContainer = new UnityContainer();
             IServiceProvider serviceProvider = app.ApplicationServices;
             _unityContainer.RegisterInstance(env);
 
@@ -63,7 +62,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     typeof(Lock).Assembly,
                 };
 
-                
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
                 var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions);
 
