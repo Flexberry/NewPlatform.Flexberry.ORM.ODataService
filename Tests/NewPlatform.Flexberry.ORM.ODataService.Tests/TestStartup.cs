@@ -13,6 +13,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
     using ODataServiceSample.AspNetCore;
+    using System;
     using Unity;
 
     /// <summary>
@@ -20,6 +21,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// </summary>
     public class TestStartup : Startup
     {
+        public static IUnityContainer _unityContainer;
+
         /// <summary>
         /// Initialize new instance of TestStartup.
         /// </summary>
@@ -29,11 +32,18 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
         }
 
+        public override void ConfigureContainer(IUnityContainer unityContainer)
+        {
+            _unityContainer = unityContainer;
+            base.ConfigureContainer(unityContainer);
+        }
+
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IUnityContainer unityContainer = new UnityContainer();
-            unityContainer.RegisterInstance(env);
+            //IUnityContainer unityContainer = new UnityContainer();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            _unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -53,8 +63,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     typeof(Lock).Assembly,
                 };
 
-                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)_serviceProvider.GetService(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false, pseudoDetailDefinitions);
+                
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 

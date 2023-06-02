@@ -72,8 +72,8 @@
         }
 #endif
 #if NETCOREAPP
-        public BaseODataServiceIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
-            : base(fixtureData, output, "ODataDB", useGisDataService)
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(factory, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
@@ -127,25 +127,25 @@
 
             foreach (IDataService dataService in DataServices)
             {
-                using (var container = new UnityContainer())
+                //using (var container = new UnityContainer())
                 using (var config = new HttpConfiguration())
                 using (var server = new HttpServer(config))
                 using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
-                    container.RegisterInstance(dataService);
+                    _container.RegisterInstance(dataService);
 
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-                    config.DependencyResolver = new UnityDependencyResolver(container);
+                    config.DependencyResolver = new UnityDependencyResolver(_container);
 
                     const string fileControllerPath = "api/File";
                     config.MapODataServiceFileRoute("File", fileControllerPath);
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
-                    container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
+                    _container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
-                    var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                    var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
                 }
             }
@@ -170,14 +170,15 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                ManagementToken token = (ManagementToken)_container.Resolve(typeof(ManagementToken));
-                _container.RegisterInstance(dataService);
+                IUnityContainer container = TestStartup._unityContainer; // При создании odata-приложения оригинальный контейнер не изменяется.
+                ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
+                container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
 
                 var fileAccessor = (IDataObjectFileAccessor)_factory.Services.GetService(typeof(IDataObjectFileAccessor));
-                _container.RegisterInstance(fileAccessor);
+                container.RegisterInstance(fileAccessor);
 
-                var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
+                var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 action(args);
             }
         }

@@ -1,6 +1,7 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using System.IO;
     using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
@@ -14,13 +15,19 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
         where TStartup : class
     {
+        public static Unity.IUnityContainer _unityContainer;
+
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
+            if (_unityContainer == null)
+            {
+                throw new Exception("Unity.IUnityContainer is not defined");
+            }
+
             string contentRootDirectory = Directory.GetCurrentDirectory();
-            var container = UnityFactory.GetContainer();
             var webHostBuilder = new WebHostBuilder()
-                            .UseUnityServiceProvider(container)
+                            .UseUnityServiceProvider(_unityContainer)
                             .UseContentRoot(contentRootDirectory)
                             .UseStartup<TestStartup>();
             return webHostBuilder;

@@ -61,8 +61,8 @@
 #if NETFRAMEWORK
         public FileControllerTest()
 #elif NETCOREAPP
-        public FileControllerTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output)
+        public FileControllerTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
 #endif
         {
             _filesDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");

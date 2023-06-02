@@ -30,11 +30,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
     using ODataServiceSample.AspNetCore;
+    using Microsoft.Practices.Unity.Configuration;
 
     /// <summary>
     /// Base class for integration tests.
     /// </summary>
-    public abstract class BaseIntegratedTest : IClassFixture<TestFixtureData>, IDisposable
+    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>, IDisposable
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
@@ -170,16 +171,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="output">Unit tests debug output.</param>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
-        protected BaseIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
+        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
-            if (fixtureData == null)
-            {
-                throw new ArgumentNullException(nameof(fixtureData));
-            }
-
-            _factory = fixtureData.factory;
-            _container = fixtureData.unityContainer;
+            _factory = factory;
+            _container = new UnityContainer();
+            _container.LoadConfiguration();
             _serviceProvider = new UnityServiceProvider(_container);
+            CustomWebApplicationFactory<Startup>._unityContainer = _container;
+
             _output = output;
 
             if (output != null)

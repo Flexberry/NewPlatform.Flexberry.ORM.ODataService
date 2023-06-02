@@ -44,11 +44,28 @@ namespace ODataServiceSample.AspNetCore
 
         public IConfiguration Configuration { get; }
 
-        public static IServiceProvider _serviceProvider;
-
-        public static IUnityContainer _unityContainer;
-
         public string CustomizationString => "";
+
+        public virtual void ConfigureContainer(IUnityContainer unityContainer)
+        {
+            // Configure Flexberry services via Unity.
+            var securityManager = new EmptySecurityManager();
+            Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
+            Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
+            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
+
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
+                new InjectionConstructor(
+                    unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
+                    unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>() ? unityContainer.Resolve<IExportStringedObjectViewService>() : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? unityContainer.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                    unityContainer.IsRegistered<IODataExportService>() ? unityContainer.Resolve<IODataExportService>() : null,
+                    unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
+            unityContainer.RegisterInstance(dataService);
+            unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
+            unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
@@ -67,29 +84,6 @@ namespace ODataServiceSample.AspNetCore
                 services.AddSingleton<ILockService, LockService>();
             }
             */
-
-            // Configure Flexberry services via Unity.
-            IUnityContainer unityContainer = new UnityContainer();
-            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
-            var securityManager = new EmptySecurityManager();
-            Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
-            Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
-            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
-
-            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
-                new InjectionConstructor(
-                    unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
-                    unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
-                    unityContainer.IsRegistered<IExportStringedObjectViewService>() ? unityContainer.Resolve<IExportStringedObjectViewService>() : null,
-                    unityContainer.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? unityContainer.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
-                    unityContainer.IsRegistered<IODataExportService>() ? unityContainer.Resolve<IODataExportService>() : null,
-                    unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
-            unityContainer.RegisterInstance(dataService);
-            unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
-            unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-
-            _unityContainer = unityContainer;
-            _serviceProvider = serviceProvider;
 
             services.AddMvcCore(options =>
             {
@@ -140,7 +134,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
