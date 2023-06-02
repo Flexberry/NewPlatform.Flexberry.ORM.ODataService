@@ -46,22 +46,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <summary>
         /// Provider for injection to data services for test purposes.
         /// </summary>
-        public static IBusinessServerProvider BSProvider
-        {
-            set
-            {
-                if (businessServerProvider != null)
-                {
-                    throw new Exception("BusinessServerProvider should not be initialized twice.");
-                }
-
-                businessServerProvider = value;
-            }
-        }
-
-        /// <summary>
-        /// Provider for injection to data services for test purposes.
-        /// </summary>
         protected static IBusinessServerProvider businessServerProvider;
 
         protected ITestOutputHelper _output;
@@ -160,8 +144,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
+        // TODO: сделать код не повторяющимся.
             _container = new UnityContainer();
             _serviceProvider = new UnityServiceProvider(_container);
+            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            businessServerProvider = _container.Resolve<IBusinessServerProvider>();
 #endif
 #if NETCOREAPP
         /// <summary>
@@ -177,6 +164,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             _container = new UnityContainer();
             _container.LoadConfiguration();
             _serviceProvider = new UnityServiceProvider(_container);
+            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            businessServerProvider = _container.Resolve<IBusinessServerProvider>();
+
             CustomWebApplicationFactory<Startup>._unityContainer = _container;
 
             _output = output;

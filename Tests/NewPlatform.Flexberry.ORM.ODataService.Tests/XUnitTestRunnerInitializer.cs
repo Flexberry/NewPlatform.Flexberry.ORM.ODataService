@@ -52,8 +52,6 @@ namespace NewPlatform.Flexberry.ORM.IntegratedTests
             string outputConfigFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             File.Copy(configFile, outputConfigFile, true);
 #endif
-
-            BaseIntegratedTest.BSProvider = businessServerProvider;
         }
     }
 }

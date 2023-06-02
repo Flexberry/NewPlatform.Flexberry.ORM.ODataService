@@ -52,7 +52,8 @@ namespace ODataServiceSample.AspNetCore
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
             Mock<IBusinessServerProvider> mockBusinessServerProvider = new Mock<IBusinessServerProvider>();
-            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, mockBusinessServerProvider.Object) { CustomizationString = CustomizationString };
+            IBusinessServerProvider businessServerProvider = unityContainer.Resolve<IBusinessServerProvider>();
+            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = CustomizationString };
 
             unityContainer.RegisterType<DataObjectEdmModelDependencies>(
                 new InjectionConstructor(
