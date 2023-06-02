@@ -14,6 +14,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
         where TStartup : class
     {
+        /// <summary>
+        /// Unity container is created in only one place: <see cref="BaseIntegratedTest"/>.
+        /// Further, it autimatically appears in a child <see cref="BaseODataServiceIntegratedTest"/>, where ODataService starts.
+        /// The service is started in this class. Therefore, the Unity container must be passed to the running application here,
+        /// being initialized earlier.
+        /// </summary>
         public static Unity.IUnityContainer _unityContainer;
 
         /// <inheritdoc/>

@@ -43,6 +43,10 @@ namespace ODataServiceSample.AspNetCore
 
         public string CustomizationString => "";
 
+        /// <summary>
+        /// Method for Unity container configuring.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
         public virtual void ConfigureContainer(IUnityContainer unityContainer)
         {
             // Configure Flexberry services via Unity.

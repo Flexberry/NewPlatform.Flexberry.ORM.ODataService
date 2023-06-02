@@ -32,6 +32,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
         }
 
+        /// <summary>
+        /// Method for Unity container configuring.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
         public override void ConfigureContainer(IUnityContainer unityContainer)
         {
             _unityContainer = unityContainer;

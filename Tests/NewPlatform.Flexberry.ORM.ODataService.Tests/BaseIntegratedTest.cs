@@ -39,9 +39,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
-        public static IUnityContainer _container;
+        protected IUnityContainer _container;
 
-        public static IServiceProvider _serviceProvider;
+        protected IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Provider for injection to data services for test purposes.
