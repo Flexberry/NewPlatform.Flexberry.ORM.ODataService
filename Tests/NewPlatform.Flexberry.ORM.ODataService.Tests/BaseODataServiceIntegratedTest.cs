@@ -20,6 +20,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
+    using Unity.Injection;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
@@ -90,7 +91,14 @@
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
-            _container.RegisterInstance<DataObjectEdmModelDependencies>(null);
+            _container.RegisterInstance(
+                new DataObjectEdmModelDependencies(_container.IsRegistered<IExportService>() ? _container.Resolve<IExportService>() : null,
+                    _container.IsRegistered<IExportService>("Export") ? _container.Resolve<IExportService>("Export") : null,
+                    _container.IsRegistered<IExportStringedObjectViewService>() ? _container.Resolve<IExportStringedObjectViewService>() : null,
+                    _container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? _container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                    _container.IsRegistered<IODataExportService>() ? _container.Resolve<IODataExportService>() : null,
+                    _container.IsRegistered<IODataExportService>("Export") ? _container.Resolve<IODataExportService>("Export") : null));
+
             _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, _serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 
