@@ -5,6 +5,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.IO;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Unity;
     using Unity.Microsoft.DependencyInjection;
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// The service is started in this class. Therefore, the Unity container must be passed to the running application here,
         /// being initialized earlier.
         /// </summary>
-        public static Unity.IUnityContainer _unityContainer;
+        public static IUnityContainer _unityContainer;
 
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
