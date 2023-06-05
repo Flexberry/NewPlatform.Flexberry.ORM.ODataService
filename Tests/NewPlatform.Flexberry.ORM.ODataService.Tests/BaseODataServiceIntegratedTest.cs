@@ -11,6 +11,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
 
     using Unity;
+    using Unity.Injection;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -20,7 +21,6 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
-    using Unity.Injection;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
