@@ -153,7 +153,7 @@ jobs:
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
         
       - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner
+        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source https://api.nuget.org/v3/index.json
         
       - name: Compile code
         run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln

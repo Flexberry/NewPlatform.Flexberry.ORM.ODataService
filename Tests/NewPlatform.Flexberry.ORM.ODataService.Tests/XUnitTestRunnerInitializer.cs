@@ -30,19 +30,19 @@ namespace NewPlatform.Flexberry.ORM.IntegratedTests
         public XUnitTestRunnerInitializer(IMessageSink messageSink)
             : base(messageSink)
         {
-            IBusinessServerProvider businessServerProvider = new Mock<IBusinessServerProvider>().Object;
-            IDataService ds = new MSSQLDataService(new Mock<ISecurityManager>().Object, new Mock<IAuditService>().Object, new Mock<IBusinessServerProvider>().Object);
-
-            DataServiceProvider.DataService = ds;
-            ExternalLangDef.LanguageDef = new ExternalLangDef(ds);
-            DetailVariableDef.ViewGenerator = null;
-
 #if NETCOREAPP
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             string configFile = $"{Assembly.GetExecutingAssembly().Location}.config";
             string outputConfigFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             File.Copy(configFile, outputConfigFile, true);
 #endif
+
+            IBusinessServerProvider businessServerProvider = new Mock<IBusinessServerProvider>().Object;
+            IDataService ds = new MSSQLDataService(new Mock<ISecurityManager>().Object, new Mock<IAuditService>().Object, new Mock<IBusinessServerProvider>().Object);
+
+            DataServiceProvider.DataService = ds;
+            ExternalLangDef.LanguageDef = new ExternalLangDef(ds);
+            DetailVariableDef.ViewGenerator = null;
         }
     }
 }
