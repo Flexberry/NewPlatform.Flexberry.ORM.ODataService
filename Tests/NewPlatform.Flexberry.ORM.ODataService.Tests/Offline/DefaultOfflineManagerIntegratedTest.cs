@@ -2,28 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
-    using Unity;
-    using Xunit;
-
     using Moq;
-
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.Services;
-    using NewPlatform.Flexberry.ORM.CurrentUserService;
+    using Unity;
+    using Xunit;
 
     public class DefaultOfflineManagerIntegratedTest : BaseODataServiceIntegratedTest
     {
 #if NETCOREAPP
         /// <summary>
-        /// Конструктор по-умолчанию.
+        /// Initializes a new instance of the <see cref="DefaultOfflineManagerIntegratedTest"/> class.
         /// </summary>
-        public DefaultOfflineManagerIntegratedTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output)
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        public DefaultOfflineManagerIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
         { }
 #endif
 

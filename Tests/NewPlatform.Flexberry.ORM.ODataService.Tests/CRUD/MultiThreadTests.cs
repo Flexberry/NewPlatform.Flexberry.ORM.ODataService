@@ -54,10 +54,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
-        /// <param name="fixtureData">Данные для теста.</param>
+        /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public MultiThreadTests(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output)
+        public MultiThreadTests(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
         {
         }
 #endif

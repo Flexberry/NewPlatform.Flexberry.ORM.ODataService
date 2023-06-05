@@ -8,6 +8,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
@@ -15,10 +16,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
+    using Unity;
     using Xunit;
     using Xunit.Abstractions;
-    using Unity;
-    using ICSSoft.Services;
 
 #if NETFRAMEWORK
     /// <summary>
@@ -29,31 +29,19 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #endif
 #if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Practices.Unity.Configuration;
     using ODataServiceSample.AspNetCore;
 
     /// <summary>
     /// Base class for integration tests.
     /// </summary>
-    public abstract class BaseIntegratedTest : IClassFixture<TestFixtureData>, IDisposable
+    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>, IDisposable
     {
         protected readonly WebApplicationFactory<Startup> _factory;
 #endif
-        protected readonly IUnityContainer _container;
-        /// <summary>
-        /// Provider for injection to data services for test purposes.
-        /// </summary>
-        public static IBusinessServerProvider BSProvider
-        {
-            set
-            {
-                if (businessServerProvider != null)
-                {
-                    throw new Exception("BusinessServerProvider should not be initialized twice.");
-                }
+        protected IUnityContainer _container;
 
-                businessServerProvider = value;
-            }
-        }
+        protected IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Provider for injection to data services for test purposes.
@@ -156,8 +144,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
-            _container = UnityFactory.GetContainer();
 #endif
+
 #if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
@@ -166,15 +154,21 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="output">Unit tests debug output.</param>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
-        protected BaseIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
+        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
-            if (fixtureData == null)
-            {
-                throw new ArgumentNullException(nameof(fixtureData));
-            }
+            _factory = factory;
+#endif
 
-            _factory = fixtureData.factory;
-            _container = fixtureData.unityContainer;
+            _container = new UnityContainer();
+#if NETCOREAPP
+            _container.LoadConfiguration();
+#endif
+            _serviceProvider = new UnityServiceProvider(_container);
+            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            businessServerProvider = _container.Resolve<IBusinessServerProvider>();
+#if NETCOREAPP
+            CustomWebApplicationFactory<Startup>._unityContainer = _container;
+
             _output = output;
 
             if (output != null)

@@ -19,11 +19,12 @@
     {
 #if NETCOREAPP
         /// <summary>
-        /// Конструктор по-умолчанию.
+        /// Initializes a new instance of the <see cref="CustomizationEdmModelNames"/> class.
         /// </summary>
-        /// <param name="fixtureData">Данные для теста.</param>
-        public CustomizationEdmModelNames(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output)
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        public CustomizationEdmModelNames(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
         {
         }
 #endif

@@ -55,14 +55,19 @@
         /// </summary>
         private static string _srcTextFilePath;
 
+#if NETFRAMEWORK
         /// <summary>
         /// Инициализирует тестовый класс (инициализация выполняется перед запуском тестов).
         /// </summary>
-#if NETFRAMEWORK
         public FileControllerTest()
 #elif NETCOREAPP
-        public FileControllerTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileControllerTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        public FileControllerTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output)
 #endif
         {
             _filesDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files");

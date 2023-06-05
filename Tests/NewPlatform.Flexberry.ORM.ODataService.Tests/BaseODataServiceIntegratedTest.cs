@@ -3,14 +3,9 @@
     using System;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Reflection;
-    using System.Text;
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.KeyGen;
-    using ICSSoft.STORMNET.Windows.Forms;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
@@ -22,14 +17,12 @@
 #if NETFRAMEWORK
     using System.Web.Http;
     using System.Web.Http.Cors;
-    using Microsoft.AspNet.OData.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
-    using ODataServiceSample.AspNetCore;
 #endif
 
     /// <summary>
@@ -72,8 +65,16 @@
         }
 #endif
 #if NETCOREAPP
-        public BaseODataServiceIntegratedTest(TestFixtureData fixtureData, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
-            : base(fixtureData, output, "ODataDB", useGisDataService)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseODataServiceIntegratedTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        /// <param name="useNamespaceInEntitySetName">Flag indicating whether type namespaces should be added to the names of their corresponding entity sets.</param>
+        /// <param name="useGisDataService">Flag indicating whether GisDataService be used.</param>
+        /// <param name="pseudoDetailDefinitions">OData definition of the link from master to pseudodetail (pseudoproperty).</param>
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+            : base(factory, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
@@ -83,16 +84,14 @@
             bool useNamespaceInEntitySetName = false,
             PseudoDetailDefinitions pseudoDetailDefinitions = null)
         {
-            IUnityContainer unityContainer = new UnityContainer();
-            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
             DataObjectsAssembliesNames = new[]
             {
                 typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
-            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(null);
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+            _container.RegisterInstance<DataObjectEdmModelDependencies>(null);
+            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, _serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 
         /// <summary>
@@ -127,25 +126,24 @@
 
             foreach (IDataService dataService in DataServices)
             {
-                using (var container = new UnityContainer())
                 using (var config = new HttpConfiguration())
                 using (var server = new HttpServer(config))
                 using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
-                    container.RegisterInstance(dataService);
+                    _container.RegisterInstance(dataService);
 
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-                    config.DependencyResolver = new UnityDependencyResolver(container);
+                    config.DependencyResolver = new UnityDependencyResolver(_container);
 
                     const string fileControllerPath = "api/File";
                     config.MapODataServiceFileRoute("File", fileControllerPath);
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
-                    container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
+                    _container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
-                    var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
+                    var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
                 }
             }
@@ -170,14 +168,15 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                ManagementToken token = (ManagementToken)_container.Resolve(typeof(ManagementToken));
-                _container.RegisterInstance(dataService);
+                IUnityContainer container = TestStartup._unityContainer; // При создании odata-приложения оригинальный контейнер не изменяется.
+                ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
+                container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
 
                 var fileAccessor = (IDataObjectFileAccessor)_factory.Services.GetService(typeof(IDataObjectFileAccessor));
-                _container.RegisterInstance(fileAccessor);
+                container.RegisterInstance(fileAccessor);
 
-                var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
+                var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 action(args);
             }
         }

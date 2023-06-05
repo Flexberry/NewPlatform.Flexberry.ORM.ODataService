@@ -1,6 +1,7 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using ICSSoft.Services;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class TestStartup : Startup
     {
         /// <summary>
+        /// After the start of the OData app, the container in the OData app is its own.
+        /// Therefore, a static field is defined here, so that later this container can be pulled back.
+        /// <see cref="BaseODataServiceIntegratedTest"/>
+        /// </summary>
+        public static IUnityContainer _unityContainer;
+
+        /// <summary>
         /// Initialize new instance of TestStartup.
         /// </summary>
         /// <param name="configuration">Configuration for new instance.</param>
@@ -29,11 +37,21 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
         }
 
+        /// <summary>
+        /// Method for Unity container configuring.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
+        public override void ConfigureContainer(IUnityContainer unityContainer)
+        {
+            _unityContainer = unityContainer;
+            base.ConfigureContainer(unityContainer);
+        }
+
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
-            unityContainer.RegisterInstance(env);
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            _unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -45,8 +63,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             app.UseODataService(builder =>
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-
                 var assemblies = new[]
                 {
                     typeof(Медведь).Assembly,
@@ -55,12 +71,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     typeof(Lock).Assembly,
                 };
 
-                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, _serviceProvider, false, pseudoDetailDefinitions);
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
-                container.RegisterInstance(typeof(ManagementToken), token);
+                _unityContainer.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }

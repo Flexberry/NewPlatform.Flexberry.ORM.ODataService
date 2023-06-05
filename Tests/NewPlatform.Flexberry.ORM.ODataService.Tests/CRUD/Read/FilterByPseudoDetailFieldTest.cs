@@ -36,8 +36,13 @@
         }
 #endif
 #if NETCOREAPP
-        public FilterByPseudoDetailFieldTest(TestFixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper output)
-            : base(fixtureData, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterByPseudoDetailFieldTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
             _container.RegisterInstance(GetPseudoDetailDefinitions());
         }
