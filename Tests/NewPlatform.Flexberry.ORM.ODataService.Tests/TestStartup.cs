@@ -21,6 +21,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// </summary>
     public class TestStartup : Startup
     {
+        /// <summary>
+        /// After the start of the OData app, the container in the OData app is its own.
+        /// Therefore, a static field is defined here, so that later this container can be pulled back.
+        /// <see cref="BaseODataServiceIntegratedTest"/>
+        /// </summary>
         public static IUnityContainer _unityContainer;
 
         /// <summary>
