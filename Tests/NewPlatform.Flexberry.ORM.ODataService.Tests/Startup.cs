@@ -16,6 +16,7 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NewPlatform.Flexberry;
+    using NewPlatform.Flexberry.Caching;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -23,6 +24,7 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
+    using NewPlatform.Flexberry.Security;
     using NewPlatform.Flexberry.Services;
     using Unity;
     using Unity.Injection;
@@ -66,6 +68,15 @@ namespace ODataServiceSample.AspNetCore
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+
+            unityContainer.RegisterType<IAuditService, AuditService>();
+            unityContainer.RegisterSingleton<IODataExportService, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.ExportExcel>();
+            unityContainer.RegisterSingleton<IConfigResolver, ConfigResolver>();
+
+            unityContainer.RegisterSingleton<string>("defaultCacheForApplication");
+            unityContainer.RegisterSingleton<int>("3600");
+            unityContainer.RegisterSingleton<ICacheService, MemoryCacheService>();
+            unityContainer.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

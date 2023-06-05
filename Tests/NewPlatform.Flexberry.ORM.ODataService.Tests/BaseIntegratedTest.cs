@@ -160,9 +160,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #endif
 
             _container = new UnityContainer();
-#if NETCOREAPP
-            _container.LoadConfiguration();
-#endif
             _serviceProvider = new UnityServiceProvider(_container);
             _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
