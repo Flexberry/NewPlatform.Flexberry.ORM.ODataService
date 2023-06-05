@@ -91,8 +91,9 @@
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
 
-            _container.RegisterInstance(
-                new DataObjectEdmModelDependencies(_container.IsRegistered<IExportService>() ? _container.Resolve<IExportService>() : null,
+            _container.RegisterType<DataObjectEdmModelDependencies>(
+                new InjectionConstructor(
+                    _container.IsRegistered<IExportService>() ? _container.Resolve<IExportService>() : null,
                     _container.IsRegistered<IExportService>("Export") ? _container.Resolve<IExportService>("Export") : null,
                     _container.IsRegistered<IExportStringedObjectViewService>() ? _container.Resolve<IExportStringedObjectViewService>() : null,
                     _container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? _container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
