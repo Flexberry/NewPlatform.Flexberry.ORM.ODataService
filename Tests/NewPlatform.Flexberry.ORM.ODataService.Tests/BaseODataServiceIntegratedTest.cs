@@ -90,16 +90,6 @@
                 typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
-
-            _container.RegisterType<DataObjectEdmModelDependencies>(
-                new InjectionConstructor(
-                    _container.IsRegistered<IExportService>() ? _container.Resolve<IExportService>() : null,
-                    _container.IsRegistered<IExportService>("Export") ? _container.Resolve<IExportService>("Export") : null,
-                    _container.IsRegistered<IExportStringedObjectViewService>() ? _container.Resolve<IExportStringedObjectViewService>() : null,
-                    _container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? _container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
-                    _container.IsRegistered<IODataExportService>() ? _container.Resolve<IODataExportService>() : null,
-                    _container.IsRegistered<IODataExportService>("Export") ? _container.Resolve<IODataExportService>("Export") : null));
-
             _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, _serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
         }
 
@@ -135,24 +125,35 @@
 
             foreach (IDataService dataService in DataServices)
             {
+                // Здесь создаётся отдельный контейнер, поскольку он идёт в UnityDependencyResolver, где позднее уходит на Dispose.
+                using (var container = new UnityContainer())
                 using (var config = new HttpConfiguration())
                 using (var server = new HttpServer(config))
                 using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
-                    _container.RegisterInstance(dataService);
+                    container.RegisterType<DataObjectEdmModelDependencies>(
+                        new InjectionConstructor(
+                            container.IsRegistered<IExportService>() ? container.Resolve<IExportService>() : null,
+                            container.IsRegistered<IExportService>("Export") ? container.Resolve<IExportService>("Export") : null,
+                            container.IsRegistered<IExportStringedObjectViewService>() ? container.Resolve<IExportStringedObjectViewService>() : null,
+                            container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                            container.IsRegistered<IODataExportService>() ? container.Resolve<IODataExportService>() : null,
+                            container.IsRegistered<IODataExportService>("Export") ? container.Resolve<IODataExportService>("Export") : null));
+                    container.RegisterInstance(dataService);
 
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-                    config.DependencyResolver = new UnityDependencyResolver(_container);
+                    
+                    config.DependencyResolver = new UnityDependencyResolver(container);
 
                     const string fileControllerPath = "api/File";
                     config.MapODataServiceFileRoute("File", fileControllerPath);
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
-                    _container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
+                    container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
                     var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
-                    var args = new TestArgs { UnityContainer = _container, DataService = dataService, HttpClient = client, Token = token };
+                    var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
                 }
             }
