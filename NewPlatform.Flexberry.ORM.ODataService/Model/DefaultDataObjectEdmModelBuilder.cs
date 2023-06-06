@@ -119,7 +119,7 @@
 
             var typeFilter = TypeFilter ?? (t => true);
 
-            foreach (Assembly assembly in _searchAssemblies.Where(x => !x.FullName.Contains("UserSettingsService")))
+            foreach (Assembly assembly in _searchAssemblies)
             {
                 IEnumerable<Type> dataObjectTypes = assembly
                     .GetTypes()
