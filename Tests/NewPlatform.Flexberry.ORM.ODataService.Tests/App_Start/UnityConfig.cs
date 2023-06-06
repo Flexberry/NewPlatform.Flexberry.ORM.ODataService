@@ -1,9 +1,12 @@
-using System;
-
-using Unity;
-
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
+    using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using NewPlatform.Flexberry.Caching;
+    using NewPlatform.Flexberry.Security;
+    using Unity;
+
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -42,6 +45,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+
+            container.RegisterType<IAuditService, AuditService>();
+            container.RegisterSingleton<IODataExportService, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.ExportExcel>();
+            container.RegisterSingleton<IConfigResolver, ConfigResolver>();
+
+            container.RegisterSingleton<string>("defaultCacheForApplication");
+            container.RegisterSingleton<int>("3600");
+            container.RegisterSingleton<ICacheService, MemoryCacheService>();
+            container.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
         }
     }
 }
