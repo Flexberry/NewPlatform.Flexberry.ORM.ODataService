@@ -31,8 +31,6 @@
     /// </summary>
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
     {
-        protected IDataObjectEdmModelBuilder _builder;
-
         public class TestArgs
         {
             public IUnityContainer UnityContainer { get; set; }
@@ -53,6 +51,8 @@
         /// Флаг, показывающий нужно ли добавлять пространства имен типов, к именам соответствующих им наборов сущностей.
         /// </summary>
         public bool UseNamespaceInEntitySetName { get; protected set; }
+
+        private PseudoDetailDefinitions pseudoDetailDefinitions;
 
 #if NETFRAMEWORK
         public BaseODataServiceIntegratedTest(
@@ -90,7 +90,7 @@
                 typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, _serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+            this.pseudoDetailDefinitions = pseudoDetailDefinitions;
         }
 
         /// <summary>
@@ -126,10 +126,10 @@
             foreach (IDataService dataService in DataServices)
             {
                 // Здесь создаётся отдельный контейнер, поскольку он идёт в UnityDependencyResolver, где позднее уходит на Dispose.
-                using (var container = new UnityContainer())
-                using (var config = new HttpConfiguration())
-                using (var server = new HttpServer(config))
-                using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
+                using (UnityContainer container = new UnityContainer())
+                using (HttpConfiguration config = new HttpConfiguration())
+                using (HttpServer server = new HttpServer(config))
+                using (HttpClient client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
                     container.RegisterType<DataObjectEdmModelDependencies>(
                         new InjectionConstructor(
@@ -143,7 +143,7 @@
 
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-                    
+
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
                     const string fileControllerPath = "api/File";
@@ -151,7 +151,9 @@
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
                     container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
-                    var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
+                    IServiceProvider serviceProvider = new ICSSoft.Services.UnityServiceProvider(container);
+                    DefaultDataObjectEdmModelBuilder builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+                    var token = config.MapDataObjectRoute(builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     action(args);
