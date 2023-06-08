@@ -50,54 +50,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-
-            container.RegisterType<IAuditService, AuditService>();
-            container.RegisterSingleton<IExportService, ExportExcelODataService>("Export");
-            container.RegisterSingleton<IODataExportService, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.ExportExcel>();
-            container.RegisterSingleton<ISpreadsheetCustomizer, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.SpreadsheetCustomizer>();
-            container.RegisterSingleton<IConfigResolver, ConfigResolver>();
-
-            container.RegisterType<ICurrentUser, NewPlatform.Flexberry.ORM.ODataService.Tests.Http.WebHttpUser>();
-
-            container.RegisterSingleton<ICacheService, MemoryCacheService>(
-                new InjectionConstructor("defaultCacheForApplication", 3600));
-
-            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>("securityManagerWithoutRightsCheck");
-
-            container.RegisterSingleton<IDataService, MSSQLDataService>(
-                "dataServiceForAuditAgentManagerAdapter",
-                new InjectionConstructor(
-                    container.Resolve<ISecurityManager>("securityManagerWithoutRightsCheck"),
-                    container.Resolve<IAuditService>(),
-                    container.Resolve<IBusinessServerProvider>()),
-                new InjectionProperty(nameof(MSSQLDataService.CustomizationStringName), "DefConnStr"));
-
-            container.RegisterType<IDataService, MSSQLDataService>(
-               "dataServiceForSecurityManager",
-               new InjectionConstructor(
-                   container.Resolve<ISecurityManager>("securityManagerWithoutRightsCheck"),
-                   container.Resolve<IAuditService>(),
-                   container.Resolve<IBusinessServerProvider>()),
-               Inject.Property(nameof(MSSQLDataService.CustomizationStringName), "DefConnStr"));
-
-            container.RegisterSingleton<ICacheService, MemoryCacheService>(
-                "cacheServiceForSecurityManager",
-                new InjectionConstructor("cacheForSecurityManager"));
-
-            container.RegisterSingleton<ICacheService, MemoryCacheService>(
-                "cacheServiceForAgentManager", new InjectionConstructor("cacheForAgentManager"));
-
-            container.RegisterSingleton<ISecurityManager, SecurityManager>(
-                new InjectionConstructor(
-                    container.Resolve<IDataService>("dataServiceForSecurityManager"),
-                    container.Resolve<ICacheService>("cacheServiceForSecurityManager")));
-
-            container.RegisterSingleton<IAgentManager, AgentManager>(
-                new InjectionConstructor(
-                    container.Resolve<IDataService>("dataServiceForSecurityManager"),
-                    container.Resolve<ICacheService>("cacheServiceForSecurityManager")));
-
-            container.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
         }
     }
 }

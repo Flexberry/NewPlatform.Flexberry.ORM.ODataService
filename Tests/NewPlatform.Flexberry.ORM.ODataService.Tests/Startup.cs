@@ -53,6 +53,9 @@ namespace ODataServiceSample.AspNetCore
         /// <param name="unityContainer">Unity container.</param>
         public virtual void ConfigureContainer(IUnityContainer unityContainer)
         {
+            // Base dependencies registration.
+            UnityContainerRegistrations.Registration(unityContainer);
+
             // Configure Flexberry services via Unity.
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
@@ -70,56 +73,6 @@ namespace ODataServiceSample.AspNetCore
             unityContainer.RegisterInstance(dataService);
             unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-
-            unityContainer.RegisterType<IAuditService, AuditService>();
-            unityContainer.RegisterSingleton<IExportService, ExportExcelODataService>("Export");
-            unityContainer.RegisterSingleton<IODataExportService, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.ExportExcel>();
-            unityContainer.RegisterSingleton<ISpreadsheetCustomizer, NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel.SpreadsheetCustomizer>();
-            unityContainer.RegisterSingleton<IConfigResolver, ConfigResolver>();
-
-            // ??? - без этого не давало в регистрацию MSSQLDataService ниже
-            unityContainer.RegisterType<ICurrentUser, NewPlatform.Flexberry.ORM.ODataService.Tests.Http.WebHttpUser>();
-
-            unityContainer.RegisterSingleton<ICacheService, MemoryCacheService>(
-                new InjectionConstructor("defaultCacheForApplication", 3600));
-
-            unityContainer.RegisterSingleton<ISecurityManager, EmptySecurityManager>("securityManagerWithoutRightsCheck");
-
-            unityContainer.RegisterSingleton<IDataService, MSSQLDataService>(
-                "dataServiceForAuditAgentManagerAdapter",
-                new InjectionConstructor(
-                    unityContainer.Resolve<ISecurityManager>("securityManagerWithoutRightsCheck"),
-                    unityContainer.Resolve<IAuditService>(),
-                    unityContainer.Resolve<IBusinessServerProvider>()),
-                new InjectionProperty(nameof(MSSQLDataService.CustomizationStringName), "DefConnStr"));
-
-            unityContainer.RegisterType<IDataService, MSSQLDataService>(
-               "dataServiceForSecurityManager",
-               new InjectionConstructor(
-                   unityContainer.Resolve<ISecurityManager>("securityManagerWithoutRightsCheck"),
-                   unityContainer.Resolve<IAuditService>(),
-                   unityContainer.Resolve<IBusinessServerProvider>()),
-               Inject.Property(nameof(MSSQLDataService.CustomizationStringName), "DefConnStr"));
-
-            unityContainer.RegisterSingleton<ICacheService, MemoryCacheService>(
-                "cacheServiceForSecurityManager",
-                new InjectionConstructor("cacheForSecurityManager"));
-
-            unityContainer.RegisterSingleton<ICacheService, MemoryCacheService>(
-                "cacheServiceForAgentManager", new InjectionConstructor("cacheForAgentManager"));
-
-            // Параметры типа bool задаются по умолчанию в конструкторах
-            unityContainer.RegisterSingleton<ISecurityManager, SecurityManager>(
-                new InjectionConstructor(
-                    unityContainer.Resolve<IDataService>("dataServiceForSecurityManager"),
-                    unityContainer.Resolve<ICacheService>("cacheServiceForSecurityManager")));
-
-            unityContainer.RegisterSingleton<IAgentManager, AgentManager>(
-                new InjectionConstructor(
-                    unityContainer.Resolve<IDataService>("dataServiceForSecurityManager"),
-                    unityContainer.Resolve<ICacheService>("cacheServiceForSecurityManager")));
-
-            unityContainer.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

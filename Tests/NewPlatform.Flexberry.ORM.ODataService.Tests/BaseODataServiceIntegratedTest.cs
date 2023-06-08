@@ -21,6 +21,8 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
+    using ICSSoft.STORMNET.Business.Interfaces;
+    using ICSSoft.Services;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
@@ -131,6 +133,11 @@
                 using (HttpServer server = new HttpServer(config))
                 using (HttpClient client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
+                    container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+
+                    // Base dependencies registration (dependencies from configuration)
+                    UnityContainerRegistrations.Registration(container);
+
                     container.RegisterType<DataObjectEdmModelDependencies>(
                         new InjectionConstructor(
                             container.IsRegistered<IExportService>() ? container.Resolve<IExportService>() : null,
