@@ -467,7 +467,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
         private static string GetConnectionString(string name)
         {
-            return Environment.GetEnvironmentVariable(name) ?? ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return Environment.GetEnvironmentVariable(name) ?? (ConfigurationManager.ConnectionStrings[name] ?? throw new Exception($"No information about connection string with name {name}")).ConnectionString;
         }
     }
 }

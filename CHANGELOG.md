@@ -5,12 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+1. Helper class `DataObjectEdmModelDependencies` (it helps send named settings of Unity to class `DataObjectEdmModel`).
 
 ### Changed
-1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.1-beta01`.
+1. Updated `NewPlatform.Flexberry.ORM` up to `7.2.0-alpha02`.
+2. Constructor of class `DataObjectEdmModel` (it now needs extra DI initialization).
+3. Constructor of class `DefaultDataObjectEdmModelBuilder` (it is factory for class `DataObjectEdmModel`).
+4. Constructor of class `DefaultOfflineManager`.
+5. Constructor of class `OfflineAuditService`.
 
 ### Fixed
-1. Fixed problem with metadata when inheritance and PublishName is used.
 
 ## [7.1.0] - 2023.04.12
 
