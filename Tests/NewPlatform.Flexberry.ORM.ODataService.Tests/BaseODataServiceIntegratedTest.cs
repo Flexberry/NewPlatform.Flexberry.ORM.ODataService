@@ -18,11 +18,11 @@
 #if NETFRAMEWORK
     using System.Web.Http;
     using System.Web.Http.Cors;
+    using ICSSoft.Services;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
-    using ICSSoft.STORMNET.Business.Interfaces;
-    using ICSSoft.Services;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
