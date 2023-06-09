@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>7.1.1-beta03</version>
+    <version>7.1.1</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -13,7 +13,7 @@
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
 		Changed
-		1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.1-beta01`.
+		1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.1`.
     2. Get properties from objects for send it to frontend always rethrow exception now.
 
 		Fixed
