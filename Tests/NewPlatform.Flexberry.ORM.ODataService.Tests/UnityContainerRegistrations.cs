@@ -1,5 +1,7 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
@@ -11,7 +13,6 @@
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Http;
     using NewPlatform.Flexberry.Reports.ExportToExcel;
     using NewPlatform.Flexberry.Security;
-    using System.Web;
     using Unity;
     using Unity.Injection;
 
@@ -82,6 +83,15 @@
                     unityContainer.Resolve<ICacheService>("cacheServiceForSecurityManager")));
 
             unityContainer.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
+        }
+
+        /// <summary>
+        /// Method for <see cref="IBusinessServerProvider"/> registration into Unity container.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
+        public static void BSProviderRegistration(IUnityContainer unityContainer)
+        {
+            unityContainer.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
         }
     }
 }

@@ -133,7 +133,7 @@
                 using (HttpServer server = new HttpServer(config))
                 using (HttpClient client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
-                    container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+                    UnityContainerRegistrations.BSProviderRegistration(container);
 
                     // Base dependencies registration (dependencies from configuration)
                     UnityContainerRegistrations.Registration(container);
