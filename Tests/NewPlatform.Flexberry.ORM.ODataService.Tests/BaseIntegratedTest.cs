@@ -13,6 +13,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
+    using Microsoft.Practices.Unity.Configuration;
     using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
@@ -172,6 +173,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             {
                 _container.RegisterInstance(_output);
             }
+#endif
+#if NETFRAMEWORK
+            _container.LoadConfiguration();
 #endif
             _useGisDataService = useGisDataService;
             if (!(tempDbNamePrefix != null))
