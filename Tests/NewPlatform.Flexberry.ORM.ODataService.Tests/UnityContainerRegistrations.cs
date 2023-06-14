@@ -7,6 +7,9 @@
     using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
     using Microsoft.AspNetCore.Http;
+#if NETCOREAPP
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
+#endif
     using NewPlatform.Flexberry.Caching;
     using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read.Excel;
@@ -35,6 +38,7 @@
 #endif
 #if NETCOREAPP
             unityContainer.RegisterType<ICurrentUser, WebHttpUser>();
+            unityContainer.RegisterType<IActionContextAccessor, ActionContextAccessor>();
 #endif
             unityContainer.RegisterType<IAuditService, AuditService>(
                 new InjectionConstructor(unityContainer.Resolve<ICurrentUser>()));
