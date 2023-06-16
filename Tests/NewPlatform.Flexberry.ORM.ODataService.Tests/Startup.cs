@@ -53,8 +53,8 @@ namespace ODataServiceSample.AspNetCore
         /// <param name="unityContainer">Unity container.</param>
         public virtual void ConfigureContainer(IUnityContainer unityContainer)
         {
-            // Base dependencies registration.
-            UnityContainerRegistrations.Registration(unityContainer);
+            // Base dependencies registration. (Uncomment if you want to use code instead of config for registrations)
+            //UnityContainerRegistrations.Registration(unityContainer);
 
             // Configure Flexberry services via Unity.
             var securityManager = new EmptySecurityManager();

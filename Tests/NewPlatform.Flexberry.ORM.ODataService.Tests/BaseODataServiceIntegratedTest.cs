@@ -135,8 +135,8 @@
                 {
                     UnityContainerRegistrations.BSProviderRegistration(container);
 
-                    // Base dependencies registration (dependencies from configuration)
-                    UnityContainerRegistrations.Registration(container);
+                    // Base dependencies registration (Uncomment if you want to use code instead of config for registrations)
+                    // UnityContainerRegistrations.Registration(container);
 
                     container.RegisterType<DataObjectEdmModelDependencies>(
                         new InjectionConstructor(

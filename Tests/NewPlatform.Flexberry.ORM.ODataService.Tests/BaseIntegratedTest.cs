@@ -174,9 +174,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 _container.RegisterInstance(_output);
             }
 #endif
-#if NETFRAMEWORK
-            _container.LoadConfiguration();
-#endif
             _useGisDataService = useGisDataService;
             if (!(tempDbNamePrefix != null))
             {

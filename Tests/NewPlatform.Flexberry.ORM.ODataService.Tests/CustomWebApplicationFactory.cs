@@ -27,7 +27,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             IUnityContainer localContainer = _unityContainer ?? new UnityContainer();
             UnityContainerRegistrations.BSProviderRegistration(localContainer);
-            UnityContainerRegistrations.Registration(localContainer);
+
+            // Base dependencies registration (Uncomment if you want to use code instead of config for registrations)
+            //UnityContainerRegistrations.Registration(localContainer);
 
             string contentRootDirectory = Directory.GetCurrentDirectory();
             var webHostBuilder = new WebHostBuilder()
