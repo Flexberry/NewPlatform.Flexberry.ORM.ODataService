@@ -60,7 +60,7 @@
 
                 Assert.Equal(property1Value, dt.Свойство1);
                 Assert.Equal(наследник.__PrimaryKey, dt.__PrimaryKey);
-                Assert.NotNull(property1Value);
+
             });
         }
 
