@@ -36,7 +36,8 @@
         {
             ActODataService(args =>
             {
-                var наследник = new Наследник() { Свойство = 1234.5, Свойство1 = "str", Свойство2 = 22 };
+                const string property1Value = "str";
+                var наследник = new Наследник() { Свойство = 1234.5, Свойство1 = property1Value, Свойство2 = 22 };
                 var детейл = new Детейл() { prop1 = 1 };
                 var детейл2 = new Детейл2() { prop2 = "str2" };
                 var мастер = new Мастер() { prop = "str3" };
@@ -50,8 +51,16 @@
 
                 var objs = new DataObject[] { наследник };
                 args.DataService.UpdateObjects(ref objs);
+                Assert.NotNull(objs);
 
-                // TODO: реализовать проверку чтения объектов через OData.
+                var dt = new Наследник();
+                dt.SetExistObjectPrimaryKey(наследник.__PrimaryKey);
+                args.DataService.LoadObject(Наследник.Views.БазовыйКлассE, dt);
+                Assert.NotNull(dt);
+
+                Assert.Equal(property1Value, dt.Свойство1);
+                Assert.Equal(наследник.__PrimaryKey, dt.__PrimaryKey);
+
             });
         }
 
@@ -253,7 +262,5 @@
                 }
             });
         }
-
-
     }
 }

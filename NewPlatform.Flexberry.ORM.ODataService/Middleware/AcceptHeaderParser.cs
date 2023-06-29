@@ -155,10 +155,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Middleware
                     }
                 }
                 else
-                if (!IsHttpToken(currentChar))
                 {
-                    // If the given character is special, we stop processing.
-                    break;
+                    if (!IsHttpToken(currentChar))
+                    {
+                        // If the given character is special, we stop processing.
+                        break;
+                    }
                 }
 
                 textIndex++;
