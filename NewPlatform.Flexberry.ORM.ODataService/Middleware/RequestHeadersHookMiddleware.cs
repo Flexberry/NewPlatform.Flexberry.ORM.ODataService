@@ -43,6 +43,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Middleware
         /// <returns>A task that can be awaited.</returns>
         public async Task Invoke(HttpContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            // Skip if request has been aborted.
+            if (context.RequestAborted.IsCancellationRequested)
+            {
+                await _next.Invoke(context);
+            }
+
             var request = context.Request;
 
             IEnumerable<string> mimeTypeDirectives = AcceptHeaderParser.MimeTypeDirectivesFromAcceptHeader(request.Headers[HeaderNames.Accept]);
@@ -58,18 +69,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Middleware
             {
                 request.EnableBuffering();
 
-                // Leave the body open so the next middleware can read it.
-                string bodyString;
-                using (var reader = new System.IO.StreamReader(
-                    request.Body,
-                    encoding: Encoding.UTF8, 
-                    detectEncodingFromByteOrderMarks: false,
-                    bufferSize: 1024,
-                    leaveOpen: true))
-                {
-                    bodyString = await reader.ReadToEndAsync();
-                    request.Body.Position = 0;
-                }
+                string bodyString = await GetBodyString(request);
 
                 context.Items.Add(PropertyKeyRequestContent, bodyString);
             }
@@ -77,10 +77,25 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Middleware
             /*
             /// Исправление для Mono, взято из https://github.com/OData/odata.net/issues/165
             */
-            if (!request.Headers.ContainsKey("Accept-Charset"))
-                request.Headers.Add("Accept-Charset", new[] { "utf-8" });
+            if (!request.Headers.ContainsKey(HeaderNames.AcceptCharset))
+                request.Headers.Add(HeaderNames.AcceptCharset, new[] { "utf-8" });
 
             await _next.Invoke(context);
+        }
+
+        private static async Task<string> GetBodyString(HttpRequest request)
+        {
+            // Leave the body open so the next middleware can read it.
+            using var reader = new System.IO.StreamReader(
+                request.Body,
+                Encoding.UTF8,
+                false,
+                1024,
+                true);
+            string bodyString = await reader.ReadToEndAsync();
+            request.Body.Position = 0;
+
+            return bodyString;
         }
     }
 }
