@@ -164,6 +164,9 @@
 
         private void BuildEdmEntityTypes()
         {
+            // Collection for storing FullNames.
+            IDictionary<string, Type> collectionFullNames = new Dictionary<string, Type>();
+
             foreach (Type dataObjectType in _metadata.Types)
             {
                 Type baseType = dataObjectType.BaseType;
@@ -182,6 +185,22 @@
                     baseEdmEntityType,
                     dataObjectType.IsAbstract,
                     !dataObjectType.IsSealed);
+
+                // Check if the FullName already contains.
+                if (collectionFullNames.ContainsKey(edmEntityType.FullName))
+                {
+                    if (edmEntityType.Namespace.Length == 0)
+                    {
+                        throw new Exception($"The class with PublishName {edmEntityType.Name} is already added. " +
+                            $"PublishName {edmEntityType.Name} repeated in classes {dataObjectType.Name} and {collectionFullNames[edmEntityType.FullName].Name}.");
+                    }
+                    else
+                    {
+                        throw new Exception($"Class named {edmEntityType.Name} has already been added.");
+                    }
+                }
+
+                collectionFullNames.Add(edmEntityType.FullName, dataObjectType);
 
                 BuildOwnProperties(edmEntityType, dataObjectType);
 
