@@ -4,6 +4,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.IO;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Practices.Unity.Configuration;
     using Unity;
     using Unity.Microsoft.DependencyInjection;
 
@@ -29,8 +30,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             IUnityContainer localContainer = _unityContainer ?? new UnityContainer();
             UnityContainerRegistrations.BSProviderRegistration(localContainer);
 
+            localContainer.LoadConfiguration();
             // Base dependencies registration (Uncomment if you want to use code instead of config for registrations)
-            //UnityContainerRegistrations.Registration(localContainer);
+            UnityContainerRegistrations.Registration(localContainer);
 
             string contentRootDirectory = Directory.GetCurrentDirectory();
             var webHostBuilder = new WebHostBuilder()

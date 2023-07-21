@@ -23,6 +23,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
+    using Microsoft.Practices.Unity.Configuration;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
@@ -134,9 +135,10 @@
                 using (HttpClient client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
                     UnityContainerRegistrations.BSProviderRegistration(container);
-
+                    
+                    container.LoadConfiguration();
                     // Base dependencies registration (Uncomment if you want to use code instead of config for registrations)
-                    // UnityContainerRegistrations.Registration(container);
+                    UnityContainerRegistrations.Registration(container);
 
                     container.RegisterType<DataObjectEdmModelDependencies>(
                         new InjectionConstructor(

@@ -45,6 +45,9 @@
             unityContainer.RegisterType<ICurrentUser, WebHttpUser>();
             unityContainer.RegisterType<IActionContextAccessor, ActionContextAccessor>();
 #endif
+
+            // Dependencies than can be placed in the config
+            /*
             unityContainer.RegisterType<IAuditService, AuditService>(
                 new InjectionConstructor(unityContainer.Resolve<ICurrentUser>()));
 
@@ -90,6 +93,7 @@
                     unityContainer.Resolve<ICacheService>("cacheServiceForSecurityManager")));
 
             unityContainer.RegisterSingleton<IPasswordHasher, Sha1PasswordHasher>();
+            */
         }
 
         /// <summary>
