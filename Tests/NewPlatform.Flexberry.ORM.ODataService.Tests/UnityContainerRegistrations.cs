@@ -20,9 +20,14 @@
     using Unity.Injection;
 
     /// <summary>
-    /// This static class is designed to register dependencies in the Unity container.
+    /// This is just a helper class for tests which is designed to register dependencies in the Unity container.
     /// Created to eliminate code duplication for different dotnet versions.
     /// </summary>
+    /// <remarks>
+    /// When removing the UnityConfigResolver for dotnet 4.5 version, you need to determine if this class is needed.
+    /// (Now it's necessary to re-register because of this class).
+    /// Also, the mention "UnityConfigResolver" is neccessary so that when deleting this class, the search will stumble upon this note.
+    /// </remarks>
     public static class UnityContainerRegistrations
     {
         /// <summary>
@@ -43,9 +48,7 @@
             unityContainer.RegisterType<IAuditService, AuditService>(
                 new InjectionConstructor(unityContainer.Resolve<ICurrentUser>()));
 
-            unityContainer.RegisterSingleton<IExportService, ExportExcelODataService>("Export");
             unityContainer.RegisterSingleton<IODataExportService, ExportExcel>();
-            unityContainer.RegisterSingleton<ISpreadsheetCustomizer, SpreadsheetCustomizer>();
             unityContainer.RegisterSingleton<IConfigResolver, ConfigResolver>();
 
             unityContainer.RegisterSingleton<ICacheService, MemoryCacheService>(

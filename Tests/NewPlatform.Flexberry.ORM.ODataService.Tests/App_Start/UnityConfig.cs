@@ -1,16 +1,7 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
-    using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.Business.Audit;
-    using ICSSoft.STORMNET.Business.Interfaces;
-    using ICSSoft.STORMNET.Security;
-    using NewPlatform.Flexberry.Caching;
-    using NewPlatform.Flexberry.ORM.CurrentUserService;
-    using NewPlatform.Flexberry.Reports.ExportToExcel;
-    using NewPlatform.Flexberry.Security;
     using Unity;
-    using Unity.Injection;
 
     /// <summary>
     /// Specifies the Unity configuration for the main container.

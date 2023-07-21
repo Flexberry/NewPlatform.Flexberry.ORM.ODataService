@@ -25,6 +25,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
+            // Some tests do not need separate customized containers.
             IUnityContainer localContainer = _unityContainer ?? new UnityContainer();
             UnityContainerRegistrations.BSProviderRegistration(localContainer);
 

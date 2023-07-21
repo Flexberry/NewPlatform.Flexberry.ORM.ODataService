@@ -16,8 +16,6 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NewPlatform.Flexberry;
-    using NewPlatform.Flexberry.Caching;
-    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -25,8 +23,6 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
-    using NewPlatform.Flexberry.Reports.ExportToExcel;
-    using NewPlatform.Flexberry.Security;
     using NewPlatform.Flexberry.Services;
     using Unity;
     using Unity.Injection;

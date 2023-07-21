@@ -5,16 +5,17 @@
     using System.Configuration;
     using System.Globalization;
     using System.Linq;
+
     using Microsoft.Practices.Unity.Configuration;
     using Unity;
     using Unity.Injection;
     using Xunit;
 
+    /// <summary>
+    /// Class for checking that a dependency registered in the code can be overriden from the config.
+    /// </summary>
     public class CheckLoadConfigurationTest
     {
-        /// <summary>
-        /// Checking dependency override from config.
-        /// </summary>
         [Fact]
         public void CheckIfLoadConfigurationWorks()
         {
