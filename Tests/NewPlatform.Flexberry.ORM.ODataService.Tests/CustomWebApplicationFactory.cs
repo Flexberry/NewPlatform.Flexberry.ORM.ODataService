@@ -1,10 +1,10 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
-    using System;
     using System.IO;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Practices.Unity.Configuration;
     using Unity;
     using Unity.Microsoft.DependencyInjection;
 
@@ -26,14 +26,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
-            if (_unityContainer == null)
-            {
-                throw new Exception("Unity.IUnityContainer is not defined");
-            }
+            // Some tests do not need separate customized containers.
+            IUnityContainer localContainer = _unityContainer ?? new UnityContainer();
+            UnityContainerRegistrations.BSProviderRegistration(localContainer);
+
+            localContainer.LoadConfiguration();
+            // Base dependencies registration (Uncomment if you want to use code instead of config for registrations)
+            UnityContainerRegistrations.Registration(localContainer);
 
             string contentRootDirectory = Directory.GetCurrentDirectory();
             var webHostBuilder = new WebHostBuilder()
-                            .UseUnityServiceProvider(_unityContainer)
+                            .UseUnityServiceProvider(localContainer)
                             .UseContentRoot(contentRootDirectory)
                             .UseStartup<TestStartup>();
             return webHostBuilder;

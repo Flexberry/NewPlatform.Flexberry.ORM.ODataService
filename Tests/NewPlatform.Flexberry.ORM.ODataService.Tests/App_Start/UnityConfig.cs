@@ -1,9 +1,8 @@
-using System;
-
-using Unity;
-
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
+    using Unity;
+
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>

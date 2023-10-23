@@ -14,6 +14,7 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.AspNetCore.Hosting.Server.Features;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Practices.Unity.Configuration;
     using Moq;
     using NewPlatform.Flexberry;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
@@ -49,6 +50,10 @@ namespace ODataServiceSample.AspNetCore
         /// <param name="unityContainer">Unity container.</param>
         public virtual void ConfigureContainer(IUnityContainer unityContainer)
         {
+            unityContainer.LoadConfiguration();
+            // Base dependencies registration. (Uncomment if you want to use code instead of config for registrations)
+            UnityContainerRegistrations.Registration(unityContainer);
+
             // Configure Flexberry services via Unity.
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();

@@ -13,6 +13,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
+    using Microsoft.Practices.Unity.Configuration;
     using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
@@ -160,11 +161,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #endif
 
             _container = new UnityContainer();
-#if NETCOREAPP
-            _container.LoadConfiguration();
-#endif
             _serviceProvider = new UnityServiceProvider(_container);
-            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            UnityContainerRegistrations.BSProviderRegistration(_container);
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
 #if NETCOREAPP
             CustomWebApplicationFactory<Startup>._unityContainer = _container;
