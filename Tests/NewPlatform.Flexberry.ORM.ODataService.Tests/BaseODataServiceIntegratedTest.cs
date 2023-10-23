@@ -1,6 +1,8 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -30,6 +32,7 @@
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
     using ODataServiceSample.AspNetCore;
+    using System.Runtime.CompilerServices;
 #endif
 
     /// <summary>
@@ -38,7 +41,7 @@
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
     {
         protected IDataObjectEdmModelBuilder _builder;
-
+        
         public class TestArgs
         {
             public IUnityContainer UnityContainer { get; set; }
@@ -145,7 +148,11 @@
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                     ExternalLangDef.LanguageDef.DataService = dataService;
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     action(args);
+                    stopwatch.Stop();
+                    Assert.True(stopwatch.ElapsedMilliseconds < 3000, $"Operation took longer than 3000ms ({stopwatch.ElapsedMilliseconds}ms). Probably a performance issue.");
                 }
             }
         }
@@ -180,7 +187,12 @@
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
                 ExternalLangDef.LanguageDef.DataService = dataService;
+                
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 action(args);
+                stopwatch.Stop();
+                Assert.True(stopwatch.ElapsedMilliseconds < 3000, $"Operation took longer than 3000ms ({stopwatch.ElapsedMilliseconds}ms). Probably a performance issue.");
             }
         }
 #endif
