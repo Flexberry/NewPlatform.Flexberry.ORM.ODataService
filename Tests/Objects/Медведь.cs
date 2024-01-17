@@ -221,6 +221,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         [StrLen(255)]
         [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.MSSQLDataService), "\'ПорядковыйНомер:\' + @ПорядковыйНомер@ + \", Цвет глаз мамы:\" + isnull(@Мама.ЦветГ" +
             "лаз@,\'\')")]
+        [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.PostgresDataService), "\'ПорядковыйНомер:\' || @ПорядковыйНомер@ || \", Цвет глаз мамы:\" || coalesce(@Мама.ЦветГ" +
+            "лаз@,\'\')")]
         public virtual string МедведьСтрокой
         {
             get

@@ -22,7 +22,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// Берлога.
     /// </summary>
     // *** Start programmer edit section *** (Берлога CustomAttributes)
-
+    [View("БерлогаDefaultView", new string[] {
+            "ПолеБС",
+            "Наименование as \'Наименование\'",
+            "Комфортность as \'Комфортность\'",
+            "Заброшена as \'Заброшена\'",
+            "ПолеБС"})]
     // *** End programmer edit section *** (Берлога CustomAttributes)
     [BusinessServer("NewPlatform.Flexberry.ORM.ODataService.Tests.DenBS, NewPlatform.Flexberry.ORM.ODa" +
         "taService.Tests.BusinessServers", ICSSoft.STORMNET.Business.DataServiceObjectEvents.OnAllEvents)]
