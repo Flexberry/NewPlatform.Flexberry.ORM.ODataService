@@ -227,6 +227,37 @@
         }
 
         /// <summary>
+        /// Догрузка объекта по указанному представлению, с загрузкой детейлов с сохранением состояния изменения.
+        /// </summary>
+        /// <param name="dataService">Экземпляр сервиса данных.</param>
+        /// <param name="dataObject">Объект данных, который нужно догрузить.</param>
+        /// <param name="view">Представление, которое используется для догрузки.</param>
+        /// <param name="dataObjectCache">Кеш объектов данных.</param>
+        public static void SafeLoadObject(this IDataService dataService, DataObject dataObject, View view, DataObjectCache dataObjectCache)
+        {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
+            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+            View miniView = view.Clone();
+            DetailInView[] miniViewDetails = miniView.Details;
+            miniView.Details = new DetailInView[0];
+            dataService.LoadObject(miniView, dataObject, false, true, dataObjectCache);
+
+            if (miniViewDetails.Length > 0)
+            {
+                dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, dataObjectCache);
+            }
+        }
+
+        /// <summary>
         /// Add detail object to agregator according detail type.
         /// </summary>
         /// <param name="agregator">Agregator object.</param>

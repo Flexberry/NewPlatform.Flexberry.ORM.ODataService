@@ -50,6 +50,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             "Сертификат",
             "СертификатСтрока"})]
     [MasterViewDefineAttribute("БерлогаE", "ЛесРасположения", ICSSoft.STORMNET.LookupTypeEnum.Standard, "", "Название")]
+    [View("БерлогаUpdateView", new string[] {
+            "Наименование as \'Наименование\'",
+            "Комфортность as \'Комфортность\'",
+            "Заброшена as \'Заброшена\'",
+            "ПолеБС"})]
     public class Берлога : ICSSoft.STORMNET.DataObject
     {
 
@@ -393,6 +398,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     return ICSSoft.STORMNET.Information.GetView("БерлогаE", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Берлога));
                 }
             }
+
+            /// <summary>
+            /// Представление для тестов UpdateView (без мастеров и детейлов).
+            /// </summary>
+            public static ICSSoft.STORMNET.View БерлогаUpdateView
+            {
+                get
+                {
+                    return ICSSoft.STORMNET.Information.GetView("БерлогаUpdateView", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Берлога));
+                }
+            }
         }
     }
 
@@ -419,7 +435,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <summary>
         /// Adds object with type Берлога.
         /// </summary>
-        public DetailArrayOfБерлога(NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fМедведь) : 
+        public DetailArrayOfБерлога(NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь fМедведь) :
                 base(typeof(Берлога), ((ICSSoft.STORMNET.DataObject)(fМедведь)))
         {
         }
