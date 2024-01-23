@@ -69,7 +69,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 var requestUrl = ODataHelper.GetRequestUrl(args.Token.Model, берлога1);
 
                 // Сейчас обновление мастеров не поддерживается.
-                Assert.Throws<Exception>(() => args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result); // Если падает Exception, значит представление поменялось и работает.
+                Assert.ThrowsAsync<Exception>(() => args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData)); // Если падает Exception, значит представление поменялось и работает.
             });
         }
     }
