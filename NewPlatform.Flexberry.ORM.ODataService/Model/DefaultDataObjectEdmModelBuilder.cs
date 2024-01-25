@@ -224,7 +224,7 @@
                 return;
             }
 
-            if (dataObjectType != updateView.DefineClassType)
+            if (!Information.CheckViewForClasses(updateView.Name, dataObjectType))
             {
                 throw new ArgumentException($"View from DataObject {updateView.DefineClassType} can not be set for a DataObject of type {dataObjectType}.", nameof(updateView));
             }
