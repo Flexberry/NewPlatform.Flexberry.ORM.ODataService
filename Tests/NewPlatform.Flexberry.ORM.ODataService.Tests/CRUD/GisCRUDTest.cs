@@ -21,7 +21,12 @@
     /// <summary>
     /// Класс тестов для тестирования работы с гео-данными.
     /// </summary>
+#if NETFRAMEWORK
     public class GisCRUDTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class GisCRUDTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETFRAMEWORK
         /// <summary>
@@ -37,7 +42,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод диагностической информации по тестам.</param>
-        public GisCRUDTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
+        public GisCRUDTest(CustomWebApplicationFactory<TestStartup> factory, ITestOutputHelper output)
             : base(factory, output, false, true)
         {
         }

@@ -18,7 +18,12 @@
     /// <summary>
     /// Unit-test class for read data with reference to master through OData service.
     /// </summary>
+#if NETFRAMEWORK
     public class ReferenceToMasterTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class ReferenceToMasterTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -26,7 +31,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public ReferenceToMasterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public ReferenceToMasterTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

@@ -26,7 +26,12 @@
     /// <summary>
     /// Тесты файлового контроллера <see cref="FileController"/>, отвечающего за загрузку файлов на сервер и их скачивание.
     /// </summary>
+#if NETFRAMEWORK
     public class FileControllerTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FileControllerTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
         private const string FileBaseUrl = "http://localhost/api/File";
 
@@ -61,7 +66,7 @@
 #if NETFRAMEWORK
         public FileControllerTest()
 #elif NETCOREAPP
-        public FileControllerTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FileControllerTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
 #endif
         {

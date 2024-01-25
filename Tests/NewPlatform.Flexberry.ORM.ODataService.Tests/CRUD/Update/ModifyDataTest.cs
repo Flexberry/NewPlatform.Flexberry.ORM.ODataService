@@ -21,7 +21,12 @@
     /// <summary>
     /// Класс тестов для тестирования операций модификации данных OData-сервисом (вставка, обновление, удаление).
     /// </summary>
+#if NETFRAMEWORK
     public class ModifyDataTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class ModifyDataTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -29,23 +34,23 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public ModifyDataTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public ModifyDataTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
 #endif
 
-        /// <summary>
-        /// Осуществляет проверку того, что при PATCH запросах происходит вставка и удаление связей объекта.
-        /// Зависимые объекты (мастера, детейлы) представлены в виде - Имя_Связи@odata.bind: Имя_Набора_Сущностей(ключ) или Имя_Связи@odata.bind: [ Имя_Набора_Сущностей(ключ) ]   .
-        /// Тест проверяет следующие факты:
-        /// <list type="number">
-        /// <item><description>Вставка связи мастерового объекта.</description></item>
-        /// <item><description>Удаление связи мастеровго объекта путём присвоения null свойству.</description></item>
-        /// <item><description>Удаление связи мастеровго объекта путём присвоения null для Имя_Связи@odata.bind.</description></item>
-        /// </list>
-        /// </summary>
-        [Fact]
+    /// <summary>
+    /// Осуществляет проверку того, что при PATCH запросах происходит вставка и удаление связей объекта.
+    /// Зависимые объекты (мастера, детейлы) представлены в виде - Имя_Связи@odata.bind: Имя_Набора_Сущностей(ключ) или Имя_Связи@odata.bind: [ Имя_Набора_Сущностей(ключ) ]   .
+    /// Тест проверяет следующие факты:
+    /// <list type="number">
+    /// <item><description>Вставка связи мастерового объекта.</description></item>
+    /// <item><description>Удаление связи мастеровго объекта путём присвоения null свойству.</description></item>
+    /// <item><description>Удаление связи мастеровго объекта путём присвоения null для Имя_Связи@odata.bind.</description></item>
+    /// </list>
+    /// </summary>
+    [Fact]
         public void PatchNavigationPropertiesTest()
         {
             ActODataService(args =>

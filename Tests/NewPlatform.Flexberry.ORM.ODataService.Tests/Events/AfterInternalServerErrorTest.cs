@@ -12,7 +12,12 @@
     /// <summary>
     /// Класс тестов для тестирования логики после возникновения исключения.
     /// </summary>
+#if NETFRAMEWORK
     public class AfterInternalServerErrorTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class AfterInternalServerErrorTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -20,7 +25,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public AfterInternalServerErrorTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public AfterInternalServerErrorTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

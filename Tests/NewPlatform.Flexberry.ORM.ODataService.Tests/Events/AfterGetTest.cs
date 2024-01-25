@@ -11,7 +11,12 @@
     /// Класс тестов для тестирования логики после операции считывания данных OData-сервисом.
     /// </summary>
 
+#if NETFRAMEWORK
     public class AfterGetTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class AfterGetTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -19,7 +24,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public AfterGetTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public AfterGetTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

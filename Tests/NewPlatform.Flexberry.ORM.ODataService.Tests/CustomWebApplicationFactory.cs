@@ -22,7 +22,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             var webHostBuilder = new WebHostBuilder()
                             .UseUnityServiceProvider(container)
                             .UseContentRoot(contentRootDirectory)
-                            .UseStartup<TestStartup>();
+                            .UseStartup<TStartup>();
             return webHostBuilder;
         }
 
