@@ -266,35 +266,35 @@
                 Init();
 
                 /* В ситуации, когда мастер и детейл одного типа, ORM без подгрузки копии данных не может корректно разобрать порядок,
-                 * в котором объекты должны быть удалены.
-                 */
+                * в котором объекты должны быть удалены.
+                */
                 bool needDataCopyLoad = _typesWithSameDetailAndMaster.Contains(type);
                 if (!_typesWithNotSameDetailAndMaster.Contains(type) && !needDataCopyLoad)
                 {
-                    string[] props = Information.GetAllPropertyNames(type);
-                    int length = props.Length;
-                    int index = 0;
+                  string[] props = Information.GetAllPropertyNames(type);
+                  int length = props.Length;
+                  int index = 0;
 
-                    while(!needDataCopyLoad && index < length)
-                    {
-                        string prop = props[index];
-                        Type propType = Information.GetPropertyType(type, prop);
-                        needDataCopyLoad = propType.IsSubclassOf(typeof(DataObject)) && Information.GetDetailArrayPropertyName(type, propType) != null;
+                  while (!needDataCopyLoad && index < length)
+                  {
+                    string prop = props[index];
+                    Type propType = Information.GetPropertyType(type, prop);
+                    needDataCopyLoad = propType.IsSubclassOf(typeof(DataObject)) && Information.GetDetailArrayPropertyName(type, propType) != null;
 
-                        index++;
-                    }
+                    index++;
+                  }
                 }
 
                 DataObject obj = null;
                 if (!needDataCopyLoad)
                 {
-                    obj = DataObjectCache.CreateDataObject(type, key);
-                    _typesWithNotSameDetailAndMaster.Add(type);
+                  obj = DataObjectCache.CreateDataObject(type, key);
+                  _typesWithNotSameDetailAndMaster.Add(type);
                 }
                 else
                 {
-                    obj = LoadObject(type, key.ToString());
-                    _typesWithSameDetailAndMaster.Add(type);
+                  obj = LoadObject(type, key.ToString());
+                  _typesWithSameDetailAndMaster.Add(type);
                 }
 
                 // Удаляем объект с заданным ключем.
@@ -764,12 +764,12 @@
                     {
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
                         /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
-                         *
-                         * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
-                         * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
-                         * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
-                         * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
-                         */
+                        *
+                        * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
+                        * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
+                        * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
+                        * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
+                        */
                         string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
@@ -835,7 +835,7 @@
         /// <param name="objsToUpdate">Список на обновление.</param>
         /// <param name="dataObject">Объект данных который добавляем.</param>
         /// <param name="insertToEnd">Добавлять в конец списка.</param>
-        private static void AddDataObject(List<DataObject> objsToUpdate, DataObject dataObject, bool insertToEnd)
+        private static void AddObjectToUpdate(List<DataObject> objsToUpdate, DataObject dataObject, bool insertToEnd)
         {
             bool objAlreadyExists = objsToUpdate.Any(o => PKHelper.EQDataObject(o, dataObject, false));
             if (!objAlreadyExists)
@@ -887,16 +887,19 @@
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
             Type objType = _model.GetDataObjectType(edmEntity);
 
-            View view = _model.GetDataObjectDefaultView(objType);
+            View view = null;
             if (useUpdateView)
             {
-                view = _model.GetDataObjectUpdateView(objType) ?? view;
+                view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
+            } else
+            {
+                view = _model.GetDataObjectDefaultView(objType);
             }
 
             DataObject obj = ReturnDataObject(objType, value, view);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
-            AddDataObject(dObjs, obj, endObject);
+            AddObjectToUpdate(dObjs, obj, endObject);
 
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
             string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
@@ -1072,7 +1075,7 @@
 
                 if (agregator != null)
                 {
-                    AddDataObject(dObjs, agregator, endObject);
+                    AddObjectToUpdate(dObjs, agregator, endObject);
                 }
             }
 
