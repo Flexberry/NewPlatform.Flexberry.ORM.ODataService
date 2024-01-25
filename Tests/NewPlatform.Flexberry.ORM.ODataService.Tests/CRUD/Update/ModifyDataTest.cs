@@ -1,4 +1,4 @@
-﻿﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
+namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
     using System;
     using System.Collections.Generic;
@@ -40,17 +40,17 @@
         }
 #endif
 
-    /// <summary>
-    /// Осуществляет проверку того, что при PATCH запросах происходит вставка и удаление связей объекта.
-    /// Зависимые объекты (мастера, детейлы) представлены в виде - Имя_Связи@odata.bind: Имя_Набора_Сущностей(ключ) или Имя_Связи@odata.bind: [ Имя_Набора_Сущностей(ключ) ]   .
-    /// Тест проверяет следующие факты:
-    /// <list type="number">
-    /// <item><description>Вставка связи мастерового объекта.</description></item>
-    /// <item><description>Удаление связи мастеровго объекта путём присвоения null свойству.</description></item>
-    /// <item><description>Удаление связи мастеровго объекта путём присвоения null для Имя_Связи@odata.bind.</description></item>
-    /// </list>
-    /// </summary>
-    [Fact]
+        /// <summary>
+        /// Осуществляет проверку того, что при PATCH запросах происходит вставка и удаление связей объекта.
+        /// Зависимые объекты (мастера, детейлы) представлены в виде - Имя_Связи@odata.bind: Имя_Набора_Сущностей(ключ) или Имя_Связи@odata.bind: [ Имя_Набора_Сущностей(ключ) ]   .
+        /// Тест проверяет следующие факты:
+        /// <list type="number">
+        /// <item><description>Вставка связи мастерового объекта.</description></item>
+        /// <item><description>Удаление связи мастеровго объекта путём присвоения null свойству.</description></item>
+        /// <item><description>Удаление связи мастеровго объекта путём присвоения null для Имя_Связи@odata.bind.</description></item>
+        /// </list>
+        /// </summary>
+        [Fact]
         public void PatchNavigationPropertiesTest()
         {
             ActODataService(args =>
