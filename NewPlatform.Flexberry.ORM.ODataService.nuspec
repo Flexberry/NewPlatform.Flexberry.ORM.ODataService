@@ -12,8 +12,12 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
-		Changed
+		Added
+    1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
+
+    Changed
 		1. Updated Flexberry ORM up to 7.2.0-beta01.
+
 		Fixed
 		1. Fixed loading of object with crushing of already loaded masters.
 		2. Fixed loading of details.
@@ -98,7 +102,7 @@
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
-  
+
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
 	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
 	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />
