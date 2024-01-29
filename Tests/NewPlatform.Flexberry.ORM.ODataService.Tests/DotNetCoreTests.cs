@@ -13,11 +13,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// <summary>
     /// Тесты, специфичные для .NET Core.
     /// </summary>
-    public class DotNetCoreTests : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class DotNetCoreTests : IClassFixture<CustomWebApplicationFactory<TestStartup>>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly WebApplicationFactory<TestStartup> _factory;
 
-        public DotNetCoreTests(CustomWebApplicationFactory<Startup> factory)
+        public DotNetCoreTests(CustomWebApplicationFactory<TestStartup> factory)
         {
             _factory = factory;
         }

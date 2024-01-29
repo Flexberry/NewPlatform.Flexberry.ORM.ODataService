@@ -20,6 +20,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
     /// <summary>
     /// Startup for testing UpdateView configuration.
+    /// Differs from TestStartup that it sets UpdateView for <see cref="Берлога"/> and <see cref="Медведь"/> data objects.
     /// </summary>
     public class UpdateViewsTestStartup : Startup
     {
@@ -59,7 +60,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 };
 
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var updateViews = new Dictionary<Type, View>()
+                var updateViews = new Dictionary<Type, View>() // setting updateViews for testing
                 {
                     { typeof(Медведь), Медведь.Views.МедведьUpdateView },
                     { typeof(Берлога), Берлога.Views.БерлогаUpdateView },

@@ -13,7 +13,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
     using Xunit.Abstractions;
 
     /// <summary>
-    /// Тесты для проверки работы UpdateViews.
+    /// Тесты для проверки работы UpdateViews. Для запуска OData backend используется модифицированная версия Startup - <see cref="UpdateViewsTestStartup"/>,
+    /// которая задаёт UpdateView для Берлоги и Медведя.
     /// </summary>
     public class UpdateViewsTest : BaseODataServiceIntegratedTest<UpdateViewsTestStartup>
     {
@@ -29,7 +30,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         }
 
         /// <summary>
-        /// Проверка работы UpdateView - случай когда в UpdateView не включен мастер.
+        /// Проверка работы UpdateView - случай, когда в UpdateView не включен мастер.
         /// </summary>
         [Fact]
         public void UpdateViewNoMastersTest()
@@ -63,10 +64,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 string requestJsonData = берлога1.ToJson(берлогаDynamicView, args.Token.Model);
 
                 // Добавляем в payload информацию, что поменяли ссылку на медведя.
-                requestJsonData = ODataHelper.AddEntryRelationship(requestJsonData, берлогаDynamicView, args.Token.Model, медведь2, nameof(Берлога.Медведь));
+                requestJsonData = ODataTestHelper.AddEntryRelationship(requestJsonData, берлогаDynamicView, args.Token.Model, медведь2, nameof(Берлога.Медведь));
 
                 // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
-                var requestUrl = ODataHelper.GetRequestUrl(args.Token.Model, берлога1);
+                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, берлога1);
 
                 // Сейчас обновление мастеров не поддерживается.
                 Assert.ThrowsAsync<Exception>(() => args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData)); // Если падает Exception, значит представление поменялось и работает.

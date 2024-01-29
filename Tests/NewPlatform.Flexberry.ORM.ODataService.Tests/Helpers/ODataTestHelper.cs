@@ -1,25 +1,23 @@
-﻿using ICSSoft.STORMNET;
-using ICSSoft.STORMNET.KeyGen;
-using NewPlatform.Flexberry.ORM.ODataService.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers
 {
-    public class ODataHelper
+    using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.KeyGen;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+
+    /// <summary>
+    /// Вспомогательные утилиты для тестирования OData.
+    /// </summary>
+    public static class ODataTestHelper
     {
         /// <summary>
-        /// Добавить запись об изменении ссылки в OData Payload.
+        /// Добавить запись об изменении ссылки у объекта в тело запроса к OData.
         /// </summary>
-        /// <param name="requestJsonData">Исходный payload.</param>
+        /// <param name="requestJsonData">Исходное тело запроса.</param>
         /// <param name="view">Представление исходного объекта.</param>
         /// <param name="model">EDM модель.</param>
         /// <param name="dataObject">Новый объект данных (по ссылке).</param>
         /// <param name="relationName">Ссылка на новый объект данных.</param>
-        /// <returns>Новый OData Payload.</returns>
+        /// <returns>Новое тело запроса к OData.</returns>
         public static string AddEntryRelationship(string requestJsonData, View view, DataObjectEdmModel model, DataObject dataObject, string relationName)
         {
             DataObjectDictionary objJsonМедв = DataObjectDictionary.Parse(requestJsonData, view, model);

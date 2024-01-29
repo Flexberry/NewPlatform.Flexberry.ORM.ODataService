@@ -213,7 +213,7 @@
         /// <param name="updateView">Update view to be used for objects of type <paramref name="dataObjectType" />. <i>Setting <see langword="null" /> removes update view for the type.</i></param>
         private void SetUpdateView(Type dataObjectType, View updateView)
         {
-            if (!typeof(DataObject).IsAssignableFrom(dataObjectType))
+            if (dataObjectType.IsSubclassOf(typeof(DataObject)))
             {
                 throw new ArgumentException("Update view can be set only for a DataObject.", nameof(dataObjectType));
             }

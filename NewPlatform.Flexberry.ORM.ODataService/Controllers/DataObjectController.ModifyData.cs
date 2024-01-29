@@ -833,7 +833,7 @@
         /// Добавляет объект данных в список на обновление если его там ещё нет.
         /// </summary>
         /// <param name="objsToUpdate">Список на обновление.</param>
-        /// <param name="dataObject">Объект данных который добавляем.</param>
+        /// <param name="dataObject">Объект данных, который добавляем.</param>
         /// <param name="insertToEnd">Добавлять в конец списка.</param>
         private static void AddObjectToUpdate(List<DataObject> objsToUpdate, DataObject dataObject, bool insertToEnd)
         {
