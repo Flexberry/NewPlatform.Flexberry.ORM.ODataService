@@ -19,7 +19,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Unity;
 
     /// <summary>
-    /// Startup for testing UpdateView configuration.
+    /// Startup for testing UpdateView configuration - a view that is used instead of a default view during data object updates.
     /// Differs from TestStartup that it sets UpdateView for <see cref="Берлога"/> and <see cref="Медведь"/> data objects.
     /// </summary>
     public class UpdateViewsTestStartup : Startup

@@ -5,14 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
+1. Helper class `DataObjectEdmModelDependencies` (it helps send named settings of Unity to class `DataObjectEdmModel`).
+2. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
 
 ### Changed
 1. Updated Flexberry ORM up to 7.2.0-beta01.
 
 ### Fixed
 1. Fixed loading of object with crushing of already loaded masters.
-2. Fixed loading of details. 
+2. Fixed loading of details.
 
 ## [7.1.1] - 2023.06.08
 

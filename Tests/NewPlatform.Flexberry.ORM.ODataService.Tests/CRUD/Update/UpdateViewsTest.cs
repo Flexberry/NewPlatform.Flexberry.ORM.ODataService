@@ -13,8 +13,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
     using Xunit.Abstractions;
 
     /// <summary>
-    /// Тесты для проверки работы UpdateViews. Для запуска OData backend используется модифицированная версия Startup - <see cref="UpdateViewsTestStartup"/>,
-    /// которая задаёт UpdateView для Берлоги и Медведя.
+    /// Тесты для проверки работы UpdateViews - представлений, которые используются вместо представления по умолчанию при обновлении объекта через OData.
+    /// Для запуска OData backend используется модифицированная версия Startup - <see cref="UpdateViewsTestStartup"/>, которая задаёт UpdateView для Берлоги и Медведя.
     /// </summary>
     public class UpdateViewsTest : BaseODataServiceIntegratedTest<UpdateViewsTestStartup>
     {
