@@ -2,78 +2,60 @@
 
 
 
-CREATE TABLE "Лес"
-(
-
-	"primaryKey" RAW(16) NOT NULL,
-
-	"Название" NVARCHAR2(255) NULL,
-
-	"Площадь" NUMBER(10) NULL,
-
-	"Заповедник" NUMBER(1) NULL,
-
-	"ДатаПослОсмотра" DATE NULL,
-
-	"Страна" RAW(16) NULL,
-
-	 PRIMARY KEY ("primaryKey")
-) ;
-
 CREATE TABLE "КлассСМножТипов"
 (
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"PropertyGeography" CLOB NULL,
-
-	"PropertyEnum" NVARCHAR2(6) NULL,
-
 	"PropertyBool" NUMBER(1) NULL,
-
-	"PropertyInt" NUMBER(10) NULL,
 
 	"PropertyDateTime" DATE NULL,
 
-	"PropertyString" NVARCHAR2(255) NULL,
-
-	"PropertyFloat" FLOAT(53) NULL,
+	"PropertyDecimal" NUMBER(38) NULL,
 
 	"PropertyDouble" FLOAT(126) NULL,
 
-	"PropertyDecimal" NUMBER(38) NULL,
+	"PropertyEnum" NVARCHAR2(6) NULL,
 
-	"PropertySystemNullableDateTime" DATE NULL,
+	"PropertyFloat" FLOAT(53) NULL,
 
-	"PropertySystemNullableInt" NUMBER(10) NULL,
+	"PropertyGeography" CLOB NULL,
 
-	"PropertySystemNullableGuid" RAW(16) NULL,
-
-	"PropertySystemNullableDecimal" NUMBER(38) NULL,
-
-	"PropStormnetNullableDateTime" DATE NULL,
-
-	"PropertyStormnetNullableInt" NUMBER(10) NULL,
-
-	"PropertyStormnetKeyGuid" RAW(16) NULL,
-
-	"PropStormnetNullableDecimal" NUMBER(38) NULL,
-
-	"PropertyStormnetPartliedDate" NVARCHAR2(255) NULL,
-
-	"PropertyStormnetContact" CLOB NULL,
+	"PropertyInt" NUMBER(10) NULL,
 
 	"PropertyStormnetBlob" CLOB NULL,
 
+	"PropertyStormnetContact" CLOB NULL,
+
 	"PropertyStormnetEvent" CLOB NULL,
+
+	"PropertyStormnetFile" CLOB NULL,
 
 	"PropertyStormnetGeoData" CLOB NULL,
 
 	"PropertyStormnetImage" CLOB NULL,
 
+	"PropertyStormnetKeyGuid" RAW(16) NULL,
+
+	"PropStormnetNullableDateTime" DATE NULL,
+
+	"PropStormnetNullableDecimal" NUMBER(38) NULL,
+
+	"PropertyStormnetNullableInt" NUMBER(10) NULL,
+
+	"PropertyStormnetPartliedDate" NVARCHAR2(255) NULL,
+
 	"PropertyStormnetWebFile" CLOB NULL,
 
-	"PropertyStormnetFile" CLOB NULL,
+	"PropertyString" NVARCHAR2(255) NULL,
+
+	"PropertySystemNullableDateTime" DATE NULL,
+
+	"PropertySystemNullableDecimal" NUMBER(38) NULL,
+
+	"PropertySystemNullableGuid" RAW(16) NULL,
+
+	"PropertySystemNullableInt" NUMBER(10) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -90,18 +72,37 @@ CREATE TABLE "Master"
 ) ;
 
 
+CREATE TABLE "Лес"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"ДатаПослОсмотра" DATE NULL,
+
+	"Заповедник" NUMBER(1) NULL,
+
+	"Название" NVARCHAR2(255) NULL,
+
+	"Площадь" NUMBER(10) NULL,
+
+	"Страна" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
 CREATE TABLE "LegoPatent"
 (
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Name" NVARCHAR2(255) NULL,
+	"Authors" NVARCHAR2(255) NULL,
 
 	"Date" DATE NULL,
 
-	"Authors" NVARCHAR2(255) NULL,
-
 	"Description" NVARCHAR2(255) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	"LegoBlock" RAW(16) NULL,
 
@@ -218,11 +219,11 @@ CREATE TABLE "Driver"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Name" NVARCHAR2(255) NULL,
-
 	"CarCount" NUMBER(10) NULL,
 
 	"Documents" NUMBER(1) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -251,43 +252,6 @@ CREATE TABLE "Журнал"
 	"Автор2" RAW(16) NOT NULL,
 
 	"Библиотека2" RAW(16) NOT NULL,
-
-	 PRIMARY KEY ("primaryKey")
-) ;
-
-
-CREATE TABLE "Медведь"
-(
-
-	"primaryKey" RAW(16) NOT NULL,
-
-	"ПолеБС" NVARCHAR2(255) NULL,
-
-	"ПорядковыйНомер" NUMBER(10) NULL,
-
-	"Вес" NUMBER(10) NULL,
-
-	"ЦветГлаз" NVARCHAR2(255) NULL,
-
-	"Пол" NVARCHAR2(9) NULL,
-
-	"ДатаРождения" DATE NULL,
-
-	"CreateTime" DATE NULL,
-
-	"Creator" NVARCHAR2(255) NULL,
-
-	"EditTime" DATE NULL,
-
-	"Editor" NVARCHAR2(255) NULL,
-
-	"ЛесОбитания" RAW(16) NULL,
-
-	"Папа" RAW(16) NULL,
-
-	"Страна" RAW(16) NULL,
-
-	"Мама" RAW(16) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -337,48 +301,21 @@ CREATE TABLE "LegoBlock"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Width" NUMBER(10) NULL,
-
-	"Height" NUMBER(10) NULL,
+	"Configuration" NVARCHAR2(255) NULL,
 
 	"Depth" NUMBER(10) NULL,
 
-	"Configuration" NVARCHAR2(255) NULL,
+	"Height" NUMBER(10) NULL,
 
-	"Name" NVARCHAR2(255) NULL,
+	"Width" NUMBER(10) NULL,
 
 	"BlockId" NUMBER(10) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	"Material" RAW(16) NULL,
 
 	"Color" RAW(16) NULL,
-
-	 PRIMARY KEY ("primaryKey")
-) ;
-
-
-CREATE TABLE "Берлога"
-(
-
-	"primaryKey" RAW(16) NOT NULL,
-
-	"ПолеБС" NVARCHAR2(255) NULL,
-
-	"Наименование" NVARCHAR2(255) NULL,
-
-	"Комфортность" NUMBER(10) NULL,
-
-	"Заброшена" NUMBER(1) NULL,
-
-	"Сертификат" CLOB NULL,
-
-	"CertString" CLOB NULL,
-
-	"ЛесРасположения" RAW(16) NULL,
-
-	"ДляКакойПороды" RAW(16) NULL,
-
-	"Медведь" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -389,9 +326,9 @@ CREATE TABLE "LegoBlockColor"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Name" NVARCHAR2(255) NULL,
-
 	"ColorNumber" NUMBER(10) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -413,9 +350,9 @@ CREATE TABLE "Котенок"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"КличкаКотенка" NVARCHAR2(255) NULL,
-
 	"Глупость" NUMBER(10) NULL,
+
+	"КличкаКотенка" NVARCHAR2(255) NULL,
 
 	"Кошка_m0" RAW(16) NOT NULL,
 
@@ -466,23 +403,6 @@ CREATE TABLE "DetailsClass1"
 ) ;
 
 
-CREATE TABLE "Car"
-(
-
-	"primaryKey" RAW(16) NOT NULL,
-
-	"Number" NVARCHAR2(255) NULL,
-
-	"Model" NVARCHAR2(255) NULL,
-
-	"TipCar" NVARCHAR2(9) NULL,
-
-	"driver" RAW(16) NOT NULL,
-
-	 PRIMARY KEY ("primaryKey")
-) ;
-
-
 CREATE TABLE "LegoBlockCustomPanel"
 (
 
@@ -505,9 +425,9 @@ CREATE TABLE "ТипЛапы"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Название" NVARCHAR2(255) NULL,
-
 	"Актуально" NUMBER(1) NULL,
+
+	"Название" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -529,9 +449,9 @@ CREATE TABLE "LegoPanelAngle"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Name" NVARCHAR2(255) NULL,
-
 	"Angle" NUMBER(10) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -627,9 +547,9 @@ CREATE TABLE "ТипПороды"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Название" NVARCHAR2(255) NULL,
-
 	"ДатаРегистрации" DATE NULL,
+
+	"Название" NVARCHAR2(255) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -640,9 +560,9 @@ CREATE TABLE "LegoBlockTopPanel"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"WidthCount" NUMBER(10) NULL,
-
 	"HeightCount" NUMBER(10) NULL,
+
+	"WidthCount" NUMBER(10) NULL,
 
 	"SocketStandard" RAW(16) NULL,
 
@@ -717,9 +637,9 @@ CREATE TABLE "LegoDevice"
 
 	"Electricity" NUMBER(1) NULL,
 
-	"Name" NVARCHAR2(255) NULL,
-
 	"BlockId" NUMBER(10) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
 
 	"Color" RAW(16) NULL,
 
@@ -738,9 +658,9 @@ CREATE TABLE "Наследник"
 
 	"Свойство2" NUMBER(10) NULL,
 
-	"Master" RAW(16) NULL,
-
 	"Мастер" RAW(16) NULL,
+
+	"Master" RAW(16) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -751,9 +671,9 @@ CREATE TABLE "LegoBlockBottomPanel"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"WidthCount" NUMBER(10) NULL,
-
 	"HeightCount" NUMBER(10) NULL,
+
+	"WidthCount" NUMBER(10) NULL,
 
 	"Block" RAW(16) NOT NULL,
 
@@ -768,55 +688,136 @@ CREATE TABLE "ДочернийКласс"
 
 	"ChildProperty" NVARCHAR2(255) NULL,
 
-	"PropertyGeography" CLOB NULL,
-
-	"PropertyEnum" NVARCHAR2(6) NULL,
-
 	"PropertyBool" NUMBER(1) NULL,
-
-	"PropertyInt" NUMBER(10) NULL,
 
 	"PropertyDateTime" DATE NULL,
 
-	"PropertyString" NVARCHAR2(255) NULL,
-
-	"PropertyFloat" FLOAT(53) NULL,
+	"PropertyDecimal" NUMBER(38) NULL,
 
 	"PropertyDouble" FLOAT(126) NULL,
 
-	"PropertyDecimal" NUMBER(38) NULL,
+	"PropertyEnum" NVARCHAR2(6) NULL,
 
-	"PropertySystemNullableDateTime" DATE NULL,
+	"PropertyFloat" FLOAT(53) NULL,
 
-	"PropertySystemNullableInt" NUMBER(10) NULL,
+	"PropertyGeography" CLOB NULL,
 
-	"PropertySystemNullableGuid" RAW(16) NULL,
-
-	"PropertySystemNullableDecimal" NUMBER(38) NULL,
-
-	"PropStormnetNullableDateTime" DATE NULL,
-
-	"PropertyStormnetNullableInt" NUMBER(10) NULL,
-
-	"PropertyStormnetKeyGuid" RAW(16) NULL,
-
-	"PropStormnetNullableDecimal" NUMBER(38) NULL,
-
-	"PropertyStormnetPartliedDate" NVARCHAR2(255) NULL,
-
-	"PropertyStormnetContact" CLOB NULL,
+	"PropertyInt" NUMBER(10) NULL,
 
 	"PropertyStormnetBlob" CLOB NULL,
 
+	"PropertyStormnetContact" CLOB NULL,
+
 	"PropertyStormnetEvent" CLOB NULL,
+
+	"PropertyStormnetFile" CLOB NULL,
 
 	"PropertyStormnetGeoData" CLOB NULL,
 
 	"PropertyStormnetImage" CLOB NULL,
 
+	"PropertyStormnetKeyGuid" RAW(16) NULL,
+
+	"PropStormnetNullableDateTime" DATE NULL,
+
+	"PropStormnetNullableDecimal" NUMBER(38) NULL,
+
+	"PropertyStormnetNullableInt" NUMBER(10) NULL,
+
+	"PropertyStormnetPartliedDate" NVARCHAR2(255) NULL,
+
 	"PropertyStormnetWebFile" CLOB NULL,
 
-	"PropertyStormnetFile" CLOB NULL,
+	"PropertyString" NVARCHAR2(255) NULL,
+
+	"PropertySystemNullableDateTime" DATE NULL,
+
+	"PropertySystemNullableDecimal" NUMBER(38) NULL,
+
+	"PropertySystemNullableGuid" RAW(16) NULL,
+
+	"PropertySystemNullableInt" NUMBER(10) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "Медведь"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Вес" NUMBER(10) NULL,
+
+	"ДатаРождения" DATE NULL,
+
+	"Пол" NVARCHAR2(9) NULL,
+
+	"ПолеБС" NVARCHAR2(255) NULL,
+
+	"ПорядковыйНомер" NUMBER(10) NULL,
+
+	"ЦветГлаз" NVARCHAR2(255) NULL,
+
+	"CreateTime" DATE NULL,
+
+	"Creator" NVARCHAR2(255) NULL,
+
+	"Editor" NVARCHAR2(255) NULL,
+
+	"EditTime" DATE NULL,
+
+	"ЛесОбитания" RAW(16) NULL,
+
+	"Мама" RAW(16) NULL,
+
+	"Папа" RAW(16) NULL,
+
+	"Страна" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "Берлога"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Заброшена" NUMBER(1) NULL,
+
+	"Комфортность" NUMBER(10) NULL,
+
+	"Наименование" NVARCHAR2(255) NULL,
+
+	"ПолеБС" NVARCHAR2(255) NULL,
+
+	"Сертификат" CLOB NULL,
+
+	"CertString" CLOB NULL,
+
+	"ЛесРасположения" RAW(16) NULL,
+
+	"ДляКакойПороды" RAW(16) NULL,
+
+	"Медведь" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "Car"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Model" NVARCHAR2(255) NULL,
+
+	"Number" NVARCHAR2(255) NULL,
+
+	"TipCar" NVARCHAR2(9) NULL,
+
+	"driver" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -836,28 +837,29 @@ CREATE TABLE "Перелом"
 	 PRIMARY KEY ("primaryKey")
 ) ;
 
+
 CREATE TABLE "Лапа"
 (
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Цвет" NVARCHAR2(255) NULL,
-
-	"Размер" NUMBER(10) NULL,
+	"БылиЛиПереломы" NUMBER(1) NULL,
 
 	"ДатаРождения" DATE NULL,
 
-	"БылиЛиПереломы" NUMBER(1) NULL,
-
-	"Сторона" NVARCHAR2(11) NULL,
-
 	"Номер" NUMBER(10) NULL,
+
+	"Размер" NUMBER(10) NULL,
+
+	"РазмерDecimal" NUMBER(38) NULL,
 
 	"РазмерDouble" FLOAT(126) NULL,
 
 	"РазмерFloat" FLOAT(53) NULL,
 
-	"РазмерDecimal" NUMBER(38) NULL,
+	"Сторона" NVARCHAR2(11) NULL,
+
+	"Цвет" NVARCHAR2(255) NULL,
 
 	"ТипЛапы_m0" RAW(16) NULL,
 
@@ -872,20 +874,47 @@ CREATE TABLE "Кошка"
 
 	"primaryKey" RAW(16) NOT NULL,
 
-	"Кличка" NVARCHAR2(255) NULL,
+	"Агрессивная" NUMBER(1) NULL,
 
 	"ДатаРождения" DATE NULL,
 
-	"Тип" NVARCHAR2(11) NULL,
-
-	"ПородаСтрокой" NVARCHAR2(255) NULL,
-	"Агрессивная" NUMBER(1) NULL,
+	"Кличка" NVARCHAR2(255) NULL,
 
 	"УсыСлева" NUMBER(10) NULL,
 
 	"УсыСправа" NUMBER(10) NULL,
 
+	"ПородаСтрокой" NVARCHAR2(255) NULL,
+
+	"Тип" NVARCHAR2(11) NULL,
+
 	"Порода_m0" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "AgregatorSameMD"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"Master" RAW(16) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "DetailAndMaster"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"Agregator" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -1240,7 +1269,6 @@ CREATE INDEX "TestDetailWithCicle_ITest_3425" on "TestDetailWithCicle" ("TestMas
 ALTER TABLE "Детейл"
 	ADD CONSTRAINT "Детейл_FБазов_7676" FOREIGN KEY ("БазовыйКласс_m0") REFERENCES "БазовыйКласс" ("primaryKey");
 
-
 CREATE INDEX "Детейл_IБазов_4616" on "Детейл" ("БазовыйКласс_m0");
 
 ALTER TABLE "Детейл"
@@ -1257,26 +1285,6 @@ ALTER TABLE "Журнал"
 	ADD CONSTRAINT "Журнал_FБибли_9226" FOREIGN KEY ("Библиотека2") REFERENCES "Библиотека" ("primaryKey");
 
 CREATE INDEX "Журнал_IБибли_1176" on "Журнал" ("Библиотека2");
-
-ALTER TABLE "Медведь"
-	ADD CONSTRAINT "Медведь_FЛес_0" FOREIGN KEY ("ЛесОбитания") REFERENCES "Лес" ("primaryKey");
-
-CREATE INDEX "Медведь_IЛесО_5757" on "Медведь" ("ЛесОбитания");
-
-ALTER TABLE "Медведь"
-	ADD CONSTRAINT "Медведь_FМедв_4334" FOREIGN KEY ("Папа") REFERENCES "Медведь" ("primaryKey");
-
-CREATE INDEX "Медведь_IПапа" on "Медведь" ("Папа");
-
-ALTER TABLE "Медведь"
-	ADD CONSTRAINT "Медведь_FСтрана_0" FOREIGN KEY ("Страна") REFERENCES "Страна" ("primaryKey");
-
-CREATE INDEX "Медведь_IСтрана" on "Медведь" ("Страна");
-
-ALTER TABLE "Медведь"
-	ADD CONSTRAINT "Медведь_FМедв_4335" FOREIGN KEY ("Мама") REFERENCES "Медведь" ("primaryKey");
-
-CREATE INDEX "Медведь_IМама" on "Медведь" ("Мама");
 
 ALTER TABLE "MainClass"
 	ADD CONSTRAINT "MainClass_FAgrClass1_0" FOREIGN KEY ("AgrClass1") REFERENCES "AgrClass1" ("primaryKey");
@@ -1303,21 +1311,6 @@ ALTER TABLE "LegoBlock"
 
 CREATE INDEX "LegoBlock_IColor" on "LegoBlock" ("Color");
 
-ALTER TABLE "Берлога"
-	ADD CONSTRAINT "Берлога_FЛес_0" FOREIGN KEY ("ЛесРасположения") REFERENCES "Лес" ("primaryKey");
-
-CREATE INDEX "Берлога_IЛесР_1411" on "Берлога" ("ЛесРасположения");
-
-ALTER TABLE "Берлога"
-	ADD CONSTRAINT "Берлога_FПорода_0" FOREIGN KEY ("ДляКакойПороды") REFERENCES "Порода" ("primaryKey");
-
-CREATE INDEX "Берлога_IДляК_2329" on "Берлога" ("ДляКакойПороды");
-
-ALTER TABLE "Берлога"
-	ADD CONSTRAINT "Берлога_FМедв_5600" FOREIGN KEY ("Медведь") REFERENCES "Медведь" ("primaryKey");
-
-CREATE INDEX "Берлога_IМедведь" on "Берлога" ("Медведь");
-
 ALTER TABLE "Котенок"
 	ADD CONSTRAINT "Котенок_FКошка_0" FOREIGN KEY ("Кошка_m0") REFERENCES "Кошка" ("primaryKey");
 
@@ -1342,11 +1335,6 @@ ALTER TABLE "DetailsClass1"
 	ADD CONSTRAINT "DetailsClass1_FAgrClass1_0" FOREIGN KEY ("AgrClass1") REFERENCES "AgrClass1" ("primaryKey");
 
 CREATE INDEX "DetailsClass1_IAgrClass1" on "DetailsClass1" ("AgrClass1");
-
-ALTER TABLE "Car"
-	ADD CONSTRAINT "Car_FDriver_0" FOREIGN KEY ("driver") REFERENCES "Driver" ("primaryKey");
-
-CREATE INDEX "Car_Idriver" on "Car" ("driver");
 
 ALTER TABLE "LegoBlockCustomPanel"
 	ADD CONSTRAINT "LegoBlockCustomPanel_FLeg_5205" FOREIGN KEY ("PanelAngle") REFERENCES "LegoPanelAngle" ("primaryKey");
@@ -1383,7 +1371,6 @@ ALTER TABLE "LegoBlockTopPanel"
 
 CREATE INDEX "LegoBlockTopPanel_IBlock" on "LegoBlockTopPanel" ("Block");
 
-
 ALTER TABLE "ДетейлНаследник"
 	ADD CONSTRAINT "ДетейлНаслед_2684" FOREIGN KEY ("БазовыйКласс_m0") REFERENCES "БазовыйКласс" ("primaryKey");
 
@@ -1415,19 +1402,59 @@ ALTER TABLE "LegoDevice"
 CREATE INDEX "LegoDevice_IColor" on "LegoDevice" ("Color");
 
 ALTER TABLE "Наследник"
-	ADD CONSTRAINT "Наследник_FMaster_0" FOREIGN KEY ("Master") REFERENCES "Master" ("primaryKey");
-
-CREATE INDEX "Наследник_IMaster" on "Наследник" ("Master");
-
-ALTER TABLE "Наследник"
 	ADD CONSTRAINT "Наследник_FМас_278" FOREIGN KEY ("Мастер") REFERENCES "Мастер" ("primaryKey");
 
 CREATE INDEX "Наследник_IМа_7239" on "Наследник" ("Мастер");
+
+ALTER TABLE "Наследник"
+	ADD CONSTRAINT "Наследник_FMaster_0" FOREIGN KEY ("Master") REFERENCES "Master" ("primaryKey");
+
+CREATE INDEX "Наследник_IMaster" on "Наследник" ("Master");
 
 ALTER TABLE "LegoBlockBottomPanel"
 	ADD CONSTRAINT "LegoBlockBottomPanel_FLeg_6473" FOREIGN KEY ("Block") REFERENCES "LegoBlock" ("primaryKey");
 
 CREATE INDEX "LegoBlockBottomPanel_IBlock" on "LegoBlockBottomPanel" ("Block");
+
+ALTER TABLE "Медведь"
+	ADD CONSTRAINT "Медведь_FЛес_0" FOREIGN KEY ("ЛесОбитания") REFERENCES "Лес" ("primaryKey");
+
+CREATE INDEX "Медведь_IЛесО_5757" on "Медведь" ("ЛесОбитания");
+
+ALTER TABLE "Медведь"
+	ADD CONSTRAINT "Медведь_FМедв_4334" FOREIGN KEY ("Мама") REFERENCES "Медведь" ("primaryKey");
+
+CREATE INDEX "Медведь_IМама" on "Медведь" ("Мама");
+
+ALTER TABLE "Медведь"
+	ADD CONSTRAINT "Медведь_FМедв_4335" FOREIGN KEY ("Папа") REFERENCES "Медведь" ("primaryKey");
+
+CREATE INDEX "Медведь_IПапа" on "Медведь" ("Папа");
+
+ALTER TABLE "Медведь"
+	ADD CONSTRAINT "Медведь_FСтрана_0" FOREIGN KEY ("Страна") REFERENCES "Страна" ("primaryKey");
+
+CREATE INDEX "Медведь_IСтрана" on "Медведь" ("Страна");
+
+ALTER TABLE "Берлога"
+	ADD CONSTRAINT "Берлога_FЛес_0" FOREIGN KEY ("ЛесРасположения") REFERENCES "Лес" ("primaryKey");
+
+CREATE INDEX "Берлога_IЛесР_1411" on "Берлога" ("ЛесРасположения");
+
+ALTER TABLE "Берлога"
+	ADD CONSTRAINT "Берлога_FПорода_0" FOREIGN KEY ("ДляКакойПороды") REFERENCES "Порода" ("primaryKey");
+
+CREATE INDEX "Берлога_IДляК_2329" on "Берлога" ("ДляКакойПороды");
+
+ALTER TABLE "Берлога"
+	ADD CONSTRAINT "Берлога_FМедв_5600" FOREIGN KEY ("Медведь") REFERENCES "Медведь" ("primaryKey");
+
+CREATE INDEX "Берлога_IМедведь" on "Берлога" ("Медведь");
+
+ALTER TABLE "Car"
+	ADD CONSTRAINT "Car_FDriver_0" FOREIGN KEY ("driver") REFERENCES "Driver" ("primaryKey");
+
+CREATE INDEX "Car_Idriver" on "Car" ("driver");
 
 ALTER TABLE "Перелом"
 	ADD CONSTRAINT "Перелом_FЛапа_0" FOREIGN KEY ("Лапа_m0") REFERENCES "Лапа" ("primaryKey");
@@ -1448,6 +1475,16 @@ ALTER TABLE "Кошка"
 	ADD CONSTRAINT "Кошка_FПорода_0" FOREIGN KEY ("Порода_m0") REFERENCES "Порода" ("primaryKey");
 
 CREATE INDEX "Кошка_IПорода_m0" on "Кошка" ("Порода_m0");
+
+ALTER TABLE "AgregatorSameMD"
+	ADD CONSTRAINT "AgregatorSameMD_FDe_217" FOREIGN KEY ("Master") REFERENCES "DetailAndMaster" ("primaryKey");
+
+CREATE INDEX "AgregatorSameMD_IMaster" on "AgregatorSameMD" ("Master");
+
+ALTER TABLE "DetailAndMaster"
+	ADD CONSTRAINT "DetailAndMaster_FAgregator_188" FOREIGN KEY ("Agregator") REFERENCES "AgregatorSameMD" ("primaryKey");
+
+CREATE INDEX "DetailAndMaster_IAgregator" on "DetailAndMaster" ("Agregator");
 
 ALTER TABLE "STORMWEBSEARCH"
 	ADD CONSTRAINT "STORMWEBSEARCH_FSTORMFILT_6521" FOREIGN KEY ("FilterSetting_m0") REFERENCES "STORMFILTERSETTING" ("primaryKey");

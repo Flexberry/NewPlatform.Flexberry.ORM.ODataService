@@ -5,8 +5,10 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.Exceptions;
     using ICSSoft.STORMNET.KeyGen;
     using ICSSoft.STORMNET.Windows.Forms;
@@ -1602,6 +1604,161 @@
                     Assert.Equal(newValue, базовыйКласс.Книга[0].Название);
                     Assert.Equal(newIntValue, базовыйКласс.Журнал[0].Номер);
 
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку удаления данных.
+        /// </summary>
+        [Fact]
+        public void DeletePlainObjectTest()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
+                Медведь agregator = new Медведь() { МедведьСтрокой = "Agregator" };
+                args.DataService.UpdateObject(agregator);
+
+                View view = new View(typeof(Медведь), View.ReadType.OnlyThatObject);
+                Медведь foundAgregator0 = args.DataService.Query<Медведь>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                Assert.NotNull(foundAgregator0);
+
+                // Формируем URL запроса к OData-сервису (с идентификатором удаляемой сущности).
+                string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, agregator.__PrimaryKey);
+                requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был удален из базы.
+                    Медведь foundAgregator = args.DataService.Query<Медведь>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                    Assert.Null(foundAgregator);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа, но при этом пустые.
+        /// </summary>
+        [Fact]
+        public void DeleteObjectWithSameDetailAndMasterEmptyTest()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
+                AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
+                args.DataService.UpdateObject(agregator);
+
+                View view = new View(typeof(AgregatorSameMD), View.ReadType.OnlyThatObject);
+                AgregatorSameMD foundAgregator0 = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                Assert.NotNull(foundAgregator0);
+
+                // Формируем URL запроса к OData-сервису (с идентификатором удаляемой сущности).
+                string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
+                requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был удален из базы.
+                    AgregatorSameMD foundAgregator = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                    Assert.Null(foundAgregator);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа? но лишь детейл заполнен.
+        /// </summary>
+        [Fact]
+        public void DeleteObjectWithSameDetailAndMasterTest()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
+                AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
+                args.DataService.UpdateObject(agregator);
+
+                DetailAndMaster dm = new DetailAndMaster() { Name = "DetailAndMaster" };
+                agregator.Details.Add(dm);
+                args.DataService.UpdateObject(dm);
+
+                AgregatorSameMD agregator2 = new AgregatorSameMD() { Name = "Agregator2" };
+                args.DataService.UpdateObject(agregator2);
+                DetailAndMaster dm2 = new DetailAndMaster() { Name = "DetailAndMaster2" };
+                agregator2.Details.Add(dm2);
+                args.DataService.UpdateObject(dm2);
+
+                View view = new View(typeof(AgregatorSameMD), View.ReadType.OnlyThatObject);
+                AgregatorSameMD foundAgregator0 = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                Assert.NotNull(foundAgregator0);
+
+                // Формируем URL запроса к OData-сервису (с идентификатором удаляемой сущности).
+                string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
+                requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был удален из базы.
+                    AgregatorSameMD foundAgregator = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                    Assert.Null(foundAgregator);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа, но не пустые.
+        /// </summary>
+        [Fact]
+        public void DeleteObjectWithSameDetailAndMaster2Test()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
+                AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
+                args.DataService.UpdateObject(agregator);
+
+                DetailAndMaster dm = new DetailAndMaster() { Name = "DetailAndMaster" };
+                agregator.Details.Add(dm);
+                args.DataService.UpdateObject(dm);
+
+                AgregatorSameMD agregator2 = new AgregatorSameMD() { Name = "Agregator2" };
+                args.DataService.UpdateObject(agregator2);
+                DetailAndMaster dm2 = new DetailAndMaster() { Name = "DetailAndMaster2" };
+                agregator2.Details.Add(dm2);
+                args.DataService.UpdateObject(dm2);
+
+                agregator.Master = dm2;
+                args.DataService.UpdateObject(agregator);
+
+                View view = new View(typeof(AgregatorSameMD), View.ReadType.OnlyThatObject);
+                AgregatorSameMD foundAgregator0 = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                Assert.NotNull(foundAgregator0);
+
+                // Формируем URL запроса к OData-сервису (с идентификатором удаляемой сущности).
+                string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
+                requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был удален из базы.
+                    AgregatorSameMD foundAgregator = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
+                    Assert.Null(foundAgregator);
                 }
             });
         }
