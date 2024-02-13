@@ -3,43 +3,33 @@
 
 
 
-CREATE TABLE Лес (
- primaryKey UUID NOT NULL,
- Название VARCHAR(255) NULL,
- Площадь INT NULL,
- Заповедник BOOLEAN NULL,
- ДатаПослОсмотра TIMESTAMP(3) NULL,
- Страна UUID NULL,
- PRIMARY KEY (primaryKey));
-
-
 CREATE TABLE КлассСМножТипов (
  primaryKey UUID NOT NULL,
- PropertyGeography GEOMETRY NULL,
- PropertyEnum VARCHAR(6) NULL,
  PropertyBool BOOLEAN NULL,
- PropertyInt INT NULL,
  PropertyDateTime TIMESTAMP(3) NULL,
- PropertyString VARCHAR(255) NULL,
- PropertyFloat REAL NULL,
- PropertyDouble DOUBLE PRECISION NULL,
  PropertyDecimal DECIMAL NULL,
- PropertySystemNullableDateTime TIMESTAMP(3) NULL,
- PropertySystemNullableInt INT NULL,
- PropertySystemNullableGuid UUID NULL,
- PropertySystemNullableDecimal DECIMAL NULL,
- PropStormnetNullableDateTime TIMESTAMP(3) NULL,
- PropertyStormnetNullableInt INT NULL,
- PropertyStormnetKeyGuid UUID NULL,
- PropStormnetNullableDecimal DECIMAL NULL,
- PropertyStormnetPartliedDate VARCHAR(255) NULL,
- PropertyStormnetContact TEXT NULL,
+ PropertyDouble DOUBLE PRECISION NULL,
+ PropertyEnum VARCHAR(6) NULL,
+ PropertyFloat REAL NULL,
+ PropertyGeography GEOMETRY NULL,
+ PropertyInt INT NULL,
  PropertyStormnetBlob TEXT NULL,
+ PropertyStormnetContact TEXT NULL,
  PropertyStormnetEvent TEXT NULL,
+ PropertyStormnetFile TEXT NULL,
  PropertyStormnetGeoData TEXT NULL,
  PropertyStormnetImage TEXT NULL,
+ PropertyStormnetKeyGuid UUID NULL,
+ PropStormnetNullableDateTime TIMESTAMP(3) NULL,
+ PropStormnetNullableDecimal DECIMAL NULL,
+ PropertyStormnetNullableInt INT NULL,
+ PropertyStormnetPartliedDate VARCHAR(255) NULL,
  PropertyStormnetWebFile TEXT NULL,
- PropertyStormnetFile TEXT NULL,
+ PropertyString VARCHAR(255) NULL,
+ PropertySystemNullableDateTime TIMESTAMP(3) NULL,
+ PropertySystemNullableDecimal DECIMAL NULL,
+ PropertySystemNullableGuid UUID NULL,
+ PropertySystemNullableInt INT NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -49,12 +39,22 @@ CREATE TABLE Master (
  PRIMARY KEY (primaryKey));
 
 
+CREATE TABLE Лес (
+ primaryKey UUID NOT NULL,
+ ДатаПослОсмотра TIMESTAMP(3) NULL,
+ Заповедник BOOLEAN NULL,
+ Название VARCHAR(255) NULL,
+ Площадь INT NULL,
+ Страна UUID NULL,
+ PRIMARY KEY (primaryKey));
+
+
 CREATE TABLE LegoPatent (
  primaryKey UUID NOT NULL,
- Name VARCHAR(255) NULL,
- Date TIMESTAMP(3) NULL,
  Authors VARCHAR(255) NULL,
+ Date TIMESTAMP(3) NULL,
  Description VARCHAR(255) NULL,
+ Name VARCHAR(255) NULL,
  LegoBlock UUID NULL,
  LegoDevice UUID NULL,
  PRIMARY KEY (primaryKey));
@@ -117,9 +117,9 @@ CREATE TABLE Детейл (
 
 CREATE TABLE Driver (
  primaryKey UUID NOT NULL,
- Name VARCHAR(255) NULL,
  CarCount INT NULL,
  Documents BOOLEAN NULL,
+ Name VARCHAR(255) NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -135,25 +135,6 @@ CREATE TABLE Журнал (
  Номер INT NULL,
  Автор2 UUID NOT NULL,
  Библиотека2 UUID NOT NULL,
- PRIMARY KEY (primaryKey));
-
-
-CREATE TABLE Медведь (
- primaryKey UUID NOT NULL,
- ПолеБС VARCHAR(255) NULL,
- ПорядковыйНомер INT NULL,
- Вес INT NULL,
- ЦветГлаз VARCHAR(255) NULL,
- Пол VARCHAR(9) NULL,
- ДатаРождения TIMESTAMP(3) NULL,
- CreateTime TIMESTAMP(3) NULL,
- Creator VARCHAR(255) NULL,
- EditTime TIMESTAMP(3) NULL,
- Editor VARCHAR(255) NULL,
- ЛесОбитания UUID NULL,
- Папа UUID NULL,
- Страна UUID NULL,
- Мама UUID NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -180,35 +161,21 @@ CREATE TABLE Порода (
 
 CREATE TABLE LegoBlock (
  primaryKey UUID NOT NULL,
- Width INT NULL,
- Height INT NULL,
- Depth INT NULL,
  Configuration VARCHAR(255) NULL,
- Name VARCHAR(255) NULL,
+ Depth INT NULL,
+ Height INT NULL,
+ Width INT NULL,
  BlockId INT NULL,
+ Name VARCHAR(255) NULL,
  Material UUID NULL,
  Color UUID NULL,
  PRIMARY KEY (primaryKey));
 
 
-CREATE TABLE Берлога (
- primaryKey UUID NOT NULL,
- ПолеБС VARCHAR(255) NULL,
- Наименование VARCHAR(255) NULL,
- Комфортность INT NULL,
- Заброшена BOOLEAN NULL,
- Сертификат TEXT NULL,
- CertString TEXT NULL,
- ЛесРасположения UUID NULL,
- ДляКакойПороды UUID NULL,
- Медведь UUID NOT NULL,
- PRIMARY KEY (primaryKey));
-
-
 CREATE TABLE LegoBlockColor (
  primaryKey UUID NOT NULL,
- Name VARCHAR(255) NULL,
  ColorNumber INT NULL,
+ Name VARCHAR(255) NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -220,8 +187,8 @@ CREATE TABLE ПоставщикКниг (
 
 CREATE TABLE Котенок (
  primaryKey UUID NOT NULL,
- КличкаКотенка VARCHAR(255) NULL,
  Глупость INT NULL,
+ КличкаКотенка VARCHAR(255) NULL,
  Кошка_m0 UUID NOT NULL,
  PRIMARY KEY (primaryKey));
 
@@ -249,15 +216,6 @@ CREATE TABLE DetailsClass1 (
  PRIMARY KEY (primaryKey));
 
 
-CREATE TABLE Car (
- primaryKey UUID NOT NULL,
- Number VARCHAR(255) NULL,
- Model VARCHAR(255) NULL,
- TipCar VARCHAR(9) NULL,
- driver UUID NOT NULL,
- PRIMARY KEY (primaryKey));
-
-
 CREATE TABLE LegoBlockCustomPanel (
  primaryKey UUID NOT NULL,
  Orientation VARCHAR(255) NULL,
@@ -269,8 +227,8 @@ CREATE TABLE LegoBlockCustomPanel (
 
 CREATE TABLE ТипЛапы (
  primaryKey UUID NOT NULL,
- Название VARCHAR(255) NULL,
  Актуально BOOLEAN NULL,
+ Название VARCHAR(255) NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -282,8 +240,8 @@ CREATE TABLE AgrClass1 (
 
 CREATE TABLE LegoPanelAngle (
  primaryKey UUID NOT NULL,
- Name VARCHAR(255) NULL,
  Angle INT NULL,
+ Name VARCHAR(255) NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -335,15 +293,15 @@ CREATE TABLE AgrClass2 (
 
 CREATE TABLE ТипПороды (
  primaryKey UUID NOT NULL,
- Название VARCHAR(255) NULL,
  ДатаРегистрации TIMESTAMP(3) NULL,
+ Название VARCHAR(255) NULL,
  PRIMARY KEY (primaryKey));
 
 
 CREATE TABLE LegoBlockTopPanel (
  primaryKey UUID NOT NULL,
- WidthCount INT NULL,
  HeightCount INT NULL,
+ WidthCount INT NULL,
  SocketStandard UUID NULL,
  Block UUID NOT NULL,
  PRIMARY KEY (primaryKey));
@@ -383,8 +341,8 @@ CREATE TABLE LegoDevice (
  primaryKey UUID NOT NULL,
  Description VARCHAR(255) NULL,
  Electricity BOOLEAN NULL,
- Name VARCHAR(255) NULL,
  BlockId INT NULL,
+ Name VARCHAR(255) NULL,
  Color UUID NULL,
  PRIMARY KEY (primaryKey));
 
@@ -394,15 +352,15 @@ CREATE TABLE Наследник (
  Свойство DOUBLE PRECISION NULL,
  Свойство1 VARCHAR(255) NULL,
  Свойство2 INT NULL,
- Master UUID NULL,
  Мастер UUID NULL,
+ Master UUID NULL,
  PRIMARY KEY (primaryKey));
 
 
 CREATE TABLE LegoBlockBottomPanel (
  primaryKey UUID NOT NULL,
- WidthCount INT NULL,
  HeightCount INT NULL,
+ WidthCount INT NULL,
  Block UUID NOT NULL,
  PRIMARY KEY (primaryKey));
 
@@ -410,31 +368,73 @@ CREATE TABLE LegoBlockBottomPanel (
 CREATE TABLE ДочернийКласс (
  primaryKey UUID NOT NULL,
  ChildProperty VARCHAR(255) NULL,
- PropertyGeography GEOMETRY NULL,
- PropertyEnum VARCHAR(6) NULL,
  PropertyBool BOOLEAN NULL,
- PropertyInt INT NULL,
  PropertyDateTime TIMESTAMP(3) NULL,
- PropertyString VARCHAR(255) NULL,
- PropertyFloat REAL NULL,
- PropertyDouble DOUBLE PRECISION NULL,
  PropertyDecimal DECIMAL NULL,
- PropertySystemNullableDateTime TIMESTAMP(3) NULL,
- PropertySystemNullableInt INT NULL,
- PropertySystemNullableGuid UUID NULL,
- PropertySystemNullableDecimal DECIMAL NULL,
- PropStormnetNullableDateTime TIMESTAMP(3) NULL,
- PropertyStormnetNullableInt INT NULL,
- PropertyStormnetKeyGuid UUID NULL,
- PropStormnetNullableDecimal DECIMAL NULL,
- PropertyStormnetPartliedDate VARCHAR(255) NULL,
- PropertyStormnetContact TEXT NULL,
+ PropertyDouble DOUBLE PRECISION NULL,
+ PropertyEnum VARCHAR(6) NULL,
+ PropertyFloat REAL NULL,
+ PropertyGeography GEOMETRY NULL,
+ PropertyInt INT NULL,
  PropertyStormnetBlob TEXT NULL,
+ PropertyStormnetContact TEXT NULL,
  PropertyStormnetEvent TEXT NULL,
+ PropertyStormnetFile TEXT NULL,
  PropertyStormnetGeoData TEXT NULL,
  PropertyStormnetImage TEXT NULL,
+ PropertyStormnetKeyGuid UUID NULL,
+ PropStormnetNullableDateTime TIMESTAMP(3) NULL,
+ PropStormnetNullableDecimal DECIMAL NULL,
+ PropertyStormnetNullableInt INT NULL,
+ PropertyStormnetPartliedDate VARCHAR(255) NULL,
  PropertyStormnetWebFile TEXT NULL,
- PropertyStormnetFile TEXT NULL,
+ PropertyString VARCHAR(255) NULL,
+ PropertySystemNullableDateTime TIMESTAMP(3) NULL,
+ PropertySystemNullableDecimal DECIMAL NULL,
+ PropertySystemNullableGuid UUID NULL,
+ PropertySystemNullableInt INT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE Медведь (
+ primaryKey UUID NOT NULL,
+ Вес INT NULL,
+ ДатаРождения TIMESTAMP(3) NULL,
+ Пол VARCHAR(9) NULL,
+ ПолеБС VARCHAR(255) NULL,
+ ПорядковыйНомер INT NULL,
+ ЦветГлаз VARCHAR(255) NULL,
+ CreateTime TIMESTAMP(3) NULL,
+ Creator VARCHAR(255) NULL,
+ Editor VARCHAR(255) NULL,
+ EditTime TIMESTAMP(3) NULL,
+ ЛесОбитания UUID NULL,
+ Мама UUID NULL,
+ Папа UUID NULL,
+ Страна UUID NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE Берлога (
+ primaryKey UUID NOT NULL,
+ Заброшена BOOLEAN NULL,
+ Комфортность INT NULL,
+ Наименование VARCHAR(255) NULL,
+ ПолеБС VARCHAR(255) NULL,
+ Сертификат TEXT NULL,
+ CertString TEXT NULL,
+ ЛесРасположения UUID NULL,
+ ДляКакойПороды UUID NULL,
+ Медведь UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE Car (
+ primaryKey UUID NOT NULL,
+ Model VARCHAR(255) NULL,
+ Number VARCHAR(255) NULL,
+ TipCar VARCHAR(9) NULL,
+ driver UUID NOT NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -448,15 +448,15 @@ CREATE TABLE Перелом (
 
 CREATE TABLE Лапа (
  primaryKey UUID NOT NULL,
- Цвет VARCHAR(255) NULL,
- Размер INT NULL,
- ДатаРождения TIMESTAMP(3) NULL,
  БылиЛиПереломы BOOLEAN NULL,
- Сторона VARCHAR(11) NULL,
+ ДатаРождения TIMESTAMP(3) NULL,
  Номер INT NULL,
+ Размер INT NULL,
+ РазмерDecimal DECIMAL NULL,
  РазмерDouble DOUBLE PRECISION NULL,
  РазмерFloat REAL NULL,
- РазмерDecimal DECIMAL NULL,
+ Сторона VARCHAR(11) NULL,
+ Цвет VARCHAR(255) NULL,
  ТипЛапы_m0 UUID NULL,
  Кошка_m0 UUID NOT NULL,
  PRIMARY KEY (primaryKey));
@@ -464,14 +464,81 @@ CREATE TABLE Лапа (
 
 CREATE TABLE Кошка (
  primaryKey UUID NOT NULL,
- Кличка VARCHAR(255) NULL,
- ДатаРождения TIMESTAMP(3) NULL,
- Тип VARCHAR(11) NULL,
- ПородаСтрокой VARCHAR(255) NULL,
  Агрессивная BOOLEAN NULL,
+ ДатаРождения TIMESTAMP(3) NULL,
+ Кличка VARCHAR(255) NULL,
  УсыСлева INT NULL,
  УсыСправа INT NULL,
+ ПородаСтрокой VARCHAR(255) NULL,
+ Тип VARCHAR(11) NULL,
  Порода_m0 UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE AgregatorWithSameMAndD (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ Master UUID NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE DetailAndMaster (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ Agregator UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE TestConfiguration (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE TestClass (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ FirstLevel UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE ThirdLevel (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ TestClass UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE SecondLevel1 (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ FirstLevel UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE FirstLevel (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ TestConfiguration UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE SecondLevel2 (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ SecondLevel1_m0 UUID NULL,
+ SecondLevel1_m1 UUID NULL,
+ FirstLevel UUID NOT NULL,
+ PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE TestAssociation (
+ primaryKey UUID NOT NULL,
+ Name2 VARCHAR(255) NULL,
+ Name VARCHAR(255) NULL,
+ SecondLevel1_m0 UUID NULL,
+ SecondLevel1_m1 UUID NULL,
+ FirstLevel UUID NOT NULL,
  PRIMARY KEY (primaryKey));
 
 
@@ -607,10 +674,10 @@ CREATE TABLE STORMAuField (
  PRIMARY KEY (primaryKey));
 
 
+CREATE INDEX Indexc5f9d71c0704ea7b966afcfdc89dc7eabe2d0c43 on КлассСМножТипов USING gist (PropertyGeography); 
 
  ALTER TABLE Лес ADD CONSTRAINT FKd3bd1222072f531605e73e66656fe58296c8bfd2 FOREIGN KEY (Страна) REFERENCES Страна; 
 CREATE INDEX Indexd3bd1222072f531605e73e66656fe58296c8bfd2 on Лес (Страна); 
-CREATE INDEX Indexc5f9d71c0704ea7b966afcfdc89dc7eabe2d0c43 on КлассСМножТипов USING gist (PropertyGeography); 
 
  ALTER TABLE LegoPatent ADD CONSTRAINT FK849bc80cb1cf2d804429cfd10a756cb914e3fece FOREIGN KEY (LegoBlock) REFERENCES LegoBlock; 
 CREATE INDEX Index849bc80cb1cf2d804429cfd10a756cb914e3fece on LegoPatent (LegoBlock); 
@@ -642,18 +709,6 @@ CREATE INDEX Index51fce8ede8f7716be28b6975505b1f9e738cc71c on Журнал (Ав
  ALTER TABLE Журнал ADD CONSTRAINT FK93c8f6bdc15c74cea64c3d56754d8263c4f0ceb5 FOREIGN KEY (Библиотека2) REFERENCES Библиотека; 
 CREATE INDEX Index93c8f6bdc15c74cea64c3d56754d8263c4f0ceb5 on Журнал (Библиотека2); 
 
- ALTER TABLE Медведь ADD CONSTRAINT FK93be01a32cae64dc4b18705ade6683f41a32c367 FOREIGN KEY (ЛесОбитания) REFERENCES Лес; 
-CREATE INDEX Index93be01a32cae64dc4b18705ade6683f41a32c367 on Медведь (ЛесОбитания); 
-
- ALTER TABLE Медведь ADD CONSTRAINT FK0ca403a899ac5a709a19bbb9ada47b0060e5b819 FOREIGN KEY (Папа) REFERENCES Медведь; 
-CREATE INDEX Index0ca403a899ac5a709a19bbb9ada47b0060e5b819 on Медведь (Папа); 
-
- ALTER TABLE Медведь ADD CONSTRAINT FK6d8033494746b0bb87ba367c83d273dfa11b8f59 FOREIGN KEY (Страна) REFERENCES Страна; 
-CREATE INDEX Index6d8033494746b0bb87ba367c83d273dfa11b8f59 on Медведь (Страна); 
-
- ALTER TABLE Медведь ADD CONSTRAINT FK0b9f6ad0caded1971696ef6602e8a2831fa941b1 FOREIGN KEY (Мама) REFERENCES Медведь; 
-CREATE INDEX Index0b9f6ad0caded1971696ef6602e8a2831fa941b1 on Медведь (Мама); 
-
  ALTER TABLE MainClass ADD CONSTRAINT FK685ab69befdffb9de6fa545fb70cd50905f15ac0 FOREIGN KEY (AgrClass1) REFERENCES AgrClass1; 
 CREATE INDEX Index685ab69befdffb9de6fa545fb70cd50905f15ac0 on MainClass (AgrClass1); 
 
@@ -669,15 +724,6 @@ CREATE INDEX Index4cfb6296b76f57183c4e2ee17b66be5bed463d0f on LegoBlock (Materia
  ALTER TABLE LegoBlock ADD CONSTRAINT FK9f2f5e18e6674969f5e82da37bf4b5a2a1d4713a FOREIGN KEY (Color) REFERENCES LegoBlockColor; 
 CREATE INDEX Index9f2f5e18e6674969f5e82da37bf4b5a2a1d4713a on LegoBlock (Color); 
 
- ALTER TABLE Берлога ADD CONSTRAINT FKa74603e81cb82d318a92d5d3e374895fe242d80e FOREIGN KEY (ЛесРасположения) REFERENCES Лес; 
-CREATE INDEX Indexa74603e81cb82d318a92d5d3e374895fe242d80e on Берлога (ЛесРасположения); 
-
- ALTER TABLE Берлога ADD CONSTRAINT FKd55a7fa30b428d1be64b1b8e2ac5b525597ef56b FOREIGN KEY (ДляКакойПороды) REFERENCES Порода; 
-CREATE INDEX Indexd55a7fa30b428d1be64b1b8e2ac5b525597ef56b on Берлога (ДляКакойПороды); 
-
- ALTER TABLE Берлога ADD CONSTRAINT FK838e30a686c4f1dcfbb02e55d47218e48ddbe7a2 FOREIGN KEY (Медведь) REFERENCES Медведь; 
-CREATE INDEX Index838e30a686c4f1dcfbb02e55d47218e48ddbe7a2 on Берлога (Медведь); 
-
  ALTER TABLE Котенок ADD CONSTRAINT FK79a0f583830fea7f95d716cc96a27d0967a2d537 FOREIGN KEY (Кошка_m0) REFERENCES Кошка; 
 CREATE INDEX Index79a0f583830fea7f95d716cc96a27d0967a2d537 on Котенок (Кошка_m0); 
 
@@ -692,9 +738,6 @@ CREATE INDEX Indexfb36ebac9beeb237cccb40b7be9cf2d25e9247b9 on DetailsClass1 (Det
 
  ALTER TABLE DetailsClass1 ADD CONSTRAINT FK10455ebe27fd31555ad2502ede3706a815784321 FOREIGN KEY (AgrClass1) REFERENCES AgrClass1; 
 CREATE INDEX Index10455ebe27fd31555ad2502ede3706a815784321 on DetailsClass1 (AgrClass1); 
-
- ALTER TABLE Car ADD CONSTRAINT FKe86a1d047f4df342bf39a5af864aec2b40a3547a FOREIGN KEY (driver) REFERENCES Driver; 
-CREATE INDEX Indexe86a1d047f4df342bf39a5af864aec2b40a3547a on Car (driver); 
 
  ALTER TABLE LegoBlockCustomPanel ADD CONSTRAINT FK53e2141b982788b2970c50d23073a5847e47d81c FOREIGN KEY (PanelAngle) REFERENCES LegoPanelAngle; 
 CREATE INDEX Index53e2141b982788b2970c50d23073a5847e47d81c on LegoBlockCustomPanel (PanelAngle); 
@@ -735,15 +778,39 @@ CREATE INDEX Index84e4d9d5b6adc4bec48541216f15f396dd2b602c on Книга (Биб
  ALTER TABLE LegoDevice ADD CONSTRAINT FKafee67e1a41c2550c0f3df3724edf1b0be74db9f FOREIGN KEY (Color) REFERENCES LegoBlockColor; 
 CREATE INDEX Indexafee67e1a41c2550c0f3df3724edf1b0be74db9f on LegoDevice (Color); 
 
- ALTER TABLE Наследник ADD CONSTRAINT FK0cb9ac2b0e7896223ed63c0c888c23aa86682b1e FOREIGN KEY (Master) REFERENCES Master; 
-CREATE INDEX Index0cb9ac2b0e7896223ed63c0c888c23aa86682b1e on Наследник (Master); 
-
  ALTER TABLE Наследник ADD CONSTRAINT FK28ac1d61524a43a59e67af57a855ad487d1f8141 FOREIGN KEY (Мастер) REFERENCES Мастер; 
 CREATE INDEX Index28ac1d61524a43a59e67af57a855ad487d1f8141 on Наследник (Мастер); 
+
+ ALTER TABLE Наследник ADD CONSTRAINT FK0cb9ac2b0e7896223ed63c0c888c23aa86682b1e FOREIGN KEY (Master) REFERENCES Master; 
+CREATE INDEX Index0cb9ac2b0e7896223ed63c0c888c23aa86682b1e on Наследник (Master); 
 
  ALTER TABLE LegoBlockBottomPanel ADD CONSTRAINT FKba0e912f138a900a9d416b459d0b38e70871f043 FOREIGN KEY (Block) REFERENCES LegoBlock; 
 CREATE INDEX Indexba0e912f138a900a9d416b459d0b38e70871f043 on LegoBlockBottomPanel (Block); 
 CREATE INDEX Index10d981ac5288ea278311b6a711b43fa954b635a8 on ДочернийКласс USING gist (PropertyGeography); 
+
+ ALTER TABLE Медведь ADD CONSTRAINT FK93be01a32cae64dc4b18705ade6683f41a32c367 FOREIGN KEY (ЛесОбитания) REFERENCES Лес; 
+CREATE INDEX Index93be01a32cae64dc4b18705ade6683f41a32c367 on Медведь (ЛесОбитания); 
+
+ ALTER TABLE Медведь ADD CONSTRAINT FK0b9f6ad0caded1971696ef6602e8a2831fa941b1 FOREIGN KEY (Мама) REFERENCES Медведь; 
+CREATE INDEX Index0b9f6ad0caded1971696ef6602e8a2831fa941b1 on Медведь (Мама); 
+
+ ALTER TABLE Медведь ADD CONSTRAINT FK0ca403a899ac5a709a19bbb9ada47b0060e5b819 FOREIGN KEY (Папа) REFERENCES Медведь; 
+CREATE INDEX Index0ca403a899ac5a709a19bbb9ada47b0060e5b819 on Медведь (Папа); 
+
+ ALTER TABLE Медведь ADD CONSTRAINT FK6d8033494746b0bb87ba367c83d273dfa11b8f59 FOREIGN KEY (Страна) REFERENCES Страна; 
+CREATE INDEX Index6d8033494746b0bb87ba367c83d273dfa11b8f59 on Медведь (Страна); 
+
+ ALTER TABLE Берлога ADD CONSTRAINT FKa74603e81cb82d318a92d5d3e374895fe242d80e FOREIGN KEY (ЛесРасположения) REFERENCES Лес; 
+CREATE INDEX Indexa74603e81cb82d318a92d5d3e374895fe242d80e on Берлога (ЛесРасположения); 
+
+ ALTER TABLE Берлога ADD CONSTRAINT FKd55a7fa30b428d1be64b1b8e2ac5b525597ef56b FOREIGN KEY (ДляКакойПороды) REFERENCES Порода; 
+CREATE INDEX Indexd55a7fa30b428d1be64b1b8e2ac5b525597ef56b on Берлога (ДляКакойПороды); 
+
+ ALTER TABLE Берлога ADD CONSTRAINT FK838e30a686c4f1dcfbb02e55d47218e48ddbe7a2 FOREIGN KEY (Медведь) REFERENCES Медведь; 
+CREATE INDEX Index838e30a686c4f1dcfbb02e55d47218e48ddbe7a2 on Берлога (Медведь); 
+
+ ALTER TABLE Car ADD CONSTRAINT FKe86a1d047f4df342bf39a5af864aec2b40a3547a FOREIGN KEY (driver) REFERENCES Driver; 
+CREATE INDEX Indexe86a1d047f4df342bf39a5af864aec2b40a3547a on Car (driver); 
 
  ALTER TABLE Перелом ADD CONSTRAINT FK6dee404d2bb9702d8d72537c5ae42a7c97dfb5fa FOREIGN KEY (Лапа_m0) REFERENCES Лапа; 
 CREATE INDEX Index6dee404d2bb9702d8d72537c5ae42a7c97dfb5fa on Перелом (Лапа_m0); 
@@ -756,6 +823,42 @@ CREATE INDEX Indexd2c2995f4deb3767b25fa4ca17d61bf9bff3d562 on Лапа (Кошк
 
  ALTER TABLE Кошка ADD CONSTRAINT FK271599c8f6730bbff77fe5e9bf61dbfd89e661c6 FOREIGN KEY (Порода_m0) REFERENCES Порода; 
 CREATE INDEX Index271599c8f6730bbff77fe5e9bf61dbfd89e661c6 on Кошка (Порода_m0); 
+
+ ALTER TABLE AgregatorWithSameMAndD ADD CONSTRAINT FK8b53b11c59bd038385b48bae2e4c94deed6a1407 FOREIGN KEY (Master) REFERENCES DetailAndMaster; 
+CREATE INDEX Index8b53b11c59bd038385b48bae2e4c94deed6a1407 on AgregatorWithSameMAndD (Master); 
+
+ ALTER TABLE DetailAndMaster ADD CONSTRAINT FK0c88fee611c8abca27c4c3da5367b44eee5fc8e5 FOREIGN KEY (Agregator) REFERENCES AgregatorWithSameMAndD; 
+CREATE INDEX Index0c88fee611c8abca27c4c3da5367b44eee5fc8e5 on DetailAndMaster (Agregator); 
+
+ ALTER TABLE TestClass ADD CONSTRAINT FK19773cb98a250f476592752b07236351a92e0459 FOREIGN KEY (FirstLevel) REFERENCES FirstLevel; 
+CREATE INDEX Index19773cb98a250f476592752b07236351a92e0459 on TestClass (FirstLevel); 
+
+ ALTER TABLE ThirdLevel ADD CONSTRAINT FK984d4e99324a5c45442934f0ab98b220f32de93a FOREIGN KEY (TestClass) REFERENCES TestClass; 
+CREATE INDEX Index984d4e99324a5c45442934f0ab98b220f32de93a on ThirdLevel (TestClass); 
+
+ ALTER TABLE SecondLevel1 ADD CONSTRAINT FKfd7eab05fadb3cdc2d524a4e44a7e9180d6fb17a FOREIGN KEY (FirstLevel) REFERENCES FirstLevel; 
+CREATE INDEX Indexfd7eab05fadb3cdc2d524a4e44a7e9180d6fb17a on SecondLevel1 (FirstLevel); 
+
+ ALTER TABLE FirstLevel ADD CONSTRAINT FK7b6f1cb3f01146be11a3378612a4fb0be742e10d FOREIGN KEY (TestConfiguration) REFERENCES TestConfiguration; 
+CREATE INDEX Index7b6f1cb3f01146be11a3378612a4fb0be742e10d on FirstLevel (TestConfiguration); 
+
+ ALTER TABLE SecondLevel2 ADD CONSTRAINT FK22e45e92a053d7e929e24654ac8c10aba4fa49b0 FOREIGN KEY (SecondLevel1_m0) REFERENCES SecondLevel1; 
+CREATE INDEX Index22e45e92a053d7e929e24654ac8c10aba4fa49b0 on SecondLevel2 (SecondLevel1_m0); 
+
+ ALTER TABLE SecondLevel2 ADD CONSTRAINT FK34d92026b39c8d9b4ae1c6b730803be60ba832af FOREIGN KEY (SecondLevel1_m1) REFERENCES TestClass; 
+CREATE INDEX Index34d92026b39c8d9b4ae1c6b730803be60ba832af on SecondLevel2 (SecondLevel1_m1); 
+
+ ALTER TABLE SecondLevel2 ADD CONSTRAINT FKe2843f3145fc62736d407262ab698b69e37abc7a FOREIGN KEY (FirstLevel) REFERENCES FirstLevel; 
+CREATE INDEX Indexe2843f3145fc62736d407262ab698b69e37abc7a on SecondLevel2 (FirstLevel); 
+
+ ALTER TABLE TestAssociation ADD CONSTRAINT FK75ff68881ab55589c4860bf07c4d70899aeba780 FOREIGN KEY (SecondLevel1_m0) REFERENCES SecondLevel1; 
+CREATE INDEX Index75ff68881ab55589c4860bf07c4d70899aeba780 on TestAssociation (SecondLevel1_m0); 
+
+ ALTER TABLE TestAssociation ADD CONSTRAINT FK33293a87ee605ad37917bdfcc64e848d124c4458 FOREIGN KEY (SecondLevel1_m1) REFERENCES TestClass; 
+CREATE INDEX Index33293a87ee605ad37917bdfcc64e848d124c4458 on TestAssociation (SecondLevel1_m1); 
+
+ ALTER TABLE TestAssociation ADD CONSTRAINT FK2c1bef67ce5243233fabd0b55b2f07496ce332d0 FOREIGN KEY (FirstLevel) REFERENCES FirstLevel; 
+CREATE INDEX Index2c1bef67ce5243233fabd0b55b2f07496ce332d0 on TestAssociation (FirstLevel); 
 
  ALTER TABLE STORMWEBSEARCH ADD CONSTRAINT FKc4378e39870eb056aec84088683297a01d2a6200 FOREIGN KEY (FilterSetting_m0) REFERENCES STORMFILTERSETTING; 
 
