@@ -9,10 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+1. Fixed loading of object with crushing of already loaded masters.
+2. Fixed loading of details. 
 
 ## [7.1.1] - 2023.06.08
-
-### Added
 
 ### Changed
 1. Updated `NewPlatform.Flexberry.ORM` up to `7.1.1`.
