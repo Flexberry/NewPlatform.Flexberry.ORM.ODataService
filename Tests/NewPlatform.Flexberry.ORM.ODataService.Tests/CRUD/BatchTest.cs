@@ -236,7 +236,7 @@
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     // Assert.
-                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.Created, HttpStatusCode.OK });
 
                     string[] thirdPropertiesNames2 =
                     {
