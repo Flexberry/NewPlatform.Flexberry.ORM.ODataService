@@ -365,7 +365,8 @@
                         DataObject masterFromActualCache = dataObjectCacheActual.GetLivingDataObject(currentMaster.GetType(), currentMaster.__PrimaryKey);
 
                         if (masterFromActualCache == null)
-                        { // Если мастера ранее не было в кэше, то просто его туда переносим.
+                        {
+                            // Если мастера ранее не было в кэше, то просто его туда переносим.
                             dataObjectCacheActual.AddDataObject(currentMaster);
 
                             // Но в добавленном мастере могут быть мастера 2 и далее уровней.

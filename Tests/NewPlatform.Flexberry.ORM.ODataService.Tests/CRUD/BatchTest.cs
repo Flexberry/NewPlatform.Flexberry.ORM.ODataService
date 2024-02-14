@@ -35,14 +35,12 @@
         /// <summary>
         /// Test batch update of master-class with class at the same time.
         /// It checks that dataobject cache is not crashed.
+        /// There are a master and object with link to master at batch request. Master is the first at the batch request. The link between object and master is not changed.
+        /// It is necessary that during batch processing master stay the same and is not overwriten.
         /// </summary>
         [Fact]
         public void UpdateMasterAndClassTest()
         {
-            /* Суть теста в том, что сначала в батч-запрос идёт мастер, а далее идёт сам объект со ссылкой на мастера.
-             * Ссылка на мастера не меняется при этом.
-             * Необходимо, чтобы при последовательной обработке батчей мастер не был перевычитан и его значение обновилось корректно.
-             */
             ActODataService(args =>
             {
                 // Arrange.
@@ -118,17 +116,13 @@
         /// <summary>
         /// Test batch update with inheritance.
         /// It checks that dataobject cache is not crashed.
+        /// There are classes A, its detail B, that has descendant C. During class A loading its details are loaded too, but details are loaded by View of class B, while details are of class C.
+        /// Thus there are objects of type C at the cache while they are loaded by properties of class B only. That's why the state of details is LightLoaded.
+        /// It is necessary to post-load only propertues that are not loaded before (loaded properties can be changed).
         /// </summary>
         [Fact]
         public void UpdateWithInheritanceAndDetailsTest()
         {
-            /* Суть теста в том, что есть класс А, у него детейл Б, у которого есть наследник В.
-             * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
-             * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
-             * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
-             *
-             * Необходимо, чтобы при последовательной обработке батча все значения обновились корректно.
-             */
             ActODataService(args =>
             {
                 // Arrange.
