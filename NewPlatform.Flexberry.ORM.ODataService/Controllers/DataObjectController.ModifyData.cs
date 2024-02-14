@@ -722,7 +722,13 @@
                         && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
-                        // TODO: удалить эту проверку после стабилизации версии 5.1.0.
+                        /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
+                         *
+                         * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
+                         * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
+                         * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
+                         * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
+                         */
                         string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
@@ -731,7 +737,7 @@
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
-                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
+                            _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
 
                             if (miniViewDetails.Length > 0)
                             {
