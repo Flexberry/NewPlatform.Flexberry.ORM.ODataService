@@ -893,18 +893,6 @@ CREATE TABLE "Кошка"
 	 PRIMARY KEY ("primaryKey")
 ) ;
 
-CREATE TABLE "AgregatorSameMD"
-(
-
-	"primaryKey" RAW(16) NOT NULL,
-
-	"Name" NVARCHAR2(255) NULL,
-
-	"Master" RAW(16) NULL,
-
-	 PRIMARY KEY ("primaryKey")
-) ;
-
 
 CREATE TABLE "DetailAndMaster"
 (
@@ -1013,6 +1001,19 @@ CREATE TABLE "TestAssociation"
 	"SecondLevel1_m1" RAW(16) NULL,
 
 	"FirstLevel" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "AgregatorSameMD"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"Master" RAW(16) NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -1574,15 +1575,8 @@ ALTER TABLE "Кошка"
 
 CREATE INDEX "Кошка_IПорода_m0" on "Кошка" ("Порода_m0");
 
-ALTER TABLE "AgregatorSameMD"
-	ADD CONSTRAINT "AgregatorSameMD_FDe_217" FOREIGN KEY ("Master") REFERENCES "DetailAndMaster" ("primaryKey");
-
-CREATE INDEX "AgregatorSameMD_IMaster" on "AgregatorSameMD" ("Master");
-
 ALTER TABLE "DetailAndMaster"
-	ADD CONSTRAINT "DetailAndMaster_FAgregator_188" FOREIGN KEY ("Agregator") REFERENCES "AgregatorSameMD" ("primaryKey");
-
-CREATE INDEX "DetailAndMaster_IAgregator" on "DetailAndMaster" ("Agregator");
+	ADD CONSTRAINT "DetailAndMaster_FAgregato_2594" FOREIGN KEY ("Agregator") REFERENCES "AgregatorSameMD" ("primaryKey");
 
 CREATE INDEX "DetailAndMaster_IAgregator" on "DetailAndMaster" ("Agregator");
 
@@ -1635,6 +1629,11 @@ ALTER TABLE "TestAssociation"
 	ADD CONSTRAINT "TestAssociation_FFirstLevel_0" FOREIGN KEY ("FirstLevel") REFERENCES "FirstLevel" ("primaryKey");
 
 CREATE INDEX "TestAssociation_IFirstLevel" on "TestAssociation" ("FirstLevel");
+
+ALTER TABLE "AgregatorSameMD"
+	ADD CONSTRAINT "AgregatorSameMD_FDetailAn_6200" FOREIGN KEY ("Master") REFERENCES "DetailAndMaster" ("primaryKey");
+
+CREATE INDEX "AgregatorSameMD_IMaster" on "AgregatorSameMD" ("Master");
 
 ALTER TABLE "STORMWEBSEARCH"
 	ADD CONSTRAINT "STORMWEBSEARCH_FSTORMFILT_6521" FOREIGN KEY ("FilterSetting_m0") REFERENCES "STORMFILTERSETTING" ("primaryKey");

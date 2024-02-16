@@ -475,18 +475,12 @@ CREATE TABLE Кошка (
  PRIMARY KEY (primaryKey));
 
 
-CREATE TABLE AgregatorSameMD (
- primaryKey UUID NOT NULL,
- Name VARCHAR(255) NULL,
- Master UUID NULL,
- PRIMARY KEY (primaryKey));
-
-
 CREATE TABLE DetailAndMaster (
  primaryKey UUID NOT NULL,
  Name VARCHAR(255) NULL,
  Agregator UUID NOT NULL,
  PRIMARY KEY (primaryKey));
+
 
 CREATE TABLE TestConfiguration (
  primaryKey UUID NOT NULL,
@@ -539,6 +533,14 @@ CREATE TABLE TestAssociation (
  SecondLevel1_m1 UUID NULL,
  FirstLevel UUID NOT NULL,
  PRIMARY KEY (primaryKey));
+
+
+CREATE TABLE AgregatorSameMD (
+ primaryKey UUID NOT NULL,
+ Name VARCHAR(255) NULL,
+ Master UUID NULL,
+ PRIMARY KEY (primaryKey));
+
 
 CREATE TABLE STORMNETLOCKDATA (
  LockKey VARCHAR(300) NOT NULL,
@@ -822,9 +824,6 @@ CREATE INDEX Indexd2c2995f4deb3767b25fa4ca17d61bf9bff3d562 on Лапа (Кошк
  ALTER TABLE Кошка ADD CONSTRAINT FK271599c8f6730bbff77fe5e9bf61dbfd89e661c6 FOREIGN KEY (Порода_m0) REFERENCES Порода; 
 CREATE INDEX Index271599c8f6730bbff77fe5e9bf61dbfd89e661c6 on Кошка (Порода_m0); 
 
- ALTER TABLE AgregatorSameMD ADD CONSTRAINT FK8b53b11c59bd038385b48bae2e4c94deed6a1407 FOREIGN KEY (Master) REFERENCES DetailAndMaster; 
-CREATE INDEX Index8b53b11c59bd038385b48bae2e4c94deed6a1407 on AgregatorSameMD (Master); 
-
  ALTER TABLE DetailAndMaster ADD CONSTRAINT FK0c88fee611c8abca27c4c3da5367b44eee5fc8e5 FOREIGN KEY (Agregator) REFERENCES AgregatorSameMD; 
 CREATE INDEX Index0c88fee611c8abca27c4c3da5367b44eee5fc8e5 on DetailAndMaster (Agregator); 
 
@@ -857,6 +856,9 @@ CREATE INDEX Index33293a87ee605ad37917bdfcc64e848d124c4458 on TestAssociation (S
 
  ALTER TABLE TestAssociation ADD CONSTRAINT FK2c1bef67ce5243233fabd0b55b2f07496ce332d0 FOREIGN KEY (FirstLevel) REFERENCES FirstLevel; 
 CREATE INDEX Index2c1bef67ce5243233fabd0b55b2f07496ce332d0 on TestAssociation (FirstLevel); 
+
+ ALTER TABLE AgregatorSameMD ADD CONSTRAINT FK790f076d73d9fd4c1a92fb530d886739a4852131 FOREIGN KEY (Master) REFERENCES DetailAndMaster; 
+CREATE INDEX Index790f076d73d9fd4c1a92fb530d886739a4852131 on AgregatorSameMD (Master); 
 
  ALTER TABLE STORMWEBSEARCH ADD CONSTRAINT FKc4378e39870eb056aec84088683297a01d2a6200 FOREIGN KEY (FilterSetting_m0) REFERENCES STORMFILTERSETTING; 
 

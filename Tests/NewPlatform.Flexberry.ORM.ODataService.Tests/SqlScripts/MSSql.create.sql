@@ -790,17 +790,6 @@ CREATE TABLE [Кошка] (
 	 PRIMARY KEY ([primaryKey]))
 
 
-CREATE TABLE [AgregatorSameMD] (
-
-	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
-
-	 [Name] VARCHAR(255)  NULL,
-
-	 [Master] UNIQUEIDENTIFIER  NULL,
-
-	 PRIMARY KEY ([primaryKey]))
-
-
 CREATE TABLE [DetailAndMaster] (
 
 	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
@@ -810,6 +799,7 @@ CREATE TABLE [DetailAndMaster] (
 	 [Agregator] UNIQUEIDENTIFIER  NOT NULL,
 
 	 PRIMARY KEY ([primaryKey]))
+
 
 CREATE TABLE [TestConfiguration] (
 
@@ -894,6 +884,18 @@ CREATE TABLE [TestAssociation] (
 	 [FirstLevel] UNIQUEIDENTIFIER  NOT NULL,
 
 	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [AgregatorSameMD] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [Master] UNIQUEIDENTIFIER  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
 
 CREATE TABLE [STORMNETLOCKDATA] (
 
