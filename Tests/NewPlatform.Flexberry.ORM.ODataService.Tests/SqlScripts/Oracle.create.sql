@@ -893,7 +893,6 @@ CREATE TABLE "Кошка"
 	 PRIMARY KEY ("primaryKey")
 ) ;
 
-
 CREATE TABLE "AgregatorSameMD"
 (
 
@@ -915,6 +914,105 @@ CREATE TABLE "DetailAndMaster"
 	"Name" NVARCHAR2(255) NULL,
 
 	"Agregator" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "TestConfiguration"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "TestClass"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"FirstLevel" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "ThirdLevel"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"TestClass" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "SecondLevel1"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"FirstLevel" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "FirstLevel"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"TestConfiguration" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "SecondLevel2"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"SecondLevel1_m0" RAW(16) NULL,
+
+	"SecondLevel1_m1" RAW(16) NULL,
+
+	"FirstLevel" RAW(16) NOT NULL,
+
+	 PRIMARY KEY ("primaryKey")
+) ;
+
+
+CREATE TABLE "TestAssociation"
+(
+
+	"primaryKey" RAW(16) NOT NULL,
+
+	"Name2" NVARCHAR2(255) NULL,
+
+	"Name" NVARCHAR2(255) NULL,
+
+	"SecondLevel1_m0" RAW(16) NULL,
+
+	"SecondLevel1_m1" RAW(16) NULL,
+
+	"FirstLevel" RAW(16) NOT NULL,
 
 	 PRIMARY KEY ("primaryKey")
 ) ;
@@ -1485,6 +1583,58 @@ ALTER TABLE "DetailAndMaster"
 	ADD CONSTRAINT "DetailAndMaster_FAgregator_188" FOREIGN KEY ("Agregator") REFERENCES "AgregatorSameMD" ("primaryKey");
 
 CREATE INDEX "DetailAndMaster_IAgregator" on "DetailAndMaster" ("Agregator");
+
+CREATE INDEX "DetailAndMaster_IAgregator" on "DetailAndMaster" ("Agregator");
+
+ALTER TABLE "TestClass"
+	ADD CONSTRAINT "TestClass_FFirstLevel_0" FOREIGN KEY ("FirstLevel") REFERENCES "FirstLevel" ("primaryKey");
+
+CREATE INDEX "TestClass_IFirstLevel" on "TestClass" ("FirstLevel");
+
+ALTER TABLE "ThirdLevel"
+	ADD CONSTRAINT "ThirdLevel_FTestClass_0" FOREIGN KEY ("TestClass") REFERENCES "TestClass" ("primaryKey");
+
+CREATE INDEX "ThirdLevel_ITestClass" on "ThirdLevel" ("TestClass");
+
+ALTER TABLE "SecondLevel1"
+	ADD CONSTRAINT "SecondLevel1_FFirstLevel_0" FOREIGN KEY ("FirstLevel") REFERENCES "FirstLevel" ("primaryKey");
+
+CREATE INDEX "SecondLevel1_IFirstLevel" on "SecondLevel1" ("FirstLevel");
+
+ALTER TABLE "FirstLevel"
+	ADD CONSTRAINT "FirstLevel_FTestConfigura_1288" FOREIGN KEY ("TestConfiguration") REFERENCES "TestConfiguration" ("primaryKey");
+
+CREATE INDEX "FirstLevel_ITestConfiguration" on "FirstLevel" ("TestConfiguration");
+
+ALTER TABLE "SecondLevel2"
+	ADD CONSTRAINT "SecondLevel2_FSecondLevel1_0" FOREIGN KEY ("SecondLevel1_m0") REFERENCES "SecondLevel1" ("primaryKey");
+
+CREATE INDEX "SecondLevel2_ISecondLevel1_m0" on "SecondLevel2" ("SecondLevel1_m0");
+
+ALTER TABLE "SecondLevel2"
+	ADD CONSTRAINT "SecondLevel2_FTestClass_0" FOREIGN KEY ("SecondLevel1_m1") REFERENCES "TestClass" ("primaryKey");
+
+CREATE INDEX "SecondLevel2_ISecondLevel1_m1" on "SecondLevel2" ("SecondLevel1_m1");
+
+ALTER TABLE "SecondLevel2"
+	ADD CONSTRAINT "SecondLevel2_FFirstLevel_0" FOREIGN KEY ("FirstLevel") REFERENCES "FirstLevel" ("primaryKey");
+
+CREATE INDEX "SecondLevel2_IFirstLevel" on "SecondLevel2" ("FirstLevel");
+
+ALTER TABLE "TestAssociation"
+	ADD CONSTRAINT "TestAssociation_FSecondLe_2905" FOREIGN KEY ("SecondLevel1_m0") REFERENCES "SecondLevel1" ("primaryKey");
+
+CREATE INDEX "TestAssociation_ISecondLe_6355" on "TestAssociation" ("SecondLevel1_m0");
+
+ALTER TABLE "TestAssociation"
+	ADD CONSTRAINT "TestAssociation_FTestClass_0" FOREIGN KEY ("SecondLevel1_m1") REFERENCES "TestClass" ("primaryKey");
+
+CREATE INDEX "TestAssociation_ISecondLe_6356" on "TestAssociation" ("SecondLevel1_m1");
+
+ALTER TABLE "TestAssociation"
+	ADD CONSTRAINT "TestAssociation_FFirstLevel_0" FOREIGN KEY ("FirstLevel") REFERENCES "FirstLevel" ("primaryKey");
+
+CREATE INDEX "TestAssociation_IFirstLevel" on "TestAssociation" ("FirstLevel");
 
 ALTER TABLE "STORMWEBSEARCH"
 	ADD CONSTRAINT "STORMWEBSEARCH_FSTORMFILT_6521" FOREIGN KEY ("FilterSetting_m0") REFERENCES "STORMFILTERSETTING" ("primaryKey");

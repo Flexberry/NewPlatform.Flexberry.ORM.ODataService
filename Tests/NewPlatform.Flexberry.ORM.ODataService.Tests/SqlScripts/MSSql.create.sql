@@ -811,6 +811,89 @@ CREATE TABLE [DetailAndMaster] (
 
 	 PRIMARY KEY ([primaryKey]))
 
+CREATE TABLE [TestConfiguration] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [TestClass] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [FirstLevel] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [ThirdLevel] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [TestClass] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [SecondLevel1] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [FirstLevel] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [FirstLevel] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [TestConfiguration] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [SecondLevel2] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [SecondLevel1_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [SecondLevel1_m1] UNIQUEIDENTIFIER  NULL,
+
+	 [FirstLevel] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
+
+
+CREATE TABLE [TestAssociation] (
+
+	 [primaryKey] UNIQUEIDENTIFIER  NOT NULL,
+
+	 [Name2] VARCHAR(255)  NULL,
+
+	 [Name] VARCHAR(255)  NULL,
+
+	 [SecondLevel1_m0] UNIQUEIDENTIFIER  NULL,
+
+	 [SecondLevel1_m1] UNIQUEIDENTIFIER  NULL,
+
+	 [FirstLevel] UNIQUEIDENTIFIER  NOT NULL,
+
+	 PRIMARY KEY ([primaryKey]))
 
 CREATE TABLE [STORMNETLOCKDATA] (
 

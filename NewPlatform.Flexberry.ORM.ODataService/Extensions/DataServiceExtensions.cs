@@ -35,6 +35,53 @@
         }
 
         /// <summary>
+        /// Загрузка объекта с его мастерами (объект должен быть не изменнённый и не до конца загруженный).
+        /// С мастерами необходимо обращаться аккуратно: если в кэше уже есть мастер, то нужно эту ситуацию разрешить,
+        /// поскольку иначе стандартная загрузка перетрёт данные мастера в кэше (и если он там изменён, то все изменения будут потеряны).
+        /// </summary>
+        /// <param name="dataService">Экземпляр сервиса данных.</param>
+        /// <param name="view">Представление объекта с мастерами.</param>
+        /// <param name="dobjectFromCache">Объект данных, в который будет производиться загрузка.</param>
+        /// <param name="dataObjectCache">Текущий кэш объектов данных (в данном кэше ранее существующие там объекты не должны быть перетёрты).</param>
+        public static void SafeLoadWithMasters(
+            this IDataService dataService, View view, ICSSoft.STORMNET.DataObject dobjectFromCache, DataObjectCache dataObjectCache)
+        {
+            if (dataService == null)
+            {
+                throw new ArgumentNullException(nameof(dataService));
+            }
+
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
+            if (dobjectFromCache == null)
+            {
+                throw new ArgumentNullException(nameof(dobjectFromCache));
+            }
+
+            if (dataObjectCache == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCache));
+            }
+
+            // Прогружается пустой объект, чтобы избежать риска перетирания основного.
+            DataObject createdObject = (DataObject)Activator.CreateInstance(dobjectFromCache.GetType());
+            createdObject.SetExistObjectPrimaryKey(dobjectFromCache.__PrimaryKey);
+
+            // Используется отдельный кэш, чтобы не перетереть данные в основном кэше.
+            DataObjectCache specialCache = new DataObjectCache();
+            specialCache.StartCaching(false);
+            specialCache.AddDataObject(createdObject);
+            dataService.LoadObject(view, createdObject, false, true, specialCache);
+            specialCache.StopCaching();
+
+            // Перенос данных из одного объекта в другой.
+            ProperUpdateOfObject(dobjectFromCache, createdObject, dataObjectCache, specialCache);
+        }
+
+        /// <summary>
         /// Загрузка детейлов с сохранением состояния изменения.
         /// </summary>
         /// <param name="dataService">Экземпляр сервиса данных.</param>
@@ -122,20 +169,19 @@
                 lcs.LimitFunction = FunctionBuilder.BuildIn(agregatorPropertyName, SQLWhereLanguageDef.LanguageDef.GetObjectTypeForNetType(agregatorKeyType), keys);
 
                 // Нужно соблюсти единственность инстанций агрегаторов при вычитке, поэтому реализуем отдельный кеш. Смешивать с кешем dataObjectCache нельзя, поскольку в предстоящей выборке будут те же самые детейлы (значения в кеше затрутся).
+                // Агрегаторы в кэш не помещаем. От помещения агрегаторов в кэш возникают неконтролируемые сбои основного кэша.
                 DataObjectCache agregatorCache = new DataObjectCache();
                 agregatorCache.StartCaching(false);
-                foreach (DataObject agregator in agregators)
-                {
-                    agregatorCache.AddDataObject(agregator);
-                }
 
                 // Вычитываются детейлы одного типа, но для нескольких инстанций агрегаторов (оптимизируем количество SQL-запросов).
                 DataObject[] loadedDetails = dataService.LoadObjects(lcs, agregatorCache);
                 agregatorCache.StopCaching();
 
+                Dictionary<object, DataObject> extraCacheForAgregators = new Dictionary<object, DataObject>();
                 foreach (DataObject agregator in agregators)
                 {
                     agregator.AddLoadedProperties(detailInView.Name);
+                    extraCacheForAgregators.Add(agregator.__PrimaryKey, agregator);
                 }
 
                 // Ввиду того, что агрегаторы нам пришли готовые с пустыми коллекциями детейлов, заполняем детейлы по агрегаторам значениями из кеша или из базы.
@@ -143,7 +189,8 @@
                 List<DataObject> toLoadSecondDetails = new List<DataObject>();
                 foreach (DataObject loadedDetail in loadedDetails)
                 {
-                    DataObject agregator = (DataObject)Information.GetPropValueByName(loadedDetail, agregatorPropertyName);
+                    DataObject agregatorTemp = (DataObject)Information.GetPropValueByName(loadedDetail, agregatorPropertyName);
+                    DataObject agregator = extraCacheForAgregators[agregatorTemp.__PrimaryKey];
                     object detailPrimaryKey = loadedDetail.__PrimaryKey;
 
                     DataObject detailFromCache = dataObjectCache.GetLivingDataObject(loadedDetail.GetType(), detailPrimaryKey);
@@ -226,5 +273,116 @@
                 LogService.LogWarn($"Detail type {detailType.AssemblyQualifiedName} not found in agregator of type {agregatorType.AssemblyQualifiedName}.");
             }
         }
+
+
+        /// <summary>
+        /// Перенос означенных свойств из свежезагруженного объекта в основной, расположенный в основном кэше.
+        /// </summary>
+        /// <param name="currentObject">Основной объект, куда необходимо копировать значения свойств.</param>
+        /// <param name="loadedObjectLocal">Свежезагруженный объект.</param>
+        /// <param name="dataObjectCache">Основной кэш.</param>
+        /// <param name="dataObjectCacheLocal">Локальный кэш, куда была выполнена свежая прогрузка.</param>
+        private static void ProperUpdateOfObject(DataObject currentObject, DataObject loadedObjectLocal, DataObjectCache dataObjectCache, DataObjectCache dataObjectCacheLocal)
+        {
+            if (currentObject == null)
+            {
+                throw new ArgumentNullException(nameof(currentObject));
+            }
+
+            if (loadedObjectLocal == null)
+            {
+                throw new ArgumentNullException(nameof(loadedObjectLocal));
+            }
+
+            if (dataObjectCache == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCache));
+            }
+
+            if (dataObjectCacheLocal == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCacheLocal));
+            }
+
+            // Перенос значений свойств объекта (в том числе могут быть мастера). Если мастера означены, то перенос свойств мастера производится далее.
+            List<string> localObjectLoadedProps = loadedObjectLocal.GetLoadedPropertiesList();
+            List<string> currentObjectLoadedProps = currentObject.GetLoadedPropertiesList();
+            List<string> notLoadedForActual = localObjectLoadedProps.Except(currentObjectLoadedProps).ToList();
+            DataObject currentDataCopy = currentObject.GetDataCopy();
+            foreach (string notLoadedPropName in notLoadedForActual)
+            {
+                object propValue = Information.GetPropValueByName(loadedObjectLocal, notLoadedPropName);
+                Information.SetPropValueByName(currentObject, notLoadedPropName, propValue);
+                currentObject.AddLoadedProperties(notLoadedPropName);
+                Information.SetPropValueByName(currentDataCopy, notLoadedPropName, propValue);
+            }
+
+            // Ещё могут быть частично загруженные мастера.
+            ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true);
+        }
+
+        /// <summary>
+        /// Обновление кэша по свежезагруженному объекту.
+        /// </summary>
+        /// <param name="dataObjectCacheActual">Текущий основной кэш объектов.</param>
+        /// <param name="dataObjectCacheWithMasters">Вспомогательный кэш, куда загружался объект.</param>
+        /// <param name="loadedDataObject">Свежезагруженный объект, по которому обновляется основной кэш.</param>
+        /// <param name="loadedObjectsAdded">Флаг, определяющий, что в кэш уже добавлен свежезагруженный объект.</param>
+        private static void ProperCacheUpdateForOneObject(DataObjectCache dataObjectCacheActual, DataObjectCache dataObjectCacheWithMasters, DataObject loadedDataObject, bool loadedObjectsAdded)
+        {
+            if (dataObjectCacheActual == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCacheActual));
+            }
+
+            if (dataObjectCacheWithMasters == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectCacheWithMasters));
+            }
+
+            if (loadedDataObject == null)
+            {
+                return;
+            }
+
+            if (!loadedObjectsAdded)
+            {
+                dataObjectCacheActual.AddDataObject(loadedDataObject);
+            }
+
+            Type dobjType = typeof(DataObject);
+            Type currentType = loadedDataObject.GetType();
+            List<string> loadedProperties = loadedDataObject.GetLoadedPropertiesList();
+            foreach (string currentPropertyName in loadedProperties)
+            {
+                Type currentPropertyType = Information.GetPropertyType(currentType, currentPropertyName);
+                if (currentPropertyType.IsSubclassOf(dobjType)) // Выбираем у текущего объекта ссылки на мастеров.
+                {
+                    DataObject currentMaster = (DataObject)Information.GetPropValueByName(loadedDataObject, currentPropertyName);
+                    if (currentMaster != null)
+                    {
+                        // Типы currentPropertyType и currentMaster.GetType() могут различаться из-за наследования.
+                        DataObject masterFromActualCache = dataObjectCacheActual.GetLivingDataObject(currentMaster.GetType(), currentMaster.__PrimaryKey);
+
+                        if (masterFromActualCache == null)
+                        {
+                            // Если мастера ранее не было в кэше, то просто его туда переносим.
+                            dataObjectCacheActual.AddDataObject(currentMaster);
+
+                            // Но в добавленном мастере могут быть мастера 2 и далее уровней.
+                            ProperCacheUpdateForOneObject(dataObjectCacheActual, dataObjectCacheWithMasters, currentMaster, true);
+                        }
+                        else
+                        { // Если мастер был в кэше, то аккуратно нужно перенести только незагруженные ранее свойства.
+                            if (masterFromActualCache.GetStatus(false) == ObjectStatus.UnAltered && masterFromActualCache.GetLoadingState() != LoadingState.Loaded)
+                            {
+                                ProperUpdateOfObject(masterFromActualCache, currentMaster, dataObjectCacheActual, dataObjectCacheWithMasters);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
