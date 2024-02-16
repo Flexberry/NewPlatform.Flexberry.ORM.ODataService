@@ -50,8 +50,14 @@
         /// </summary>
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
 
+        /// <summary>
+        /// Кэш типов, у которых одинакового типа детейлы и мастера.
+        /// </summary>
         private List<Type> _typesWithSameDetailAndMaster = new List<Type>();
 
+        /// <summary>
+        /// Кэш типов, у которых нет одинакового типа детейлов и мастеров.
+        /// </summary>
         private List<Type> _typesWithNotSameDetailAndMaster = new List<Type>();
 
         /// <summary>
