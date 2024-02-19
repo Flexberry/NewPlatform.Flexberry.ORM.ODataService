@@ -1616,6 +1616,7 @@
         {
             ActODataService(args =>
             {
+                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 Медведь agregator = new Медведь() { МедведьСтрокой = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1628,9 +1629,11 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
+                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
+                    //Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1649,6 +1652,7 @@
         {
             ActODataService(args =>
             {
+                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1661,9 +1665,11 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
+                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
+                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1675,13 +1681,14 @@
         }
 
         /// <summary>
-        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа? но лишь детейл заполнен.
+        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа, но лишь детейл заполнен.
         /// </summary>
         [Fact]
         public void DeleteObjectWithSameDetailAndMasterTest()
         {
             ActODataService(args =>
             {
+                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1704,9 +1711,11 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
+                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
+                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1725,6 +1734,7 @@
         {
             ActODataService(args =>
             {
+                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1750,9 +1760,11 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
+                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
+                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
