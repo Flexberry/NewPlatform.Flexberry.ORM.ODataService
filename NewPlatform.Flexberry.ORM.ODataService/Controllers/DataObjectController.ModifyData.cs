@@ -51,6 +51,16 @@
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
 
         /// <summary>
+        /// Кэш типов, у которых одинакового типа детейлы и мастера.
+        /// </summary>
+        private List<Type> _typesWithSameDetailAndMaster = new List<Type>();
+
+        /// <summary>
+        /// Кэш типов, у которых нет одинакового типа детейлов и мастеров.
+        /// </summary>
+        private List<Type> _typesWithNotSameDetailAndMaster = new List<Type>();
+
+        /// <summary>
         /// Создание сущности и всех связанных. При существовании в БД произойдёт обновление.
         /// </summary>
         /// <param name="edmEntity"> Создаваемая сущность. </param>
@@ -254,7 +264,38 @@
                 }
 
                 Init();
-                var obj = DataObjectCache.CreateDataObject(type, key);
+
+                /* В ситуации, когда мастер и детейл одного типа, ORM без подгрузки копии данных не может корректно разобрать порядок,
+                 * в котором объекты должны быть удалены.
+                 */
+                bool needDataCopyLoad = _typesWithSameDetailAndMaster.Contains(type);
+                if (!_typesWithNotSameDetailAndMaster.Contains(type) && !needDataCopyLoad)
+                {
+                    string[] props = Information.GetAllPropertyNames(type);
+                    int length = props.Length;
+                    int index = 0;
+
+                    while(!needDataCopyLoad && index < length)
+                    {
+                        string prop = props[index];
+                        Type propType = Information.GetPropertyType(type, prop);
+                        needDataCopyLoad = propType.IsSubclassOf(typeof(DataObject)) && Information.GetDetailArrayPropertyName(type, propType) != null;
+
+                        index++;
+                    }
+                }
+
+                DataObject obj = null;
+                if (!needDataCopyLoad)
+                {
+                    obj = DataObjectCache.CreateDataObject(type, key);
+                    _typesWithNotSameDetailAndMaster.Add(type);
+                }
+                else
+                {
+                    obj = LoadObject(type, key.ToString());
+                    _typesWithSameDetailAndMaster.Add(type);
+                }
 
                 // Удаляем объект с заданным ключем.
                 // Детейлы удалятся вместе с агрегатором автоматически.

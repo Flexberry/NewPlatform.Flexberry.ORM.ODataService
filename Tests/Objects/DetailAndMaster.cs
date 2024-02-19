@@ -30,7 +30,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
         private string fName;
 
-        private NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorWithSameMAndD fAgregator;
+        private NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorSameMD fAgregator;
 
         // *** Start programmer edit section *** (DetailAndMaster CustomMembers)
 
@@ -70,7 +70,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         }
 
         /// <summary>
-        /// мастеровая ссылка на шапку NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorWithSameMAndD.
+        /// мастеровая ссылка на шапку NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorSameMD.
         /// </summary>
         // *** Start programmer edit section *** (DetailAndMaster.Agregator CustomAttributes)
 
@@ -79,14 +79,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         [NotNull()]
         [PropertyStorage(new string[] {
                 "Agregator"})]
-        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorWithSameMAndD Agregator
+        public virtual NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorSameMD Agregator
         {
             get
             {
                 // *** Start programmer edit section *** (DetailAndMaster.Agregator Get start)
 
                 // *** End programmer edit section *** (DetailAndMaster.Agregator Get start)
-                NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorWithSameMAndD result = this.fAgregator;
+                NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorSameMD result = this.fAgregator;
                 // *** Start programmer edit section *** (DetailAndMaster.Agregator Get end)
 
                 // *** End programmer edit section *** (DetailAndMaster.Agregator Get end)
@@ -128,8 +128,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <summary>
         /// Adds object with type DetailAndMaster.
         /// </summary>
-        public DetailArrayOfDetailAndMaster(NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorWithSameMAndD fAgregatorWithSameMAndD) : 
-                base(typeof(DetailAndMaster), ((ICSSoft.STORMNET.DataObject)(fAgregatorWithSameMAndD)))
+        public DetailArrayOfDetailAndMaster(NewPlatform.Flexberry.ORM.ODataService.Tests.AgregatorSameMD fAgregatorSameMD) : 
+                base(typeof(DetailAndMaster), ((ICSSoft.STORMNET.DataObject)(fAgregatorSameMD)))
         {
         }
 

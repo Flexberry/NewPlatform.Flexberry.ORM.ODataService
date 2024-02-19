@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+1. Updated Flexberry ORM up to 7.2.0-beta01.
 
 ### Fixed
 1. Fixed loading of object with crushing of already loaded masters.
