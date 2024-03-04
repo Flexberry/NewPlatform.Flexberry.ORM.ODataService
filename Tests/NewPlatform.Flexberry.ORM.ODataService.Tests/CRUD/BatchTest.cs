@@ -18,7 +18,12 @@
     /// The class of tests for CRUD operations at Batch form.
     /// There are extra batch tests at <see cref="ModifyDataTest"/>.
     /// </summary>
+#if NETFRAMEWORK
     public class BatchTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class BatchTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -26,7 +31,7 @@
         /// </summary>
         /// <param name="factory">Factory for application.</param>
         /// <param name="output">Output for debug information.</param>
-        public BatchTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public BatchTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
