@@ -18,7 +18,12 @@
     /// <summary>
     /// Unit-test class for read data through OData service with using UTF8 requests.
     /// </summary>
+#if NETFRAMEWORK
     public class UtfRequestsTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class UtfRequestsTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -26,7 +31,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public UtfRequestsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public UtfRequestsTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

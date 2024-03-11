@@ -35,7 +35,13 @@
     /// <summary>
     /// Базовый класс для тестирования работы с данными через ODataService.
     /// </summary>
+#if NETFRAMEWORK
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
+#endif
+#if NETCOREAPP
+    public class BaseODataServiceIntegratedTest<TStartup> : BaseIntegratedTest<TStartup>
+        where TStartup : class
+#endif
     {
         protected IDataObjectEdmModelBuilder _builder;
 
@@ -72,7 +78,7 @@
         }
 #endif
 #if NETCOREAPP
-        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<TStartup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base(factory, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);

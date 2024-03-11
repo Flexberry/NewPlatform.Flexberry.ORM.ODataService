@@ -5,13 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
 
 ### Changed
 1. Updated Flexberry ORM up to 7.2.0-beta01.
 
 ### Fixed
 1. Fixed loading of object with crushing of already loaded masters.
-2. Fixed loading of details. 
+2. Fixed loading of details.
 
 ## [7.1.1] - 2023.06.08
 
@@ -106,7 +107,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 3. Support for limits on master details.
 4. Support for limits on pseudodetails.
 5. Decode Excel export column name.
-6. HttpConfiguretion MapDataObjectRoute() extension method. 
+6. HttpConfiguretion MapDataObjectRoute() extension method.
 
 ### Changed
 
@@ -160,13 +161,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 3. Add support actions.
 4. Add handler, called after exception appears.
 5. In user functions and actions add possibility to return collections of primitive types and enums. In actions add possibility to use primitive types and enums as parameters.
- 
+
 ### Fixed
 1. Fix reading properties of files.
 2. Fix error which occured in Mono in method `DefaultODataPathHandler.Parse(IEdmModel model, string serviceRoot, string odataPath)`.
 3. Fix errors in work of user functions.
 4. Fix error in association object enumeration filtration.
- 
+
 ### Changed
 1. Update dependencies.
 2. Update ODataService package version to according ORM package version.

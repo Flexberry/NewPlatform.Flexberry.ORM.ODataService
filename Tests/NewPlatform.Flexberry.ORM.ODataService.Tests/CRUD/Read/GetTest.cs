@@ -19,7 +19,12 @@
     /// <summary>
     /// Класс тестов для проверки корректной обработки Get-запросов.
     /// </summary>
+#if NETFRAMEWORK
     public class GetTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class GetTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -27,7 +32,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public GetTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public GetTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

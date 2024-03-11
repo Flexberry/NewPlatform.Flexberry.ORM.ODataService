@@ -11,7 +11,12 @@
     /// <summary>
     /// Класс тестов для тестирования изменения мастера при создании детейла.
     /// </summary>
+#if NETFRAMEWORK
     public class ChangeMasterInBSTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class ChangeMasterInBSTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -19,7 +24,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public ChangeMasterInBSTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public ChangeMasterInBSTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

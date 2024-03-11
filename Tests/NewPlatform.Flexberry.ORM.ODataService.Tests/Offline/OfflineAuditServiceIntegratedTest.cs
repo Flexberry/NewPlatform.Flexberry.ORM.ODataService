@@ -13,7 +13,12 @@
     /// ORM-integrated unit test for <see cref="OfflineAuditService"/>.
     /// </summary>
     /// <seealso cref="BaseIntegratedTest" />
+#if NETFRAMEWORK
     public class OfflineAuditServiceIntegratedTest : BaseIntegratedTest
+#endif
+#if NETCOREAPP
+    public class OfflineAuditServiceIntegratedTest : BaseIntegratedTest<TestStartup>
+#endif
     {
 #if NETFRAMEWORK
         /// <summary>
@@ -28,7 +33,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
         /// </summary>
-        public OfflineAuditServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
+        public OfflineAuditServiceIntegratedTest(CustomWebApplicationFactory<TestStartup> factory, ITestOutputHelper output)
             : base(factory, output, "offline")
         {
         }

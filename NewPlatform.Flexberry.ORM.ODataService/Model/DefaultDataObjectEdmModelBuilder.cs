@@ -69,6 +69,11 @@
         /// </summary>
         public Func<PropertyInfo, string> EntityPropertyNameBuilder { get; set; }
 
+        /// <summary>
+        /// Dictionary of views to be used to load objects on updates. Used to restrict properties for performance (all props are loaded if view is not specified).
+        /// </summary>
+        private Dictionary<Type, View> UpdateViews { get; set; }
+
         private readonly PropertyInfo _keyProperty = Information.ExtractPropertyInfo<DataObject>(n => n.__PrimaryKey);
 
         /// <summary>
@@ -82,7 +87,8 @@
             IEnumerable<Assembly> searchAssemblies,
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
-            Dictionary<Type, IEdmPrimitiveType> additionalMapping = null)
+            Dictionary<Type, IEdmPrimitiveType> additionalMapping = null,
+            IEnumerable<KeyValuePair<Type, View>> updateViews = null)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
@@ -94,6 +100,11 @@
             EntityPropertyNameBuilder = BuildEntityPropertyName;
             EntityTypeNameBuilder = BuildEntityTypeName;
             EntityTypeNamespaceBuilder = BuildEntityTypeNamespace;
+
+            if (updateViews != null)
+            {
+                SetUpdateView(updateViews);
+            }
         }
 
         /// <summary>
@@ -174,6 +185,54 @@
         }
 
         /// <summary>
+        /// Change default views that would be used to load objects on updates.
+        /// </summary>
+        /// <remarks><i>Should be called before MapDataObjectRoute.</i></remarks>
+        /// <param name="updateViews">Key - DataObject type, value - view to be used for objects of that type on updates.</param>
+        private void SetUpdateView(IEnumerable<KeyValuePair<Type, View>> updateViews)
+        {
+            if (this.UpdateViews is null)
+            {
+                this.UpdateViews = new Dictionary<Type, View>();
+            }
+
+            if (updateViews != null)
+            {
+                foreach (KeyValuePair<Type, View> kvp in updateViews)
+                {
+                    SetUpdateView(kvp.Key, kvp.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Change <paramref name="updateView"/> for a specific <paramref name="dataObjectType"/>. Update view would be used to load these objects on updates.
+        /// </summary>
+        /// <remarks><i>Should be called before MapDataObjectRoute.</i></remarks>
+        /// <param name="dataObjectType">DataObject type for which update view would be set.</param>
+        /// <param name="updateView">Update view to be used for objects of type <paramref name="dataObjectType" />. <i>Setting <see langword="null" /> removes update view for the type.</i></param>
+        private void SetUpdateView(Type dataObjectType, View updateView)
+        {
+            if (!dataObjectType.IsSubclassOf(typeof(DataObject)))
+            {
+                throw new ArgumentException("Update view can be set only for a DataObject.", nameof(dataObjectType));
+            }
+
+            if (updateView is null)
+            {
+                UpdateViews.Remove(dataObjectType);
+                return;
+            }
+
+            if (!Information.CheckViewForClasses(updateView.Name, dataObjectType))
+            {
+                throw new ArgumentException($"View from DataObject {updateView.DefineClassType} can not be set for a DataObject of type {dataObjectType}.", nameof(updateView));
+            }
+
+            UpdateViews[dataObjectType] = updateView;
+        }
+
+        /// <summary>
         /// Adds the property for exposing.
         /// </summary>
         /// <param name="typeSettings">The type settings.</param>
@@ -238,12 +297,21 @@
 
             AddDataObjectWithHierarchy(meta, baseType);
 
+            // Extract user-defined update view:
+            View updateView = null;
+            if (UpdateViews != null)
+            {
+                UpdateViews.TryGetValue(dataObjectType, out updateView);
+            }
+
             var typeSettings = meta[dataObjectType] = new DataObjectEdmTypeSettings
             {
                 EnableCollection = true,
                 CollectionName = EntitySetNameBuilder(dataObjectType),
-                DefaultView = DynamicView.Create(dataObjectType, null).View
+                DefaultView = DynamicView.Create(dataObjectType, null).View,
+                UpdateView = updateView,
             };
+
             AddProperties(dataObjectType, typeSettings);
             if (typeSettings.KeyType != null)
                 meta[baseType].KeyType = null;

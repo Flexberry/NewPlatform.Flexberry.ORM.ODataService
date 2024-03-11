@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
+namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +21,12 @@
     /// <summary>
     /// Класс тестов для тестирования операций модификации данных OData-сервисом (вставка, обновление, удаление).
     /// </summary>
+#if NETFRAMEWORK
     public class ModifyDataTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class ModifyDataTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -29,7 +34,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public ModifyDataTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public ModifyDataTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
@@ -1616,7 +1621,6 @@
         {
             ActODataService(args =>
             {
-                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 Медведь agregator = new Медведь() { МедведьСтрокой = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1629,11 +1633,9 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
-                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
-                    //Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1652,7 +1654,6 @@
         {
             ActODataService(args =>
             {
-                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1665,11 +1666,9 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
-                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
-                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1681,14 +1680,13 @@
         }
 
         /// <summary>
-        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа, но лишь детейл заполнен.
+        /// Осуществляет проверку удаления данных, если детейл и мастер одного типа? но лишь детейл заполнен.
         /// </summary>
         [Fact]
         public void DeleteObjectWithSameDetailAndMasterTest()
         {
             ActODataService(args =>
             {
-                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1711,11 +1709,9 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
-                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
-                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -1734,7 +1730,6 @@
         {
             ActODataService(args =>
             {
-                // Arrange.
                 // Создаем объект данных, который потом будем удалять, и добавляем в базу обычным сервисом данных.
                 AgregatorSameMD agregator = new AgregatorSameMD() { Name = "Agregator" };
                 args.DataService.UpdateObject(agregator);
@@ -1760,17 +1755,174 @@
                 string requestUrl = string.Format("http://localhost/odata/{0}({1})", args.Token.Model.GetEdmEntitySet(typeof(AgregatorSameMD)).Name, agregator.__PrimaryKey);
                 requestUrl = requestUrl.Replace("{", string.Empty).Replace("}", string.Empty);
 
-                // Act.
                 // Обращаемся к OData-сервису и обрабатываем ответ.
                 using (HttpResponseMessage response = args.HttpClient.DeleteAsync(requestUrl).Result)
                 {
-                    // Assert.
                     // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок удаления).
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
                     // Проверяем что объект данных был удален из базы.
                     AgregatorSameMD foundAgregator = args.DataService.Query<AgregatorSameMD>(view).FirstOrDefault(x => x.__PrimaryKey == agregator.__PrimaryKey);
                     Assert.Null(foundAgregator);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тест на изменение ссылки.
+        /// </summary>
+        [Fact]
+        public void MasterChangeTest()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объект данных, который потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                Страна страна1 = new Страна { Название = "Страна1" };
+                Страна страна2 = new Страна { Название = "Россия" };
+                args.DataService.UpdateObject(страна1);
+                args.DataService.UpdateObject(страна2);
+
+                Лес лес = new Лес { Название = "Тайга", Площадь = 2000, Страна = страна1 };
+                args.DataService.UpdateObject(лес);
+
+                // Обновляем ссылку.
+                лес.Страна = страна2;
+
+                // Представление, по которому будем обновлять.
+                string[] лесPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Лес>(x => x.__PrimaryKey),
+                };
+                var лесDynamicView = new View(new ViewAttribute("лесDynamicView", лесPropertiesNames), typeof(Лес));
+
+                // Преобразуем объект данных в JSON-строку.
+                string requestJsonDataЛес = лес.ToJson(лесDynamicView, args.Token.Model);
+
+                // Добавляем в payload информацию, что поменяли ссылку на страну.
+                var requestJsonData = ODataTestHelper.AddEntryRelationship(requestJsonDataЛес, лесDynamicView, args.Token.Model, страна2, nameof(Лес.Страна));
+
+                // Получаем адрес для PATCH запроса.
+                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, лес);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем обновляемый объект в формате JSON.
+                using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок обновления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был обновлен в базе, причем только по переданным атрибутам.
+                    Лес updatedЛес = new Лес { __PrimaryKey = лес.__PrimaryKey };
+                    args.DataService.LoadObject(updatedЛес);
+
+                    Assert.Equal(лес.Страна.__PrimaryKey.ToString(), updatedЛес.Страна.__PrimaryKey.ToString());
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тест на изменение агрегатора у детейла.
+        /// </summary>
+        [Fact]
+        public void AggregatorChangeTest()
+        {
+            ActODataService(args =>
+            {
+                // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                Медведь медведь1 = new Медведь { ПорядковыйНомер = 1 };
+                Медведь медведь2 = new Медведь { ПорядковыйНомер = 2 };
+                args.DataService.UpdateObject(медведь1);
+                args.DataService.UpdateObject(медведь2);
+
+                Берлога берлога1 = new Берлога { Наименование = "Берлога1", Медведь = медведь1 };
+                Берлога берлога2 = new Берлога { Наименование = "Берлога2", Медведь = медведь1 };
+                Берлога берлога3 = new Берлога { Наименование = "Берлога3", Медведь = медведь1 };
+                args.DataService.UpdateObject(берлога1);
+                args.DataService.UpdateObject(берлога2);
+                args.DataService.UpdateObject(берлога3);
+
+                // Обновляем ссылку.
+                берлога1.Медведь = медведь2;
+
+                // Представление, по которому будем обновлять.
+                string[] берлогаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Берлога>(x => x.__PrimaryKey),
+                };
+                var берлогаDynamicView = new View(new ViewAttribute("берлогаDynamicView", берлогаPropertiesNames), typeof(Берлога));
+
+                // Преобразуем объект данных в JSON-строку.
+                string requestJsonData = берлога1.ToJson(берлогаDynamicView, args.Token.Model);
+
+                // Добавляем в payload информацию, что поменяли ссылку на медведя.
+                requestJsonData = ODataTestHelper.AddEntryRelationship(requestJsonData, берлогаDynamicView, args.Token.Model, медведь2, nameof(Берлога.Медведь));
+
+                // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
+                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, берлога1);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем обновляемый объект в формате JSON.
+                using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок обновления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был обновлен в базе, причем только по переданным атрибутам.
+                    Берлога updatedБерлога = new Берлога { __PrimaryKey = берлога1.__PrimaryKey };
+                    args.DataService.LoadObject(updatedБерлога);
+
+                    Assert.Equal(берлога1.Медведь.__PrimaryKey.ToString(), updatedБерлога.Медведь.__PrimaryKey.ToString());
+                }
+            });
+        }
+
+        /// <summary>
+        /// Проверка изменения сложного агрегатора (у которого есть ещё ссылки на другие мастера).
+        /// </summary>
+        [Fact]
+        public void ComplexAggregatorChangeTest()
+        {
+            ActODataService(args =>
+            {
+                LegoDevice device1 = new LegoDevice { BlockId = 1, Name = "First" };
+                LegoDevice device2 = new LegoDevice { BlockId = 2, Name = "Second" };
+                LegoDevice device3 = new LegoDevice { BlockId = 3, Name = "Third" };
+                args.DataService.UpdateObject(device1);
+                args.DataService.UpdateObject(device2);
+                args.DataService.UpdateObject(device3);
+
+                // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                LegoPatent patent = new LegoPatent { Description = "Patent A", BaseLegoBlock = device1, Date = DateTime.Now };
+                args.DataService.UpdateObject(patent);
+
+                // Обновляем ссылку на агрегатора.
+                patent.BaseLegoBlock = device2;
+
+                // Представление, по которому будем обновлять.
+                string[] patentPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<LegoPatent>(x => x.__PrimaryKey),
+                };
+                var patentDynamicView = new View(new ViewAttribute("patentDynamicView", patentPropertiesNames), typeof(LegoPatent));
+
+                // Преобразуем объект данных в JSON-строку.
+                string requestJsonData = patent.ToJson(patentDynamicView, args.Token.Model);
+
+                // Добавляем в payload информацию, что поменяли ссылку на агрегатора.
+                requestJsonData = ODataTestHelper.AddEntryRelationship(requestJsonData, patentDynamicView, args.Token.Model, device2, nameof(LegoPatent.BaseLegoBlock));
+
+                // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
+                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, patent);
+
+                // Обращаемся к OData-сервису и обрабатываем ответ, в теле запроса передаем обновляемый объект в формате JSON.
+                using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result)
+                {
+                    // Убедимся, что запрос завершился успешно (тело ответа д.б. пустым при отсутствии ошибок обновления).
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // Проверяем что объект данных был обновлен в базе, причем только по переданным атрибутам.
+                    LegoPatent updatedLegoPatent = new LegoPatent { __PrimaryKey = patent.__PrimaryKey };
+                    args.DataService.LoadObject(updatedLegoPatent);
+
+                    Assert.Equal(patent.BaseLegoBlock.__PrimaryKey.ToString(), updatedLegoPatent.BaseLegoBlock.__PrimaryKey.ToString());
                 }
             });
         }

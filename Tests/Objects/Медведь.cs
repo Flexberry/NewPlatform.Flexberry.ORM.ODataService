@@ -72,6 +72,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             "ЛесОбитания.Название as \'Название\'"})]
     [View("МедведьShort", new string[] {
             "ПорядковыйНомер as \'Порядковый номер\'"})]
+    [View("МедведьUpdateView", new string[] {
+            "ПорядковыйНомер as \'Порядковый номер\'",
+            "Вес as \'Вес\'",
+            "ЦветГлаз as \'Цвет глаз\'",
+            "Пол as \'Пол\'",
+            "ДатаРождения as \'Дата рождения\'",
+            "ПолеБС"})]
     [View("МедведьСДелейломИВычислимымСвойством", new string[] {
             "ПорядковыйНомер as \'Порядковый номер\'",
             "Вес as \'Вес\'",
@@ -220,6 +227,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         [ICSSoft.STORMNET.NotStored()]
         [StrLen(255)]
         [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.MSSQLDataService), "\'ПорядковыйНомер:\' + @ПорядковыйНомер@ + \", Цвет глаз мамы:\" + isnull(@Мама.ЦветГ" +
+            "лаз@,\'\')")]
+        [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.PostgresDataService), "\'ПорядковыйНомер:\' || @ПорядковыйНомер@ || \", Цвет глаз мамы:\" || coalesce(@Мама.ЦветГ" +
             "лаз@,\'\')")]
         public virtual string МедведьСтрокой
         {
@@ -719,6 +728,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 get
                 {
                     return ICSSoft.STORMNET.Information.GetView("МедведьShort", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь));
+                }
+            }
+
+            /// <summary>
+            /// Представление для тестов UpdateView (без мастеров и детейлов).
+            /// </summary>
+            public static ICSSoft.STORMNET.View МедведьUpdateView
+            {
+                get
+                {
+                    return ICSSoft.STORMNET.Information.GetView("МедведьUpdateView", typeof(NewPlatform.Flexberry.ORM.ODataService.Tests.Медведь));
                 }
             }
 
