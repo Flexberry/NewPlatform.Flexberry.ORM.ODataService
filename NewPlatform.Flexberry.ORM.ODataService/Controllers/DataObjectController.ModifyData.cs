@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
+namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -23,9 +23,11 @@
 
 #if NETFRAMEWORK
     using System.Net.Http.Formatting;
+    using System.Web;
     using System.Web.Http;
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
+    using Newtonsoft.Json.Linq;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
 #endif
@@ -38,10 +40,10 @@
     using NewPlatform.Flexberry.ORM.ODataService.Middleware;
 #endif
 
-    /// <summary>
-    /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
-    /// </summary>
-    public partial class DataObjectController
+  /// <summary>
+  /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
+  /// </summary>
+  public partial class DataObjectController
     {
         /// <summary>
         /// Метаданные файлов, временно загруженных в каталог файлового хранилища и привязанных к свойствам обрабатываемых объектов данных.
@@ -774,7 +776,7 @@
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
                         {
-                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
@@ -790,7 +792,7 @@
                     return dataObjectFromCache;
                 }
 
-                // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
                 View lightView = view.Clone();
                 DetailInView[] lightViewDetails = lightView.Details;
                 lightView.Details = new DetailInView[0];
@@ -848,8 +850,51 @@
                     objsToUpdate.Insert(0, dataObject); // Добавляем объект в начало списка.
                 }
 
-                }
             }
+        }
+
+        /// <summary>
+        /// Получить значение ключа у указанной сущности.
+        /// </summary>
+        /// <param name="edmEntity">Сущность.</param>
+        /// <returns>Значение ключа.</returns>
+        private object GetKey(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity), $"{nameof(edmEntity)} can not be null.");
+            }
+
+            object key;
+
+            // Получим значение ключа.
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties();
+            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            edmEntity.TryGetPropertyValue(keyProperty.Name, out key);
+
+            return key;
+        }
+
+        /// <summary>
+        /// Построение объекта данных по сущности OData без загрузки свойств и мастеров/детейлов. Загружен только первичный ключ.
+        /// </summary>
+        /// <param name="edmEntity">Сущность OData.</param>
+        /// <returns>Объект данных.</returns>
+        private DataObject GetDataObjectByEdmEntityLight(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity), $"{nameof(edmEntity)} can not be null.");
+            }
+
+            var masterType = _model.GetDataObjectType(edmEntity);
+            var masterKey = GetKey(edmEntity);
+            var dataObject = (DataObject)Activator.CreateInstance(masterType);
+            dataObject.SetExistObjectPrimaryKey(masterKey);
+
+            return dataObject;
+        }
 
         /// <summary>
         /// Построение объекта данных по сущности OData.
@@ -867,21 +912,7 @@
                 return null;
             }
 
-            // Значение свойства.
-            object value;
-
-            // Получим значение ключа.
-            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
-            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
-            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
-            if (key != null)
-            {
-                value = key;
-            }
-            else
-            {
-                edmEntity.TryGetPropertyValue(keyProperty.Name, out value);
-            }
+            key = key ?? GetKey(edmEntity);
 
             // Загрузим объект из хранилища, если он там есть, или создадим, если нет, но только для POST.
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
@@ -896,7 +927,7 @@
                 view = _model.GetDataObjectDefaultView(objType);
             }
 
-            DataObject obj = ReturnDataObject(objType, value, view);
+            DataObject obj = ReturnDataObject(objType, key, view);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
             AddObjectToUpdate(dObjs, obj, endObject);
@@ -906,6 +937,8 @@
             IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
 
             // Обрабатываем агрегатор первым.
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
             List<IEdmProperty> changedProps = entityProps
                 .Where(ep => changedPropNames.Contains(ep.Name))
                 .OrderBy(ep => ep.Name != agregatorPropertyName)
@@ -931,22 +964,37 @@
                 // Обработка мастеров и детейлов.
                 if (prop is EdmNavigationProperty navProp)
                 {
-                    edmEntity.TryGetPropertyValue(prop.Name, out value);
-
                     EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
 
                     // Обработка мастеров.
                     if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
                     {
+                        object value;
+                        edmEntity.TryGetPropertyValue(prop.Name, out value);
+
                         if (value is EdmEntityObject edmMaster)
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
                             bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
-                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd, useUpdateView);
+                            bool masterOwnPropsUpdated = edmMaster.GetChangedPropertyNames().Any(propName => propName != _model.KeyPropertyName);
+                            bool isAggregator = dataObjectPropName == agregatorPropertyName;
+                            DataObject master = null;
+
+                            Type masterType = _model.GetDataObjectType(edmEntity);
+                            bool masterLightLoad = _model.IsMasterLightLoad(masterType);
+
+                            if (masterLightLoad && !masterOwnPropsUpdated && !isAggregator)
+                            {
+                                master = GetDataObjectByEdmEntityLight(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
+                            }
+                            else
+                            {
+                                master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd, useUpdateView);
+                            }
 
                             Information.SetPropValueByName(obj, dataObjectPropName, master);
 
-                            if (dataObjectPropName == agregatorPropertyName)
+                            if (isAggregator)
                             {
                                 master.AddDetail(obj);
 
@@ -968,6 +1016,9 @@
                     if (edmMultiplicity == EdmMultiplicity.Many)
                     {
                         DetailArray detarr = (DetailArray)Information.GetPropValueByName(obj, dataObjectPropName);
+
+                        object value;
+                        edmEntity.TryGetPropertyValue(prop.Name, out value);
 
                         if (value is EdmEntityObjectCollection coll)
                         {
@@ -1002,10 +1053,12 @@
                 else
                 {
                     // Обработка собственных свойств объекта (неключевых, т.к. ключ устанавливаем при начальной инициализации объекта obj).
-                    if (prop.Name != keyProperty.Name)
+                    if (prop.Name != _model.KeyPropertyName)
                     {
-                        Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
+                        object value;
                         edmEntity.TryGetPropertyValue(prop.Name, out value);
+
+                        Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
 
                         // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
                         // значит свойство файловое, и его нужно обработать особым образом.

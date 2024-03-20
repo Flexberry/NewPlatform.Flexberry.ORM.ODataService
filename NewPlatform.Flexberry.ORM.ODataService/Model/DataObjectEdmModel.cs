@@ -529,6 +529,13 @@
         }
 
         /// <summary>
+        /// Возвращает информацию, должны ли мастера объекта загружаться в экономном режиме (только __PrimaryKey).
+        /// </summary>
+        /// <param name="dataObjectType">Тип объекта данных.</param>
+        /// <returns>Мастера должны загружаться экономно.</returns>
+        public bool IsMasterLightLoad(Type dataObjectType) => _metadata[dataObjectType].MasterLightLoad;
+
+        /// <summary>
         /// Получает список зарегистрированных в модели типов по списку имён типов.
         /// </summary>
         /// <param name="strTypes">Список имен типов.</param>

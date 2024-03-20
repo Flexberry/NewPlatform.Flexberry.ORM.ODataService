@@ -74,6 +74,16 @@
         /// </summary>
         private Dictionary<Type, View> UpdateViews { get; set; }
 
+        /// <summary>
+        /// Types for which masters should be light-loaded on updates (load only __PrimaryKey).
+        /// </summary>
+        private IEnumerable<Type> MasterLightLoadTypes { get; set; }
+
+        /// <summary>
+        /// Whether to load all masters in light-loaded mode on updates (load only __PrimaryKey).
+        /// </summary>
+        private bool MasterLightLoadAllTypes { get; set; }
+
         private readonly PropertyInfo _keyProperty = Information.ExtractPropertyInfo<DataObject>(n => n.__PrimaryKey);
 
         /// <summary>
@@ -88,7 +98,9 @@
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
             Dictionary<Type, IEdmPrimitiveType> additionalMapping = null,
-            IEnumerable<KeyValuePair<Type, View>> updateViews = null)
+            IEnumerable<KeyValuePair<Type, View>> updateViews = null,
+            IEnumerable<Type> masterLightLoadTypes = null,
+            bool masterLightLoadAllTypes = false)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
@@ -105,6 +117,18 @@
             {
                 SetUpdateView(updateViews);
             }
+
+            if (masterLightLoadTypes != null)
+            {
+                SetMasterLightLoadTypes(masterLightLoadTypes);
+
+                if (masterLightLoadAllTypes)
+                {
+                    System.Diagnostics.Debug.WriteLine("Detected usage of masterLightLoadAllTypes parameter together with masterLightLoadTypes in DefaultDataObjectEdmModelBuilder. masterLightLoadTypes will be ignored, all data objects will be loaded in MasterLightLoad mode.");
+                }
+            }
+
+            this.MasterLightLoadAllTypes = masterLightLoadAllTypes;
         }
 
         /// <summary>
@@ -215,7 +239,12 @@
         {
             if (!dataObjectType.IsSubclassOf(typeof(DataObject)))
             {
-                throw new ArgumentException("Update view can be set only for a DataObject.", nameof(dataObjectType));
+                throw new ArgumentException($"Update view can be set only for a DataObject. Current type is {dataObjectType}", nameof(dataObjectType));
+            }
+
+            if (dataObjectType is null)
+            {
+                throw new ArgumentException("dataObjectType can not be null.", nameof(dataObjectType));
             }
 
             if (updateView is null)
@@ -230,6 +259,26 @@
             }
 
             UpdateViews[dataObjectType] = updateView;
+        }
+
+        /// <summary>
+        /// Sets DataObject types for which masters will be light-loaded on updates (load only __PrimaryKey).
+        /// </summary>
+        /// <param name="masterLightLoadTypes">Types for which masters should be light-loaded.</param>
+        private void SetMasterLightLoadTypes(IEnumerable<Type> masterLightLoadTypes)
+        {
+            if (masterLightLoadTypes != null)
+            {
+                foreach (Type type in masterLightLoadTypes)
+                {
+                    if (!type.IsSubclassOf(typeof(DataObject)))
+                    {
+                        throw new ArgumentException("MasterLightLoad option can be set only for a DataObject.", nameof(masterLightLoadTypes));
+                    }
+                }
+
+                MasterLightLoadTypes = masterLightLoadTypes;
+            }
         }
 
         /// <summary>
@@ -310,6 +359,7 @@
                 CollectionName = EntitySetNameBuilder(dataObjectType),
                 DefaultView = DynamicView.Create(dataObjectType, null).View,
                 UpdateView = updateView,
+                MasterLightLoad = MasterLightLoadAllTypes || (MasterLightLoadTypes?.Contains(dataObjectType) ?? false),
             };
 
             AddProperties(dataObjectType, typeSettings);
