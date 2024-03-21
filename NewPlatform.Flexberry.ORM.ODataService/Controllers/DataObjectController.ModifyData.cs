@@ -32,6 +32,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
 #endif
 #if NETSTANDARD
+    using System.Data;
     using Microsoft.AspNet.OData.Formatter;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -40,10 +41,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using NewPlatform.Flexberry.ORM.ODataService.Middleware;
 #endif
 
-  /// <summary>
-  /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
-  /// </summary>
-  public partial class DataObjectController
+    /// <summary>
+    /// Определяет класс контроллера OData, который поддерживает запись и чтение данных с использованием OData формата.
+    /// </summary>
+    public partial class DataObjectController
     {
         /// <summary>
         /// Метаданные файлов, временно загруженных в каталог файлового хранилища и привязанных к свойствам обрабатываемых объектов данных.
@@ -741,13 +742,31 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению <paramref name="view"/>, иначе - создаётся новый.
+        /// Получить объект данных на основании EdmEntity.
+        /// </summary>
+        /// <param name="edmEntity">EdmEntity, который будет использован для получения объекта данных.</param>
+        /// <returns>Объект данных.</returns>
+        private DataObject ReturnDataObject(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity));
+            }
+
+            Type masterType = _model.GetDataObjectType(edmEntity);
+            object masterKey = GetKey(edmEntity);
+
+            return ReturnDataObject(masterType, masterKey);
+        }
+
+        /// <summary>
+        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
         /// </summary>
         /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
         /// <param name="keyValue">Значение ключа.</param>
-        /// <param name="view">Представление для загрузки объекта.</param>
+        /// <param name="useUpdateView">Использовать UpdateView для загрузки объекта (при наличии).</param>
         /// <returns>Объект данных.</returns>
-        private DataObject ReturnDataObject(Type objType, object keyValue, View view)
+        private DataObject ReturnDataObject(Type objType, object keyValue, bool useUpdateView = false)
         {
             if (objType == null)
             {
@@ -756,6 +775,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             if (keyValue != null)
             {
+                View view = null;
+                if (useUpdateView)
+                {
+                    view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
+                }
+                else
+                {
+                    view = _model.GetDataObjectDefaultView(objType);
+                }
+
                 DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
 
                 if (dataObjectFromCache != null)
@@ -877,26 +906,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Построение объекта данных по сущности OData без загрузки свойств и мастеров/детейлов. Загружен только первичный ключ.
-        /// </summary>
-        /// <param name="edmEntity">Сущность OData.</param>
-        /// <returns>Объект данных.</returns>
-        private DataObject GetDataObjectByEdmEntityLight(EdmEntityObject edmEntity)
-        {
-            if (edmEntity == null)
-            {
-                throw new ArgumentNullException(nameof(edmEntity), $"{nameof(edmEntity)} can not be null.");
-            }
-
-            var masterType = _model.GetDataObjectType(edmEntity);
-            var masterKey = GetKey(edmEntity);
-            var dataObject = (DataObject)Activator.CreateInstance(masterType);
-            dataObject.SetExistObjectPrimaryKey(masterKey);
-
-            return dataObject;
-        }
-
-        /// <summary>
         /// Построение объекта данных по сущности OData.
         /// </summary>
         /// <param name="edmEntity"> Сущность OData. </param>
@@ -918,16 +927,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
             Type objType = _model.GetDataObjectType(edmEntity);
 
-            View view = null;
-            if (useUpdateView)
-            {
-                view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
-            } else
-            {
-                view = _model.GetDataObjectDefaultView(objType);
-            }
-
-            DataObject obj = ReturnDataObject(objType, key, view);
+            DataObject obj = ReturnDataObject(objType, key, useUpdateView);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
             AddObjectToUpdate(dObjs, obj, endObject);
@@ -980,12 +980,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                             bool isAggregator = dataObjectPropName == agregatorPropertyName;
                             DataObject master = null;
 
-                            Type masterType = _model.GetDataObjectType(edmEntity);
-                            bool masterLightLoad = _model.IsMasterLightLoad(masterType);
+                            Type objectType = _model.GetDataObjectType(edmEntity);
+                            bool masterLightLoad = _model.IsMasterLightLoad(objectType);
 
                             if (masterLightLoad && !masterOwnPropsUpdated && !isAggregator)
                             {
-                                master = GetDataObjectByEdmEntityLight(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
+                                master = ReturnDataObject(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
                             }
                             else
                             {
