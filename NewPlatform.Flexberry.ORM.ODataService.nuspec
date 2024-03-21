@@ -16,13 +16,13 @@
     1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
 
     Changed
-		1. Updated Flexberry ORM up to 7.2.0-beta01.
+		1. Updated Flexberry ORM up to 7.2.0.
 
 		Fixed
 		1. Fixed loading of object with crushing of already loaded masters.
 		2. Fixed loading of details.
 	</releaseNotes>
-    <copyright>Copyright New Platform Ltd 2023</copyright>
+    <copyright>Copyright New Platform Ltd 2024</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5">
@@ -33,25 +33,25 @@
         <dependency id="Microsoft.OData.Edm" version="7.10.0" />
         <dependency id="Microsoft.Spatial" version="7.10.0" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NETCoreApp3.1">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
         <group targetFramework=".NET6.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework=".NET7.0">
