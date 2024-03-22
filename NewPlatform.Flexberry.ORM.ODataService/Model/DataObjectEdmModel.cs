@@ -533,7 +533,7 @@
         /// </summary>
         /// <param name="dataObjectType">Тип объекта данных.</param>
         /// <returns>Мастера должны загружаться экономно.</returns>
-        public bool IsMasterLightLoad(Type dataObjectType) => _metadata[dataObjectType].MasterLightLoad;
+        public bool IsMasterLightLoad(Type dataObjectType) => _metadata == null ? false : _metadata[dataObjectType]?.MasterLightLoad ?? false;
 
         /// <summary>
         /// Получает список зарегистрированных в модели типов по списку имён типов.
