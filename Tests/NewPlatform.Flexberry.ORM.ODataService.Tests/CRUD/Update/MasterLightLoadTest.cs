@@ -2,9 +2,14 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
     using System;
+    using System.Data;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business.LINQProvider;
+    using ICSSoft.STORMNET.KeyGen;
+    using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
 
@@ -31,7 +36,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         /// Проверка экономной загрузки мастера при активной настройке MasterLightLoad при смене мастера.
         /// </summary>
         [Fact]
-        public void MasterLightLoadSettingTest()
+        public void MasterChangedTest()
         {
             ActODataService(args =>
             {
@@ -69,6 +74,84 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 {
                     // Если приходит код 200, значит, настройка не ломает загрузку. Фактическую проверку того, что кошка загрузилась в LightLoaded надо делать через отладчик.
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Проверка экономной загрузки мастера при активной настройке MasterLightLoad при смене значения поля у мастера.
+        /// </summary>
+        [Fact]
+        public void MasterPropsChangedBatchTest()
+        {
+            ActODataService(async args =>
+            {
+                // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                Порода порода = new Порода { Название = "Сиамская" };
+                Кошка кошка = new Кошка { Кличка = "Болтушка", Агрессивная = true, Порода = порода };
+                args.DataService.UpdateObject(порода);
+                args.DataService.UpdateObject(кошка);
+
+                Котенок котенок = new Котенок { Кошка = кошка, КличкаКотенка = "Котенок Гав", Глупость = 10 };
+                args.DataService.UpdateObject(котенок);
+
+                // Обновляем атрибут объекта
+                котенок.Глупость = 1;
+
+                // Обновляем атрибут мастера
+                котенок.Кошка.Кличка = "Петрушка";
+
+                // Представление, по которому будем обновлять объект
+                string[] котенокPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Котенок>(x => x.Глупость),
+                };
+                var котенокDynamicView = new View(new ViewAttribute("котенокDynamicView", котенокPropertiesNames), typeof(Котенок));
+
+                // Представление, по которому будем обновлять мастер
+                string[] кошкаPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Кошка>(x => x.Кличка),
+                };
+                var кошкаDynamicView = new View(new ViewAttribute("кошкаDynamicView", кошкаPropertiesNames), typeof(Кошка));
+
+                // Преобразуем объект в JSON-строку.
+                string котенокJsonData = котенок.ToJson(котенокDynamicView, args.Token.Model);
+
+                // Добавляем в payload информацию о ссылке на мастера
+                котенокJsonData = ODataTestHelper.AddEntryRelationship(котенокJsonData, котенокDynamicView, args.Token.Model, кошка, nameof(Котенок.Кошка));
+
+                // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
+                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, котенок);
+
+                const string baseUrl = "http://localhost/odata";
+                string[] changesets = new[] // Важно, чтобы сначала шёл мастер, потом объект, имеющий на него ссылку.
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Кошка)).Name}",
+                        кошка.ToJson(кошкаDynamicView, args.Token.Model),
+                        кошка),
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Котенок)).Name}",
+                        котенокJsonData,
+                        котенок),
+                };
+
+                // Act.
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    // Assert.
+                    // TODO: проверка на экономную загрузку атрибутов.
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
+                    Котенок котенокLoaded = args.DataService.Query<Котенок>(котенокDynamicView).FirstOrDefault(x => x.__PrimaryKey == котенок.__PrimaryKey);
+                    Кошка кошкаLoaded = args.DataService.Query<Кошка>(кошкаDynamicView).FirstOrDefault(x => x.__PrimaryKey == кошка.__PrimaryKey);
+                    Assert.NotNull(котенокLoaded);
+                    Assert.NotNull(кошкаLoaded);
+                    Assert.Equal(1, котенокLoaded.Глупость);
+                    Assert.Equal("Петрушка", кошкаLoaded.Кличка);
                 }
             });
         }
