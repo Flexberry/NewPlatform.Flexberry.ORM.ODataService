@@ -123,9 +123,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 // Добавляем в payload информацию о ссылке на мастера
                 котенокJsonData = ODataTestHelper.AddEntryRelationship(котенокJsonData, котенокDynamicView, args.Token.Model, кошка, nameof(Котенок.Кошка));
 
-                // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
-                var requestUrl = ODataTestHelper.GetRequestUrl(args.Token.Model, котенок);
-
                 const string baseUrl = "http://localhost/odata";
                 string[] changesets = new[] // Важно, чтобы сначала шёл мастер, потом объект, имеющий на него ссылку.
                 {
