@@ -72,8 +72,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 
                 using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, requestJsonData).Result)
                 {
-                    // Если приходит код 200, значит, настройка не ломает загрузку. Фактическую проверку того, что кошка загрузилась в LightLoaded надо делать через отладчик.
+                    // Если приходит код 200, значит, настройка не ломает загрузку.
+                    // Фактическую проверку того, что кошка загрузилась в LightLoaded надо делать через отладчик.
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+                    // TODO: проверка на экономную загрузку мастера.
                 }
             });
         }
@@ -141,7 +144,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
                 {
                     // Assert.
-                    // TODO: проверка на экономную загрузку атрибутов.
                     CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.OK });
                     Котенок котенокLoaded = args.DataService.Query<Котенок>(котенокDynamicView).FirstOrDefault(x => x.__PrimaryKey == котенок.__PrimaryKey);
                     Кошка кошкаLoaded = args.DataService.Query<Кошка>(кошкаDynamicView).FirstOrDefault(x => x.__PrimaryKey == кошка.__PrimaryKey);
@@ -149,6 +151,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                     Assert.NotNull(кошкаLoaded);
                     Assert.Equal(1, котенокLoaded.Глупость);
                     Assert.Equal("Петрушка", кошкаLoaded.Кличка);
+
+                    // TODO: проверка на экономную загрузку мастера.
                 }
             });
         }
