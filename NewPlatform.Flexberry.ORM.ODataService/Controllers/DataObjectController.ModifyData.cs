@@ -679,7 +679,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             {
                 // Создадим объект данных по пришедшей сущности.
                 // В переменной objs сформируем список всех объектов для обновления в нужном порядке: сам объект и зависимые всех уровней.
-                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs, useUpdateView: true);
+                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs);
 
                 for (int i = 0; i < objs.Count; i++)
                 {
@@ -764,9 +764,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// </summary>
         /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
         /// <param name="keyValue">Значение ключа.</param>
-        /// <param name="useUpdateView">Использовать UpdateView для загрузки объекта (при наличии).</param>
         /// <returns>Объект данных.</returns>
-        private DataObject ReturnDataObject(Type objType, object keyValue, bool useUpdateView = false)
+        private DataObject ReturnDataObject(Type objType, object keyValue)
         {
             if (objType == null)
             {
@@ -775,15 +774,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             if (keyValue != null)
             {
-                View view = null;
-                if (useUpdateView)
-                {
-                    view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
-                }
-                else
-                {
-                    view = _model.GetDataObjectDefaultView(objType);
-                }
+                View view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
 
                 DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
 
@@ -912,9 +903,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// <param name="key"> Значение ключевого поля сущности. </param>
         /// <param name="dObjs"> Список объектов для обновления. </param>
         /// <param name="endObject"> Признак, что объект добавляется в конец списка обновления. </param>
-        /// <param name="useUpdateView">Использовать представление для обновления (вместо представления по умолчанию).</param>
         /// <returns> Объект данных. </returns>
-        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false, bool useUpdateView = false)
+        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false)
         {
             if (edmEntity == null)
             {
@@ -927,7 +917,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
             Type objType = _model.GetDataObjectType(edmEntity);
 
-            DataObject obj = ReturnDataObject(objType, key, useUpdateView);
+            DataObject obj = ReturnDataObject(objType, key);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
             AddObjectToUpdate(dObjs, obj, endObject);
@@ -989,7 +979,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                             }
                             else
                             {
-                                master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd, useUpdateView);
+                                master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
                             }
 
                             Information.SetPropValueByName(obj, dataObjectPropName, master);
@@ -1030,8 +1020,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                                         (EdmEntityObject)edmEnt,
                                         null,
                                         dObjs,
-                                        true,
-                                        useUpdateView);
+                                        true);
 
                                     if (det.__PrimaryKey == null)
                                     {
