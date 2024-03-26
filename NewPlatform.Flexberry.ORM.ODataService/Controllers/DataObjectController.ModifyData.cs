@@ -27,10 +27,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using System.Web.Http;
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
-    using Newtonsoft.Json.Linq;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Newtonsoft.Json.Linq;
 #endif
 #if NETSTANDARD
     using System.Data;
