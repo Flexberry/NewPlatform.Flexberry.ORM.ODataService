@@ -30,6 +30,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using Newtonsoft.Json.Linq;
+    using System.Web.UI.WebControls;
+    using View = ICSSoft.STORMNET.View;
 #endif
 #if NETSTANDARD
     using System.Data;
@@ -742,12 +744,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Загрузить существующий объект данных, используя EdmEntity.
+        /// Загрузить существующий объект данных в облегчённом варианте (только __PrimaryKey), используя информацию из EdmEntity.
         /// </summary>
         /// <param name="edmEntity">EdmEntity, который будет использован для получения объекта данных.</param>
-        /// <param name="view">Представление, по которому будет загружен объект (если не указано, будет загружен только __PrimaryKey).</param>
         /// <returns>Объект данных.</returns>
-        private DataObject SafeLoadObject(EdmEntityObject edmEntity, View view = null)
+        private DataObject LightLoadDataObject(EdmEntityObject edmEntity)
         {
             if (edmEntity == null)
             {
@@ -756,10 +757,54 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             Type masterType = _model.GetDataObjectType(edmEntity);
             object masterKey = GetKey(edmEntity);
+            View view = new View(new ViewAttribute("dynView", new string[] { Information.ExtractPropertyPath<DataObject>(x => x.__PrimaryKey) }), masterType);
 
-            if (view == null)
+            return LoadDataObject(masterType, masterKey, view);
+        }
+
+        /// <summary>
+        /// Загрузить существующий объект данных.
+        /// </summary>
+        /// <param name="objType">Тип загружаемого объекта.</param>
+        /// <param name="keyValue">Первичный ключ загружаемого объекта.</param>
+        /// <param name="view">Представление, по которому будет загружен объект.</param>
+        /// <returns>Объект данных.</returns>
+        private DataObject LoadDataObject(Type objType, object keyValue, View view)
+        {
+            DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
+
+            if (dataObjectFromCache != null)
             {
-                view = new View(new ViewAttribute("dynView", new string[] { Information.ExtractPropertyPath<DataObject>(x => x.__PrimaryKey) }), masterType);
+                // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
+                if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
+                    && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
+                {
+                    // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
+                    /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
+                    *
+                    * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
+                    * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
+                    * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
+                    * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
+                    */
+                    string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
+                    IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
+                    if (!ownProps.All(p => loadedProps.Contains(p.Name)))
+                    {
+                        // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                        View miniView = view.Clone();
+                        DetailInView[] miniViewDetails = miniView.Details;
+                        miniView.Details = new DetailInView[0];
+                        _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
+
+                        if (miniViewDetails.Length > 0)
+                        {
+                            _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
+                        }
+                    }
+                }
+
+                return dataObjectFromCache;
             }
 
             // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
@@ -768,8 +813,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             lightView.Details = new DetailInView[0];
 
             // Проверим существование объекта в базе.
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(masterType, lightView);
-            lcs.LimitFunction = FunctionBuilder.BuildEquals(masterKey);
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
+            lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
             lcs.ReturnTop = 2;
             DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
             if (dobjs.Length == 1)
@@ -803,62 +848,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             if (keyValue != null)
             {
                 View view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
-
-                DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
-
-                if (dataObjectFromCache != null)
+                DataObject dataObject = LoadDataObject(objType, keyValue, view);
+                if (dataObject != null)
                 {
-                    // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
-                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
-                        && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
-                    {
-                        // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
-                        /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
-                        *
-                        * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
-                        * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
-                        * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
-                        * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
-                        */
-                        string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
-                        IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
-                        if (!ownProps.All(p => loadedProps.Contains(p.Name)))
-                        {
-                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
-                            View miniView = view.Clone();
-                            DetailInView[] miniViewDetails = miniView.Details;
-                            miniView.Details = new DetailInView[0];
-                            _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
-
-                            if (miniViewDetails.Length > 0)
-                            {
-                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
-                            }
-                        }
-                    }
-
-                    return dataObjectFromCache;
-                }
-
-                // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
-                View lightView = view.Clone();
-                DetailInView[] lightViewDetails = lightView.Details;
-                lightView.Details = new DetailInView[0];
-
-                // Проверим существование объекта в базе.
-                LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
-                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
-                lcs.ReturnTop = 2;
-                DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
-                if (dobjs.Length == 1)
-                {
-                    DataObject dataObject = dobjs[0];
-                    if (lightViewDetails.Any())
-                    {
-                        // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
-                        _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, DataObjectCache);
-                    }
-
                     return dataObject;
                 }
             }
@@ -1003,7 +995,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
                             if (masterLightLoad && !masterOwnPropsUpdated && !isAggregator)
                             {
-                                master = SafeLoadObject(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
+                                master = LightLoadDataObject(edmMaster);
+                                //AddObjectToUpdate(dObjs, master, insertIntoEnd);
                             }
                             else
                             {
