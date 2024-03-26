@@ -124,7 +124,7 @@
 
                 if (masterLightLoadAllTypes)
                 {
-                    System.Diagnostics.Debug.WriteLine("Detected usage of masterLightLoadAllTypes parameter together with masterLightLoadTypes in DefaultDataObjectEdmModelBuilder. masterLightLoadTypes will be ignored, all data objects will be loaded in MasterLightLoad mode.");
+                    throw new ArgumentException("Parameters masterLightLoadAllTypes and masterLightLoadTypes can not be used together in DefaultDataObjectEdmModelBuilder.");
                 }
             }
 
