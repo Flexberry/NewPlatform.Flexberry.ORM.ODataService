@@ -30,6 +30,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using Newtonsoft.Json.Linq;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
 #endif
 #if NETSTANDARD
     using System.Data;
@@ -742,11 +743,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Получить объект данных на основании EdmEntity.
+        /// Загрузить существующий объект данных, используя EdmEntity.
         /// </summary>
         /// <param name="edmEntity">EdmEntity, который будет использован для получения объекта данных.</param>
+        /// <param name="view">Представление, по которому будет загружен объект (если не указано, будет загружен только __PrimaryKey).</param>
         /// <returns>Объект данных.</returns>
-        private DataObject ReturnDataObject(EdmEntityObject edmEntity)
+        private DataObject SafeLoadObject(EdmEntityObject edmEntity, View view = null)
         {
             if (edmEntity == null)
             {
@@ -756,7 +758,34 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             Type masterType = _model.GetDataObjectType(edmEntity);
             object masterKey = GetKey(edmEntity);
 
-            return ReturnDataObject(masterType, masterKey);
+            if (view == null)
+            {
+                view = new View(new ViewAttribute("dynView", new string[] { Information.ExtractPropertyPath<DataObject>(x => x.__PrimaryKey) }), masterType);
+            }
+
+            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
+            View lightView = view.Clone();
+            DetailInView[] lightViewDetails = lightView.Details;
+            lightView.Details = new DetailInView[0];
+
+            // Проверим существование объекта в базе.
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(masterType, lightView);
+            lcs.LimitFunction = FunctionBuilder.BuildEquals(masterKey);
+            lcs.ReturnTop = 2;
+            DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
+            if (dobjs.Length == 1)
+            {
+                DataObject dataObject = dobjs[0];
+                if (lightViewDetails.Any())
+                {
+                    // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
+                    _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, DataObjectCache);
+                }
+
+                return dataObject;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -975,7 +1004,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
                             if (masterLightLoad && !masterOwnPropsUpdated && !isAggregator)
                             {
-                                master = ReturnDataObject(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
+                                master = SafeLoadObject(edmMaster); // здесь мастер не добавляется в dObjs (объекты на обновление) т.к. мы точно знаем что он будет в состоянии UnAltered
                             }
                             else
                             {
