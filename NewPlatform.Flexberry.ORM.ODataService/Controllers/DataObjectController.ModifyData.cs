@@ -30,8 +30,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using Newtonsoft.Json.Linq;
-    using System.Web.UI.WebControls;
-    using View = ICSSoft.STORMNET.View;
+    using ICSSoft.STORMNET.View;
 #endif
 #if NETSTANDARD
     using System.Data;
