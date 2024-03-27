@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
+namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -23,13 +23,16 @@
 
 #if NETFRAMEWORK
     using System.Net.Http.Formatting;
+    using System.Web;
     using System.Web.Http;
     using System.Web.Http.Results;
     using System.Web.Http.Validation;
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
+    using Newtonsoft.Json.Linq;
 #endif
 #if NETSTANDARD
+    using System.Data;
     using Microsoft.AspNet.OData.Formatter;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -676,7 +679,7 @@
             {
                 // Создадим объект данных по пришедшей сущности.
                 // В переменной objs сформируем список всех объектов для обновления в нужном порядке: сам объект и зависимые всех уровней.
-                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs, useUpdateView: true);
+                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs);
 
                 for (int i = 0; i < objs.Count; i++)
                 {
@@ -739,13 +742,101 @@
         }
 
         /// <summary>
-        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению <paramref name="view"/>, иначе - создаётся новый.
+        /// Загрузить существующий объект данных в облегчённом варианте (только __PrimaryKey), используя информацию из EdmEntity.
+        /// </summary>
+        /// <param name="edmEntity">EdmEntity, который будет использован для получения объекта данных.</param>
+        /// <returns>Объект данных.</returns>
+        private DataObject LightLoadDataObject(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity));
+            }
+
+            Type masterType = _model.GetDataObjectType(edmEntity);
+            object masterKey = GetKey(edmEntity);
+            View view = new View(new ViewAttribute("dynView", new string[] { Information.ExtractPropertyPath<DataObject>(x => x.__PrimaryKey) }), masterType);
+
+            return LoadDataObject(masterType, masterKey, view);
+        }
+
+        /// <summary>
+        /// Загрузить существующий объект данных.
+        /// </summary>
+        /// <param name="objType">Тип загружаемого объекта.</param>
+        /// <param name="keyValue">Первичный ключ загружаемого объекта.</param>
+        /// <param name="view">Представление, по которому будет загружен объект.</param>
+        /// <returns>Объект данных.</returns>
+        private DataObject LoadDataObject(Type objType, object keyValue, View view)
+        {
+            DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
+
+            if (dataObjectFromCache != null)
+            {
+                // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
+                if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
+                    && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
+                {
+                    // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
+                    /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
+                    *
+                    * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
+                    * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
+                    * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
+                    * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
+                    */
+                    string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
+                    IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
+                    if (!ownProps.All(p => loadedProps.Contains(p.Name)))
+                    {
+                        // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
+                        View miniView = view.Clone();
+                        DetailInView[] miniViewDetails = miniView.Details;
+                        miniView.Details = new DetailInView[0];
+                        _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
+
+                        if (miniViewDetails.Length > 0)
+                        {
+                            _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
+                        }
+                    }
+                }
+
+                return dataObjectFromCache;
+            }
+
+            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказаться отдельные операции с детейлами и перевычитка затрёт эти изменения.
+            View lightView = view.Clone();
+            DetailInView[] lightViewDetails = lightView.Details;
+            lightView.Details = new DetailInView[0];
+
+            // Проверим существование объекта в базе.
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
+            lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
+            lcs.ReturnTop = 2;
+            DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
+            if (dobjs.Length == 1)
+            {
+                DataObject dataObject = dobjs[0];
+                if (lightViewDetails.Any())
+                {
+                    // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
+                    _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, DataObjectCache);
+                }
+
+                return dataObject;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
         /// </summary>
         /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
         /// <param name="keyValue">Значение ключа.</param>
-        /// <param name="view">Представление для загрузки объекта.</param>
         /// <returns>Объект данных.</returns>
-        private DataObject ReturnDataObject(Type objType, object keyValue, View view)
+        private DataObject ReturnDataObject(Type objType, object keyValue)
         {
             if (objType == null)
             {
@@ -754,61 +845,10 @@
 
             if (keyValue != null)
             {
-                DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
-
-                if (dataObjectFromCache != null)
+                View view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
+                DataObject dataObject = LoadDataObject(objType, keyValue, view);
+                if (dataObject != null)
                 {
-                    // Если объект не новый и не загружен целиком (начиная с ORM@5.1.0-beta15).
-                    if (dataObjectFromCache.GetStatus(false) == ObjectStatus.UnAltered
-                        && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
-                    {
-                        // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
-                        /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
-                        *
-                        * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
-                        * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
-                        * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
-                        * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
-                        */
-                        string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
-                        IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
-                        if (!ownProps.All(p => loadedProps.Contains(p.Name)))
-                        {
-                            // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
-                            View miniView = view.Clone();
-                            DetailInView[] miniViewDetails = miniView.Details;
-                            miniView.Details = new DetailInView[0];
-                            _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
-
-                            if (miniViewDetails.Length > 0)
-                            {
-                                _dataService.SafeLoadDetails(view, new DataObject[] { dataObjectFromCache }, DataObjectCache);
-                            }
-                        }
-                    }
-
-                    return dataObjectFromCache;
-                }
-
-                // Вычитывать объект сразу с детейлами нельзя, поскольку в этой же транзакции могут уже оказать отдельные операции с детейлами и перевычитка затрёт эти изменения.
-                View lightView = view.Clone();
-                DetailInView[] lightViewDetails = lightView.Details;
-                lightView.Details = new DetailInView[0];
-
-                // Проверим существование объекта в базе.
-                LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, lightView);
-                lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
-                lcs.ReturnTop = 2;
-                DataObject[] dobjs = _dataService.LoadObjects(lcs, DataObjectCache);
-                if (dobjs.Length == 1)
-                {
-                    DataObject dataObject = dobjs[0];
-                    if (lightViewDetails.Any())
-                    {
-                        // Дочитаем детейлы, чтобы в бизнес-серверах эти данные уже были. Детейлы с изменёнными состояниями будут пропущены из зачитки.
-                        _dataService.SafeLoadDetails(view, new DataObject[] { dataObject }, DataObjectCache);
-                    }
-
                     return dataObject;
                 }
             }
@@ -848,8 +888,31 @@
                     objsToUpdate.Insert(0, dataObject); // Добавляем объект в начало списка.
                 }
 
-                }
             }
+        }
+
+        /// <summary>
+        /// Получить значение ключа у указанной сущности.
+        /// </summary>
+        /// <param name="edmEntity">Сущность.</param>
+        /// <returns>Значение ключа.</returns>
+        private object GetKey(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity), $"{nameof(edmEntity)} can not be null.");
+            }
+
+            object key;
+
+            // Получим значение ключа.
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties();
+            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            edmEntity.TryGetPropertyValue(keyProperty.Name, out key);
+
+            return key;
+        }
 
         /// <summary>
         /// Построение объекта данных по сущности OData.
@@ -858,45 +921,21 @@
         /// <param name="key"> Значение ключевого поля сущности. </param>
         /// <param name="dObjs"> Список объектов для обновления. </param>
         /// <param name="endObject"> Признак, что объект добавляется в конец списка обновления. </param>
-        /// <param name="useUpdateView">Использовать представление для обновления (вместо представления по умолчанию).</param>
         /// <returns> Объект данных. </returns>
-        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false, bool useUpdateView = false)
+        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false)
         {
             if (edmEntity == null)
             {
                 return null;
             }
 
-            // Значение свойства.
-            object value;
-
-            // Получим значение ключа.
-            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
-            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
-            var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
-            if (key != null)
-            {
-                value = key;
-            }
-            else
-            {
-                edmEntity.TryGetPropertyValue(keyProperty.Name, out value);
-            }
+            key = key ?? GetKey(edmEntity);
 
             // Загрузим объект из хранилища, если он там есть, или создадим, если нет, но только для POST.
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
             Type objType = _model.GetDataObjectType(edmEntity);
 
-            View view = null;
-            if (useUpdateView)
-            {
-                view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
-            } else
-            {
-                view = _model.GetDataObjectDefaultView(objType);
-            }
-
-            DataObject obj = ReturnDataObject(objType, value, view);
+            DataObject obj = ReturnDataObject(objType, key);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
             AddObjectToUpdate(dObjs, obj, endObject);
@@ -906,6 +945,8 @@
             IEnumerable<string> changedPropNames = edmEntity.GetChangedPropertyNames();
 
             // Обрабатываем агрегатор первым.
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
+            IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
             List<IEdmProperty> changedProps = entityProps
                 .Where(ep => changedPropNames.Contains(ep.Name))
                 .OrderBy(ep => ep.Name != agregatorPropertyName)
@@ -931,22 +972,38 @@
                 // Обработка мастеров и детейлов.
                 if (prop is EdmNavigationProperty navProp)
                 {
-                    edmEntity.TryGetPropertyValue(prop.Name, out value);
-
                     EdmMultiplicity edmMultiplicity = navProp.TargetMultiplicity();
 
                     // Обработка мастеров.
                     if (edmMultiplicity == EdmMultiplicity.One || edmMultiplicity == EdmMultiplicity.ZeroOrOne)
                     {
+                        object value;
+                        edmEntity.TryGetPropertyValue(prop.Name, out value);
+
                         if (value is EdmEntityObject edmMaster)
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
                             bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
-                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd, useUpdateView);
+                            bool masterOwnPropsUpdated = edmMaster.GetChangedPropertyNames().Any(propName => propName != _model.KeyPropertyName);
+                            bool isAggregator = dataObjectPropName == agregatorPropertyName;
+                            DataObject master = null;
+
+                            Type objectType = _model.GetDataObjectType(edmEntity);
+                            bool masterLightLoad = _model.IsMasterLightLoad(objectType);
+
+                            if (masterLightLoad && !masterOwnPropsUpdated && !isAggregator)
+                            {
+                                master = LightLoadDataObject(edmMaster);
+                                //AddObjectToUpdate(dObjs, master, insertIntoEnd);
+                            }
+                            else
+                            {
+                                master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
+                            }
 
                             Information.SetPropValueByName(obj, dataObjectPropName, master);
 
-                            if (dataObjectPropName == agregatorPropertyName)
+                            if (isAggregator)
                             {
                                 master.AddDetail(obj);
 
@@ -969,6 +1026,9 @@
                     {
                         DetailArray detarr = (DetailArray)Information.GetPropValueByName(obj, dataObjectPropName);
 
+                        object value;
+                        edmEntity.TryGetPropertyValue(prop.Name, out value);
+
                         if (value is EdmEntityObjectCollection coll)
                         {
                             if (coll != null && coll.Count > 0)
@@ -979,8 +1039,7 @@
                                         (EdmEntityObject)edmEnt,
                                         null,
                                         dObjs,
-                                        true,
-                                        useUpdateView);
+                                        true);
 
                                     if (det.__PrimaryKey == null)
                                     {
@@ -1002,10 +1061,12 @@
                 else
                 {
                     // Обработка собственных свойств объекта (неключевых, т.к. ключ устанавливаем при начальной инициализации объекта obj).
-                    if (prop.Name != keyProperty.Name)
+                    if (prop.Name != _model.KeyPropertyName)
                     {
-                        Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
+                        object value;
                         edmEntity.TryGetPropertyValue(prop.Name, out value);
+
+                        Type dataObjectPropertyType = Information.GetPropertyType(objType, dataObjectPropName);
 
                         // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
                         // значит свойство файловое, и его нужно обработать особым образом.

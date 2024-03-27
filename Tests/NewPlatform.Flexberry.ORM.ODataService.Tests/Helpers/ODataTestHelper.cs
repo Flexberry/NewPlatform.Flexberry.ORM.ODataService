@@ -20,16 +20,16 @@
         /// <returns>Новое тело запроса к OData.</returns>
         public static string AddEntryRelationship(string requestJsonData, View view, DataObjectEdmModel model, DataObject dataObject, string relationName)
         {
-            DataObjectDictionary objJsonМедв = DataObjectDictionary.Parse(requestJsonData, view, model);
+            DataObjectDictionary objJson = DataObjectDictionary.Parse(requestJsonData, view, model);
 
-            objJsonМедв.Add(
+            objJson.Add(
                 $"{relationName}@odata.bind",
                 string.Format(
                     "{0}({1})",
                     model.GetEdmEntitySet(dataObject.GetType()).Name,
                     ((KeyGuid)dataObject.__PrimaryKey).Guid.ToString("D")));
 
-            var result = objJsonМедв.Serialize();
+            var result = objJson.Serialize();
             return result;
         }
 
