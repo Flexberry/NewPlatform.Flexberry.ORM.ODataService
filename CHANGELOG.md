@@ -1,14 +1,21 @@
 # Flexberry ORM ODataService Changelog
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
-
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+
+## [7.2.0] - 2024.03.27
 
 ### Added
 1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
 
 ### Changed
-1. Updated Flexberry ORM up to 7.2.0-beta01.
+1. Updated Flexberry ORM up to 7.2.0.
 
 ### Fixed
 1. Fixed loading of object with crushing of already loaded masters.
