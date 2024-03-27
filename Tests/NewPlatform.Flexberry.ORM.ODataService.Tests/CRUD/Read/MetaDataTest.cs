@@ -3,9 +3,8 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
-
     using ICSSoft.STORMNET;
-
+    using Microsoft.AspNetCore.Http;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
 
     using Newtonsoft.Json;
@@ -16,7 +15,12 @@
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
     /// </summary>
+#if NETFRAMEWORK
     public class MetaDataTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class MetaDataTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -24,7 +28,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public MetaDataTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public MetaDataTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
@@ -73,6 +77,33 @@
                     // Убедимся, что количество объектов в метаданных совпадает, с ожидаемым количеством.
                     object receivedMetadataCount = receivedCountries["@odata.count"];
                     Assert.Equal((int)(long)receivedMetadataCount, countriesCount);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тест проверки получения метаданных без ошибки.
+        /// </summary>
+        [Fact]
+        public void GetFullMetadataTest()
+        {
+            ActODataService(args =>
+            {
+                // Формируем URL запроса к OData-сервису.
+                string requestUrl = string.Format("http://localhost/odata/$metadata");
+
+                // Обращаемся к OData-сервису и обрабатываем ответ.
+                using (HttpResponseMessage response = args.HttpClient.GetAsync(requestUrl).Result)
+                {
+                    // Убедимся, что запрос завершился успешно.
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                    // Получим строку с ответом.
+                    string receivedData = response.Content.ReadAsStringAsync().Result.Beautify();
+
+                    Assert.True(!string.IsNullOrEmpty(receivedData));
+                    Assert.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>", receivedData);
+                    Assert.DoesNotContain("____", receivedData);
                 }
             });
         }

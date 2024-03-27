@@ -30,9 +30,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// <summary>
     /// Base class for integration tests.
     /// </summary>
-    public abstract class BaseIntegratedTest : IClassFixture<CustomWebApplicationFactory<Startup>>, IDisposable
+    /// <typeparam name="TStartup">Startup class used for booting the application.</typeparam>
+    public abstract class BaseIntegratedTest<TStartup> : IClassFixture<CustomWebApplicationFactory<TStartup>>, IDisposable
+        where TStartup : class
     {
-        protected readonly WebApplicationFactory<Startup> _factory;
+        protected readonly WebApplicationFactory<TStartup> _factory;
 #endif
         protected ITestOutputHelper _output;
 
@@ -139,7 +141,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="output">Unit tests debug output.</param>
         /// <param name="tempDbNamePrefix">Prefix for temp database name.</param>
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
-        protected BaseIntegratedTest(CustomWebApplicationFactory<Startup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
+        protected BaseIntegratedTest(CustomWebApplicationFactory<TStartup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
             _factory = factory;
             _output = output;

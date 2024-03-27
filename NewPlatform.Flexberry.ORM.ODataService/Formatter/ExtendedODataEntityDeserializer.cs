@@ -13,6 +13,7 @@
 #if NETFRAMEWORK
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
 #elif NETSTANDARD
+    using System.Threading.Tasks;
     using Microsoft.AspNet.OData.Common;
     using Microsoft.AspNetCore.Http.Extensions;
 #endif
@@ -79,6 +80,20 @@
 
             return obj;
         }
+
+#if NETSTANDARD
+        /// <summary>
+        /// Выполняет чтение передаваемых данных OData.
+        /// </summary>
+        /// <param name="messageReader">messageReader, который будет использован для чтения.</param>
+        /// <param name="type">Тип передаваемых данных.</param>
+        /// <param name="readContext">Состояние и установки, используемые при чтении.</param>
+        /// <returns>Преобразованные данные.</returns>
+        public override async Task<object> ReadAsync(ODataMessageReader messageReader, Type type, ODataDeserializerContext readContext)
+        {
+            return await Task.Run(() => Read(messageReader, type, readContext));
+        }
+#endif
 
         /// <summary>
         /// Десериалезует <paramref name="structuralProperty"/> в <paramref name="resource"/>.

@@ -15,7 +15,12 @@
     /// <summary>
     /// Unit-test class for filtering data through OData service by master fields.
     /// </summary>
+#if NETFRAMEWORK
     public class FilterByMasterFieldTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FilterByMasterFieldTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -23,7 +28,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public FilterByMasterFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FilterByMasterFieldTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

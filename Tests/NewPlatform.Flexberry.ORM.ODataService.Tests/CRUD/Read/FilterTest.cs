@@ -19,7 +19,12 @@
     /// <summary>
     /// Класс тестов для тестирования применения $filter в OData-сервисе.
     /// </summary>
+#if NETFRAMEWORK
     public class FilterTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FilterTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -27,7 +32,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public FilterTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FilterTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

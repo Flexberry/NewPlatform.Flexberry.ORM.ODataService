@@ -17,7 +17,12 @@
     /// <summary>
     /// Класс тестов для тестирования логики перед операциями модификации данных OData-сервисом (вставка, обновление, удаление).
     /// </summary>
+#if NETFRAMEWORK
     public class BeforeSaveTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class BeforeSaveTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -25,7 +30,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public BeforeSaveTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public BeforeSaveTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

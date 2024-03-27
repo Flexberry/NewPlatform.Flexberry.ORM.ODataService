@@ -13,7 +13,12 @@
     /// <summary>
     /// Unit test class for OData Service user-defined functions
     /// </summary>
+#if NETFRAMEWORK
     public class DelegateFunctionsTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class DelegateFunctionsTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -21,7 +26,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public DelegateFunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public DelegateFunctionsTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

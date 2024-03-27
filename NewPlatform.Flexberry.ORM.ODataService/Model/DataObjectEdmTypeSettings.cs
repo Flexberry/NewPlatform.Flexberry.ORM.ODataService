@@ -32,6 +32,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
         public View DefaultView { get; set; }
 
         /// <summary>
+        /// View to be used instead of DefaultView on updates (Patch/Batch).
+        /// </summary>
+        public View UpdateView { get; set; }
+
+        /// <summary>
         /// The list of exposed details.
         /// </summary>
         public IDictionary<PropertyInfo, DataObjectEdmDetailSettings> DetailProperties { get; } = new Dictionary<PropertyInfo, DataObjectEdmDetailSettings>();

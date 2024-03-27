@@ -13,7 +13,12 @@
     using Unity;
     using Xunit;
 
-    public class WebFileTest: BaseODataServiceIntegratedTest
+#if NETFRAMEWORK
+    public class WebFileTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class WebFileTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -21,7 +26,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public WebFileTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public WebFileTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
