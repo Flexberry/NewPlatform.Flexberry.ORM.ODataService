@@ -156,6 +156,78 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 }
             });
         }
+
+        /// <summary>
+        /// Проверка экономной загрузки мастера при активной настройке MasterLightLoad при смене значения поля у мастера.
+        /// </summary>
+        [Fact]
+        public void MasterChangedBatchTest()
+        {
+            ActODataService(async args =>
+            {
+                // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                Порода порода = new Порода { Название = "Сиамская" };
+                Кошка кошка1 = new Кошка { Кличка = "Болтушка", Агрессивная = true, Порода = порода };
+                Кошка кошка2 = new Кошка { Кличка = "Петрушка", Агрессивная = false, Порода = порода };
+                args.DataService.UpdateObject(порода);
+                args.DataService.UpdateObject(кошка1);
+                args.DataService.UpdateObject(кошка2);
+
+                Котенок котенок = new Котенок { Кошка = кошка1, КличкаКотенка = "Котенок Гав", Глупость = 10 };
+                args.DataService.UpdateObject(котенок);
+
+                // Обновляем атрибут объекта
+                котенок.Глупость = 1;
+
+                // Обновляем мастера
+                котенок.Кошка = кошка2;
+
+                // Представление, по которому будем обновлять объект
+                string[] котенокPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Котенок>(x => x.Глупость),
+                };
+                var котенокDynamicView = new View(new ViewAttribute("котенокDynamicView", котенокPropertiesNames), typeof(Котенок));
+
+                // Преобразуем объект в JSON-строку.
+                string котенокJsonData = котенок.ToJson(котенокDynamicView, args.Token.Model);
+
+                // Добавляем в payload информацию о ссылке на мастера
+                котенокJsonData = ODataTestHelper.AddEntryRelationship(котенокJsonData, котенокDynamicView, args.Token.Model, котенок.Кошка, nameof(Котенок.Кошка));
+
+                const string baseUrl = "http://localhost/odata";
+                string[] changesets = new[] // Важно, чтобы сначала шёл мастер, потом объект, имеющий на него ссылку.
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Котенок)).Name}",
+                        котенокJsonData,
+                        котенок),
+                };
+
+                // Act.
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    // Assert.
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK });
+
+                    string[] котенокPropertiesNamesMaster =
+                    {
+                        Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
+                        Information.ExtractPropertyPath<Котенок>(x => x.Глупость),
+                        Information.ExtractPropertyPath<Котенок>(x => x.Кошка),
+                    };
+                    var котенокDynamicViewMaster = new View(new ViewAttribute("котенокDynamicView", котенокPropertiesNamesMaster), typeof(Котенок));
+                    Котенок котенокLoaded = args.DataService.Query<Котенок>(котенокDynamicViewMaster).FirstOrDefault(x => x.Кошка.__PrimaryKey == кошка2.__PrimaryKey);
+                    Assert.NotNull(котенокLoaded);
+                    Assert.Equal(кошка2.__PrimaryKey, котенокLoaded.Кошка.__PrimaryKey);
+                    Assert.Equal(1, котенокLoaded.Глупость);
+
+                    // TODO: проверка на экономную загрузку мастера.
+                }
+            });
+        }
     }
 }
 #endif
