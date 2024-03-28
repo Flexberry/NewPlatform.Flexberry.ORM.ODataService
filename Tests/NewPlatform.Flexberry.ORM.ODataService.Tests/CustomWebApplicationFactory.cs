@@ -1,10 +1,11 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using System.IO;
-    using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Unity;
     using Unity.Microsoft.DependencyInjection;
 
     /// <summary>
@@ -14,13 +15,25 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
         where TStartup : class
     {
+        /// <summary>
+        /// Unity container is created in only one place: <see cref="BaseIntegratedTest"/>.
+        /// Further, it autimatically appears in a child <see cref="BaseODataServiceIntegratedTest"/>, where ODataService starts.
+        /// The service is started in this class. Therefore, the Unity container must be passed to the running application here,
+        /// being initialized earlier.
+        /// </summary>
+        public static IUnityContainer _unityContainer;
+
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
+            if (_unityContainer == null)
+            {
+                throw new Exception("Unity.IUnityContainer is not defined");
+            }
+
             string contentRootDirectory = Directory.GetCurrentDirectory();
-            var container = UnityFactory.GetContainer();
             var webHostBuilder = new WebHostBuilder()
-                            .UseUnityServiceProvider(container)
+                            .UseUnityServiceProvider(_unityContainer)
                             .UseContentRoot(contentRootDirectory)
                             .UseStartup<TStartup>();
             return webHostBuilder;

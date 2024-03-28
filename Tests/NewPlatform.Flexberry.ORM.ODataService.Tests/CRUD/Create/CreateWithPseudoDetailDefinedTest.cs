@@ -36,6 +36,11 @@
         }
 #endif
 #if NETCOREAPP
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateWithPseudoDetailDefinedTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
         public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output) : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }

@@ -1,12 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Model
 {
+    using System;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
+    using NewPlatform.Flexberry.ORM.ODataService.Model;
+    using Unity;
     using Xunit;
 
-    using NewPlatform.Flexberry.ORM.ODataService.Model;
-
-    
     public class DefaultDataObjectModelBuilderTest
     {
         private class H1 : DataObject
@@ -28,7 +28,11 @@
         [Fact]
         public void TestRegisteringHierarchy()
         {
-            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly });
+            IUnityContainer unityContainer = new UnityContainer();
+            IServiceProvider serviceProvider = new UnityServiceProvider(unityContainer);
+            unityContainer.RegisterInstance<DataObjectEdmModelDependencies>(null);
+
+            var builder = new DefaultDataObjectEdmModelBuilder(new[] { GetType().Assembly }, serviceProvider);
 
             DataObjectEdmModel model = builder.Build();
 

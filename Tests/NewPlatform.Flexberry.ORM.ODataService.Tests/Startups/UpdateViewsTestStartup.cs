@@ -25,6 +25,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class UpdateViewsTestStartup : Startup
     {
         /// <summary>
+        /// After the start of the OData app, the container in the OData app is its own.
+        /// Therefore, a static field is defined here, so that later this container can be pulled back.
+        /// <see cref="BaseODataServiceIntegratedTest"/>
+        /// </summary>
+        public static IUnityContainer _unityContainer;
+
+        /// <summary>
         /// Initialize new instance of TestStartup.
         /// </summary>
         /// <param name="configuration">Configuration for new instance.</param>
@@ -33,11 +40,21 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
         }
 
+        /// <summary>
+        /// Method for Unity container configuring.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
+        public override void ConfigureContainer(IUnityContainer unityContainer)
+        {
+            _unityContainer = unityContainer;
+            base.ConfigureContainer(unityContainer);
+        }
+
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
-            unityContainer.RegisterInstance(env);
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            _unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -49,8 +66,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             app.UseODataService(builder =>
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-
                 var assemblies = new[]
                 {
                     typeof(Медведь).Assembly,
@@ -59,17 +74,17 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     typeof(Lock).Assembly,
                 };
 
-                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
                 var updateViews = new Dictionary<Type, View>() // setting updateViews for testing
                 {
                     { typeof(Медведь), Медведь.Views.МедведьUpdateView },
                     { typeof(Берлога), Берлога.Views.БерлогаUpdateView },
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions, updateViews: updateViews);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions, updateViews: updateViews);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
-                container.RegisterInstance(typeof(ManagementToken), token);
+                _unityContainer.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }

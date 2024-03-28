@@ -2,19 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
-
-    using Unity;
-    using Xunit;
-
     using Moq;
-
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.Services;
+    using Unity;
+    using Xunit;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DefaultOfflineManagerIntegratedTest"/> class.
+    /// </summary>
+    /// <param name="factory">Factory for application.</param>
+    /// <param name="output">Debug information output.</param>
 #if NETFRAMEWORK
     public class DefaultOfflineManagerIntegratedTest : BaseODataServiceIntegratedTest
 #endif
@@ -37,7 +38,7 @@
             ActODataService(args =>
             {
                 var lockService = new LockService(args.DataService);
-                var currentUser = new Mock<CurrentUserService.IUser>().Object;
+                var currentUser = new Mock<ICurrentUser>().Object;
                 var offlineManager = new DefaultOfflineManager(lockService, currentUser);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
 
@@ -56,7 +57,7 @@
         {
             ActODataService(args =>
             {
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 var lockService = new LockService(args.DataService);
                 var offlineManager = new DefaultOfflineManager(lockService, userMock.Object);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
@@ -77,7 +78,7 @@
         {
             ActODataService(args =>
             {
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 var lockService = new LockService(args.DataService);
                 var offlineManager = new DefaultOfflineManager(lockService, userMock.Object);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
@@ -105,7 +106,7 @@
         {
             ActODataService(args =>
             {
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 userMock.Setup(u => u.Login).Returns("user1");
 
                 var lockService = new LockService(args.DataService);
@@ -133,7 +134,7 @@
         {
             ActODataService(args =>
             {
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 userMock.Setup(u => u.Login).Returns("user1");
 
                 var lockService = new LockService(args.DataService);
@@ -161,7 +162,7 @@
         {
             ActODataService(args =>
             {
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 var lockService = new LockService(args.DataService);
                 var offlineManager = new DefaultOfflineManager(lockService, userMock.Object);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
@@ -213,7 +214,7 @@
                             return realLockService.LockObject(key, userName);
                         });
 
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 var offlineManager = new DefaultOfflineManager(lockServiceMock.Object, userMock.Object);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
 
@@ -261,7 +262,7 @@
                             return realLockService.UnlockObject(key);
                         });
 
-                var userMock = new Mock<CurrentUserService.IUser>();
+                var userMock = new Mock<ICurrentUser>();
                 var offlineManager = new DefaultOfflineManager(lockServiceMock.Object, userMock.Object);
                 args.UnityContainer.RegisterInstance<BaseOfflineManager>(offlineManager);
 

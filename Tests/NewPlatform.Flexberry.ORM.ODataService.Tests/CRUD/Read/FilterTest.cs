@@ -168,7 +168,6 @@
             ActODataService(args =>
             {
                 DateTime? date = new DateTime?(DateTime.UtcNow);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
                 КлассСМножествомТипов класс = new КлассСМножествомТипов() { PropertySystemNullableDateTime = date, PropertyDateTime = date.Value };
                 var objs = new DataObject[] { класс };
                 args.DataService.UpdateObjects(ref objs);

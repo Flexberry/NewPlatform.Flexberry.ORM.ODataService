@@ -55,7 +55,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
                 string[] берлогаPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Берлога>(x => x.ПолеБС),

@@ -8,6 +8,13 @@ namespace NewPlatform.Flexberry.ORM.IntegratedTests
     using System.Reflection;
     using System.Text;
 #endif
+
+    using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
+    using ICSSoft.STORMNET.Security;
+    using ICSSoft.STORMNET.Windows.Forms;
+    using Moq;
     using Xunit.Abstractions;
     using Xunit.Sdk;
 
@@ -29,6 +36,13 @@ namespace NewPlatform.Flexberry.ORM.IntegratedTests
             string outputConfigFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             File.Copy(configFile, outputConfigFile, true);
 #endif
+
+            IBusinessServerProvider businessServerProvider = new Mock<IBusinessServerProvider>().Object;
+            IDataService ds = new MSSQLDataService(new Mock<ISecurityManager>().Object, new Mock<IAuditService>().Object, new Mock<IBusinessServerProvider>().Object);
+
+            DataServiceProvider.DataService = ds;
+            ExternalLangDef.LanguageDef = new ExternalLangDef(ds);
+            DetailVariableDef.ViewGenerator = null;
         }
     }
 }

@@ -5,19 +5,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
 
     using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Formatter;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OData.Edm;
     using Microsoft.Spatial;
 
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
-
     using Unity;
-
     using Action = Functions.Action;
 
     /// <summary>
@@ -89,41 +85,25 @@
         private readonly IDictionary<Type, EdmEntitySet> _registeredEntitySets = new Dictionary<Type, EdmEntitySet>();
         private readonly IDictionary<Type, IList<Type>> _typeHierarchy = new Dictionary<Type, IList<Type>>();
 
-        public DataObjectEdmModel(DataObjectEdmMetadata metadata, IDataObjectEdmModelBuilder edmModelBuilder = null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataObjectEdmModel"/> class.
+        /// </summary>
+        /// <param name="metadata">Metadata-container for building EDM model</param>
+        /// <param name="dependencies">A set of parameters that determine how the export works.
+        /// During the correction, DI were moved to a separate class.</param>
+        /// <param name="edmModelBuilder">Entity for building an EDM model. sharpened to work with <see cref="DataObject"/>.</param>
+        public DataObjectEdmModel(
+            DataObjectEdmMetadata metadata,
+            DataObjectEdmModelDependencies dependencies = null,
+            IDataObjectEdmModelBuilder edmModelBuilder = null)
         {
             EdmModelBuilder = edmModelBuilder;
-            var container = UnityFactory.GetContainer();
-            if (container != null)
+
+            if (dependencies != null)
             {
-                if (container.IsRegistered<IExportService>("Export"))
-                {
-                    ExportService = container.Resolve<IExportService>("Export");
-                }
-
-                if (container.IsRegistered<IExportService>())
-                {
-                    ExportService = container.Resolve<IExportService>();
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView"))
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView");
-                }
-
-                if (container.IsRegistered<IExportStringedObjectViewService>())
-                {
-                    ExportStringedObjectViewService = container.Resolve<IExportStringedObjectViewService>();
-                }
-
-                if (container.IsRegistered<IODataExportService>("Export"))
-                {
-                    ODataExportService = container.Resolve<IODataExportService>("Export");
-                }
-
-                if (container.IsRegistered<IODataExportService>())
-                {
-                    ODataExportService = container.Resolve<IODataExportService>();
-                }
+                ExportService = dependencies.ExportService ?? dependencies.ExportServiceNamed;
+                ExportStringedObjectViewService = dependencies.ExportStringedObjectViewService ?? dependencies.ExportStringedObjectViewServiceNamed;
+                ODataExportService = dependencies.ODataExportService ?? dependencies.ODataExportServiceNamed;
             }
 
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata), "Contract assertion not met: metadata != null");
