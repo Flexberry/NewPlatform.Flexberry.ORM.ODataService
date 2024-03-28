@@ -16,7 +16,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
     /// <summary>
     /// Unit-test class for filtering data through OData service by master master details fields.
     /// </summary>
+#if NETFRAMEWORK
     public class FilterByMasterMasterDetailFieldTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FilterByMasterMasterDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -24,7 +29,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public FilterByMasterMasterDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FilterByMasterMasterDetailFieldTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

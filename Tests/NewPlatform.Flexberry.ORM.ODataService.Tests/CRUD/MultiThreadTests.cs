@@ -35,7 +35,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
     /// <summary>
     /// Тесты CRUD операций с множеством пользователей.
     /// </summary>
+#if NETFRAMEWORK
     public class MultiThreadTests : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class MultiThreadTests : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
         private const int ThreadCount = 50;
 
@@ -56,7 +61,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public MultiThreadTests(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public MultiThreadTests(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

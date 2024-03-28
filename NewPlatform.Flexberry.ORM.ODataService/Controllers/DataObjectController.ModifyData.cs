@@ -51,6 +51,16 @@
         private List<FileDescription> _removingFileDescriptions = new List<FileDescription>();
 
         /// <summary>
+        /// Кэш типов, у которых одинакового типа детейлы и мастера.
+        /// </summary>
+        private List<Type> _typesWithSameDetailAndMaster = new List<Type>();
+
+        /// <summary>
+        /// Кэш типов, у которых нет одинакового типа детейлов и мастеров.
+        /// </summary>
+        private List<Type> _typesWithNotSameDetailAndMaster = new List<Type>();
+
+        /// <summary>
         /// Создание сущности и всех связанных. При существовании в БД произойдёт обновление.
         /// </summary>
         /// <param name="edmEntity"> Создаваемая сущность. </param>
@@ -254,7 +264,38 @@
                 }
 
                 Init();
-                var obj = DataObjectCache.CreateDataObject(type, key);
+
+                /* В ситуации, когда мастер и детейл одного типа, ORM без подгрузки копии данных не может корректно разобрать порядок,
+                * в котором объекты должны быть удалены.
+                */
+                bool needDataCopyLoad = _typesWithSameDetailAndMaster.Contains(type);
+                if (!_typesWithNotSameDetailAndMaster.Contains(type) && !needDataCopyLoad)
+                {
+                  string[] props = Information.GetAllPropertyNames(type);
+                  int length = props.Length;
+                  int index = 0;
+
+                  while (!needDataCopyLoad && index < length)
+                  {
+                    string prop = props[index];
+                    Type propType = Information.GetPropertyType(type, prop);
+                    needDataCopyLoad = propType.IsSubclassOf(typeof(DataObject)) && Information.GetDetailArrayPropertyName(type, propType) != null;
+
+                    index++;
+                  }
+                }
+
+                DataObject obj = null;
+                if (!needDataCopyLoad)
+                {
+                  obj = DataObjectCache.CreateDataObject(type, key);
+                  _typesWithNotSameDetailAndMaster.Add(type);
+                }
+                else
+                {
+                  obj = LoadObject(type, key.ToString());
+                  _typesWithSameDetailAndMaster.Add(type);
+                }
 
                 // Удаляем объект с заданным ключем.
                 // Детейлы удалятся вместе с агрегатором автоматически.
@@ -635,7 +676,7 @@
             {
                 // Создадим объект данных по пришедшей сущности.
                 // В переменной objs сформируем список всех объектов для обновления в нужном порядке: сам объект и зависимые всех уровней.
-                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs);
+                DataObject obj = GetDataObjectByEdmEntity(edmEntity, key, objs, useUpdateView: true);
 
                 for (int i = 0; i < objs.Count; i++)
                 {
@@ -698,12 +739,13 @@
         }
 
         /// <summary>
-        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению по умолчанию, иначе - создаётся новый.
+        /// Получить объект данных по ключу: если объект есть в хранилище, то возвращается загруженным по представлению <paramref name="view"/>, иначе - создаётся новый.
         /// </summary>
         /// <param name="objType">Тип объекта, не может быть <c>null</c>.</param>
-        /// <param name="keyValue">Значение ключа.</param>>
+        /// <param name="keyValue">Значение ключа.</param>
+        /// <param name="view">Представление для загрузки объекта.</param>
         /// <returns>Объект данных.</returns>
-        private DataObject ReturnDataObject(Type objType, object keyValue)
+        private DataObject ReturnDataObject(Type objType, object keyValue, View view)
         {
             if (objType == null)
             {
@@ -713,7 +755,6 @@
             if (keyValue != null)
             {
                 DataObject dataObjectFromCache = DataObjectCache.GetLivingDataObject(objType, keyValue);
-                View view = _model.GetDataObjectDefaultView(objType);
 
                 if (dataObjectFromCache != null)
                 {
@@ -722,7 +763,13 @@
                         && dataObjectFromCache.GetLoadingState() != LoadingState.Loaded)
                     {
                         // Для обратной совместимости сравним перечень загруженных свойств и свойств в представлении.
-                        // TODO: удалить эту проверку после стабилизации версии 5.1.0.
+                        /* Данный код срабатывает, например, если в кэше был объект, который загрузился только на уровне первичного ключа.
+                        *
+                        * Данный код также срабатывает в следующей ситуации: есть класс А, у него детейл Б, у которого есть наследник В.
+                        * При загрузке объекта класса А подгрузятся его детейлы, однако они будут подгружены по представлению, которое соответствует классу Б, даже если детейлы класса В.
+                        * Таким образом, в кэше окажутся объекты класса В, которые загружены только по свойствам Б. Раз не все свойства подгружены, то состояние LightLoaded.
+                        * Догружать необходимо только те свойства, что ещё не загружались (потому что загруженные уже могут быть изменены).
+                        */
                         string[] loadedProps = dataObjectFromCache.GetLoadedProperties();
                         IEnumerable<PropertyInView> ownProps = view.Properties.Where(p => !p.Name.Contains('.'));
                         if (!ownProps.All(p => loadedProps.Contains(p.Name)))
@@ -731,7 +778,7 @@
                             View miniView = view.Clone();
                             DetailInView[] miniViewDetails = miniView.Details;
                             miniView.Details = new DetailInView[0];
-                            _dataService.LoadObject(miniView, dataObjectFromCache, false, true, DataObjectCache);
+                            _dataService.SafeLoadWithMasters(miniView, dataObjectFromCache, DataObjectCache);
 
                             if (miniViewDetails.Length > 0)
                             {
@@ -783,27 +830,48 @@
         }
 
         /// <summary>
+        /// Добавляет объект данных в список на обновление, если его там ещё нет.
+        /// </summary>
+        /// <param name="objsToUpdate">Список на обновление.</param>
+        /// <param name="dataObject">Объект данных, который добавляем.</param>
+        /// <param name="insertToEnd">Добавлять в конец списка.</param>
+        private static void AddObjectToUpdate(List<DataObject> objsToUpdate, DataObject dataObject, bool insertToEnd)
+        {
+            bool objAlreadyExists = objsToUpdate.Any(o => PKHelper.EQDataObject(o, dataObject, false));
+            if (!objAlreadyExists)
+            {
+                if (insertToEnd)
+                {
+                    objsToUpdate.Add(dataObject); // Добавляем в конец списка.
+                } else
+                {
+                    objsToUpdate.Insert(0, dataObject); // Добавляем объект в начало списка.
+                }
+
+                }
+            }
+
+        /// <summary>
         /// Построение объекта данных по сущности OData.
         /// </summary>
         /// <param name="edmEntity"> Сущность OData. </param>
         /// <param name="key"> Значение ключевого поля сущности. </param>
         /// <param name="dObjs"> Список объектов для обновления. </param>
         /// <param name="endObject"> Признак, что объект добавляется в конец списка обновления. </param>
+        /// <param name="useUpdateView">Использовать представление для обновления (вместо представления по умолчанию).</param>
         /// <returns> Объект данных. </returns>
-        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false)
+        private DataObject GetDataObjectByEdmEntity(EdmEntityObject edmEntity, object key, List<DataObject> dObjs, bool endObject = false, bool useUpdateView = false)
         {
             if (edmEntity == null)
             {
                 return null;
             }
 
-            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
-            Type objType = _model.GetDataObjectType(_model.GetEdmEntitySet(entityType).Name);
-
             // Значение свойства.
             object value;
 
             // Получим значение ключа.
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
             IEnumerable<IEdmProperty> entityProps = entityType.Properties().ToList();
             var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
             if (key != null)
@@ -815,25 +883,23 @@
                 edmEntity.TryGetPropertyValue(keyProperty.Name, out value);
             }
 
-            // Загрузим объект из хранилища, если он там есть (используем представление по умолчанию), или создадим, если нет, но только для POST.
+            // Загрузим объект из хранилища, если он там есть, или создадим, если нет, но только для POST.
             // Тем самым гарантируем загруженность свойств при необходимости обновления и установку нужного статуса.
-            DataObject obj = ReturnDataObject(objType, value);
+            Type objType = _model.GetDataObjectType(edmEntity);
+
+            View view = null;
+            if (useUpdateView)
+            {
+                view = _model.GetDataObjectUpdateView(objType) ?? _model.GetDataObjectDefaultView(objType);
+            } else
+            {
+                view = _model.GetDataObjectDefaultView(objType);
+            }
+
+            DataObject obj = ReturnDataObject(objType, value, view);
 
             // Добавляем объект в список для обновления, если там ещё нет объекта с таким ключом.
-            var objInList = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, obj, false));
-            if (objInList == null)
-            {
-                if (!endObject)
-                {
-                    // Добавляем объект в начало списка.
-                    dObjs.Insert(0, obj);
-                }
-                else
-                {
-                    // Добавляем в конец списка.
-                    dObjs.Add(obj);
-                }
-            }
+            AddObjectToUpdate(dObjs, obj, endObject);
 
             // Все свойства объекта данных означим из пришедшей сущности, если они были там установлены(изменены).
             string agregatorPropertyName = Information.GetAgregatePropertyName(objType);
@@ -876,7 +942,7 @@
                         {
                             // Порядок вставки влияет на порядок отправки объектов в UpdateObjects это в свою очередь влияет на то, как срабатывают бизнес-серверы. Бизнес-сервер мастера должен сработать после, а агрегатора перед этим объектом.
                             bool insertIntoEnd = string.IsNullOrEmpty(agregatorPropertyName);
-                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd);
+                            DataObject master = GetDataObjectByEdmEntity(edmMaster, null, dObjs, insertIntoEnd, useUpdateView);
 
                             Information.SetPropValueByName(obj, dataObjectPropName, master);
 
@@ -913,7 +979,8 @@
                                         (EdmEntityObject)edmEnt,
                                         null,
                                         dObjs,
-                                        true);
+                                        true,
+                                        useUpdateView);
 
                                     if (det.__PrimaryKey == null)
                                     {
@@ -1008,20 +1075,7 @@
 
                 if (agregator != null)
                 {
-                    DataObject existObject = dObjs.FirstOrDefault(o => PKHelper.EQDataObject(o, agregator, false));
-                    if (existObject == null)
-                    {
-                        if (!endObject)
-                        {
-                            // Добавляем объект в начало списка.
-                            dObjs.Insert(0, agregator);
-                        }
-                        else
-                        {
-                            // Добавляем в конец списка.
-                            dObjs.Add(agregator);
-                        }
-                    }
+                    AddObjectToUpdate(dObjs, agregator, endObject);
                 }
             }
 

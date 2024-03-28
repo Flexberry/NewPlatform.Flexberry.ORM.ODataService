@@ -40,9 +40,9 @@
     <PackageReference Include="NewPlatform.Flexberry.Audit" Version="4.0.0" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService" Version="2.2.0-alpha01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisPostgresDataService" Version="2.2.0-alpha01" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="7.2.0-alpha02" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="7.2.0-alpha02" />
-    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="7.2.0-alpha02" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="8.0.0-beta01" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="8.0.0-beta01" />
+    <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="8.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="2.0.0" />
     <PackageReference Include="NewPlatform.Flexberry.Security" Version="3.0.0" />
   </ItemGroup>

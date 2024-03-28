@@ -16,7 +16,12 @@
     /// <summary>
     /// Unit-test class for filtering data through OData service by pseudodetail field.
     /// </summary>
+#if NETFRAMEWORK
     public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
         private static PseudoDetailDefinitions GetPseudoDetailDefinitions()
         {
@@ -41,7 +46,7 @@
         /// </summary>
         /// <param name="factory">Factory for application.</param>
         /// <param name="output">Debug information output.</param>
-        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
             _container.RegisterInstance(GetPseudoDetailDefinitions());

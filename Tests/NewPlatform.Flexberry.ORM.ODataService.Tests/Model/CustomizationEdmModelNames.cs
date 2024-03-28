@@ -15,7 +15,12 @@
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
     /// </summary>
+#if NETFRAMEWORK
     public class CustomizationEdmModelNames : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class CustomizationEdmModelNames : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -23,7 +28,8 @@
         /// </summary>
         /// <param name="factory">Factory for application.</param>
         /// <param name="output">Debug information output.</param>
-        public CustomizationEdmModelNames(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        /// <param name="factory">Фабрика для приложения.</param>
+        public CustomizationEdmModelNames(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

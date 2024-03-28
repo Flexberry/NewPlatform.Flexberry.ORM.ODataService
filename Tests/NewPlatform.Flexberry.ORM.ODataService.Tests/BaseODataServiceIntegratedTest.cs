@@ -29,7 +29,13 @@
     /// <summary>
     /// Базовый класс для тестирования работы с данными через ODataService.
     /// </summary>
+#if NETFRAMEWORK
     public class BaseODataServiceIntegratedTest : BaseIntegratedTest
+#endif
+#if NETCOREAPP
+    public class BaseODataServiceIntegratedTest<TStartup> : BaseIntegratedTest<TStartup>
+        where TStartup : class
+#endif
     {
         public class TestArgs
         {
@@ -74,7 +80,7 @@
         /// <param name="useNamespaceInEntitySetName">Flag indicating whether type namespaces should be added to the names of their corresponding entity sets.</param>
         /// <param name="useGisDataService">Flag indicating whether GisDataService be used.</param>
         /// <param name="pseudoDetailDefinitions">OData definition of the link from master to pseudodetail (pseudoproperty).</param>
-        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
+        public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<TStartup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base(factory, output, "ODataDB", useGisDataService)
         {
             Init(useNamespaceInEntitySetName, pseudoDetailDefinitions);

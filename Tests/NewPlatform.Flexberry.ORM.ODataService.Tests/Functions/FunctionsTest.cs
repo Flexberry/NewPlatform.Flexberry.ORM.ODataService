@@ -28,7 +28,12 @@
     /// <summary>
     /// Класс тестов для тестирования метаданных, получаемых от OData-сервиса.
     /// </summary>
+#if NETFRAMEWORK
     public class FunctionsTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FunctionsTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -36,7 +41,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public FunctionsTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FunctionsTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }

@@ -11,7 +11,12 @@
     /// <summary>
     /// Unit-test class for creation entity instance with pseudodetail field defined through OData service.
     /// </summary>
+#if NETFRAMEWORK
     public class CreateWithPseudoDetailDefinedTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class CreateWithPseudoDetailDefinedTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
         private static PseudoDetailDefinitions GetPseudoDetailDefinitions()
         {
@@ -36,8 +41,7 @@
         /// </summary>
         /// <param name="factory">Factory for application.</param>
         /// <param name="output">Debug information output.</param>
-        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
-            : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
+        public CreateWithPseudoDetailDefinedTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output) : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
 #endif

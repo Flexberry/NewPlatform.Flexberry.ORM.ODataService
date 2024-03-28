@@ -494,6 +494,21 @@
         }
 
         /// <summary>
+        /// Осуществляет получение представления для обновления объекта, соответствующего заданному типу объекта данных.
+        /// </summary>
+        /// <param name="dataObjectType">Тип объекта данных, для которого требуется получить представление для обновления.</param>
+        /// <returns>Представление для обновления объекта, соответствующее заданному типу объекта данных.</returns>
+        public View GetDataObjectUpdateView(Type dataObjectType)
+        {
+            if (dataObjectType == null)
+            {
+                throw new ArgumentNullException(nameof(dataObjectType), "Contract assertion not met: dataObjectType != null");
+            }
+
+            return _metadata[dataObjectType].UpdateView?.Clone();
+        }
+
+        /// <summary>
         /// Получает список зарегистрированных в модели типов по списку имён типов.
         /// </summary>
         /// <param name="strTypes">Список имен типов.</param>
@@ -514,7 +529,7 @@
         /// <summary>
         /// Осуществляет получение типа объекта данных, соответствующего заданному имени набора сущностей в EDM-модели.
         /// </summary>
-        /// <param name="edmEntitySetName">Имя набора сущностей в EDM-модели, для которого требуется получить представление по умолчанию.</param>
+        /// <param name="edmEntitySetName">Имя набора сущностей в EDM-модели, для которого требуется получить тип.</param>
         /// <returns>Типа объекта данных, соответствующий заданному имени набора сущностей в EDM-модели.</returns>
         public Type GetDataObjectType(string edmEntitySetName)
         {
@@ -532,6 +547,22 @@
             _registeredCollections.TryGetValue(edmEntitySetName, out dataObjectType);
 
             return dataObjectType;
+        }
+
+        /// <summary>
+        /// Осуществляет получение типа объекта данных, соответствующего заданной сущности в EDM-модели.
+        /// </summary>
+        /// <param name="edmEntity">Сущность в EDM-модели, для которой требуется получить тип.</param>
+        /// <returns>Типа объекта данных, соответствующий заданной сущности в EDM-модели.</returns>
+        public Type GetDataObjectType(EdmEntityObject edmEntity)
+        {
+            if (edmEntity == null)
+            {
+                throw new ArgumentNullException(nameof(edmEntity));
+            }
+
+            IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
+            return GetDataObjectType(GetEdmEntitySet(entityType).Name);
         }
 
         /// <summary>

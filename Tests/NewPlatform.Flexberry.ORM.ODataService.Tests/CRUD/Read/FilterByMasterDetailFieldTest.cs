@@ -16,7 +16,12 @@
     /// <summary>
     /// Unit-test class for filtering data through OData service by master details fields.
     /// </summary>
+#if NETFRAMEWORK
     public class FilterByMasterDetailFieldTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class FilterByMasterDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -24,7 +29,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public FilterByMasterDetailFieldTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, Xunit.Abstractions.ITestOutputHelper output)
+        public FilterByMasterDetailFieldTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
         {
         }
@@ -157,7 +162,6 @@
                 медведь3.Берлога.AddRange(берлога5, берлога6);
 
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, лес3, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, берлога5, берлога6 };
-
                 args.DataService.UpdateObjects(ref newDataObjects);
 
                 // Act.
@@ -204,7 +208,6 @@
                 driver3.Car.AddRange(car1d3, car2d3);
 
                 DataObject[] newDataObjects = new DataObject[] { driver1, driver2, driver3, car1d1, car2d1, car1d2, car2d2, car1d3, car2d3 };
-
                 args.DataService.UpdateObjects(ref newDataObjects);
 
                 // Act.

@@ -20,7 +20,12 @@
     /// <summary>
     /// Класс тестов для тестирования $skip, $top, $orderby.
     /// </summary>
+#if NETFRAMEWORK
     public class SkipTopOrderByTest : BaseODataServiceIntegratedTest
+#endif
+#if NETCOREAPP
+    public class SkipTopOrderByTest : BaseODataServiceIntegratedTest<TestStartup>
+#endif
     {
 #if NETCOREAPP
         /// <summary>
@@ -28,7 +33,7 @@
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
-        public SkipTopOrderByTest(CustomWebApplicationFactory<ODataServiceSample.AspNetCore.Startup> factory, ITestOutputHelper output)
+        public SkipTopOrderByTest(CustomWebApplicationFactory<TestStartup> factory, ITestOutputHelper output)
             : base(factory, output)
         {
         }
