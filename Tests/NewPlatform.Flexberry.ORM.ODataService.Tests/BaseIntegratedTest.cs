@@ -170,6 +170,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
 #if NETCOREAPP
             CustomWebApplicationFactory<Startup>._unityContainer = _container;
+            CustomWebApplicationFactory<TestStartup>._unityContainer = _container;
+            CustomWebApplicationFactory<UpdateViewsTestStartup>._unityContainer = _container;
 
             _output = output;
 
