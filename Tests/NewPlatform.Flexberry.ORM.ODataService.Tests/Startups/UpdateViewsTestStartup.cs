@@ -10,6 +10,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -25,13 +26,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class UpdateViewsTestStartup : Startup
     {
         /// <summary>
-        /// After the start of the OData app, the container in the OData app is its own.
-        /// Therefore, a static field is defined here, so that later this container can be pulled back.
-        /// <see cref="BaseODataServiceIntegratedTest"/>
-        /// </summary>
-        public static IUnityContainer _unityContainer;
-
-        /// <summary>
         /// Initialize new instance of TestStartup.
         /// </summary>
         /// <param name="configuration">Configuration for new instance.</param>
@@ -40,21 +34,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
         }
 
-        /// <summary>
-        /// Method for Unity container configuring.
-        /// </summary>
-        /// <param name="unityContainer">Unity container.</param>
-        public override void ConfigureContainer(IUnityContainer unityContainer)
-        {
-            _unityContainer = unityContainer;
-            base.ConfigureContainer(unityContainer);
-        }
-
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             IServiceProvider serviceProvider = app.ApplicationServices;
-            _unityContainer.RegisterInstance(env);
+            IUnityContainer unityContainer = serviceProvider.GetRequiredService<IUnityContainer>();
+            unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -84,7 +69,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
-                _unityContainer.RegisterInstance(typeof(ManagementToken), token);
+                unityContainer.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }

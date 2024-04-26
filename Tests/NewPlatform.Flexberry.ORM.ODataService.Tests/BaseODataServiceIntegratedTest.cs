@@ -24,6 +24,9 @@
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using System.ComponentModel;
+    using ODataServiceSample.AspNetCore;
+    using Microsoft.AspNetCore.Builder;
 #endif
 
     /// <summary>
@@ -34,7 +37,7 @@
 #endif
 #if NETCOREAPP
     public class BaseODataServiceIntegratedTest<TStartup> : BaseIntegratedTest<TStartup>
-        where TStartup : class
+        where TStartup : Startup
 #endif
     {
         public class TestArgs
@@ -186,7 +189,7 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                IUnityContainer container = TestStartup._unityContainer; // При создании odata-приложения оригинальный контейнер не изменяется.
+                IUnityContainer container = _container; // При создании odata-приложения оригинальный контейнер не изменяется.
                 ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
                 container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;

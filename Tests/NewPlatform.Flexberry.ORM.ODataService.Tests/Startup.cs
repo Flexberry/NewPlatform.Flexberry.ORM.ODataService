@@ -50,6 +50,7 @@ namespace ODataServiceSample.AspNetCore
         public virtual void ConfigureContainer(IUnityContainer unityContainer)
         {
             // Configure Flexberry services via Unity.
+            unityContainer.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             var securityManager = new EmptySecurityManager();
             Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
             IBusinessServerProvider businessServerProvider = unityContainer.Resolve<IBusinessServerProvider>();

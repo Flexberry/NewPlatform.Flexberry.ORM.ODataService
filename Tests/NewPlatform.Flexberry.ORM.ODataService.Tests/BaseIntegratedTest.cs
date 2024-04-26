@@ -37,7 +37,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// </summary>
     /// <typeparam name="TStartup">Startup class used for booting the application.</typeparam>
     public abstract class BaseIntegratedTest<TStartup> : IClassFixture<CustomWebApplicationFactory<TStartup>>, IDisposable
-        where TStartup : class
+        where TStartup : Startup
     {
         protected readonly WebApplicationFactory<TStartup> _factory;
 #endif
@@ -160,18 +160,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         {
             _factory = factory;
 #endif
-
             _container = new UnityContainer();
 #if NETCOREAPP
+            _container = _factory.Services.GetService(typeof(IUnityContainer)) as IUnityContainer;
             _container.LoadConfiguration();
 #endif
             _serviceProvider = new UnityServiceProvider(_container);
             _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
 #if NETCOREAPP
-            CustomWebApplicationFactory<Startup>._unityContainer = _container;
-            CustomWebApplicationFactory<TestStartup>._unityContainer = _container;
-            CustomWebApplicationFactory<UpdateViewsTestStartup>._unityContainer = _container;
 
             _output = output;
 
