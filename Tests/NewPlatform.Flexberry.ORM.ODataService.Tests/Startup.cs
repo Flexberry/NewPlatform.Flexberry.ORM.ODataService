@@ -2,19 +2,20 @@
 namespace ODataServiceSample.AspNetCore
 {
     using System;
-    using System.IO;
     using System.Linq;
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
-    using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Server.Features;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
+    using NewPlatform.Flexberry;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -24,7 +25,7 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
     using NewPlatform.Flexberry.Services;
     using Unity;
-
+    using Unity.Injection;
     using LockService = NewPlatform.Flexberry.Services.LockService;
 
     public class Startup
@@ -42,6 +43,32 @@ namespace ODataServiceSample.AspNetCore
 
         public string CustomizationString => "";
 
+        /// <summary>
+        /// Method for Unity container configuring.
+        /// </summary>
+        /// <param name="unityContainer">Unity container.</param>
+        public virtual void ConfigureContainer(IUnityContainer unityContainer)
+        {
+            // Configure Flexberry services via Unity.
+            unityContainer.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            var securityManager = new EmptySecurityManager();
+            Mock<IAuditService> mockAuditService = new Mock<IAuditService>();
+            IBusinessServerProvider businessServerProvider = unityContainer.Resolve<IBusinessServerProvider>();
+            IDataService dataService = new PostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = CustomizationString };
+
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
+                new InjectionConstructor(
+                    unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
+                    unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>() ? unityContainer.Resolve<IExportStringedObjectViewService>() : null,
+                    unityContainer.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? unityContainer.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                    unityContainer.IsRegistered<IODataExportService>() ? unityContainer.Resolve<IODataExportService>() : null,
+                    unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
+            unityContainer.RegisterInstance(dataService);
+            unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
+            unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
         {
@@ -55,24 +82,10 @@ namespace ODataServiceSample.AspNetCore
 
                     return dataService;
                 });
-                
+
                 services.AddSingleton<ILockService, LockService>();
             }
             */
-
-            // Configure Flexberry services via Unity.
-            {
-                IUnityContainer unityContainer = UnityFactory.GetContainer();
-
-                IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-
-                unityContainer.RegisterInstance(dataService);
-                ExternalLangDef.LanguageDef.DataService = dataService;
-
-                unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
-
-                unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-            }
 
             services.AddMvcCore(options =>
             {
@@ -123,7 +136,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });

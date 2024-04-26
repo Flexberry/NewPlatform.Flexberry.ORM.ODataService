@@ -1,10 +1,12 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using System.IO;
-    using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using ODataServiceSample.AspNetCore;
+    using Unity;
     using Unity.Microsoft.DependencyInjection;
 
     /// <summary>
@@ -12,15 +14,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// </summary>
     /// <typeparam name="TStartup">Startup type.</typeparam>
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
-        where TStartup : class
+        where TStartup : Startup
     {
         /// <inheritdoc/>
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
             string contentRootDirectory = Directory.GetCurrentDirectory();
-            var container = UnityFactory.GetContainer();
             var webHostBuilder = new WebHostBuilder()
-                            .UseUnityServiceProvider(container)
+                            .UseUnityServiceProvider()
                             .UseContentRoot(contentRootDirectory)
                             .UseStartup<TStartup>();
             return webHostBuilder;

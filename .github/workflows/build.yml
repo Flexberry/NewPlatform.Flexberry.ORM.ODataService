@@ -16,6 +16,7 @@ on:
 env:
   XUNIT_RUNNER: "2.4.1"
   CONFIGURATION: "Debug"
+  NUPATH: "https://api.nuget.org/v3/index.json"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -73,10 +74,10 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
+        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
         
       - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner
+        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source $NUPATH
         
       - name: Compile code
         run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
@@ -150,10 +151,10 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
+        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
         
       - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner
+        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source $NUPATH
         
       - name: Compile code
         run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln

@@ -52,7 +52,7 @@
         /// </summary>
         /// <param name="container">Container of user functions.</param>
         /// <param name="dataService">Сервис данных.</param>
-        public void RegisterODataUserFunctions(IFunctionContainer container, IDataService dataService)
+        public void RegisterODataUserFunctions(IFunctionContainer container, IDataService dataService, IUnityContainer unityContainer)
         {
             Dictionary<string, Type> parametersTypes = new Dictionary<string, Type>();
 
@@ -66,8 +66,7 @@
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var lcs = queryParameters.CreateLcs(type);
 #if NETCOREAPP
-                        IUnityContainer container = UnityFactory.GetContainer();
-                        dataService = container.Resolve<IDataService>();
+                        dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var dobjs = dataService.LoadObjects(lcs);
                         return dobjs.AsEnumerable();
@@ -87,8 +86,7 @@
                         var uri = $"http://a/b/c?{parameters["query"]}";
                         var lcs = queryParameters.CreateLcs(type, uri);
 #if NETCOREAPP
-                        IUnityContainer container = UnityFactory.GetContainer();
-                        dataService = container.Resolve<IDataService>();
+                        dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var dobjs = dataService.LoadObjects(lcs);
                         return dobjs.Length;
@@ -133,8 +131,7 @@
                     (queryParameters, parameters) =>
                     {
 #if NETCOREAPP
-                        IUnityContainer container = UnityFactory.GetContainer();
-                        dataService = container.Resolve<IDataService>();
+                        dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).ToArray();
                         return result[(int)parameters["intParam"]];
@@ -152,8 +149,7 @@
                     {
                         var top = (int)parameters["intParam"];
 #if NETCOREAPP
-                        IUnityContainer container = UnityFactory.GetContainer();
-                        dataService = container.Resolve<IDataService>();
+                        dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).Take(top).ToArray();
                         queryParameters.Count = result.Length;
@@ -171,8 +167,7 @@
                     (queryParameters, parameters) =>
                     {
 #if NETCOREAPP
-                        IUnityContainer container = UnityFactory.GetContainer();
-                        dataService = container.Resolve<IDataService>();
+                        dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Медведь>(Медведь.Views.МедведьE).ToArray();
                         return result[(int)parameters["intParam"]];
@@ -221,7 +216,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/FunctionEnum(пол=NewPlatform.Flexberry.ORM.ODataService.Tests.tПол'Мужской')";
@@ -252,7 +247,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Создаем объекты и кладем их в базу данных.
                 DataObject[] countries = new DataObject[5];
@@ -312,7 +307,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 Медведь медв = new Медведь { Вес = 48 };
                 Лес лес1 = new Лес { Название = "Бор" };
@@ -361,7 +356,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/FunctionBinary()";
@@ -390,7 +385,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Создаем объекты и кладем их в базу данных.
                 DataObject[] countries = new DataObject[5];
@@ -434,7 +429,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Создаем объекты и кладем их в базу данных.
                 DataObject[] countries = new DataObject[5];
@@ -485,7 +480,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Создаем объекты и кладем их в базу данных.
                 DataObject[] countries = new DataObject[5];
@@ -528,7 +523,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 string returnValueString = "123456фывап";
 
@@ -582,7 +577,7 @@
         {
             ActODataService(args =>
             {
-                RegisterODataUserFunctions(args.Token.Functions, args.DataService);
+                RegisterODataUserFunctions(args.Token.Functions, args.DataService, args.UnityContainer);
 
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/FunctionHttpResponseException()";

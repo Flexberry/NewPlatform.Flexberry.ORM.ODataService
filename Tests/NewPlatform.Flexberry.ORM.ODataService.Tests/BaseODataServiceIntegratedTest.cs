@@ -3,33 +3,30 @@
     using System;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Reflection;
-    using System.Text;
-    using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
-    using ICSSoft.STORMNET.KeyGen;
-    using ICSSoft.STORMNET.Windows.Forms;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
 
     using Unity;
+    using Unity.Injection;
     using Xunit;
     using Xunit.Abstractions;
 
 #if NETFRAMEWORK
     using System.Web.Http;
     using System.Web.Http.Cors;
-    using Microsoft.AspNet.OData.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using Unity.AspNet.WebApi;
 #endif
 #if NETCOREAPP
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
+    using System.ComponentModel;
     using ODataServiceSample.AspNetCore;
+    using Microsoft.AspNetCore.Builder;
 #endif
 
     /// <summary>
@@ -40,11 +37,9 @@
 #endif
 #if NETCOREAPP
     public class BaseODataServiceIntegratedTest<TStartup> : BaseIntegratedTest<TStartup>
-        where TStartup : class
+        where TStartup : Startup
 #endif
     {
-        protected IDataObjectEdmModelBuilder _builder;
-
         public class TestArgs
         {
             public IUnityContainer UnityContainer { get; set; }
@@ -66,6 +61,8 @@
         /// </summary>
         public bool UseNamespaceInEntitySetName { get; protected set; }
 
+        private PseudoDetailDefinitions pseudoDetailDefinitions;
+
 #if NETFRAMEWORK
         public BaseODataServiceIntegratedTest(
             string stageCasePath = @"РТЦ Тестирование и документирование\Модели для юнит-тестов\Flexberry ORM\NewPlatform.Flexberry.ORM.ODataService.Tests\",
@@ -78,6 +75,14 @@
         }
 #endif
 #if NETCOREAPP
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseODataServiceIntegratedTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        /// <param name="useNamespaceInEntitySetName">Flag indicating whether type namespaces should be added to the names of their corresponding entity sets.</param>
+        /// <param name="useGisDataService">Flag indicating whether GisDataService be used.</param>
+        /// <param name="pseudoDetailDefinitions">OData definition of the link from master to pseudodetail (pseudoproperty).</param>
         public BaseODataServiceIntegratedTest(CustomWebApplicationFactory<TStartup> factory, ITestOutputHelper output = null, bool useNamespaceInEntitySetName = false,  bool useGisDataService = false, PseudoDetailDefinitions pseudoDetailDefinitions = null)
             : base(factory, output, "ODataDB", useGisDataService)
         {
@@ -94,8 +99,7 @@
                 typeof(Car).Assembly,
             };
             UseNamespaceInEntitySetName = useNamespaceInEntitySetName;
-
-            _builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+            this.pseudoDetailDefinitions = pseudoDetailDefinitions;
         }
 
         /// <summary>
@@ -104,12 +108,11 @@
         /// <param name="e">Исключение, которое возникло внутри ODataService.</param>
         /// <param name="code">Возвращаемый код HTTP. По-умолчанияю 500.</param>
         /// <returns>Исключение, которое будет отправлено клиенту.</returns>
-        public static Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
+        public Exception AfterInternalServerError(Exception e, ref HttpStatusCode code)
         {
-            IUnityContainer container = UnityFactory.GetContainer();
-            if (container.IsRegistered<ITestOutputHelper>())
+            if (_container.IsRegistered<ITestOutputHelper>())
             {
-                ITestOutputHelper output = container.Resolve<ITestOutputHelper>();
+                ITestOutputHelper output = _container.Resolve<ITestOutputHelper>();
                 output.WriteLine(e.ToString());
             }
 
@@ -131,15 +134,25 @@
 
             foreach (IDataService dataService in DataServices)
             {
-                using (var container = new UnityContainer())
-                using (var config = new HttpConfiguration())
-                using (var server = new HttpServer(config))
-                using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
+                // Здесь создаётся отдельный контейнер, поскольку он идёт в UnityDependencyResolver, где позднее уходит на Dispose.
+                using (UnityContainer container = new UnityContainer())
+                using (HttpConfiguration config = new HttpConfiguration())
+                using (HttpServer server = new HttpServer(config))
+                using (HttpClient client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost/odata/") })
                 {
+                    container.RegisterType<DataObjectEdmModelDependencies>(
+                        new InjectionConstructor(
+                            container.IsRegistered<IExportService>() ? container.Resolve<IExportService>() : null,
+                            container.IsRegistered<IExportService>("Export") ? container.Resolve<IExportService>("Export") : null,
+                            container.IsRegistered<IExportStringedObjectViewService>() ? container.Resolve<IExportStringedObjectViewService>() : null,
+                            container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                            container.IsRegistered<IODataExportService>() ? container.Resolve<IODataExportService>() : null,
+                            container.IsRegistered<IODataExportService>("Export") ? container.Resolve<IODataExportService>("Export") : null));
                     container.RegisterInstance(dataService);
 
                     server.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
                     config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
                     config.DependencyResolver = new UnityDependencyResolver(container);
 
                     const string fileControllerPath = "api/File";
@@ -147,10 +160,11 @@
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
                     container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
-                    var token = config.MapDataObjectRoute(_builder, server, "odata", "odata", true);
+                    IServiceProvider serviceProvider = new ICSSoft.Services.UnityServiceProvider(container);
+                    DefaultDataObjectEdmModelBuilder builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+                    var token = config.MapDataObjectRoute(builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
-                    ExternalLangDef.LanguageDef.DataService = dataService;
                     action(args);
                 }
             }
@@ -175,8 +189,7 @@
                 // Add "/odata/" postfix.
                 client.BaseAddress = new Uri(client.BaseAddress, DataObjectRoutingConventions.DefaultRouteName + "/");
 
-                IUnityContainer container = UnityFactory.GetContainer();
-
+                IUnityContainer container = _container; // При создании odata-приложения оригинальный контейнер не изменяется.
                 ManagementToken token = (ManagementToken)container.Resolve(typeof(ManagementToken));
                 container.RegisterInstance(dataService);
                 token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
@@ -185,7 +198,6 @@
                 container.RegisterInstance(fileAccessor);
 
                 var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
-                ExternalLangDef.LanguageDef.DataService = dataService;
                 action(args);
             }
         }
