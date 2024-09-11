@@ -72,6 +72,11 @@ jobs:
         with:
           dotnet-version: 7.0.x
 
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
         
@@ -90,6 +95,9 @@ jobs:
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
+      - name: Test on dotnet 8.0
+        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net8.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+
       - name: Test under mono
         run: mono ./testrunner/xunit.runner.console.$XUNIT_RUNNER/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
@@ -106,14 +114,14 @@ jobs:
       # Label used to access the service container
       mssql:
         # Docker Hub image
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: mcr.microsoft.com/mssql/server:2022-latest
         # Provide the password for mssql
         env:
           ACCEPT_EULA: Y
-          SA_PASSWORD: p@ssw0rd
+          MSSQL_SA_PASSWORD: p@ssw0rd
         # Set health checks to wait until mssql has started
         options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' -b -o /dev/null"
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -Q 'SELECT 1' -b -o /dev/null"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -149,6 +157,11 @@ jobs:
         with:
           dotnet-version: 7.0.x
 
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
         
@@ -166,6 +179,9 @@ jobs:
         
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+
+      - name: Test on dotnet 8.0
+        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net8.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Test under mono
         run: mono ./testrunner/xunit.runner.console.$XUNIT_RUNNER/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
