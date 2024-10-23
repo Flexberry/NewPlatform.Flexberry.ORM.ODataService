@@ -61,7 +61,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
 
-                var masterLightLoadTypes = new List<Type> { typeof(Котенок) }; // <- set MasterLightLoad property for this DataObject
+                // Set MasterLightLoad property for this DataObject
+                var masterLightLoadTypes = new List<Type> { typeof(Котенок) }; 
                 var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions, masterLightLoadTypes: masterLightLoadTypes);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
