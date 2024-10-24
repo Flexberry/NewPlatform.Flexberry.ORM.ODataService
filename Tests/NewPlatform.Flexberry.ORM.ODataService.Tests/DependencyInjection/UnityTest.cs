@@ -6,7 +6,6 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using Unity;
-
     using Xunit;
 
     /// <summary>
