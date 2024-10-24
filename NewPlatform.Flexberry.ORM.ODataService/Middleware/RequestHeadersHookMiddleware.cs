@@ -75,7 +75,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Middleware
             }
 
             /*
-            /// Исправление для Mono, взято из https://github.com/OData/odata.net/issues/165
+            /// Исправление для Mono, взято из https://github.com/OData/odata.net/issues/165 .
             */
             if (!request.Headers.ContainsKey(HeaderNames.AcceptCharset))
                 request.Headers.Add(HeaderNames.AcceptCharset, new[] { "utf-8" });
