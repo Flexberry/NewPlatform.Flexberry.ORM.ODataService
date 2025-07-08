@@ -25,7 +25,7 @@
     <copyright>Copyright New Platform Ltd 2024</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.5">
+      <group targetFramework="net45">
         <dependency id="Microsoft.AspNet.OData" version="7.6.1" />
         <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.7" />
         <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.7" />
@@ -36,42 +36,42 @@
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-      <group targetFramework=".NETStandard2.0">
+      <group targetFramework="netstandard2.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-      <group targetFramework=".NETCoreApp3.1">
+      <group targetFramework="netcoreapp3.1">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-        <group targetFramework=".NET6.0">
+        <group targetFramework="net6.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-      <group targetFramework=".NET7.0">
+      <group targetFramework="net7.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-	  <dependencygroup targetFramework="net8.0">
+	  <group targetFramework="net8.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
         <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
-      </dependencygroup>
-	  <dependencygroup targetFramework="net9.0">
+      </group>
+	  <group targetFramework="net9.0">
 		<dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
 		<dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
 		<dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
 		<dependency id="Newtonsoft.Json" version="13.0.1" />
-	  </dependencygroup>
+	  </group>
     </dependencies>
   </metadata>
   <files>
