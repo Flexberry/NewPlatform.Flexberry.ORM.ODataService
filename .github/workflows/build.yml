@@ -77,6 +77,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Install Mono
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mono-complete
+
       - name: Setup NuGet CLI
         uses: nuget/setup-nuget@v2
         with:
