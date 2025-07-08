@@ -178,6 +178,22 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Install OpenSSL 1.1
+        run: |
+          sudo add-apt-repository ppa:rael-gc/rvm
+          sudo apt-get update
+          sudo apt install libssl1.0-dev
+
+      - name: Install Mono
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mono-complete
+
+      - name: Setup NuGet CLI
+        uses: nuget/setup-nuget@v2
+        with:
+          nuget-version: 'latest'
+
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln
         
