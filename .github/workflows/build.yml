@@ -72,11 +72,6 @@ jobs:
         with:
           dotnet-version: 7.0.x
 
-      - name: Install .NET 8.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
       - name: Install .NET 9.0 Preview
         uses: actions/setup-dotnet@v4
         with:
@@ -100,9 +95,6 @@ jobs:
         
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-
-      - name: Test on dotnet 8.0
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net8.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
         
       - name: Test on dotnet 9.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net9.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
@@ -166,11 +158,6 @@ jobs:
         with:
           dotnet-version: 7.0.x
 
-      - name: Install .NET 8.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
       - name: Install .NET 9.0 Preview
         uses: actions/setup-dotnet@v4
         with:
@@ -194,9 +181,6 @@ jobs:
         
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-
-      - name: Test on dotnet 8.0
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net8.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Test on dotnet 9.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net9.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
