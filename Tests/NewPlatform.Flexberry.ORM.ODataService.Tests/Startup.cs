@@ -95,8 +95,7 @@ namespace ODataServiceSample.AspNetCore
         {
             ApplicationBuilder = app;
             ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
-
-            // Используем старый стиль маршрутизации MVC (нужен Disable Endpoint Routing выше)
+// Используем старый стиль маршрутизации MVC (нужен Disable Endpoint Routing выше)
             app.UseMvc(builder =>
             {
                 builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
