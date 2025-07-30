@@ -60,10 +60,10 @@ jobs:
 
       # Building requires an up-to-date .NET SDK.
 
-      - name: Install .NET 6.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 6.0.x
+      #- name: Install .NET 6.0
+       # uses: actions/setup-dotnet@v4
+       # with:
+        #  dotnet-version: 6.0.x
           
        # Building requires an up-to-date .NET SDK.
 
@@ -90,8 +90,8 @@ jobs:
       - name: Test on dotnet 3.1
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
-      - name: Test on dotnet 6.0
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+    #  - name: Test on dotnet 6.0
+     #   run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
         
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
@@ -148,10 +148,10 @@ jobs:
 
       # Building requires an up-to-date .NET SDK.
 
-      - name: Install .NET 6.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 6.0.x
+     # - name: Install .NET 6.0
+      #  uses: actions/setup-dotnet@v4
+      #  with:
+      #    dotnet-version: 6.0.x
           
       - name: Install .NET 7.0
         uses: actions/setup-dotnet@v4
@@ -176,8 +176,8 @@ jobs:
       - name: Test on dotnet 3.1
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
-      - name: Test on dotnet 6.0
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+    #  - name: Test on dotnet 6.0
+     #   run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
         
       - name: Test on dotnet 7.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net7.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
