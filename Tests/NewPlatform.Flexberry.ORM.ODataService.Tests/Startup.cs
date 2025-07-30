@@ -24,6 +24,8 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
     using NewPlatform.Flexberry.Services;
+    using System;
+    using System.Linq;
     using Unity;
     using LockService = NewPlatform.Flexberry.Services.LockService;
 
