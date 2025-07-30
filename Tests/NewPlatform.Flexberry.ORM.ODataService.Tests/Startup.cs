@@ -1,9 +1,6 @@
 ﻿#if NETCOREAPP
 namespace ODataServiceSample.AspNetCore
 {
-    using System;
-    using System.IO;
-    using System.Linq;
     using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Security;
@@ -13,8 +10,10 @@ namespace ODataServiceSample.AspNetCore
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Server.Features;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -23,8 +22,9 @@ namespace ODataServiceSample.AspNetCore
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions;
     using NewPlatform.Flexberry.Services;
+    using System;
+    using System.Linq;
     using Unity;
-
     using LockService = NewPlatform.Flexberry.Services.LockService;
 
     public class Startup
@@ -35,61 +35,31 @@ namespace ODataServiceSample.AspNetCore
         }
 
         private IApplicationBuilder ApplicationBuilder { get; set; }
-
         private IServerAddressesFeature ServerAddressesFeature { get; set; }
-
         public IConfiguration Configuration { get; }
 
         public string CustomizationString => "";
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            /*
-            // Configure Flexberry services (LockService and IDataService) via native DI.
-            {
-                services.AddSingleton<IDataService>(provider =>
-                {
-                    IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-                    ExternalLangDef.LanguageDef.DataService = dataService;
-
-                    return dataService;
-                });
-                
-                services.AddSingleton<ILockService, LockService>();
-            }
-            */
-
-            // Configure Flexberry services via Unity.
-            {
-                IUnityContainer unityContainer = UnityFactory.GetContainer();
-
-                IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-
-                unityContainer.RegisterInstance(dataService);
-                ExternalLangDef.LanguageDef.DataService = dataService;
-
-                unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
-
-                unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
-            }
-
+            // Регистрируем MVC с отключённым endpoint routing, добавляем фильтр
             services.AddMvcCore(options =>
             {
                 options.Filters.Add<CustomExceptionFilter>();
                 options.EnableEndpointRouting = false;
             })
-                .AddFormatterMappings();
+            .AddFormatterMappings();
 
+            // Регистрируем OData сервисы
             services.AddODataService();
 
+            // Регистрация IDataObjectFileAccessor с использованием ServerAddressesFeature
             services.AddSingleton<IDataObjectFileAccessor>(provider =>
             {
                 Uri baseUri = new Uri("http://localhost");
 
                 if (ServerAddressesFeature != null && ServerAddressesFeature.Addresses != null)
                 {
-                    // This works with pure self-hosted service only.
                     baseUri = new Uri(ServerAddressesFeature.Addresses.Single());
                 }
 
@@ -97,17 +67,33 @@ namespace ODataServiceSample.AspNetCore
 
                 return new DefaultDataObjectFileAccessor(baseUri, "api/File", "Uploads");
             });
+
+            // --- ВАЖНО: Build IServiceProvider для получения настроенных сервисов ---
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Получаем сконфигурированный экземпляр IOptions<MvcOptions> из стандартного DI
+            var mvcOptions = serviceProvider.GetRequiredService<IOptions<MvcOptions>>();
+
+            // Получаем Unity контейнер
+            IUnityContainer unityContainer = UnityFactory.GetContainer();
+
+            // Регистрируем в Unity его же экземпляр IOptions<MvcOptions> для корректной работы MVC через Unity
+            unityContainer.RegisterInstance<IOptions<MvcOptions>>(mvcOptions);
+
+            // Регистрируем Flexberry-сервисы через Unity
+            IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
+            unityContainer.RegisterInstance(dataService);
+            ExternalLangDef.LanguageDef.DataService = dataService;
+
+            unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
+            unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // Save reference to IApplicationBuilder instance.
             ApplicationBuilder = app;
-
-            // Save reference to IServerAddressesFeature instance.
             ServerAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
-
+// Используем старый стиль маршрутизации MVC (нужен Disable Endpoint Routing выше)
             app.UseMvc(builder =>
             {
                 builder.MapRoute("Lock", "api/lock/{action}/{dataObjectId}", new { controller = "Lock" });
@@ -123,8 +109,8 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
 
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
         }
