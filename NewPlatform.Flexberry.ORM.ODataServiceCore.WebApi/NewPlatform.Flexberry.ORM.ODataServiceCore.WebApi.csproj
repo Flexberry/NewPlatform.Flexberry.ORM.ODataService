@@ -25,7 +25,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.LockService" Version="4.0.0-beta01" />
   </ItemGroup>
 
   <ItemGroup>
