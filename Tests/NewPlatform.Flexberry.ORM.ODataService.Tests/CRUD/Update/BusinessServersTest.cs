@@ -47,7 +47,6 @@
             ActODataService(args =>
             {
                 args.HttpClient.DefaultRequestHeaders.Add("Prefer", "return=representation");
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string[] берлогаPropertiesNames =
                 {

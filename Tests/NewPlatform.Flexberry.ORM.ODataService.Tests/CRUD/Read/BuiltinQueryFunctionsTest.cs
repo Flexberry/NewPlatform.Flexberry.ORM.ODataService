@@ -52,8 +52,6 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 DateTime date = new DateTimeOffset(DateTime.Now).UtcDateTime;
                 КлассСМножествомТипов класс = new КлассСМножествомТипов() { PropertyEnum = Цифра.Семь, PropertyDateTime = date };
                 Медведь медв = new Медведь { Вес = 48, Пол = tПол.Мужской };
@@ -125,8 +123,6 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 DateTime date = new DateTimeOffset(DateTime.Now).UtcDateTime;
                 КлассСМножествомТипов класс = new КлассСМножествомТипов() { PropertyEnum = Цифра.Семь, PropertyDateTime = date };
                 Медведь медв = new Медведь { Вес = 48, Пол = tПол.Мужской, __PrimaryKey = new Guid("3f5cc1ca-6b2c-4c38-ba02-4b3fd5f1726c") };
@@ -355,9 +351,8 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
-                string sqlToday = args.DataService.FunctionToSql(null, ExternalLangDef.LanguageDef.GetFunction("TODAY"), null, null);
+                ExternalLangDef langDef = new ExternalLangDef(args.DataService);
+                string sqlToday = args.DataService.FunctionToSql(null, langDef.GetFunction("TODAY"), null, null);
                 var state = new object();
                 string sqlStatement = $"SELECT {sqlToday}{(args.DataService is OracleDataService ? " FROM DUAL" : string.Empty)}";
                 var date = (DateTime)(args.DataService as SQLDataService).ReadFirst(sqlStatement, ref state, 0)[0][0];

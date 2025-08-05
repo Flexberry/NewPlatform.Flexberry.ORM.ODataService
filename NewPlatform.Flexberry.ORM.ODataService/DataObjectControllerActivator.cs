@@ -9,7 +9,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService
     using System.Web.Http.Routing;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNet.OData.Routing;
+    using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Controllers;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
@@ -55,71 +57,26 @@ namespace NewPlatform.Flexberry.ORM.ODataService
         /// <returns>An <see cref="DataObjectController" /> object for specified arguments.</returns>
         protected virtual DataObjectController CreateDataObjectController(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
         {
-            IDataService dataService = GetDataService(request, controllerDescriptor, controllerType);
+            //TODO: поменять DependencyResolver на IServiceProvider
+            IDependencyResolver dependencyResolver = request.GetConfiguration().DependencyResolver;
+            IDataService dataService = (IDataService)dependencyResolver.GetService(typeof(IDataService));
+            IDataObjectFileAccessor fileAccessor = (IDataObjectFileAccessor)dependencyResolver.GetService(typeof(IDataObjectFileAccessor));
 
-            IDataObjectFileAccessor fileAccessor = GetDataObjectFileAccessor(request, controllerDescriptor, controllerType);
-
-            DataObjectCache dataObjectCache = GetDataObjectCache(request, controllerDescriptor, controllerType);
-
+            DataObjectCache dataObjectCache = GetDataObjectCache(request);
             ManagementToken token = (request.GetRouteData().Route as ODataRoute).GetManagementToken();
 
             DataObjectController controller = new DataObjectController(dataService, fileAccessor, dataObjectCache, token.Model, token.Events, token.Functions);
             controller.OfflineManager = GetOfflineManager(request, controllerDescriptor, controllerType) ?? controller.OfflineManager;
-
             return controller;
         }
 
         /// <summary>
-        /// Gets the instance of <see cref="IDataService" /> using current <see cref="IDependencyScope"/> and <see cref="IHttpRoute"/>.
+        /// Gets the instance of <see cref="DataObjectCache" /> from <see cref="HttpRequestMessage"/> />.
         /// </summary>
         /// <param name="request">The message request.</param>
-        /// <param name="controllerDescriptor">The HTTP controller descriptor.</param>
-        /// <param name="controllerType">The type of the controller.</param>
-        /// <returns>Gets the instance of <see cref="IDataService" /> for specified arguments.</returns>
-        /// <remarks>Extracts object from configurated <see cref="IDependencyResolver" />.</remarks>
-        protected virtual IDataService GetDataService(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
-        {
-            IDependencyResolver dependencyResolver = request.GetConfiguration().DependencyResolver;
-            IDataService dataService = (IDataService)dependencyResolver.GetService(typeof(IDataService));
-
-            if (dataService == null)
-            {
-                throw new InvalidOperationException("IDataService is not registered in the dependency scope.");
-            }
-
-            return dataService;
-        }
-
-        /// <summary>
-        /// Gets the instance of <see cref="IDataObjectFileAccessor" /> using current <see cref="IDependencyScope"/> and <see cref="IHttpRoute"/>.
-        /// </summary>
-        /// <param name="request">The message request.</param>
-        /// <param name="controllerDescriptor">The HTTP controller descriptor.</param>
-        /// <param name="controllerType">The type of the controller.</param>
-        /// <returns>Gets the instance of <see cref="IDataObjectFileAccessor" /> for specified arguments.</returns>
-        /// <remarks>Extracts object from configurated <see cref="IDependencyResolver" />.</remarks>
-        protected virtual IDataObjectFileAccessor GetDataObjectFileAccessor(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
-        {
-            IDependencyResolver dependencyResolver = request.GetConfiguration().DependencyResolver;
-            IDataObjectFileAccessor fileAccessor = (IDataObjectFileAccessor)dependencyResolver.GetService(typeof(IDataObjectFileAccessor));
-
-            if (fileAccessor == null)
-            {
-                throw new InvalidOperationException("IDataObjectFileAccessor is not registered in the dependency scope.");
-            }
-
-            return fileAccessor;
-        }
-
-        /// <summary>
-        /// Gets the instance of <see cref="DataObjectCache" /> using current <see cref="IDependencyScope"/> and <see cref="IHttpRoute"/>.
-        /// </summary>
-        /// <param name="request">The message request.</param>
-        /// <param name="controllerDescriptor">The HTTP controller descriptor.</param>
-        /// <param name="controllerType">The type of the controller.</param>
         /// <returns>Gets the instance of <see cref="DataObjectCache" /> for specified arguments.</returns>
         /// <remarks>Extracts object from request properties for batch requests.</remarks>
-        protected virtual DataObjectCache GetDataObjectCache(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+        protected virtual DataObjectCache GetDataObjectCache(HttpRequestMessage request)
         {
             DataObjectCache dataObjectCache = null;
             if (request.Properties.ContainsKey(PostPatchHandler.PropertyKeyBatchRequest) && request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectCachePropertyKey))
