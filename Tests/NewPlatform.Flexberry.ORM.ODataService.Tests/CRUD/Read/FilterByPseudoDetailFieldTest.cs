@@ -20,17 +20,18 @@
     public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest
 #endif
 #if NETCOREAPP
-    public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
+    public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest<PseudoDetailTestStartup>
 #endif
     {
         private static PseudoDetailDefinitions GetPseudoDetailDefinitions()
         {
-            var pseudoDetailDefinitions = new PseudoDetailDefinitions();
-
-            pseudoDetailDefinitions.Add(new DefaultPseudoDetailDefinition<Медведь, Блоха>(
+            var pseudoDetailDefinitions = new PseudoDetailDefinitions
+            {
+                new DefaultPseudoDetailDefinition<Медведь, Блоха>(
                 Блоха.Views.PseudoDetailView,
                 Information.ExtractPropertyPath<Блоха>(x => x.МедведьОбитания),
-                "Блохи"));
+                "Блохи")
+            };
 
             return pseudoDetailDefinitions;
         }
@@ -41,12 +42,13 @@
         }
 #endif
 #if NETCOREAPP
-        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
-            : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions())
-        {
-            IUnityContainer container = UnityFactory.GetContainer();
-            container.RegisterInstance(GetPseudoDetailDefinitions());
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterByPseudoDetailFieldTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
+        public FilterByPseudoDetailFieldTest(CustomWebApplicationFactory<PseudoDetailTestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
+            : base(factory, output, pseudoDetailDefinitions: GetPseudoDetailDefinitions()) { }
 #endif
 
         /// <summary>
@@ -69,7 +71,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}",
@@ -106,7 +107,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
@@ -143,7 +143,6 @@
                 DataObject[] newDataObjects = new DataObject[] { медведь1, медведь2, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",
@@ -191,7 +190,6 @@
                 DataObject[] newDataObjects = new DataObject[] { лес1, лес2, медведь1, медведь2, берлога1, берлога2, берлога3, берлога4, блоха1, блоха2, блоха3, блоха4 };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                     "http://localhost/odata/{0}?$filter={1}",

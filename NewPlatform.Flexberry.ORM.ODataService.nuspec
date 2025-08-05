@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>NewPlatform.Flexberry.ORM.ODataService</id>
-    <version>7.2.0</version>
+    <version>8.0.0-beta01</version>
     <title>Flexberry ORM ODataService</title>
     <authors>New Platform Ltd.</authors>
     <owners>New Platform Ltd.</owners>
@@ -13,16 +13,17 @@
     <description>Flexberry ORM OData Service Package.</description>
     <releaseNotes>
 		Added
-        1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
+    1. Helper class `DataObjectEdmModelDependencies` (it helps send named settings of Unity to class `DataObjectEdmModel`).
 
-        Changed
-		1. Updated Flexberry ORM up to 7.2.0.
-
-		Fixed
-		1. Fixed loading of object with crushing of already loaded masters.
-		2. Fixed loading of details.
+    Changed
+    1. Updated `NewPlatform.Flexberry.ORM` up to `8.0.0-beta02`.
+    2. Updated `NewPlatform.Flexberry.LockService` up to `4.0.0-beta01`.
+    3. Constructor of class `DataObjectEdmModel` (it now needs extra DI initialization).
+    4. Constructor of class `DefaultDataObjectEdmModelBuilder` (it is factory for class `DataObjectEdmModel`).
+    5. Constructor of class `DefaultOfflineManager`.
+    6. Constructor of class `OfflineAuditService`.
 	</releaseNotes>
-    <copyright>Copyright New Platform Ltd 2024</copyright>
+    <copyright>Copyright New Platform Ltd 2025</copyright>
     <tags>Flexberry ORM OData ODataService</tags>
     <dependencies>
       <group targetFramework="net45">
@@ -32,32 +33,32 @@
         <dependency id="Microsoft.OData.Core" version="7.10.0" />
         <dependency id="Microsoft.OData.Edm" version="7.10.0" />
         <dependency id="Microsoft.Spatial" version="7.10.0" />
-        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework="netstandard2.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
-        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework="netcoreapp3.1">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
-        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
         <group targetFramework="net6.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
-        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
       <group targetFramework="net7.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
-        <dependency id="NewPlatform.Flexberry.LockService" version="3.0.0" />
-        <dependency id="NewPlatform.Flexberry.ORM" version="7.2.0" />
+        <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
+        <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta02" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
 	  <group targetFramework="net9.0">
@@ -108,7 +109,7 @@
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.Common\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.xml" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.dll" />
 	<file src="NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\bin\$configuration$\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" target="lib\net6.0\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.xml" />
-
+  
     <file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.dll" />
 	<file src="NewPlatform.Flexberry.ORM.ODataService\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.xml" />
 	<file src="NewPlatform.Flexberry.ORM.ODataService.Files\bin\$configuration$\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" target="lib\net7.0\NewPlatform.Flexberry.ORM.ODataService.Files.dll" />

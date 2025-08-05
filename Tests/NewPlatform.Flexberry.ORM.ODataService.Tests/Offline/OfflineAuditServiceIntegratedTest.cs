@@ -5,6 +5,8 @@
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Audit.Objects;
     using ICSSoft.STORMNET.Security;
+    using Moq;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Offline;
     using Xunit;
     using Xunit.Abstractions;
@@ -32,6 +34,9 @@
 #if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
         /// </summary>
         public OfflineAuditServiceIntegratedTest(CustomWebApplicationFactory<TestStartup> factory, ITestOutputHelper output)
             : base(factory, output, "offline")
@@ -117,7 +122,7 @@
         /// <returns>The <see cref="MSSQLDataService" /> instance.</returns>
         protected override MSSQLDataService CreateMssqlDataService(string connectionString)
         {
-            return new MSSQLDataService(new EmptySecurityManager(), GetAuditServiceForTest()) { CustomizationString = connectionString };
+            return new MSSQLDataService(new EmptySecurityManager(), GetAuditServiceForTest(), businessServerProvider) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -127,7 +132,7 @@
         /// <returns>The <see cref="PostgresDataService" /> instance.</returns>
         protected override PostgresDataService CreatePostgresDataService(string connectionString)
         {
-            return new PostgresDataService(new EmptySecurityManager(), GetAuditServiceForTest()) { CustomizationString = connectionString };
+            return new PostgresDataService(new EmptySecurityManager(), GetAuditServiceForTest(), businessServerProvider) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -136,11 +141,11 @@
         /// <returns>Returns instance of the <see cref="OfflineAuditService" /> class that will be used for the test.</returns>
         protected AuditService GetAuditServiceForTest()
         {
-            return new OfflineAuditService
+            Mock<ICurrentUser> mockCurrentUser = new Mock<ICurrentUser>();
+            return new OfflineAuditService(mockCurrentUser.Object)
             {
                 AppSetting = new AuditAppSetting { AuditEnabled = true },
-                ApplicationMode = AppMode.Win,
-                Audit = new Audit()
+                Audit = new EmptyAudit(),
             };
         }
     }

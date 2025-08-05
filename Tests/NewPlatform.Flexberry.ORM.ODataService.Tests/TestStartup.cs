@@ -1,12 +1,14 @@
 ﻿#if NETCOREAPP
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
+    using System;
     using ICSSoft.Services;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -32,7 +34,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
+            IServiceProvider serviceProvider = app.ApplicationServices;
+            IUnityContainer unityContainer = serviceProvider.GetRequiredService<IUnityContainer>();
             unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -45,8 +48,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             app.UseODataService(builder =>
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-
                 var assemblies = new[]
                 {
                     typeof(Медведь).Assembly,
@@ -55,12 +56,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     typeof(Lock).Assembly,
                 };
 
-                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions);
+                PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
-                container.RegisterInstance(typeof(ManagementToken), token);
+                unityContainer.RegisterInstance(typeof(ManagementToken), token);
             });
         }
     }
