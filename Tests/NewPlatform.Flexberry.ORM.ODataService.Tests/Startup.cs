@@ -7,6 +7,7 @@ namespace ODataServiceSample.AspNetCore
     using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.Audit;
     using ICSSoft.STORMNET.Business.Interfaces;
+    using ICSSoft.STORMNET.Windows.Forms;
     using ICSSoft.STORMNET.Security;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,7 @@ namespace ODataServiceSample.AspNetCore
     using System.Linq;
     using Unity;
     using LockService = NewPlatform.Flexberry.Services.LockService;
+    using AdvLimit.ExternalLangDef;
 
     public class Startup
     {
@@ -83,11 +85,13 @@ namespace ODataServiceSample.AspNetCore
             unityContainer.RegisterInstance<IOptions<MvcOptions>>(mvcOptions);
 
             // Регистрируем Flexberry-сервисы через Unity
-            IDataService dataService = new PostgresDataService() { CustomizationString = CustomizationString };
-            unityContainer.RegisterInstance(dataService);
-            ExternalLangDef.LanguageDef.DataService = dataService;
+            var ds = unityContainer.Resolve<IDataService>() as PostgresDataService;
+            ds.CustomizationString = CustomizationString;
+            DataServiceProvider.DataService = ds;
+            unityContainer.RegisterType<IDataService, PostgresDataService>();
+            ExternalLangDef.LanguageDef = new ExternalLangDef(ds);
 
-            unityContainer.RegisterInstance<ILockService>(new LockService(dataService));
+            unityContainer.RegisterInstance<ILockService>(new LockService(ds));
             unityContainer.RegisterInstance<ISecurityManager>(new EmptySecurityManager());
         }
 
@@ -112,7 +116,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(Lock).Assembly,
                 };
 
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices);
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });
         }
