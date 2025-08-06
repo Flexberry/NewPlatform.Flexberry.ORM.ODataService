@@ -77,7 +77,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-          include-prerelease: true
+          dotnet-quality: preview
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
@@ -163,7 +163,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-          include-prerelease: true
+          dotnet-quality: preview
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
