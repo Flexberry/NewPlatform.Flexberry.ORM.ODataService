@@ -64,7 +64,7 @@ jobs:
       - name: Install .NET 6.0
         uses: actions/setup-dotnet@v4
         with:
-         dotnet-version: 6.0.x
+          dotnet-version: 6.0.x
           
        # Building requires an up-to-date .NET SDK.
 
