@@ -44,6 +44,8 @@ jobs:
           - 5432:5432
     env:
       ConnectionStringPostgres: "SERVER=localhost;User ID=postgres;Password=p@ssw0rd;Port=5432;"
+      ConnectionStringMssql: ""
+      ConnectionStringOracle: ""
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -132,6 +134,8 @@ jobs:
           - 1433:1433
     env:
       ConnectionStringMssql: "SERVER=localhost;User ID=sa;Password=p@ssw0rd;"
+      ConnectionStringPostgres: ""
+      ConnectionStringOracle: ""
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
