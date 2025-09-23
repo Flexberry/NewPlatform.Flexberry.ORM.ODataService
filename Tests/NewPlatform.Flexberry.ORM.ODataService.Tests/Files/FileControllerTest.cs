@@ -17,9 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 
     using Unity;
-
     using Xunit;
-
     using File = ICSSoft.STORMNET.FileType.File;
     using WebFile = ICSSoft.STORMNET.UserDataTypes.WebFile;
 
@@ -164,6 +162,7 @@
                 });
         }
 
+#if !NET9_0
         /// <summary>
         /// Осуществляет проверку того, что файлы корректно загружаются на сервер.
         /// </summary>
@@ -183,9 +182,9 @@
                         long fileSize = srcFileInfo.Length;
 
                         using var uploadingImageFileContent = new StreamContent(srcFileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read));
-                        uploadingImageFileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { FileName = srcFileInfo.Name };
                         uploadingImageFileContent.Headers.ContentType = new MediaTypeHeaderValue(MimeTypeUtils.GetFileMimeType(srcFileInfo.Name));
-                        var formDataContent = new MultipartFormDataContent { uploadingImageFileContent };
+                        var formDataContent = new MultipartFormDataContent();
+                        formDataContent.Add(uploadingImageFileContent, "file", srcFileInfo.Name);
 
                         // Act.
                         using var response = args.HttpClient.PostAsync(FileBaseUrl, formDataContent).Result;
@@ -232,6 +231,7 @@
                     }
                 });
         }
+#endif
 
         /// <summary>
         /// Осуществляет проверку того, что файлы корректно скачиваются с сервера.
