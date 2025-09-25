@@ -7,7 +7,7 @@ Before start test run please fill connection string `ConnectionStringPostgres` i
 ```xml
 <add name="ConnectionStringPostgres" connectionString="SERVER=localhost;User ID=postgres;Password=p@ssw0rd;Port=5432;" />
 ```
-Install [Docker](https://docker.com) if it not installed yet and start Docker.
+Install [Docker](https://docker.com) if it is not installed yet and start Docker.
 
 Then start Docker container with PostgreSQL by command from root folder this repository:
 
@@ -33,7 +33,7 @@ Before start test run please fill connection string `ConnectionStringMssql` in `
 <add name="ConnectionStringMssql" connectionString="SERVER=localhost;User ID=sa;Password=p@ssw0rd;" />
 ```
 
-Install [Docker](https://docker.com) if it not installed yet and start Docker.
+Install [Docker](https://docker.com) if it is not installed yet and start Docker.
 
 Then start Docker container with Microsoft SQL Server by command from root folder this repository:
 
