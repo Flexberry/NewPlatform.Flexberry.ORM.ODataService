@@ -54,7 +54,6 @@
 	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
   </ItemGroup>
 
-
 	<ItemGroup>
     <ProjectReference Include="..\NewPlatform.Flexberry.ORM.ODataService.Files\NewPlatform.Flexberry.ORM.ODataService.Files.csproj" />
   </ItemGroup>

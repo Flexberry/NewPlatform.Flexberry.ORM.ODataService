@@ -181,9 +181,9 @@
                         long fileSize = srcFileInfo.Length;
 
                         using var uploadingImageFileContent = new StreamContent(srcFileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read));
+                        uploadingImageFileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { FileName = srcFileInfo.Name };
                         uploadingImageFileContent.Headers.ContentType = new MediaTypeHeaderValue(MimeTypeUtils.GetFileMimeType(srcFileInfo.Name));
-                        var formDataContent = new MultipartFormDataContent();
-                        formDataContent.Add(uploadingImageFileContent, "file", srcFileInfo.Name);
+                        var formDataContent = new MultipartFormDataContent { uploadingImageFileContent };
 
                         // Act.
                         using var response = args.HttpClient.PostAsync(FileBaseUrl, formDataContent).Result;

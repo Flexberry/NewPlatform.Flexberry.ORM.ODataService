@@ -85,7 +85,6 @@
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
   </ItemGroup>
 
-
 	<ItemGroup>
     <None Remove="SqlScripts\**" />
     <None Remove="Files\delorean.png" />
@@ -152,6 +151,5 @@
   <Target Name="ConfigFile" AfterTargets="AfterBuild">
     <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>
-
 
 </Project>
