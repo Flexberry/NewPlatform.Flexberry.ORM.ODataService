@@ -23,11 +23,11 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 	
-    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-	    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
-    </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+	<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -85,7 +85,7 @@
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
   </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <None Remove="SqlScripts\**" />
     <None Remove="Files\delorean.png" />
     <None Remove="Files\readme.txt" />
