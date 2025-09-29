@@ -51,7 +51,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 Котенок котенок = new Котенок { Кошка = кошка1, КличкаКотенка = "Котенок Гав", Глупость = 10 };
                 args.DataService.UpdateObject(котенок);
 
-                // Обновляем ссылку на мастера
+                // Обновляем ссылку на мастера.
                 котенок.Кошка = кошка2;
 
                 // Представление, по которому будем обновлять.
@@ -64,7 +64,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 // Преобразуем объект в JSON-строку.
                 string requestJsonData = котенок.ToJson(котенокDynamicView, args.Token.Model);
 
-                // Добавляем в payload информацию о том, что поменяли ссылку на мастера
+                // Добавляем в payload информацию о том, что поменяли ссылку на мастера.
                 requestJsonData = ODataTestHelper.AddEntryRelationship(requestJsonData, котенокDynamicView, args.Token.Model, кошка2, nameof(Котенок.Кошка));
 
                 // Формируем URL запроса к OData-сервису (с идентификатором изменяемой сущности).
@@ -98,13 +98,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 Котенок котенок = new Котенок { Кошка = кошка, КличкаКотенка = "Котенок Гав", Глупость = 10 };
                 args.DataService.UpdateObject(котенок);
 
-                // Обновляем атрибут объекта
+                // Обновляем атрибут объекта.
                 котенок.Глупость = 1;
 
                 // Обновляем атрибут мастера
                 котенок.Кошка.Кличка = "Петрушка";
 
-                // Представление, по которому будем обновлять объект
+                // Представление, по которому будем обновлять объект.
                 string[] котенокPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
@@ -112,7 +112,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 };
                 var котенокDynamicView = new View(new ViewAttribute("котенокDynamicView", котенокPropertiesNames), typeof(Котенок));
 
-                // Представление, по которому будем обновлять мастер
+                // Представление, по которому будем обновлять мастер.
                 string[] кошкаPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Кошка>(x => x.__PrimaryKey),
@@ -123,7 +123,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 // Преобразуем объект в JSON-строку.
                 string котенокJsonData = котенок.ToJson(котенокDynamicView, args.Token.Model);
 
-                // Добавляем в payload информацию о ссылке на мастера
+                // Добавляем в payload информацию о ссылке на мастера.
                 котенокJsonData = ODataTestHelper.AddEntryRelationship(котенокJsonData, котенокDynamicView, args.Token.Model, котенок.Кошка, nameof(Котенок.Кошка));
 
                 const string baseUrl = "http://localhost/odata";
