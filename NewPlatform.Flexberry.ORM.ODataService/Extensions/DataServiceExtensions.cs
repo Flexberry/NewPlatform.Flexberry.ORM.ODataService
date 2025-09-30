@@ -313,7 +313,13 @@
         /// <param name="loadedObjectLocal">Свежезагруженный объект.</param>
         /// <param name="dataObjectCache">Основной кэш.</param>
         /// <param name="dataObjectCacheLocal">Локальный кэш, куда была выполнена свежая прогрузка.</param>
-        private static void ProperUpdateOfObject(DataObject currentObject, DataObject loadedObjectLocal, DataObjectCache dataObjectCache, DataObjectCache dataObjectCacheLocal)
+        /// <param name="visited">Информация об уже обработанных сущностях (для защиты от рекурсивной обработки).</param>
+        private static void ProperUpdateOfObject(
+            DataObject currentObject,
+            DataObject loadedObjectLocal,
+            DataObjectCache dataObjectCache,
+            DataObjectCache dataObjectCacheLocal,
+            HashSet<DataServiceExtensionHelper> visited = null)
         {
             if (currentObject == null)
             {
@@ -348,8 +354,15 @@
                 Information.SetPropValueByName(currentDataCopy, notLoadedPropName, propValue);
             }
 
+            visited ??= new HashSet<DataServiceExtensionHelper>();
+            DataServiceExtensionHelper dataForHash = new DataServiceExtensionHelper() { TypeInfo = currentObject.GetType(), PrimaryKeyInfo = currentObject.__PrimaryKey };
+            if (!visited.Add(dataForHash))
+            {
+                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
+            }
+
             // Ещё могут быть частично загруженные мастера.
-            ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true);
+            ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, visited);
         }
 
         /// <summary>
@@ -359,7 +372,13 @@
         /// <param name="dataObjectCacheWithMasters">Вспомогательный кэш, куда загружался объект.</param>
         /// <param name="loadedDataObject">Свежезагруженный объект, по которому обновляется основной кэш.</param>
         /// <param name="loadedObjectsAdded">Флаг, определяющий, что в кэш уже добавлен свежезагруженный объект.</param>
-        private static void ProperCacheUpdateForOneObject(DataObjectCache dataObjectCacheActual, DataObjectCache dataObjectCacheWithMasters, DataObject loadedDataObject, bool loadedObjectsAdded)
+        /// <param name="visited">Информация об уже обработанных сущностях (для защиты от рекурсивной обработки).</param>
+        private static void ProperCacheUpdateForOneObject(
+            DataObjectCache dataObjectCacheActual,
+            DataObjectCache dataObjectCacheWithMasters,
+            DataObject loadedDataObject,
+            bool loadedObjectsAdded,
+            HashSet<DataServiceExtensionHelper> visited)
         {
             if (dataObjectCacheActual == null)
             {
@@ -374,6 +393,12 @@
             if (loadedDataObject == null)
             {
                 return;
+            }
+
+            DataServiceExtensionHelper dataForHash = new DataServiceExtensionHelper() { TypeInfo = loadedDataObject.GetType(), PrimaryKeyInfo = loadedDataObject.__PrimaryKey };
+            if (!visited.Add(dataForHash))
+            {
+                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
             }
 
             if (!loadedObjectsAdded)
@@ -401,13 +426,13 @@
                             dataObjectCacheActual.AddDataObject(currentMaster);
 
                             // Но в добавленном мастере могут быть мастера 2 и далее уровней.
-                            ProperCacheUpdateForOneObject(dataObjectCacheActual, dataObjectCacheWithMasters, currentMaster, true);
+                            ProperCacheUpdateForOneObject(dataObjectCacheActual, dataObjectCacheWithMasters, currentMaster, true, visited);
                         }
                         else
                         { // Если мастер был в кэше, то аккуратно нужно перенести только незагруженные ранее свойства.
                             if (masterFromActualCache.GetStatus(false) == ObjectStatus.UnAltered && masterFromActualCache.GetLoadingState() != LoadingState.Loaded)
                             {
-                                ProperUpdateOfObject(masterFromActualCache, currentMaster, dataObjectCacheActual, dataObjectCacheWithMasters);
+                                ProperUpdateOfObject(masterFromActualCache, currentMaster, dataObjectCacheActual, dataObjectCacheWithMasters, visited);
                             }
                         }
                     }
