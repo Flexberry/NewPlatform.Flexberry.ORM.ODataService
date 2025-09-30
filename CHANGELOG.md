@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
+1. Fixed problem of safe master with self-cycles loading.
 
 ## [7.2.0] - 2024.03.27
 
