@@ -319,7 +319,7 @@
             DataObject loadedObjectLocal,
             DataObjectCache dataObjectCache,
             DataObjectCache dataObjectCacheLocal,
-            HashSet<TypeKeyPair> processedDataObjects = null)
+            HashSet<TypeKeyTuple> processedDataObjects = null)
         {
             if (currentObject == null)
             {
@@ -354,8 +354,8 @@
                 Information.SetPropValueByName(currentDataCopy, notLoadedPropName, propValue);
             }
 
-            processedDataObjects ??= new HashSet<TypeKeyPair>();
-            TypeKeyPair dataForHash = new TypeKeyPair(currentObject.GetType(), currentObject.__PrimaryKey);
+            processedDataObjects ??= new HashSet<TypeKeyTuple>();
+            TypeKeyTuple dataForHash = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
             if (!processedDataObjects.Add(dataForHash))
             {
                 return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
@@ -378,7 +378,7 @@
             DataObjectCache dataObjectCacheWithMasters,
             DataObject loadedDataObject,
             bool loadedObjectsAdded,
-            HashSet<TypeKeyPair> processedDataObjects)
+            HashSet<TypeKeyTuple> processedDataObjects)
         {
             if (dataObjectCacheActual == null)
             {
@@ -400,7 +400,7 @@
                 return;
             }
 
-            TypeKeyPair dataForHash = new TypeKeyPair(loadedDataObject.GetType(), loadedDataObject.__PrimaryKey);
+            TypeKeyTuple dataForHash = new TypeKeyTuple(loadedDataObject.GetType(), loadedDataObject.__PrimaryKey);
             if (!processedDataObjects.Add(dataForHash))
             {
                 return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
