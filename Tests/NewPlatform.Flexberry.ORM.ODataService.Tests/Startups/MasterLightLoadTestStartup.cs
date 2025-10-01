@@ -63,7 +63,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
                 // Set MasterLightLoad property for this DataObject
                 var masterLightLoadTypes = new List<Type> { typeof(Котенок) }; 
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions, masterLightLoadTypes: masterLightLoadTypes);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false, pseudoDetailDefinitions, masterLightLoadTypes: masterLightLoadTypes);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
