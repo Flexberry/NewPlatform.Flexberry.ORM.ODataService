@@ -8,9 +8,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
+    using ICSSoft.STORMNET.Security;
+    using Moq;
     using Npgsql;
     using Oracle.ManagedDataAccess.Client;
+    using Unity;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -23,19 +29,27 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 #endif
 #if NETCOREAPP
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Practices.Unity.Configuration;
     using ODataServiceSample.AspNetCore;
-    using ICSSoft.Services;
-    using Unity;
 
     /// <summary>
     /// Base class for integration tests.
     /// </summary>
     /// <typeparam name="TStartup">Startup class used for booting the application.</typeparam>
     public abstract class BaseIntegratedTest<TStartup> : IClassFixture<CustomWebApplicationFactory<TStartup>>, IDisposable
-        where TStartup : class
+        where TStartup : Startup
     {
         protected readonly WebApplicationFactory<TStartup> _factory;
 #endif
+        protected IUnityContainer _container;
+
+        protected IServiceProvider _serviceProvider;
+
+        /// <summary>
+        /// Provider for injection to data services for test purposes.
+        /// </summary>
+        protected static IBusinessServerProvider businessServerProvider;
+
         protected ITestOutputHelper _output;
 
         private const string PoolingFalseConst = "Pooling=false;";
@@ -133,6 +147,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
 #endif
+
 #if NETCOREAPP
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
@@ -144,12 +159,22 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         protected BaseIntegratedTest(CustomWebApplicationFactory<TStartup> factory, ITestOutputHelper output, string tempDbNamePrefix, bool useGisDataService = false)
         {
             _factory = factory;
+#endif
+            _container = new UnityContainer();
+#if NETCOREAPP
+            _container = _factory.Services.GetService(typeof(IUnityContainer)) as IUnityContainer;
+            _container.LoadConfiguration();
+#endif
+            _serviceProvider = new UnityServiceProvider(_container);
+            _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+            businessServerProvider = _container.Resolve<IBusinessServerProvider>();
+#if NETCOREAPP
+
             _output = output;
 
             if (output != null)
             {
-                IUnityContainer container = UnityFactory.GetContainer();
-                container.RegisterInstance(_output);
+                _container.RegisterInstance(_output);
             }
 #endif
             _useGisDataService = useGisDataService;
@@ -318,9 +343,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="MSSQLDataService"/> instance.</returns>
         protected virtual MSSQLDataService CreateMssqlDataService(string connectionString)
         {
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+
             if (_useGisDataService)
-                return new GisMSSQLDataService { CustomizationString = connectionString };
-            return new MSSQLDataService { CustomizationString = connectionString };
+                return new GisMSSQLDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
+
+            return new MSSQLDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -330,9 +359,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="PostgresDataService"/> instance.</returns>
         protected virtual PostgresDataService CreatePostgresDataService(string connectionString)
         {
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+
             if (_useGisDataService)
-                return new GisPostgresDataService { CustomizationString = connectionString };
-            return new PostgresDataService { CustomizationString = connectionString };
+                return new GisPostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
+
+            return new PostgresDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -342,7 +375,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <returns>The <see cref="OracleDataService"/> instance.</returns>
         protected virtual OracleDataService CreateOracleDataService(string connectionString)
         {
-            return new OracleDataService { CustomizationString = connectionString };
+            var securityManager = new EmptySecurityManager();
+            var mockAuditService = new Mock<IAuditService>();
+            return new OracleDataService(securityManager, mockAuditService.Object, businessServerProvider) { CustomizationString = connectionString };
         }
 
         /// <summary>
@@ -436,7 +471,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
         private static string GetConnectionString(string name)
         {
-            return Environment.GetEnvironmentVariable(name) ?? ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return Environment.GetEnvironmentVariable(name) ?? (ConfigurationManager.ConnectionStrings[name] ?? throw new Exception($"No information about connection string with name {name}")).ConnectionString;
         }
     }
 }

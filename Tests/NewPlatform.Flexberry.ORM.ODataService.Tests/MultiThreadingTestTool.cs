@@ -100,10 +100,12 @@
                 threads.Add(threadsArray[i]);
             }
 
-            var dictionary = new Dictionary<string, object>();
-            dictionary.Add(ParamNameSender, sender);
-            dictionary.Add(ParamNameExceptions, exceptions);
-            dictionary.Add(ParamNameWorking, Working);
+            var dictionary = new Dictionary<string, object>
+            {
+                { ParamNameSender, sender },
+                { ParamNameExceptions, exceptions },
+                { ParamNameWorking, Working }
+            };
 
             foreach (Thread thread in threadsArray)
             {
