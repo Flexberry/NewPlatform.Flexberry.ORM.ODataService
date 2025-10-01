@@ -176,13 +176,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                 Котенок котенок = new Котенок { Кошка = кошка1, КличкаКотенка = "Котенок Гав", Глупость = 10 };
                 args.DataService.UpdateObject(котенок);
 
-                // Обновляем атрибут объекта
+                // Обновляем атрибут объекта.
                 котенок.Глупость = 1;
 
                 // Обновляем мастера
                 котенок.Кошка = кошка2;
 
-                // Представление, по которому будем обновлять объект
+                // Представление, по которому будем обновлять объект.
                 string[] котенокPropertiesNames =
                 {
                     Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
