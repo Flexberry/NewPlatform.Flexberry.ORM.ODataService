@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net461;netcoreapp3.1;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net461;netcoreapp3.1;net7.0;net9.0</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>latest</LangVersion>
     <RootNamespace>NewPlatform.Flexberry.ORM.ODataService.Tests</RootNamespace>
@@ -12,6 +12,7 @@
     <CodeAnalysisRuleSet>..\..\Flexberry.ruleset</CodeAnalysisRuleSet>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -20,6 +21,10 @@
     <Reference Include="System.Web" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
+  </ItemGroup>
+	
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+	<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,7 +62,7 @@
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
   </ItemGroup>
 
@@ -73,6 +78,11 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.9" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -141,6 +151,5 @@
   <Target Name="ConfigFile" AfterTargets="AfterBuild">
     <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>
-
 
 </Project>

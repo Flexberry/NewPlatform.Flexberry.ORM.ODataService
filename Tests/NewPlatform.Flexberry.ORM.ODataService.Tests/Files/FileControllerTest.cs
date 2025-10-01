@@ -17,9 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 
     using Unity;
-
     using Xunit;
-
     using File = ICSSoft.STORMNET.FileType.File;
     using WebFile = ICSSoft.STORMNET.UserDataTypes.WebFile;
 

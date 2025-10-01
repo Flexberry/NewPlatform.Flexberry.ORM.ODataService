@@ -57,7 +57,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService
         /// <returns>An <see cref="DataObjectController" /> object for specified arguments.</returns>
         protected virtual DataObjectController CreateDataObjectController(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
         {
-            //TODO: поменять DependencyResolver на IServiceProvider
+            // TODO: заменить DependencyResolver на IServiceProvider
             IDependencyResolver dependencyResolver = request.GetConfiguration().DependencyResolver;
             IDataService dataService = (IDataService)dependencyResolver.GetService(typeof(IDataService));
             IDataObjectFileAccessor fileAccessor = (IDataObjectFileAccessor)dependencyResolver.GetService(typeof(IDataObjectFileAccessor));
