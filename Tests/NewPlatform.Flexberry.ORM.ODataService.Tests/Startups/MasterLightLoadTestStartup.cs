@@ -3,11 +3,13 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
     using System.Collections.Generic;
+    using DocumentFormat.OpenXml.ExtendedProperties;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using NewPlatform.Flexberry.ORM.ODataService;
@@ -17,6 +19,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using NewPlatform.Flexberry.Services;
     using ODataServiceSample.AspNetCore;
     using Unity;
+    using Unity.Injection;
 
     /// <summary>
     /// Startup for testing MasterLightLoad configuration.
@@ -25,7 +28,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     public class MasterLightLoadTestStartup : Startup
     {
         /// <summary>
-        /// Initialize new instance of TestStartup.
+        /// Initialize new instance of MasterLightLoadTestStartup.
         /// </summary>
         /// <param name="configuration">Configuration for new instance.</param>
         public MasterLightLoadTestStartup(IConfiguration configuration)
@@ -36,7 +39,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <inheritdoc/>
         public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IUnityContainer unityContainer = UnityFactory.GetContainer();
+            IUnityContainer unityContainer = app.ApplicationServices.GetService(typeof(IUnityContainer)) as IUnityContainer;
+            if (unityContainer == null)
+            {
+                throw new InvalidOperationException("Не удалось получить IUnityContainer из ApplicationServices");
+            }
+
             unityContainer.RegisterInstance(env);
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -49,7 +57,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 
             app.UseODataService(builder =>
             {
-                IUnityContainer container = UnityFactory.GetContainer();
+                IUnityContainer container = unityContainer;
 
                 var assemblies = new[]
                 {
@@ -62,7 +70,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)container.Resolve(typeof(PseudoDetailDefinitions));
 
                 // Set MasterLightLoad property for this DataObject
-                var masterLightLoadTypes = new List<Type> { typeof(Котенок) }; 
+                var masterLightLoadTypes = new List<Type> { typeof(Котенок) };
                 var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false, pseudoDetailDefinitions, masterLightLoadTypes: masterLightLoadTypes);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);

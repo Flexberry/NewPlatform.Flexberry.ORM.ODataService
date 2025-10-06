@@ -6,13 +6,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
+    using ICSSoft.Services;
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business;
     using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.KeyGen;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
-
+    using Unity;
     using Xunit;
     using Xunit.Abstractions;
 
@@ -38,8 +41,22 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         [Fact]
         public void MasterChangedTest()
         {
+            IUnityContainer container = _container;
+            ManagementToken token = null;
+            if (container.IsRegistered<ManagementToken>())
+            {
+                token = container.Resolve<ManagementToken>();
+            }
+            else
+            {
+                throw new InvalidOperationException("ManagementToken  не найден в контейнере. Ошибка регистрации в MasterLightLoadTestStartup");
+            }
+
             ActODataService(args =>
             {
+                args.UnityContainer = container;
+                args.Token = token;
+
                 // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
                 Порода порода = new Порода { Название = "Сиамская" };
                 Кошка кошка1 = new Кошка { Кличка = "Болтушка", Агрессивная = true, Порода = порода };
@@ -87,7 +104,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         [Fact]
         public void MasterPropsChangedBatchTest()
         {
-            ActODataService(async args =>
+            ActODataService(args =>
             {
                 // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
                 Порода порода = new Порода { Название = "Сиамская" };
@@ -163,7 +180,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
         [Fact]
         public void MasterChangedBatchTest()
         {
-            ActODataService(async args =>
+            ActODataService(args =>
             {
                 // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
                 Порода порода = new Порода { Название = "Сиамская" };
