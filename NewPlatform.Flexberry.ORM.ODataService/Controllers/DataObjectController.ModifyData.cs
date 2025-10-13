@@ -909,6 +909,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             IEdmEntityType entityType = (IEdmEntityType)edmEntity.ActualEdmType;
             IEnumerable<IEdmProperty> entityProps = entityType.Properties();
             var keyProperty = entityProps.FirstOrDefault(prop => prop.Name == _model.KeyPropertyName);
+            if (keyProperty == null)
+            {
+                throw new InvalidOperationException($"Key property '{_model.KeyPropertyName}' not found in EDM type '{entityType.FullTypeName()}'.");
+            }
+
             edmEntity.TryGetPropertyValue(keyProperty.Name, out key);
 
             return key;

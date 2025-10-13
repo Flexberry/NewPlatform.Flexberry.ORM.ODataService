@@ -249,14 +249,14 @@
         /// <param name="updateView">Update view to be used for objects of type <paramref name="dataObjectType" />. <i>Setting <see langword="null" /> removes update view for the type.</i></param>
         private void SetUpdateView(Type dataObjectType, View updateView)
         {
-            if (!dataObjectType.IsSubclassOf(typeof(DataObject)))
-            {
-                throw new ArgumentException($"Update view can be set only for a DataObject. Current type is {dataObjectType}", nameof(dataObjectType));
-            }
-
             if (dataObjectType is null)
             {
                 throw new ArgumentException("dataObjectType can not be null.", nameof(dataObjectType));
+            }
+
+            if (!dataObjectType.IsSubclassOf(typeof(DataObject)))
+            {
+                throw new ArgumentException($"Update view can be set only for a DataObject. Current type is {dataObjectType}", nameof(dataObjectType));
             }
 
             if (updateView is null)
@@ -283,9 +283,14 @@
             {
                 foreach (Type type in masterLightLoadTypes)
                 {
+                    if (type is null)
+                    {
+                        throw new ArgumentException("MasterLightLoad option can not be set for a null type.", nameof(masterLightLoadTypes));
+                    }
+
                     if (!type.IsSubclassOf(typeof(DataObject)))
                     {
-                        throw new ArgumentException("MasterLightLoad option can be set only for a DataObject.", nameof(masterLightLoadTypes));
+                        throw new ArgumentException("MasterLightLoad option can be set only for a DataObject. Current type is {type}", nameof(masterLightLoadTypes));
                     }
                 }
 
