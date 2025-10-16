@@ -11,13 +11,12 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
 #endif
-
-    using static ICSSoft.Services.CurrentUserService;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
 
     /// <summary>
     /// Класс, представляющий текущего аутентифицированного пользователя на основе заголовков.
     /// </summary>
-    public class WebHttpUser : IUser
+    public class WebHttpUser : ICurrentUser
     {
         private readonly IHttpContextAccessor contextAccessor;
 
@@ -56,17 +55,26 @@
         {
             get
             {
-                string contextLogin = Headers?["username"];
+                /* HttpContext is not thread-safety.
+                 * According to https://www.thecodebuzz.com/httpcontext-best-practices-in-net-csharp-thread-safe/
+                 * it is bad to keep HttpContext in situation of multy-threading at constructor. Only IHttpContextAccessor can be saved at constructor.
+                 * Also login is not saved bacause of multy-threading. This instance is used for all threads and it leads to errors if some values are kept.
+                 */
+#if NETFRAMEWORK
+                HttpContext context = contextAccessor.HttpContext;
+                NameValueCollection headers = context?.Request.Headers;
+#elif NETCOREAPP
+                HttpContext context = contextAccessor.HttpContext ?? actionContextAccessor.ActionContext?.HttpContext;
+                IHeaderDictionary headers = context?.Request.Headers;
+#endif
 
-                if (!string.IsNullOrEmpty(contextLogin) && !string.Equals(contextLogin, login, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    login = contextLogin;
-                }
-
-                return login;
+                return headers?["username"];
             }
 
-            set => login = value;
+            set
+            {
+                login = value;
+            }
         }
 
         /// <inheritdoc />
@@ -77,27 +85,18 @@
         {
             get
             {
-                string contextFriendlyName = Headers?["name"];
+#if NETFRAMEWORK
+                HttpContext context = contextAccessor.HttpContext;
+                NameValueCollection headers = context?.Request.Headers;
+#elif NETCOREAPP
+                HttpContext context = contextAccessor.HttpContext ?? actionContextAccessor.ActionContext?.HttpContext;
+                IHeaderDictionary headers = context?.Request.Headers;
+#endif
 
-                if (!string.IsNullOrEmpty(contextFriendlyName) && !string.Equals(contextFriendlyName, friendlyName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    friendlyName = contextFriendlyName;
-                }
-
-                return friendlyName;
+                return headers?["name"];
             }
 
             set => friendlyName = value;
         }
-
-#if NETFRAMEWORK
-        private HttpContext Context => contextAccessor.HttpContext;
-
-        private NameValueCollection Headers => Context?.Request.Headers;
-#elif NETCOREAPP
-        private HttpContext Context => contextAccessor.HttpContext ?? actionContextAccessor.ActionContext?.HttpContext;
-
-        private IHeaderDictionary Headers => Context?.Request.Headers;
-#endif
     }
 }

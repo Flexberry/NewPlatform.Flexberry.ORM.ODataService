@@ -58,7 +58,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { detailsClass2, detailsClass1, agrClass1, agrClass2, mainClass };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string agrClass2Pk = ((KeyGuid)agrClass2.__PrimaryKey).Guid.ToString("D");
 
@@ -98,8 +97,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}",
                 args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
@@ -137,8 +134,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
-
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}&$select={2}",
                 args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
@@ -177,7 +172,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}&$select={2}",
@@ -218,7 +212,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}&$select={2}",
@@ -258,7 +251,6 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
                 DataObject[] newDataObjects = new DataObject[] { breed, forest, den, bear };
 
                 args.DataService.UpdateObjects(ref newDataObjects);
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
 
                 string requestUrl = string.Format(
                 "http://localhost/odata/{0}?$filter={1}&$select={2}",

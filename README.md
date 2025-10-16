@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml/badge.svg)](https://github.com/Flexberry/NewPlatform.Flexberry.ORM.ODataService/actions/workflows/build.yml)
 
-В этом репозитории располагается исходный код `Flexberry ORM ODataService` - серверного компонета для реализации публикации данных по протоколу [OData V4](http://www.odata.org/) для Microsoft .NET Framework и .NET Core.
+В этом репозитории располагается исходный код `Flexberry ORM ODataService` - серверного компонента для реализации публикации данных по протоколу [OData V4](http://www.odata.org/) для Microsoft .NET Framework и .NET Core.
 
 ## Ключевые особенности
 
@@ -16,7 +16,7 @@
 
 ## Структура проекта
 
-Данное решение содержит несколько проектов, которые можно условно разделить две категории:
+Данное решение содержит несколько проектов, которые можно условно разделить на две категории:
 
 * Реализация OData-сервера
   * `NewPlatform.Flexberry.ORM.ODataService` - основной проект, в котором располагаются классы для публикации с объектов данных по протоколу `OData`.
@@ -36,12 +36,12 @@
 
 ## Сообщество
 
-Основным способом распространения `Flexberry ORM ODataService` является [NuGet-пакет](https://www.nuget.org/packages/NewPlatform.Flexberry.ORM.ODataService). Если во время использования этого фреймворка вы обнаружили ошибку или проблему, то можно завести Issue или исправить ошибку и отправить в этот репозиторий соответствующий Pool Request.
+Основным способом распространения `Flexberry ORM ODataService` является [NuGet-пакет](https://www.nuget.org/packages/NewPlatform.Flexberry.ORM.ODataService). Если во время использования этого фреймворка вы обнаружили ошибку или проблему, то можно завести Issue или исправить ошибку и отправить в этот репозиторий соответствующий Pull Request.
 
 ### Доработка
 
-Исправление ошибок приветствуется, технические детали можно выяснить в [чате](https://gitter.im/Flexberry/PlatformDevelopment) или непосредственно в описании Issue.
-Добавление новой функциональности рекомендуется согласовывать с авторами, поскольку принятие Pool Request в этом случае может быть затруднено.
+Исправление ошибок приветствуется, технические детали можно выяснить в [чате](https://t.me/flexberry) или непосредственно в описании Issue.
+Добавление новой функциональности рекомендуется согласовывать с авторами, поскольку принятие Pull Request в этом случае может быть затруднено.
 
 ### Техническая поддержка
 

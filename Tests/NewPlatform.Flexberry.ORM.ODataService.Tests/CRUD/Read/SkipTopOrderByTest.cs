@@ -87,7 +87,6 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
                 Страна страна1 = new Страна { Название = "Россия" };
                 Страна страна2 = new Страна { Название = "Белоруссия" };
                 Лес лес1 = new Лес { Название = "Бор" };
@@ -172,7 +171,6 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
                 NullableDateTime dt1 = (NullableDateTime)new DateTime(2017, 11, 21);
                 NullableDateTime dt2 = (NullableDateTime)new DateTime(2017, 10, 21);
                 NullableDateTime dt3 = (NullableDateTime)new DateTime(2017, 09, 21);
@@ -224,7 +222,6 @@
         {
             ActODataService(args =>
             {
-                ExternalLangDef.LanguageDef.DataService = args.DataService;
                 NullableDateTime dt1 = (NullableDateTime)new DateTime(2017, 11, 21);
                 NullableDateTime dt2 = (NullableDateTime)new DateTime(2017, 10, 21);
                 NullableDateTime dt3 = (NullableDateTime)new DateTime(2017, 09, 21);

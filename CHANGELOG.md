@@ -4,8 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+1. Helper class `DataObjectEdmModelDependencies` (it helps send named settings of Unity to class `DataObjectEdmModel`).
 
 ### Changed
+1. Updated `NewPlatform.Flexberry.ORM` up to `8.0.0-beta02`.
+2. Updated `NewPlatform.Flexberry.LockService` up to `4.0.0-beta01`.
+3. Constructor of class `DataObjectEdmModel` (it now needs extra DI initialization).
+4. Constructor of class `DefaultDataObjectEdmModelBuilder` (it is factory for class `DataObjectEdmModel`).
+5. Constructor of class `DefaultOfflineManager`.
+6. Constructor of class `OfflineAuditService`.
 
 ### Fixed
 
@@ -95,7 +102,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  1. Batch update InternalServerError event handling.
  2. SafeLoadDetails for models with TypeUsage.
  3. Batch update CallbackAfterCreate, CallbackAfterUpdate, CallbackAfterDelete call.
- 4. SafeLoadDetails for partial loaded agregator.
+ 4. SafeLoadDetails for partial loaded aggregator.
 
 ## [5.1.1] - 2020.08.21
 
@@ -108,7 +115,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 1. Update and delete details by batch update.
 2. Exponential format for numeric values serialization issue.
 3. SafeLoadDetails add details DataCopy to DataCopy DetailArray.
-4. Load emty agregators in SafeLoadDetails.
+4. Load empty aggregators in SafeLoadDetails.
 
 ## [5.1.0] - 2020.05.03
 
@@ -127,7 +134,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 2. [BREAKINGCHANGE] Method MapODataServiceDataObjectRoute now requires HttpServer as parameter.
 3. At creation of dynamic views of the master in them are added with primary keys.
 4. Use common DataObjectCache for all sql queries per http request.
-5. [BREAKINGCHANGE] Details BS not apply changes in agregator. Use BS for agregator when details changed.
+5. [BREAKINGCHANGE] Details BS not apply changes in aggregator. Use BS for aggregator when details changed.
 6. Refactor `DataObjectControllerActivator` to simplify overriding DOC initialization.
 7. Mapping only selected properties on getting objects.
 8. [BREAKINGCHANGE] The namespace of api-extensions is changed to NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions.
@@ -142,7 +149,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 2. Getting objects by primary key with using `$select` and `$expand` query options.
 3. Loading masters with common DataObjectCache.
 4. Naming of details when exporting data to Excel.
-5. Call BS for agregator when details changed in batch requests.
+5. Call BS for aggregator when details changed in batch requests.
 6. WebFile type support in batch requests.
 7. Fix error on creation DataObject with pseudodetail field defined.
 8. Loading masters with not stored property in batch requests.

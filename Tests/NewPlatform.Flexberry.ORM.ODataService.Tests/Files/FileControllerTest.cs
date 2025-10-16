@@ -17,9 +17,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Controllers;
 
     using Unity;
-
     using Xunit;
-
     using File = ICSSoft.STORMNET.FileType.File;
     using WebFile = ICSSoft.STORMNET.UserDataTypes.WebFile;
 
@@ -60,12 +58,17 @@
         /// </summary>
         private static string _srcTextFilePath;
 
+#if NETFRAMEWORK
         /// <summary>
         /// Инициализирует тестовый класс (инициализация выполняется перед запуском тестов).
         /// </summary>
-#if NETFRAMEWORK
         public FileControllerTest()
 #elif NETCOREAPP
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileControllerTest"/> class.
+        /// </summary>
+        /// <param name="factory">Factory for application.</param>
+        /// <param name="output">Debug information output.</param>
         public FileControllerTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
             : base(factory, output)
 #endif
