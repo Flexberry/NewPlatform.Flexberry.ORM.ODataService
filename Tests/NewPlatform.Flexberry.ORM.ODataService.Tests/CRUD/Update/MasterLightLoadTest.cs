@@ -7,6 +7,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using DocumentFormat.OpenXml.Drawing;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -242,6 +243,77 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
                     Assert.Equal(1, котенокLoaded.Глупость);
 
                     // TODO: проверка на экономную загрузку мастера.
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тест для проверки случая, когда навигационное свойство мастера есть, но ключ null.
+        /// Проверяет, что в этом случае не происходит обнуления ссылки на мастера.
+        /// </summary>
+        [Fact]
+        public void MasterWithNullKeyTest()
+        {
+            ActODataService(args =>
+            {
+                string masterKey = "00000000-0000-0000-0000-000000000000";
+                // Создаем объекты данных, которые потом будем обновлять, и добавляем в базу обычным сервисом данных.
+                Порода порода = new Порода { Название = "Сиамская" };
+                Кошка кошка = new Кошка { Кличка = "Болтушка", Агрессивная = true, Порода = порода, __PrimaryKey = masterKey };
+                args.DataService.UpdateObject(порода);
+                args.DataService.UpdateObject(кошка);
+
+                Котенок котенок = new Котенок { Кошка = кошка, КличкаКотенка = "Котенок Гав", Глупость = 10 };
+                args.DataService.UpdateObject(котенок);
+
+                // Представление, по которому будем обновлять объект.
+                string[] котенокPropertiesNames =
+                {
+                    Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Котенок>(x => x.Глупость),
+                };
+                var котенокDynamicView = new View(new ViewAttribute("котенокDynamicView", котенокPropertiesNames), typeof(Котенок));
+
+                // Преобразуем объект в JSON-строку.
+                string котенокJsonData = котенок.ToJson(котенокDynamicView, args.Token.Model);
+
+                котенокJsonData = ODataTestHelper.AddEntryRelationship(котенокJsonData, котенокDynamicView, args.Token.Model, кошка, nameof(Котенок.Кошка));
+
+                котенокJsonData = котенокJsonData.Replace($"\"Кошка@odata.bind\":\"Кошкаs({masterKey})\"", "\"Кошка@odata.bind\":null");
+
+                const string baseUrl = "http://localhost/odata";
+                string[] changesets = new[]
+                {
+                    CreateChangeset(
+                        $"{baseUrl}/{args.Token.Model.GetEdmEntitySet(typeof(Котенок)).Name}",
+                        котенокJsonData,
+                        котенок),
+                };
+
+                // Act.
+                HttpRequestMessage batchRequest = CreateBatchRequest(baseUrl, changesets);
+                using (HttpResponseMessage response = args.HttpClient.SendAsync(batchRequest).Result)
+                {
+                    // Assert.
+                    CheckODataBatchResponseStatusCode(response, new HttpStatusCode[] { HttpStatusCode.OK });
+
+                    // Проверим, что связь с мастером сохранилась.
+                    string[] котенокPropertiesNamesMaster =
+                    {
+                        Information.ExtractPropertyPath<Котенок>(x => x.__PrimaryKey),
+                        Information.ExtractPropertyPath<Котенок>(x => x.Глупость),
+                        Information.ExtractPropertyPath<Котенок>(x => x.Кошка),
+                    };
+
+                    var котенокDynamicViewMaster = new View(new ViewAttribute("котенокDynamicViewMaster", котенокPropertiesNamesMaster), typeof(Котенок));
+
+                    Котенок котенокLoaded = args.DataService
+                        .Query<Котенок>(котенокDynamicViewMaster)
+                        .FirstOrDefault(x => x.__PrimaryKey == котенок.__PrimaryKey);
+
+                    Assert.NotNull(котенокLoaded);
+                    Assert.NotNull(котенокLoaded.Кошка); // проверка, что ссылка не обнулилась
+                    Assert.Equal(кошка.__PrimaryKey, котенокLoaded.Кошка.__PrimaryKey);
                 }
             });
         }
