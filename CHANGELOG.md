@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 1. `updateViews` parameter of `DefaultDataObjectEdmModelBuilder` class. It allows to change update views for data objects (update view is used for loading a data object during OData update requests).
+2. `masterLightLoadTypes` and `masterLightLoadAllTypes` parameters of `DefaultDataObjectEdmModelBuilder` class. They allow to change loading mode of masters during OData update requests.
 
 ### Changed
 1. Updated Flexberry ORM up to 7.2.0.
