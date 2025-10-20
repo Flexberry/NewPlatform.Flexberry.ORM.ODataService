@@ -37,6 +37,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Model
         public View UpdateView { get; set; }
 
         /// <summary>
+        /// Whether to load object masters in LightLoaded state (load only primary key).
+        /// </summary>
+        public bool MasterLightLoad { get; set; }
+
+        /// <summary>
         /// The list of exposed details.
         /// </summary>
         public IDictionary<PropertyInfo, DataObjectEdmDetailSettings> DetailProperties { get; } = new Dictionary<PropertyInfo, DataObjectEdmDetailSettings>();

@@ -80,6 +80,16 @@
         /// </summary>
         private Dictionary<Type, View> UpdateViews { get; set; }
 
+        /// <summary>
+        /// Types for which masters should be light-loaded on updates (load only __PrimaryKey).
+        /// </summary>
+        private IEnumerable<Type> MasterLightLoadTypes { get; set; }
+
+        /// <summary>
+        /// Whether to load all masters in light-loaded mode on updates (load only __PrimaryKey).
+        /// </summary>
+        private bool MasterLightLoadAllTypes { get; set; }
+
         private readonly PropertyInfo _keyProperty = Information.ExtractPropertyInfo<DataObject>(n => n.__PrimaryKey);
 
         /// <summary>
@@ -96,7 +106,9 @@
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
             Dictionary<Type, IEdmPrimitiveType> additionalMapping = null,
-            IEnumerable<KeyValuePair<Type, View>> updateViews = null)
+            IEnumerable<KeyValuePair<Type, View>> updateViews = null,
+            IEnumerable<Type> masterLightLoadTypes = null,
+            bool masterLightLoadAllTypes = false)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
@@ -114,6 +126,18 @@
             {
                 SetUpdateView(updateViews);
             }
+
+            if (masterLightLoadTypes != null)
+            {
+                SetMasterLightLoadTypes(masterLightLoadTypes);
+
+                if (masterLightLoadAllTypes)
+                {
+                    throw new ArgumentException("Parameters masterLightLoadAllTypes and masterLightLoadTypes can not be used together in DefaultDataObjectEdmModelBuilder.");
+                }
+            }
+
+            this.MasterLightLoadAllTypes = masterLightLoadAllTypes;
         }
 
         /// <summary>
@@ -225,9 +249,14 @@
         /// <param name="updateView">Update view to be used for objects of type <paramref name="dataObjectType" />. <i>Setting <see langword="null" /> removes update view for the type.</i></param>
         private void SetUpdateView(Type dataObjectType, View updateView)
         {
+            if (dataObjectType is null)
+            {
+                throw new ArgumentException("dataObjectType can not be null.", nameof(dataObjectType));
+            }
+
             if (!dataObjectType.IsSubclassOf(typeof(DataObject)))
             {
-                throw new ArgumentException("Update view can be set only for a DataObject.", nameof(dataObjectType));
+                throw new ArgumentException($"Update view can be set only for a DataObject. Current type is {dataObjectType}", nameof(dataObjectType));
             }
 
             if (updateView is null)
@@ -242,6 +271,31 @@
             }
 
             UpdateViews[dataObjectType] = updateView;
+        }
+
+        /// <summary>
+        /// Sets DataObject types for which masters will be light-loaded on updates (load only __PrimaryKey).
+        /// </summary>
+        /// <param name="masterLightLoadTypes">Types for which masters should be light-loaded.</param>
+        private void SetMasterLightLoadTypes(IEnumerable<Type> masterLightLoadTypes)
+        {
+            if (masterLightLoadTypes != null)
+            {
+                foreach (Type type in masterLightLoadTypes)
+                {
+                    if (type is null)
+                    {
+                        throw new ArgumentException("MasterLightLoad option can not be set for a null type.", nameof(masterLightLoadTypes));
+                    }
+
+                    if (!type.IsSubclassOf(typeof(DataObject)))
+                    {
+                        throw new ArgumentException("MasterLightLoad option can be set only for a DataObject. Current type is {type}", nameof(masterLightLoadTypes));
+                    }
+                }
+
+                MasterLightLoadTypes = masterLightLoadTypes;
+            }
         }
 
         /// <summary>
@@ -322,6 +376,7 @@
                 CollectionName = EntitySetNameBuilder(dataObjectType),
                 DefaultView = DynamicView.Create(dataObjectType, null).View,
                 UpdateView = updateView,
+                MasterLightLoad = MasterLightLoadAllTypes || (MasterLightLoadTypes?.Contains(dataObjectType) ?? false),
             };
 
             AddProperties(dataObjectType, typeSettings);
