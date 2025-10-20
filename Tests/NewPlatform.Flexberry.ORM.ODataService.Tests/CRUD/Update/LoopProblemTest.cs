@@ -1,10 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.KeyGen;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
     using Xunit;
@@ -76,6 +78,63 @@
                     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
                 }
             });
+        }
+
+        /// <summary>
+        /// Тест проверяет, что метод <see cref="ProperUpdateOfObject"/> корректно обрабатывает мастеров:
+        /// - переносит недостающие свойства из свежезагруженного объекта в основной объект;
+        /// - не перезаписывает уже загруженные свойства;
+        /// - предотвращает бесконечную рекурсию при циклических ссылках (самоссылка мастера).
+        /// 
+        /// В тесте используются два кэша:
+        /// 1. <param name="cache"> — основной кэш, имитирующий существующие объекты, уже загруженные в систему.</param>
+        ///    - <param name ="StartCaching(false)"> означает, что кэш не будет создавать объекты автоматически;</param>
+        ///    - в него вручную добавляем «старые» объекты master и bloha.
+        /// 2. <param name ="localCache"> — локальный кэш, имитирующий свежезагруженные объекты из базы.</param>
+        ///    - в него мы не добавляем объекты вручную, потому что цель теста — проверить метод ProperUpdateOfObject, который переносит данные из локального кэша в основной.
+        /// 
+        /// Объекты masterLoaded и blohaLoaded представляют свежие данные из базы (копии объектов с теми же ключами).
+        /// Метод должен обновить только недостающие свойства, не затирая уже существующие значения.
+        /// </summary>
+        [Fact]
+        public void ProperUpdateObjects_Should_NoSkipMasters() 
+        { 
+            Медведь master = new Медведь { __PrimaryKey = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), ПорядковыйНомер = 1 };
+            master.Мама = master;
+
+            // Деталь и её копия (fresh load из базы).
+            Блоха bloha = new Блоха { __PrimaryKey = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), МедведьОбитания = master };
+
+            DataObjectCache cache = new DataObjectCache();
+            cache.StartCaching(false);
+            cache.AddDataObject(master);
+            cache.AddDataObject(bloha);
+
+            DataObjectCache localCache = new DataObjectCache();
+            localCache.StartCaching(false);
+
+            Медведь masterLoaded = new Медведь { __PrimaryKey = master.__PrimaryKey, ПорядковыйНомер = 2, Вес = 120 };
+
+            masterLoaded.Мама = masterLoaded;
+
+            Блоха blohaLoaded = new Блоха { Кличка = "БлохаАпдейт", __PrimaryKey = bloha.__PrimaryKey, МедведьОбитания = masterLoaded,    };
+            HashSet<TypeKeyTuple> processed = new HashSet<TypeKeyTuple>();
+
+            //Act
+            var method = typeof(NewPlatform.Flexberry.ORM.ODataService.Extensions.DataServiceExtensions)
+                .GetMethod("ProperUpdateOfObject", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            method.Invoke(null, new object[] { bloha, blohaLoaded, cache, localCache, processed });
+            var bearFromCache = cache.GetLivingDataObject(typeof(Медведь), master.__PrimaryKey);
+            var blohaFromCache = cache.GetLivingDataObject(typeof(Блоха), bloha.__PrimaryKey);
+
+            //Assert
+            Assert.NotNull(bearFromCache);
+            Assert.NotNull(blohaFromCache);
+            Assert.Equal(1, ((Медведь)bearFromCache).ПорядковыйНомер);
+            Assert.Equal(120, ((Медведь)bearFromCache).Вес);
+            Assert.Equal(master, ((Блоха)blohaFromCache).МедведьОбитания);
+            Assert.Equal("БлохаАпдейт", ((Блоха)blohaFromCache).Кличка);
+
         }
     }
 }

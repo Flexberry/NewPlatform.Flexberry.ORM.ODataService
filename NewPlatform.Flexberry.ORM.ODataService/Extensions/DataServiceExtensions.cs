@@ -305,7 +305,6 @@
             }
         }
 
-
         /// <summary>
         /// Перенос означенных свойств из свежезагруженного объекта в основной, расположенный в основном кэше.
         /// </summary>
@@ -349,20 +348,24 @@
             foreach (string notLoadedPropName in notLoadedForActual)
             {
                 object propValue = Information.GetPropValueByName(loadedObjectLocal, notLoadedPropName);
+                if(currentObject == null)
+                {
+                    throw new Exception($"curreentObject is null at prop {notLoadedPropName} with value {propValue ?? null}");
+                }
                 Information.SetPropValueByName(currentObject, notLoadedPropName, propValue);
                 currentObject.AddLoadedProperties(notLoadedPropName);
                 Information.SetPropValueByName(currentDataCopy, notLoadedPropName, propValue);
             }
 
             processedDataObjects ??= new HashSet<TypeKeyTuple>();
-            TypeKeyTuple dataForHash = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
-            if (!processedDataObjects.Add(dataForHash))
-            {
-                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
-            }
+            TypeKeyTuple processedKey = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
+            bool alreadyProcessed = processedDataObjects.Contains(processedKey);
 
             // Ещё могут быть частично загруженные мастера.
-            ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, processedDataObjects);
+            if (!alreadyProcessed)
+            {
+              ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, processedDataObjects);
+            }
         }
 
         /// <summary>
