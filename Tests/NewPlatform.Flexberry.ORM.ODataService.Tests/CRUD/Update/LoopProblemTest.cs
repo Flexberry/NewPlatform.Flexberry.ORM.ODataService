@@ -1,12 +1,12 @@
 ﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Update
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using ICSSoft.STORMNET;
+    using ICSSoft.STORMNET.Business.LINQProvider;
     using ICSSoft.STORMNET.KeyGen;
-    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Tests.Helpers;
     using Xunit;
@@ -20,7 +20,7 @@
 #if NETCOREAPP
     public class LoopProblemTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
-     {
+    {
 #if NETCOREAPP
         /// <summary>
         /// Конструктор по-умолчанию.
@@ -81,60 +81,88 @@
         }
 
         /// <summary>
-        /// Тест проверяет, что метод <see cref="ProperUpdateOfObject"/> корректно обрабатывает мастеров:
-        /// - переносит недостающие свойства из свежезагруженного объекта в основной объект;
-        /// - не перезаписывает уже загруженные свойства;
-        /// - предотвращает бесконечную рекурсию при циклических ссылках (самоссылка мастера).
-        /// 
-        /// В тесте используются два кэша:
-        /// 1. <param name="cache"> — основной кэш, имитирующий существующие объекты, уже загруженные в систему.</param>
-        ///    - <param name ="StartCaching(false)"> означает, что кэш не будет создавать объекты автоматически;</param>
-        ///    - в него вручную добавляем «старые» объекты master и bloha.
-        /// 2. <param name ="localCache"> — локальный кэш, имитирующий свежезагруженные объекты из базы.</param>
-        ///    - в него мы не добавляем объекты вручную, потому что цель теста — проверить метод ProperUpdateOfObject, который переносит данные из локального кэша в основной.
-        /// 
-        /// Объекты masterLoaded и blohaLoaded представляют свежие данные из базы (копии объектов с теми же ключами).
-        /// Метод должен обновить только недостающие свойства, не затирая уже существующие значения.
+        /// Тест проверяет работу PATCH-запроса и корректность обновления объектов через DataService:
+        /// - обновление полей объекта Блоха (кличка);
+        /// - сохранение корректной связи с мастером;
+        /// - предотвращение проблем с рекурсией при самоссылкек мастера.
         /// </summary>
         [Fact]
-        public void ProperUpdateObjects_Should_NoSkipMasters() 
-        { 
-            Медведь master = new Медведь { __PrimaryKey = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), ПорядковыйНомер = 1 };
-            master.Мама = master;
+        public void ProperUpdateObjects_Should_NoSkipMasters()
+        {
+            ActODataService(args =>
+            {
+                Медведь bear = new Медведь
+                {
+                    __PrimaryKey = Guid.NewGuid(),
+                    ПорядковыйНомер = 1,
+                    Вес = 0,
+                };
+                bear.Мама = bear; // самоссылка для проверки рекурсии
 
-            // Деталь и её копия (fresh load из базы).
-            Блоха bloha = new Блоха { __PrimaryKey = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), МедведьОбитания = master };
+                Блоха bloha = new Блоха
+                {
+                    __PrimaryKey = Guid.NewGuid(),
+                    Кличка = "СтараяБлоха",
+                    МедведьОбитания = bear
+                };
 
-            DataObjectCache cache = new DataObjectCache();
-            cache.StartCaching(false);
-            cache.AddDataObject(master);
-            cache.AddDataObject(bloha);
+                args.DataService.UpdateObject(bear);
+                args.DataService.UpdateObject(bloha);
 
-            DataObjectCache localCache = new DataObjectCache();
-            localCache.StartCaching(false);
+                bear.Вес = 120;
+                bloha.Кличка = "БлохаАпдейт";
 
-            Медведь masterLoaded = new Медведь { __PrimaryKey = master.__PrimaryKey, ПорядковыйНомер = 2, Вес = 120 };
+                string[] blohaProps =
+                {
+                    Information.ExtractPropertyPath<Блоха>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Блоха>(x => x.Кличка),
+                };
+                var blohaView = new View(new ViewAttribute("blohaPartialView", blohaProps), typeof(Блоха));
 
-            masterLoaded.Мама = masterLoaded;
+                string requestJsonData = bloha.ToJson(blohaView, args.Token.Model);
 
-            Блоха blohaLoaded = new Блоха { Кличка = "БлохаАпдейт", __PrimaryKey = bloha.__PrimaryKey, МедведьОбитания = masterLoaded,    };
-            HashSet<TypeKeyTuple> processed = new HashSet<TypeKeyTuple>();
+                DataObjectDictionary objJson = DataObjectDictionary.Parse(requestJsonData, blohaView, args.Token.Model);
 
-            //Act
-            var method = typeof(NewPlatform.Flexberry.ORM.ODataService.Extensions.DataServiceExtensions)
-                .GetMethod("ProperUpdateOfObject", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            method.Invoke(null, new object[] { bloha, blohaLoaded, cache, localCache, processed });
-            var bearFromCache = cache.GetLivingDataObject(typeof(Медведь), master.__PrimaryKey);
-            var blohaFromCache = cache.GetLivingDataObject(typeof(Блоха), bloha.__PrimaryKey);
+                objJson.Add("МедведьОбитания@odata.bind", string.Format("{0}({1})",
+                    args.Token.Model.GetEdmEntitySet(typeof(Медведь)).Name,
+                    ((KeyGuid)bear.__PrimaryKey).Guid.ToString("D")));
 
-            //Assert
-            Assert.NotNull(bearFromCache);
-            Assert.NotNull(blohaFromCache);
-            Assert.Equal(1, ((Медведь)bearFromCache).ПорядковыйНомер);
-            Assert.Equal(120, ((Медведь)bearFromCache).Вес);
-            Assert.Equal(master, ((Блоха)blohaFromCache).МедведьОбитания);
-            Assert.Equal("БлохаАпдейт", ((Блоха)blohaFromCache).Кличка);
+                string ReqJsonDataBloha = objJson.Serialize();
 
+                string requestUrl = string.Format("http://localhost/odata/{0}({1})",
+                    args.Token.Model.GetEdmEntitySet(typeof(Блоха)).Name, ((KeyGuid)bloha.__PrimaryKey).Guid.ToString("D"));
+
+                using (HttpResponseMessage response = args.HttpClient.PatchAsJsonStringAsync(requestUrl, ReqJsonDataBloha).Result)
+                {
+                    Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+                }
+
+                string[] bearProps =
+                {
+                    Information.ExtractPropertyPath<Медведь>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Медведь>(x => x.ПорядковыйНомер),
+                    Information.ExtractPropertyPath<Медведь>(x => x.Вес),
+                };
+                var bearView = new View(new ViewAttribute("bearView", bearProps), typeof(Медведь));
+
+                string[] blohaCheckProps =
+                {
+                    Information.ExtractPropertyPath<Блоха>(x => x.__PrimaryKey),
+                    Information.ExtractPropertyPath<Блоха>(x => x.Кличка),
+                    Information.ExtractPropertyPath<Блоха>(x => x.МедведьОбитания),
+                };
+                var blohaViewCheck = new View(new ViewAttribute("blohaViewCheck", blohaCheckProps), typeof(Блоха));
+
+                var bearLoaded = args.DataService.Query<Медведь>(bearView).FirstOrDefault(x => x.__PrimaryKey == bear.__PrimaryKey);
+                var blohaLoaded = args.DataService.Query<Блоха>(blohaViewCheck).FirstOrDefault(x => x.__PrimaryKey == bloha.__PrimaryKey);
+
+                Assert.NotNull(blohaLoaded);
+                Assert.NotNull(bearLoaded);
+                // Кличка блохи обновилась
+                Assert.Equal("БлохаАпдейт", blohaLoaded.Кличка);
+                // Связь осталась корректной
+                Assert.Equal(bear.__PrimaryKey, blohaLoaded.МедведьОбитания.__PrimaryKey);
+            });
         }
     }
 }

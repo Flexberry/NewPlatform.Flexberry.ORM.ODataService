@@ -348,24 +348,21 @@
             foreach (string notLoadedPropName in notLoadedForActual)
             {
                 object propValue = Information.GetPropValueByName(loadedObjectLocal, notLoadedPropName);
-                if(currentObject == null)
-                {
-                    throw new Exception($"curreentObject is null at prop {notLoadedPropName} with value {propValue ?? null}");
-                }
                 Information.SetPropValueByName(currentObject, notLoadedPropName, propValue);
                 currentObject.AddLoadedProperties(notLoadedPropName);
                 Information.SetPropValueByName(currentDataCopy, notLoadedPropName, propValue);
             }
 
             processedDataObjects ??= new HashSet<TypeKeyTuple>();
-            TypeKeyTuple processedKey = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
-            bool alreadyProcessed = processedDataObjects.Contains(processedKey);
+            TypeKeyTuple dataForHash = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
 
             // Ещё могут быть частично загруженные мастера.
-            if (!alreadyProcessed)
+            if (!processedDataObjects.Add(dataForHash))
             {
-              ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, processedDataObjects);
+              return;
             }
+
+            ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, processedDataObjects);
         }
 
         /// <summary>
