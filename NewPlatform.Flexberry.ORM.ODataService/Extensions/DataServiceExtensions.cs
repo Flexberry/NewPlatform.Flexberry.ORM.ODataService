@@ -305,7 +305,6 @@
             }
         }
 
-
         /// <summary>
         /// Перенос означенных свойств из свежезагруженного объекта в основной, расположенный в основном кэше.
         /// </summary>
@@ -356,12 +355,13 @@
 
             processedDataObjects ??= new HashSet<TypeKeyTuple>();
             TypeKeyTuple dataForHash = new TypeKeyTuple(currentObject.GetType(), currentObject.__PrimaryKey);
-            if (!processedDataObjects.Add(dataForHash))
-            {
-                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
-            }
 
             // Ещё могут быть частично загруженные мастера.
+            if (!processedDataObjects.Add(dataForHash))
+            {
+              return;
+            }
+
             ProperCacheUpdateForOneObject(dataObjectCache, dataObjectCacheLocal, loadedObjectLocal, true, processedDataObjects);
         }
 
