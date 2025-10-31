@@ -9,20 +9,31 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Handlers
     using Xunit;
     using Xunit.Abstractions;
 
+    /// <summary>
+    /// Класс для проверки ограничения размеров запроса.
+    /// Реализация под NETCOREAPP через <see cref="RequestSizeLimitMiddleware"/>.
+    /// </summary>
     public class RequestSizeLimitTests : BaseODataServiceIntegratedTest<TestStartup>
     {
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
         public RequestSizeLimitTests(CustomWebApplicationFactory<TestStartup> factory, ITestOutputHelper output)
             : base(factory, output)
         {
         }
 
+        /// <summary>
+        /// Проверяет, что middleware корректно отрабатывает и возвращает ошибку 413,
+        /// если запрос превышает максимально допустимый размер.
+        /// </summary>
         [Fact]
         public void CheckMaxQueryLenTest()
         {
             ActODataService(async args =>
             {
-                const long maxLength = 10 * 1024 * 1024; // 10 МБ
-                var tooLargeBody = new string('a', (int)(maxLength + 1024));
+                const long oversizedLength = NewPlatform.Flexberry.ORM.ODataService.Handlers.RequestSizeLimitMiddleware.MaxRequestSize + 1024;
+                var tooLargeBody = new string('a', (int)oversizedLength);
 
                 var request = new HttpRequestMessage(HttpMethod.Post, "odata/Медведь")
                 {
