@@ -124,6 +124,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                 config.MessageHandlers.Add(new PostPatchHandler());
             }
 
+            if (config.MessageHandlers.FirstOrDefault(h => h is RequestSizeLimitHandler) == null)
+            {
+                config.MessageHandlers.Add(new RequestSizeLimitHandler());
+            }
+
             return token;
         }
 
