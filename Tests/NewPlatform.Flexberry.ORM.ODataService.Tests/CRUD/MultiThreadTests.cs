@@ -1,4 +1,5 @@
-﻿#if NETCOREAPP
+﻿#if NETFRAMEWORK
+#else
 // TODO: разобраться с HttpContext.Current под netframework.
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
 {
@@ -17,7 +18,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
     using ICSSoft.STORMNET.FunctionalLanguage;
 
     using Microsoft.AspNetCore.Http;
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
     using Microsoft.AspNetCore.Mvc.Infrastructure;
 #endif
     using NewPlatform.Flexberry.ORM.CurrentUserService;
@@ -37,8 +39,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
     /// </summary>
 #if NETFRAMEWORK
     public class MultiThreadTests : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class MultiThreadTests : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
@@ -54,8 +55,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
         {
             _output = output;
         }
-#endif
-#if NETCOREAPP
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
@@ -325,7 +325,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD
         private static void RegisterCustomUser(IUnityContainer container)
         {
             container.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
             container.RegisterType<IActionContextAccessor, ActionContextAccessor>();
 #endif
             container.RegisterType<ICurrentUser, WebHttpUser>();

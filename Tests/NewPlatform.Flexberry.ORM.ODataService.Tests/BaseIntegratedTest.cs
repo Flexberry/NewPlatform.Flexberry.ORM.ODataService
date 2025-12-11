@@ -26,8 +26,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     /// </summary>
     public abstract class BaseIntegratedTest : IDisposable
     {
-#endif
-#if NETCOREAPP
+#else
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Practices.Unity.Configuration;
     using ODataServiceSample.AspNetCore;
@@ -146,9 +145,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
         /// <param name="useGisDataService">Use DataService with Gis support.</param>
         protected BaseIntegratedTest(string tempDbNamePrefix, bool useGisDataService = false)
         {
-#endif
-
-#if NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseIntegratedTest" /> class.
         /// </summary>
@@ -161,15 +158,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             _factory = factory;
 #endif
             _container = new UnityContainer();
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
             _container = _factory.Services.GetService(typeof(IUnityContainer)) as IUnityContainer;
             _container.LoadConfiguration();
 #endif
             _serviceProvider = new UnityServiceProvider(_container);
             _container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             businessServerProvider = _container.Resolve<IBusinessServerProvider>();
-#if NETCOREAPP
-
+#if NETFRAMEWORK
+#else
             _output = output;
 
             if (output != null)

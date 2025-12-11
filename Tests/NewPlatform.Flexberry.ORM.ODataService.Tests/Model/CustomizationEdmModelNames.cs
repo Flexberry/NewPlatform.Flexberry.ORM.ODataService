@@ -17,12 +17,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class CustomizationEdmModelNames : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class CustomizationEdmModelNames : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomizationEdmModelNames"/> class.
         /// </summary>

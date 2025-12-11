@@ -30,12 +30,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class FunctionsTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FunctionsTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
@@ -65,7 +65,8 @@
                     {
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var lcs = queryParameters.CreateLcs(type);
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
                         dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var dobjs = dataService.LoadObjects(lcs);
@@ -85,7 +86,8 @@
                         var type = queryParameters.GetDataObjectType(parameters["entitySet"] as string);
                         var uri = $"http://a/b/c?{parameters["query"]}";
                         var lcs = queryParameters.CreateLcs(type, uri);
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
                         dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var dobjs = dataService.LoadObjects(lcs);
@@ -130,7 +132,8 @@
                     "FunctionEntity",
                     (queryParameters, parameters) =>
                     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
                         dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).ToArray();
@@ -148,7 +151,8 @@
                     (queryParameters, parameters) =>
                     {
                         var top = (int)parameters["intParam"];
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
                         dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Страна>(Страна.Views.СтранаE).Take(top).ToArray();
@@ -166,7 +170,8 @@
                     "FunctionSelectExpandEntity",
                     (queryParameters, parameters) =>
                     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
                         dataService = unityContainer.Resolve<IDataService>();
 #endif
                         var result = (dataService as SQLDataService).Query<Медведь>(Медведь.Views.МедведьE).ToArray();

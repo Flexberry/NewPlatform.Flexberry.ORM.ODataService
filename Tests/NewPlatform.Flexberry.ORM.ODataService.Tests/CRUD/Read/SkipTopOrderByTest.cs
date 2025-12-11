@@ -22,12 +22,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class SkipTopOrderByTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class SkipTopOrderByTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

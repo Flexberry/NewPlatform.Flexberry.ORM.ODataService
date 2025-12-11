@@ -14,12 +14,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class LoopProblemTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class LoopProblemTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
-     {
-#if NETCOREAPP
+    {
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

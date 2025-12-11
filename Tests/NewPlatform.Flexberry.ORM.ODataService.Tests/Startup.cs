@@ -1,4 +1,5 @@
-﻿#if NETCOREAPP
+﻿#if NETFRAMEWORK
+#else
 namespace ODataServiceSample.AspNetCore
 {
     using System;

@@ -18,12 +18,12 @@
     /// <param name="output">Debug information output.</param>
 #if NETFRAMEWORK
     public class DefaultOfflineManagerIntegratedTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class DefaultOfflineManagerIntegratedTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

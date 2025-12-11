@@ -18,12 +18,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class FilterByMasterDetailFieldTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FilterByMasterDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

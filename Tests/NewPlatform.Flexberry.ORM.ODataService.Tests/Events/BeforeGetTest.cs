@@ -18,12 +18,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class BeforeGetTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class BeforeGetTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

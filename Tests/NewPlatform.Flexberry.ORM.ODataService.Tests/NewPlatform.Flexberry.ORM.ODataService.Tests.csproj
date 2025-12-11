@@ -23,10 +23,6 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
 	
-  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-	<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
@@ -42,22 +38,20 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.Audit" Version="4.0.0" />
+    <PackageReference Include="NewPlatform.Flexberry.Audit" Version="5.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisMSSQLDataService" Version="3.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.GisPostgresDataService" Version="3.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.MSSQLDataService" Version="8.0.0-beta06" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.OracleDataService" Version="8.0.0-beta06" />
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="8.0.0-beta06" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="2.0.0" />
-    <PackageReference Include="NewPlatform.Flexberry.Security" Version="4.0.0-beta01" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP))">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net6.0'  Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net10.0'">
     <PackageReference Include="dotMorten.Microsoft.SqlServer.Types" Version="1.3.0" />
     <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="5.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.UserSettingsService" Version="5.0.0-beta01" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
@@ -81,7 +75,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
   </ItemGroup>
 
@@ -124,7 +117,7 @@
     <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataService.WebApi\NewPlatform.Flexberry.ORM.ODataService.WebApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP))">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net6.0'  Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net10.0'">
     <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.csproj" />
   </ItemGroup>
 

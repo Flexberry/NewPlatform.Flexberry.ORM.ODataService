@@ -20,12 +20,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class BatchTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class BatchTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Default constructor.
         /// </summary>
