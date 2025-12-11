@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 1. Helper class `DataObjectEdmModelDependencies` (it helps send named settings of Unity to class `DataObjectEdmModel`).
 
 ### Changed
-1. Updated `NewPlatform.Flexberry.ORM` up to `8.0.0-beta02`.
+1. Updated `NewPlatform.Flexberry.ORM` up to `8.0.0-beta06`.
 2. Updated `NewPlatform.Flexberry.LockService` up to `4.0.0-beta01`.
 3. Constructor of class `DataObjectEdmModel` (it now needs extra DI initialization).
 4. Constructor of class `DefaultDataObjectEdmModelBuilder` (it is factory for class `DataObjectEdmModel`).
