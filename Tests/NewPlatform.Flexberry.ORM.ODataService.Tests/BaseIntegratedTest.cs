@@ -20,6 +20,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Xunit;
     using Xunit.Abstractions;
 
+#if NET10_0_OR_GREATER
+    using SqlCommand = Microsoft.Data.SqlClient.SqlCommand;
+    using SqlConnection = Microsoft.Data.SqlClient.SqlConnection;
+#else
+    using SqlCommand = System.Data.SqlClient.SqlCommand;
+    using SqlConnection = System.Data.SqlClient.SqlConnection;
+#endif
+
 #if NETFRAMEWORK
     /// <summary>
     /// Base class for integration tests.
