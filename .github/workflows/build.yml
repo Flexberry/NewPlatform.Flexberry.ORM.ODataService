@@ -56,11 +56,6 @@ jobs:
       # The lowest version gets installed first in order to prevent
       # "a newer version is already installed" install errors.
 
-      - name: Install .NET Core 3.1
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 3.1.x
-
       # Building requires an up-to-date .NET SDK.
 
       - name: Install .NET 6.0
@@ -88,9 +83,6 @@ jobs:
         
       - name: Compile code
         run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
-
-      - name: Test on dotnet 3.1
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Test on dotnet 6.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
@@ -145,11 +137,6 @@ jobs:
       # The lowest version gets installed first in order to prevent
       # "a newer version is already installed" install errors.
 
-      - name: Install .NET Core 3.1
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 3.1.x
-
       # Building requires an up-to-date .NET SDK.
 
       - name: Install .NET 6.0
@@ -175,9 +162,6 @@ jobs:
         
       - name: Compile code
         run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
-
-      - name: Test on dotnet 3.1
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
       - name: Test on dotnet 6.0
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/$CONFIGURATION/net6.0/NewPlatform.Flexberry.ORM.ODataService.Tests.dll

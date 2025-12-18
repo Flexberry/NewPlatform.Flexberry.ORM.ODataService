@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 4. Constructor of class `DefaultDataObjectEdmModelBuilder` (it is factory for class `DataObjectEdmModel`).
 5. Constructor of class `DefaultOfflineManager`.
 6. Constructor of class `OfflineAuditService`.
+7. Removed support of NETCoreApp 3.1.
 
 ### Fixed
 
