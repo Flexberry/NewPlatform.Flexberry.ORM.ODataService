@@ -34,7 +34,13 @@
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
         public BuiltinQueryFunctionsTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
+#if NET10_0_OR_GREATER
+            /*Выявлено, что при работе с типом Geography npgsql версии 10 в связке с PostgresDataService выдаёт ошибку.
+             Применение в данной ситуации GisPostgresDataService позволяет преодолеть проблему, тесты отрабатывают корректно.*/
+            : base(factory, output, useGisDataService: true)
+#else
             : base(factory, output)
+#endif
         {
         }
 #endif
@@ -352,7 +358,7 @@
             ActODataService(args =>
             {
                 ExternalLangDef langDef = new ExternalLangDef(args.DataService);
-                string sqlToday = args.DataService.FunctionToSql(null, langDef.GetFunction("TODAY"), null, null);
+                string sqlToday = args.DataService.FunctionToSql(langDef, langDef.GetFunction("TODAY"), null, null);
                 var state = new object();
                 string sqlStatement = $"SELECT {sqlToday}{(args.DataService is OracleDataService ? " FROM DUAL" : string.Empty)}";
                 var date = (DateTime)(args.DataService as SQLDataService).ReadFirst(sqlStatement, ref state, 0)[0][0];

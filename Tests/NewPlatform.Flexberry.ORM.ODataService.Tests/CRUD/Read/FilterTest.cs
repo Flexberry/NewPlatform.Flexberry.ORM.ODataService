@@ -33,7 +33,13 @@
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
         public FilterTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
+#if NET10_0_OR_GREATER
+            /*Выявлено, что при работе с типом Geography npgsql версии 10 в связке с PostgresDataService выдаёт ошибку.
+             Применение в данной ситуации GisPostgresDataService позволяет преодолеть проблему, тесты отрабатывают корректно.*/
+            : base(factory, output, useGisDataService: true)
+#else
             : base(factory, output)
+#endif
         {
         }
 #endif
