@@ -44,19 +44,19 @@
         <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta06" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-      <group targetFramework=".NET6.0">
+      <group targetFramework="net6.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
         <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta06" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-      <group targetFramework=".NET7.0">
+      <group targetFramework="net7.0">
         <dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
         <dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
         <dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta06" />
         <dependency id="Newtonsoft.Json" version="13.0.1" />
       </group>
-	  <group targetFramework=".NET10.0">
+	  <group targetFramework="net10.0">
 		<dependency id="NewPlatform.Flexberry.AspNetCore.OData" version="7.6.2" />
 		<dependency id="NewPlatform.Flexberry.LockService" version="4.0.0-beta01" />
 		<dependency id="NewPlatform.Flexberry.ORM" version="8.0.0-beta06" />
