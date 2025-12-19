@@ -21,19 +21,25 @@
     /// </summary>
 #if NETFRAMEWORK
     public class FilterTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FilterTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
         /// <param name="factory">Фабрика для приложения.</param>
         /// <param name="output">Вывод отладочной информации.</param>
         public FilterTest(CustomWebApplicationFactory<TestStartup> factory, Xunit.Abstractions.ITestOutputHelper output)
+#if NET10_0_OR_GREATER
+            /*Выявлено, что при работе с типом Geography npgsql версии 10 в связке с PostgresDataService выдаёт ошибку.
+             Применение в данной ситуации GisPostgresDataService позволяет преодолеть проблему, тесты отрабатывают корректно.*/
+            : base(factory, output, useGisDataService: true)
+#else
             : base(factory, output)
+#endif
         {
         }
 #endif

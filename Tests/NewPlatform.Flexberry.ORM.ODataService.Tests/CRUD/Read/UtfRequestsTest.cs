@@ -20,12 +20,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class UtfRequestsTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class UtfRequestsTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

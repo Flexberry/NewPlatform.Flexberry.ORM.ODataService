@@ -18,12 +18,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
     /// </summary>
 #if NETFRAMEWORK
     public class FilterByMasterMasterDetailFieldTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FilterByMasterMasterDetailFieldTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

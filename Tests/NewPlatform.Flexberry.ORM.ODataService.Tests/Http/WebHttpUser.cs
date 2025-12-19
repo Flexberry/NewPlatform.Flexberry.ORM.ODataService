@@ -4,13 +4,11 @@
 #if NETFRAMEWORK
     using System.Collections.Specialized;
     using System.Web;
-#endif
-
-    using Microsoft.AspNetCore.Http;
-#if NETCOREAPP
+#else
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
 #endif
+    using Microsoft.AspNetCore.Http;
     using NewPlatform.Flexberry.ORM.CurrentUserService;
 
     /// <summary>
@@ -20,7 +18,8 @@
     {
         private readonly IHttpContextAccessor contextAccessor;
 
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         private readonly IActionContextAccessor actionContextAccessor;
 #endif
 

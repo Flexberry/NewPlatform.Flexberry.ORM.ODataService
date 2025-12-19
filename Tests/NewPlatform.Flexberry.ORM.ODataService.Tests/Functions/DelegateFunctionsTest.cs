@@ -15,12 +15,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class DelegateFunctionsTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class DelegateFunctionsTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

@@ -17,8 +17,7 @@
     /// <seealso cref="BaseIntegratedTest" />
 #if NETFRAMEWORK
     public class OfflineAuditServiceIntegratedTest : BaseIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class OfflineAuditServiceIntegratedTest : BaseIntegratedTest<TestStartup>
 #endif
     {
@@ -30,8 +29,7 @@
             : base("offline")
         {
         }
-#endif
-#if NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="OfflineAuditServiceIntegratedTest"/> class.
         /// </summary>

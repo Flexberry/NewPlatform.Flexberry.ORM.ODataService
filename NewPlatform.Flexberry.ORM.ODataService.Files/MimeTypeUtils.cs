@@ -21,7 +21,7 @@
         {
             return MimeMapping.GetMimeMapping(subpath);
         }
-#elif NETSTANDARD || NETCOREAPP
+#else
         private static readonly FileExtensionContentTypeProvider fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
 
         /// <summary>

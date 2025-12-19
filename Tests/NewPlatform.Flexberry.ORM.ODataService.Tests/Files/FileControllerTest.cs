@@ -26,8 +26,7 @@
     /// </summary>
 #if NETFRAMEWORK
     public class FileControllerTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FileControllerTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {

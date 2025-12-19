@@ -13,12 +13,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class ChangeMasterInBSTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class ChangeMasterInBSTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

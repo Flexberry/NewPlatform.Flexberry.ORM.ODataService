@@ -13,8 +13,7 @@
     /// </summary>
 #if NETFRAMEWORK
     public class CreateWithPseudoDetailDefinedTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class CreateWithPseudoDetailDefinedTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
@@ -34,8 +33,7 @@
         public CreateWithPseudoDetailDefinedTest() : base(pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
-#endif
-#if NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateWithPseudoDetailDefinedTest"/> class.
         /// </summary>

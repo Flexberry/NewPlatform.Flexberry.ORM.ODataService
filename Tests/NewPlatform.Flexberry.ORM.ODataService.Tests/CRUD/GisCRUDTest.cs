@@ -23,8 +23,7 @@
     /// </summary>
 #if NETFRAMEWORK
     public class GisCRUDTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class GisCRUDTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
@@ -35,8 +34,7 @@
         public GisCRUDTest()
             : base("ODataGis", false, true)
         { }
-#endif
-#if NETCOREAPP
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

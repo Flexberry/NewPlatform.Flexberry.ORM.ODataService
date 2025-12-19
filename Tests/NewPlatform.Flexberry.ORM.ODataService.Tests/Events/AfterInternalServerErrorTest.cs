@@ -4,7 +4,8 @@
     using System.Net;
     using System.Net.Http;
     using ICSSoft.STORMNET;
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
 #endif
     using Xunit;
@@ -14,12 +15,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class AfterInternalServerErrorTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class AfterInternalServerErrorTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>

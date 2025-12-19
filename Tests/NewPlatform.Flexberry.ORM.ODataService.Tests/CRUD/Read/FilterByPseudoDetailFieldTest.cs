@@ -18,8 +18,7 @@
     /// </summary>
 #if NETFRAMEWORK
     public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class FilterByPseudoDetailFieldTest : BaseODataServiceIntegratedTest<PseudoDetailTestStartup>
 #endif
     {
@@ -40,8 +39,7 @@
         public FilterByPseudoDetailFieldTest() : base(pseudoDetailDefinitions: GetPseudoDetailDefinitions())
         {
         }
-#endif
-#if NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="FilterByPseudoDetailFieldTest"/> class.
         /// </summary>

@@ -31,12 +31,12 @@
     /// </summary>
 #if NETFRAMEWORK
     public class ActionsTest : BaseODataServiceIntegratedTest
-#endif
-#if NETCOREAPP
+#else
     public class ActionsTest : BaseODataServiceIntegratedTest<TestStartup>
 #endif
     {
-#if NETCOREAPP
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
