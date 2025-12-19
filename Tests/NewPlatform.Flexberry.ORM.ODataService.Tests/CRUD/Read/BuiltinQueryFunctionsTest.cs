@@ -358,7 +358,7 @@
             ActODataService(args =>
             {
                 ExternalLangDef langDef = new ExternalLangDef(args.DataService);
-                string sqlToday = args.DataService.FunctionToSql(langDef, langDef.GetFunction("TODAY"), null, null);
+                string sqlToday = args.DataService.FunctionToSql(langDef, langDef.GetFunction("TODAY"), v => v?.ToString() ?? "NULL", null);
                 var state = new object();
                 string sqlStatement = $"SELECT {sqlToday}{(args.DataService is OracleDataService ? " FROM DUAL" : string.Empty)}";
                 var date = (DateTime)(args.DataService as SQLDataService).ReadFirst(sqlStatement, ref state, 0)[0][0];
