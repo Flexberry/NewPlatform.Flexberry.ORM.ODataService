@@ -137,7 +137,7 @@ namespace ODataServiceSample.AspNetCore
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, dataObjectEdmModelDependencies: null);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
             });

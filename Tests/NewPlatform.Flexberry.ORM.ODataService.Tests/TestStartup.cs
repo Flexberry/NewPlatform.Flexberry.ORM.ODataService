@@ -17,6 +17,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using NewPlatform.Flexberry.Services;
     using ODataServiceSample.AspNetCore;
     using Unity;
+    using Unity.Injection;
 
     /// <summary>
     /// Startup for tests.
@@ -38,6 +39,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
             IServiceProvider serviceProvider = app.ApplicationServices;
             IUnityContainer unityContainer = serviceProvider.GetRequiredService<IUnityContainer>();
             unityContainer.RegisterInstance(env);
+            unityContainer.RegisterType<DataObjectEdmModelDependencies>(
+            new InjectionConstructor(
+                unityContainer.IsRegistered<IExportService>() ? unityContainer.Resolve<IExportService>() : null,
+                unityContainer.IsRegistered<IExportService>("Export") ? unityContainer.Resolve<IExportService>("Export") : null,
+                unityContainer.IsRegistered<IExportStringedObjectViewService>() ? unityContainer.Resolve<IExportStringedObjectViewService>() : null,
+                unityContainer.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? unityContainer.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                unityContainer.IsRegistered<IODataExportService>() ? unityContainer.Resolve<IODataExportService>() : null,
+                unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
 
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -58,7 +67,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 };
 
                 PseudoDetailDefinitions pseudoDetailDefinitions = (PseudoDetailDefinitions)serviceProvider.GetService(typeof(PseudoDetailDefinitions));
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions, dataObjectEdmModelDependencies: unityContainer.Resolve<DataObjectEdmModelDependencies>());
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 

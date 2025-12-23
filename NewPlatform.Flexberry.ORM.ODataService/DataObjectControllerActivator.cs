@@ -59,8 +59,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService
         {
             // TODO: заменить DependencyResolver на IServiceProvider
             IDependencyResolver dependencyResolver = request.GetConfiguration().DependencyResolver;
-            IDataService dataService = (IDataService)dependencyResolver.GetService(typeof(IDataService));
-            IDataObjectFileAccessor fileAccessor = (IDataObjectFileAccessor)dependencyResolver.GetService(typeof(IDataObjectFileAccessor));
+            IDataService dataService = (IDataService)dependencyResolver.GetService(typeof(IDataService)) ?? throw new InvalidOperationException($"{nameof(IDataService)} is not registered in the dependency scope."); ;
+            IDataObjectFileAccessor fileAccessor = (IDataObjectFileAccessor)dependencyResolver.GetService(typeof(IDataObjectFileAccessor)) ?? throw new InvalidOperationException($"{nameof(IDataObjectFileAccessor)} is not registered in the dependency scope.");
 
             DataObjectCache dataObjectCache = GetDataObjectCache(request);
             ManagementToken token = (request.GetRouteData().Route as ODataRoute).GetManagementToken();
