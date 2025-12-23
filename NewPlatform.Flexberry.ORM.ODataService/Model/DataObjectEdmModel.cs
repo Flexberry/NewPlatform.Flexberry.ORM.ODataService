@@ -89,8 +89,7 @@
         /// Initializes a new instance of the <see cref="DataObjectEdmModel"/> class.
         /// </summary>
         /// <param name="metadata">Metadata-container for building EDM model</param>
-        /// <param name="dependencies">A set of parameters that determine how the export works.
-        /// During the correction, DI were moved to a separate class.</param>
+        /// <param name="dependencies">A set of parameters that determine how the export works. During the correction, DI were moved to a separate class.</param>
         /// <param name="edmModelBuilder">Entity for building an EDM model. sharpened to work with <see cref="DataObject"/>.</param>
         public DataObjectEdmModel(
             DataObjectEdmMetadata metadata,

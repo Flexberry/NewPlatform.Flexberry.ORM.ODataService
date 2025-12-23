@@ -9,7 +9,6 @@
     using ICSSoft.STORMNET.KeyGen;
 
     using Microsoft.OData.Edm;
-    using Unity;
 
     /// <summary>
     /// Default implementation of <see cref="IDataObjectEdmModelBuilder"/>.
@@ -36,7 +35,7 @@
         /// <summary>
         /// Container for dependency injection.
         /// </summary>
-        private IServiceProvider _serviceProvider;
+        private DataObjectEdmModelDependencies _dataObjectEdmModelDependencies;
 
         /// <summary>
         /// Additional mapping of CLR type to edm primitive type. When it's required on the application side.
@@ -96,22 +95,22 @@
         /// Initializes a new instance of the <see cref="DefaultDataObjectEdmModelBuilder"/> class.
         /// </summary>
         /// <param name="searchAssemblies">The list of assemblies for searching types to expose.</param>
-        /// <param name="container">Unity container for resolving dependencies.</param>
+        /// <param name="dataObjectEdmModelDependencies">A set of parameters that determine how the export works. During the correction, DI were moved to a separate class.</param>
         /// <param name="useNamespaceInEntitySetName">Is need to add the whole type namespace for EDM entity set.</param>
         /// <param name="pseudoDetailDefinitions">A collection of pseudodetail links.</param>
         /// <param name="additionalMapping">Additional mapping of CLR type to edm primitive type.</param>
         public DefaultDataObjectEdmModelBuilder(
             IEnumerable<Assembly> searchAssemblies,
-            IServiceProvider serviceProvider,
             bool useNamespaceInEntitySetName = true,
             PseudoDetailDefinitions pseudoDetailDefinitions = null,
             Dictionary<Type, IEdmPrimitiveType> additionalMapping = null,
             IEnumerable<KeyValuePair<Type, View>> updateViews = null,
             IEnumerable<Type> masterLightLoadTypes = null,
-            bool masterLightLoadAllTypes = false)
+            bool masterLightLoadAllTypes = false,
+            DataObjectEdmModelDependencies dataObjectEdmModelDependencies = null)
         {
             _searchAssemblies = searchAssemblies ?? throw new ArgumentNullException(nameof(searchAssemblies), "Contract assertion not met: searchAssemblies != null");
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _dataObjectEdmModelDependencies = dataObjectEdmModelDependencies;
             _useNamespaceInEntitySetName = useNamespaceInEntitySetName;
             _pseudoDetailDefinitions = pseudoDetailDefinitions ?? new PseudoDetailDefinitions();
 
@@ -187,9 +186,7 @@
                 }
             }
 
-            object fromProvider = _serviceProvider.GetService(typeof(DataObjectEdmModelDependencies));
-            var dataObjectEdmModel = new DataObjectEdmModel(meta, (DataObjectEdmModelDependencies)fromProvider, this);
-
+            DataObjectEdmModel dataObjectEdmModel = new DataObjectEdmModel(meta, _dataObjectEdmModelDependencies, this);
             return dataObjectEdmModel;
         }
 

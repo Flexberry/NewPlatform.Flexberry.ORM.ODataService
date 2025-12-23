@@ -66,7 +66,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                     { typeof(Медведь), Медведь.Views.МедведьUpdateView },
                     { typeof(Берлога), Берлога.Views.БерлогаUpdateView },
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, serviceProvider, false, pseudoDetailDefinitions, updateViews: updateViews);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, false, pseudoDetailDefinitions, updateViews: updateViews, dataObjectEdmModelDependencies: null);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 

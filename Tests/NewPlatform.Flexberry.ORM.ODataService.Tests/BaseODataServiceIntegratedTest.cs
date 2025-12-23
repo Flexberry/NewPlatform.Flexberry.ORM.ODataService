@@ -157,8 +157,8 @@
                     var fileAccessor = new DefaultDataObjectFileAccessor(new Uri("http://localhost/"), fileControllerPath, "Uploads");
                     container.RegisterInstance<IDataObjectFileAccessor>(fileAccessor);
 
-                    IServiceProvider serviceProvider = new ICSSoft.Services.UnityServiceProvider(container);
-                    DefaultDataObjectEdmModelBuilder builder = new DefaultDataObjectEdmModelBuilder(DataObjectsAssembliesNames, serviceProvider, UseNamespaceInEntitySetName, pseudoDetailDefinitions);
+                    DefaultDataObjectEdmModelBuilder builder = new DefaultDataObjectEdmModelBuilder(
+                        DataObjectsAssembliesNames, UseNamespaceInEntitySetName, pseudoDetailDefinitions, dataObjectEdmModelDependencies: container.Resolve<DataObjectEdmModelDependencies>());
                     var token = config.MapDataObjectRoute(builder, server, "odata", "odata", true);
                     token.Events.CallbackAfterInternalServerError = AfterInternalServerError;
                     var args = new TestArgs { UnityContainer = container, DataService = dataService, HttpClient = client, Token = token };
