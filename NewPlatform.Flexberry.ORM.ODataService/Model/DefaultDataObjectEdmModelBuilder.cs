@@ -186,7 +186,7 @@
                 }
             }
 
-            DataObjectEdmModel dataObjectEdmModel = new DataObjectEdmModel(meta, _dataObjectEdmModelDependencies, this);
+            DataObjectEdmModel dataObjectEdmModel = new DataObjectEdmModel(meta, this, _dataObjectEdmModelDependencies);
             return dataObjectEdmModel;
         }
 
