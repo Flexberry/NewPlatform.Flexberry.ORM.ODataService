@@ -45,7 +45,7 @@
 
     using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
     using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
-#elif NETSTANDARD
+#else
     using Microsoft.AspNet.OData.Common;
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Http;
@@ -132,7 +132,7 @@
                     {
                         _dataObjectCache = (DataObjectCache)Request.Properties[DataObjectODataBatchHandler.DataObjectCachePropertyKey];
                     }
-#elif NETSTANDARD
+#else
                     if (IsBatchChangeSetRequest)
                     {
                         _dataObjectCache = (DataObjectCache)HttpContext.Items[DataObjectODataBatchHandler.DataObjectCachePropertyKey];
@@ -161,7 +161,7 @@
         private bool IsBatchChangeSetRequest => Request.Properties.ContainsKey(DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey);
 
         private ODataPath ODataPath => Request.ODataProperties().Path;
-#elif NETSTANDARD
+#else
         private ManagementToken _managementToken;
 
         /// <summary>
@@ -225,7 +225,7 @@
 
             OfflineManager = new DummyOfflineManager();
         }
-#elif NETSTANDARD
+#else
         /// <summary>
         /// Конструктор по-умолчанию.
         /// </summary>
@@ -300,7 +300,7 @@
         {
             return null;
         }
-#elif NETSTANDARD
+#else
         /// <summary>
         /// Обрабатывает все несопоставленные запросы OData.
         /// </summary>
@@ -319,7 +319,7 @@
         [CustomEnableQuery]
 #if NETFRAMEWORK
         public HttpResponseMessage GetEntity()
-#elif NETSTANDARD
+#else
         public OkObjectResult GetEntity()
 #endif
         {
@@ -328,7 +328,7 @@
                 var edmObj = EvaluateOdataPath();
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.OK, edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
@@ -336,7 +336,7 @@
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -350,7 +350,7 @@
         [CustomEnableQuery]
 #if NETFRAMEWORK
         public HttpResponseMessage GetCollection()
-#elif NETSTANDARD
+#else
         public OkObjectResult GetCollection()
 #endif
         {
@@ -359,7 +359,7 @@
                 var edmObj = EvaluateOdataPath();
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.OK, edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
@@ -367,7 +367,7 @@
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -380,7 +380,7 @@
         [CustomEnableQuery]
 #if NETFRAMEWORK
         public HttpResponseMessage GetString()
-#elif NETSTANDARD
+#else
         public OkObjectResult GetString()
 #endif
         {
@@ -395,7 +395,7 @@
                 var edmObj = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView);
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.OK, edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
@@ -403,7 +403,7 @@
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -416,7 +416,7 @@
         [CustomEnableQuery]
 #if NETFRAMEWORK
         public HttpResponseMessage GetGuid()
-#elif NETSTANDARD
+#else
         public OkObjectResult GetGuid()
 #endif
         {
@@ -431,7 +431,7 @@
                 var edmObj = GetEdmObject(_model.GetEdmEntityType(type), obj, 1, null, _dynamicView);
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.OK, edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
@@ -439,7 +439,7 @@
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -453,7 +453,7 @@
         [CustomEnableQuery]
 #if NETFRAMEWORK
         public HttpResponseMessage Get()
-#elif NETSTANDARD
+#else
         public IActionResult Get()
 #endif
         {
@@ -466,7 +466,7 @@
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -497,7 +497,7 @@
         /// <returns>A file with .xlsx content.</returns>
 #if NETFRAMEWORK
         internal HttpResponseMessage CreateExcel(NameValueCollection queryParams)
-#elif NETSTANDARD
+#else
         internal IActionResult CreateExcel(NameValueCollection queryParams)
 #endif
         {
@@ -571,7 +571,7 @@
             }
 
             return msg;
-#elif NETSTANDARD
+#else
             if (result != null)
             {
                 return File(result.ToArray(), "application/ms-excel", "list.xlsx");
@@ -674,7 +674,7 @@
             {
 #if NETFRAMEWORK
                 Request.Properties.Add(CustomODataFeedSerializer.Count, Count);
-#elif NETSTANDARD
+#else
                 Request.HttpContext.Items.Add(CustomODataFeedSerializer.Count, Count);
 #endif
             }
@@ -1015,7 +1015,7 @@
         /// <returns>Параметры запроса OData.</returns>
 #if NETFRAMEWORK
         public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequestMessage request)
-#elif NETSTANDARD
+#else
         public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequest request)
 #endif
         {
@@ -1180,7 +1180,7 @@
             {
 #if NETFRAMEWORK
                 Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
-#elif NETSTANDARD
+#else
                 HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
 #endif
             }
@@ -1237,7 +1237,7 @@
         /// <returns>Набор сущностей.</returns>
 #if NETFRAMEWORK
         private HttpResponseMessage ExecuteExpression()
-#elif NETSTANDARD
+#else
         private IActionResult ExecuteExpression()
 #endif
         {
@@ -1246,7 +1246,7 @@
 #if NETFRAMEWORK
             NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
             bool isForExcel = Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
-#elif NETSTANDARD
+#else
             NameValueCollection queryParams = WebUtilities.QueryHelpers.QueryToNameValueCollection(Request.Query);
             bool isForExcel = HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"));
 #endif
@@ -1271,7 +1271,7 @@
                 EdmEntityObjectCollection edmCol = GetEdmCollection(_objs, type, 1, null, _dynamicView);
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.OK, edmCol);
-#elif NETSTANDARD
+#else
                 return Ok(edmCol);
 #endif
             }
@@ -1373,7 +1373,7 @@
                 {
 #if NETFRAMEWORK
                     Request.ODataProperties().SelectExpandClause = selectExpandClause;
-#elif NETSTANDARD
+#else
                     Request.HttpContext.ODataFeature().SelectExpandClause = selectExpandClause;
 #endif
                 }
@@ -1568,7 +1568,7 @@
         {
             return Ok(content);
         }
-#elif NETSTANDARD
+#else
 
         /// <summary>
         /// Создаёт экземпляр <see cref="ODataServiceCore.Common.Exceptions.CustomException"/> с кодом 500 по-умолчанию, содержащий возникшую в сервисе ошибку.

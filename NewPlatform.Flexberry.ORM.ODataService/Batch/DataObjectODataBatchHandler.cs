@@ -18,9 +18,7 @@
 #if NETFRAMEWORK
     using System.Web.Http;
     using System.Web.Http.Batch;
-#endif
-
-#if NETSTANDARD
+#else
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Adapters;
     using Microsoft.AspNet.OData.Common;
@@ -87,9 +85,7 @@
             this.isSyncMode = isSyncMode ?? Type.GetType("Mono.Runtime") != null;
         }
 
-#endif
-
-#if NETSTANDARD
+#else
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataObjectODataBatchHandler"/> class.
@@ -143,9 +139,7 @@
                 }
             }
         }
-#endif
-
-#if NETSTANDARD
+#else
         /// <inheritdoc />
         public override async Task ProcessBatchAsync(HttpContext context, RequestDelegate nextHandler)
         {
@@ -295,9 +289,7 @@
 
             return responses;
         }
-#endif
-
-#if NETSTANDARD
+#else
         /// <inheritdoc />
         public override async Task<IList<ODataBatchResponseItem>> ExecuteRequestMessagesAsync(IEnumerable<ODataBatchRequestItem> requests, RequestDelegate handler)
         {
@@ -389,9 +381,7 @@
 
             return changeSetResponse;
         }
-#endif
-
-#if NETSTANDARD
+#else
         /// <summary>
         /// Execute changeset processing.
         /// </summary>
@@ -438,9 +428,7 @@
 
             return changeSetResponse;
         }
-#endif
 
-#if NETSTANDARD
         /// <summary>
         /// Update processed objects.
         /// </summary>

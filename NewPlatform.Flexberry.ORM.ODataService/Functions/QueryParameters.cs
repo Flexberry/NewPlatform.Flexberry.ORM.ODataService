@@ -12,7 +12,7 @@
 
 #if NETFRAMEWORK
     using System.Net.Http;
-#elif NETSTANDARD
+#else
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Interfaces;
     using Microsoft.AspNetCore.Http;
@@ -31,7 +31,7 @@
         /// </summary>
 #if NETFRAMEWORK
         public HttpRequestMessage Request { get; set; }
-#elif NETSTANDARD
+#else
         public HttpRequest Request { get; set; }
 #endif
 
@@ -89,7 +89,7 @@
                 }
 
                 request = r;
-#elif NETSTANDARD
+#else
                 // Parse and make escaped query part of 'odataQuery' value.
                 string queryPart = new Uri(odataQuery).Query;
 

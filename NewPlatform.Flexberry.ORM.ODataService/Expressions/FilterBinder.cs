@@ -24,7 +24,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
     using System.Data.Linq;
 
     using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
-#elif NETSTANDARD
+#else
     using Microsoft.AspNet.OData.Common;
 
     using IAssembliesResolver = Microsoft.AspNet.OData.Interfaces.IWebApiAssembliesResolver;
@@ -1143,8 +1143,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
                     {
 #if NETFRAMEWORK
                         if (e.ParamName == null)
-#endif
-#if NETSTANDARD
+#else
                         if (e.ParamName == "propertyName")
 #endif
                         {

@@ -22,7 +22,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
 
     using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
     using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
-#elif NETSTANDARD
+#else
     using Microsoft.AspNet.OData.Common;
 
     using DefaultAssembliesResolver = Microsoft.AspNet.OData.Adapters.WebApiAssembliesResolver;
@@ -400,7 +400,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Expressions
             // Go through all assemblies referenced by the application and search for types matching a predicate
 #if NETFRAMEWORK
             ICollection<Assembly> assemblies = assembliesResolver.GetAssemblies();
-#elif NETSTANDARD
+#else
             ICollection<Assembly> assemblies = assembliesResolver.Assemblies.ToArray();
 #endif
             foreach (Assembly assembly in assemblies)

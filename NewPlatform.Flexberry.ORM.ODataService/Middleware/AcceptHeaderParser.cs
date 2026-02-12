@@ -1,4 +1,5 @@
-﻿#if NETSTANDARD
+﻿#if NETFRAMEWORK
+#else
 
 // Основная часть кода взята из:
 //

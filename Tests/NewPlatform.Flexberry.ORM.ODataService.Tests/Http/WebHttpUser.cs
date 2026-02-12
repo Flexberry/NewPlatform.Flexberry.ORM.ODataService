@@ -36,7 +36,7 @@
         {
             this.contextAccessor = contextAccessor;
         }
-#elif NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="WebHttpUser" /> class.
         /// </summary>
@@ -62,7 +62,7 @@
 #if NETFRAMEWORK
                 HttpContext context = contextAccessor.HttpContext;
                 NameValueCollection headers = context?.Request.Headers;
-#elif NETCOREAPP
+#else
                 HttpContext context = contextAccessor.HttpContext ?? actionContextAccessor.ActionContext?.HttpContext;
                 IHeaderDictionary headers = context?.Request.Headers;
 #endif
@@ -87,7 +87,7 @@
 #if NETFRAMEWORK
                 HttpContext context = contextAccessor.HttpContext;
                 NameValueCollection headers = context?.Request.Headers;
-#elif NETCOREAPP
+#else
                 HttpContext context = contextAccessor.HttpContext ?? actionContextAccessor.ActionContext?.HttpContext;
                 IHeaderDictionary headers = context?.Request.Headers;
 #endif

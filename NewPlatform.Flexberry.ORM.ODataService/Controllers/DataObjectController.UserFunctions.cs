@@ -19,8 +19,7 @@
     using System.Web.Http;
     using NewPlatform.Flexberry.ORM.ODataService.Formatter;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
-#endif
-#if NETSTANDARD
+#else
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NewPlatform.Flexberry.ORM.ODataService.Middleware;
@@ -38,7 +37,7 @@
         /// </summary>
 #if NETFRAMEWORK
         private readonly IFunctionContainer _functions;
-#elif NETSTANDARD
+#else
         private IFunctionContainer _functions => ManagementToken?.Functions;
 #endif
 
@@ -86,7 +85,7 @@
                 return ResponseMessage(InternalServerErrorMessage(ex));
             }
         }
-#elif NETSTANDARD
+#else
         /// <summary>
         /// Выполняет пользовательскую функцию.
         /// Имя "GetODataFunctionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectActionImpl"/>.
@@ -133,7 +132,7 @@
         /// <returns>Результат выполнения пользовательской функции, преобразованный к типам сущностей EDM-модели или к примитивным типам.</returns>
 #if NETFRAMEWORK
         internal IHttpActionResult ExecuteUserFunction(QueryParameters queryParameters)
-#elif NETSTANDARD
+#else
         internal IActionResult ExecuteUserFunction(QueryParameters queryParameters)
 #endif
         {
@@ -149,7 +148,7 @@
                 const string msg = "Function not found";
 #if NETFRAMEWORK
                 return SetResult(msg);
-#elif NETSTANDARD
+#else
                 return Ok(msg);
 #endif
             }
@@ -180,7 +179,7 @@
                 const string msg = "Result is null.";
 #if NETFRAMEWORK
                 return SetResult(msg);
-#elif NETSTANDARD
+#else
                 return Ok(msg);
 #endif
             }
@@ -209,7 +208,7 @@
                     {
 #if NETFRAMEWORK
                         Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
-#elif NETSTANDARD
+#else
                         Request.HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
 #endif
                     }
@@ -232,13 +231,13 @@
 
 #if NETFRAMEWORK
                     NameValueCollection queryParams = Request.RequestUri.ParseQueryString();
-#elif NETSTANDARD
+#else
                     NameValueCollection queryParams = QueryHelpers.QueryToNameValueCollection(Request.Query);
 #endif
 
 #if NETFRAMEWORK
                     if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.Properties.ContainsKey(PostPatchHandler.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams.Get("exportExcel"))))
-#elif NETSTANDARD
+#else
                     if ((_model.ExportService != null || _model.ODataExportService != null || _model.ExportStringedObjectViewService != null) && (Request.HttpContext.Items.ContainsKey(RequestHeadersHookMiddleware.AcceptApplicationMsExcel) || Convert.ToBoolean(queryParams["exportExcel"])))
 #endif
                     {
@@ -246,7 +245,7 @@
                         var excel = CreateExcel(queryParams);
 #if NETFRAMEWORK
                         return ResponseMessage(excel);
-#elif NETSTANDARD
+#else
                         return excel;
 #endif
                     }
@@ -254,7 +253,7 @@
                     var coll = GetEdmCollection((IEnumerable)result, type, 1, null, _dynamicView);
 #if NETFRAMEWORK
                     return SetResult(coll);
-#elif NETSTANDARD
+#else
                     return Ok(coll);
 #endif
                 }
@@ -272,14 +271,14 @@
                     RawOutputFormatter.PrepareHttpResponseMessage(ref msg, mimeType, _model, b2);
 
                     return ResponseMessage(msg);
-#elif NETSTANDARD
+#else
                     return File(b2, mimeType);
 #endif
                 }
 
 #if NETFRAMEWORK
                 return SetResult(result);
-#elif NETSTANDARD
+#else
                 return Ok(result);
 #endif
             }
@@ -291,7 +290,7 @@
                 {
 #if NETFRAMEWORK
                     Request.ODataProperties().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
-#elif NETSTANDARD
+#else
                     Request.HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
 #endif
                 }
@@ -302,14 +301,14 @@
                 var edmObj = GetEdmObject(entityType, result, 1, null, _dynamicView);
 #if NETFRAMEWORK
                 return SetResult(edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
 
 #if NETFRAMEWORK
             return SetResultPrimitive(result.GetType(), result);
-#elif NETSTANDARD
+#else
             return Ok(result);
 #endif
         }

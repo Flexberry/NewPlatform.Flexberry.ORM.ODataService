@@ -16,8 +16,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using System.Net.Http;
     using System.Net;
-#endif
-#if NETSTANDARD
+#else
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.OData;
@@ -75,7 +74,7 @@
                 return ResponseMessage(InternalServerErrorMessage(ex));
             }
         }
-#elif NETSTANDARD
+#else
         /// <summary>
         /// Выполняет action.
         /// Имя "PostODataActionsExecute" устанавливается в <see cref="DataObjectRoutingConvention.SelectActionImpl"/>.
@@ -118,7 +117,7 @@
 
 #if NETFRAMEWORK
         private IHttpActionResult ExecuteAction(ODataActionParameters parameters)
-#elif NETSTANDARD
+#else
         private IActionResult ExecuteAction(ODataActionParameters parameters)
 #endif
         {
@@ -131,7 +130,7 @@
                 const string msg = "Action not found";
 #if NETFRAMEWORK
                 return SetResult(msg);
-#elif NETSTANDARD
+#else
                 return Ok(msg);
 #endif
             }
@@ -142,7 +141,7 @@
                 const string msg = "Action not found";
 #if NETFRAMEWORK
                 return SetResult(msg);
-#elif NETSTANDARD
+#else
                 return Ok(msg);
 #endif
             }
@@ -152,7 +151,7 @@
             queryParameters.Request = Request;
 #if NETFRAMEWORK
             queryParameters.RequestBody = (string)Request.Properties[PostPatchHandler.RequestContent];
-#elif NETSTANDARD
+#else
             queryParameters.RequestBody = (string)Request.HttpContext.Items[RequestHeadersHookMiddleware.PropertyKeyRequestContent];
 #endif
 
@@ -162,7 +161,7 @@
                 ((DelegateODataNoReplyFunction)action.Handler)(queryParameters, parameters);
 #if NETFRAMEWORK
                 return StatusCode(HttpStatusCode.NoContent);
-#elif NETSTANDARD
+#else
                 return NoContent();
 #endif
             }
@@ -178,7 +177,7 @@
                 const string msg = "Result is null.";
 #if NETFRAMEWORK
                 return SetResult(msg);
-#elif NETSTANDARD
+#else
                 return Ok(msg);
 #endif
             }
@@ -189,7 +188,7 @@
                 var edmObj = GetEdmObject(entityType, result, 1, null);
 #if NETFRAMEWORK
                 return SetResult(edmObj);
-#elif NETSTANDARD
+#else
                 return Ok(edmObj);
 #endif
             }
@@ -214,7 +213,7 @@
                     var coll = GetEdmCollection((IEnumerable)result, type, 1, null);
 #if NETFRAMEWORK
                     return SetResult(coll);
-#elif NETSTANDARD
+#else
                     return Ok(coll);
 #endif
                 }
@@ -222,7 +221,7 @@
 
 #if NETFRAMEWORK
             return SetResultPrimitive(result.GetType(), result);
-#elif NETSTANDARD
+#else
             return Ok(result);
 #endif
         }

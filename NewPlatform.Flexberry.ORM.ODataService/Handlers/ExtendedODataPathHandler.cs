@@ -14,7 +14,8 @@
 
     using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
 
-#if NETSTANDARD
+#if NETFRAMEWORK
+#else
     using Microsoft.AspNet.OData.Common;
     using SRResources = NewPlatform.Flexberry.ORM.ODataService.Expressions.SRResources;
 #endif
@@ -80,7 +81,7 @@
                  */
                 var fullUri = new Uri($"{serviceRootUri}{odataPath}");
                 queryString = fullUri.ParseQueryString();
-#elif NETSTANDARD
+#else
                 var fullUri = new Uri(serviceRootUri, odataPath);
                 queryString = fullUri.ParseQueryString();
 #endif

@@ -122,8 +122,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Routing
         }
     }
 }
-#endif
-#if NETSTANDARD
+#else
 namespace NewPlatform.Flexberry.ORM.ODataService.Routing
 {
     using System;

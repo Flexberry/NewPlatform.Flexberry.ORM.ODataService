@@ -12,7 +12,7 @@
 
 #if NETFRAMEWORK
     using NewPlatform.Flexberry.ORM.ODataService.Expressions;
-#elif NETSTANDARD
+#else
     using System.Threading.Tasks;
     using Microsoft.AspNet.OData.Common;
     using Microsoft.AspNetCore.Http.Extensions;
@@ -66,7 +66,7 @@
             {
 #if NETFRAMEWORK
                 IDictionary<string, object> props = readContext.Request.Properties;
-#elif NETSTANDARD
+#else
                 IDictionary<object, object> props = readContext.Request.HttpContext.Items;
 #endif
                 if (ex is ODataException && ex.ToString().IndexOf("odata.bind") != -1)
@@ -81,7 +81,8 @@
             return obj;
         }
 
-#if NETSTANDARD
+#if NETFRAMEWORK
+#else
         /// <summary>
         /// Выполняет чтение передаваемых данных OData.
         /// </summary>
@@ -135,7 +136,7 @@
             {
 #if NETFRAMEWORK
                 IDictionary<string, object> props = readContext.Request.Properties;
-#elif NETSTANDARD
+#else
                 IDictionary<object, object> props = readContext.Request.HttpContext.Items;
 #endif
                 if (!props.ContainsKey(Dictionary))
@@ -154,7 +155,7 @@
                     {
 #if NETFRAMEWORK
                         var requestUri = readContext.Request.RequestUri;
-#elif NETSTANDARD
+#else
                         var requestUri = new Uri(readContext.Request.GetEncodedUrl());
 #endif
                         referencedEntityUrl = referencedEntityUrl.MakeRelativeUri(requestUri);

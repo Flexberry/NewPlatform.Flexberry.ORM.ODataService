@@ -25,8 +25,7 @@
              Type type,
 #if NETFRAMEWORK
              System.Net.Http.HttpRequestMessage request
-#endif
-#if NETSTANDARD
+#else
              Microsoft.AspNetCore.Http.HttpRequest request
 #endif
             )

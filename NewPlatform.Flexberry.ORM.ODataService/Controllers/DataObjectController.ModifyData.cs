@@ -30,8 +30,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using NewPlatform.Flexberry.ORM.ODataService.Events;
     using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using Newtonsoft.Json.Linq;
-#endif
-#if NETSTANDARD
+#else
     using System.Data;
     using Microsoft.AspNet.OData.Formatter;
     using Microsoft.AspNetCore.Http;
@@ -70,7 +69,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// <returns> Созданная сущность. </returns>
 #if NETFRAMEWORK
         public HttpResponseMessage Post([FromBody] EdmEntityObject edmEntity)
-#elif NETSTANDARD
+#else
         public IActionResult Post([FromBody] EdmEntityObject edmEntity)
 #endif
         {
@@ -97,7 +96,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 {
                     result.Headers.Add("Preference-Applied", "return=representation");
                 }
-#elif NETSTANDARD
+#else
                 var result = new ObjectResult(edmEntity) { StatusCode = StatusCodes.Status201Created };
                 if (Request.Headers.ContainsKey("Prefer"))
                 {
@@ -111,7 +110,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -126,7 +125,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// <returns>Обновлённая сущность.</returns>
 #if NETFRAMEWORK
         public HttpResponseMessage Patch([FromODataUri] Guid key, [FromBody] EdmEntityObject edmEntity)
-#elif NETSTANDARD
+#else
         public IActionResult Patch([FromODataUri] Guid key, [FromBody] EdmEntityObject edmEntity)
 #endif
         {
@@ -148,7 +147,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 var dictionary = Request.Properties.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
                     (Dictionary<string, object>)Request.Properties[ExtendedODataEntityDeserializer.Dictionary] :
                     new Dictionary<string, object>();
-#elif NETSTANDARD
+#else
                 var dictionary = Request.HttpContext.Items.ContainsKey(ExtendedODataEntityDeserializer.Dictionary) ?
                     (Dictionary<string, object>)Request.HttpContext.Items[ExtendedODataEntityDeserializer.Dictionary] :
                     new Dictionary<string, object>();
@@ -161,7 +160,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         const string msg = "Error processing request stream. Deep updates are not supported in PUT or PATCH operations.";
 #if NETFRAMEWORK
                         return Request.CreateResponse(HttpStatusCode.BadRequest, msg);
-#elif NETSTANDARD
+#else
                         return BadRequest(msg);
 #endif
                     }
@@ -172,7 +171,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         string msg = $"The property {prop.Name} can not be null.";
 #if NETFRAMEWORK
                         return Request.CreateResponse(HttpStatusCode.BadRequest, msg);
-#elif NETSTANDARD
+#else
                         return BadRequest(msg);
 #endif
                     }
@@ -192,7 +191,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 {
                     return Request.CreateResponse(HttpStatusCode.NoContent);
                 }
-#elif NETSTANDARD
+#else
                 if (!Request.Headers.ContainsKey("Prefer"))
                 {
                     return NoContent();
@@ -203,7 +202,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 #if NETFRAMEWORK
                 var result = Request.CreateResponse(HttpStatusCode.OK, edmEntity);
                 result.Headers.Add("Preference-Applied", "return=representation");
-#elif NETSTANDARD
+#else
                 var result = Ok(edmEntity);
                 Response.Headers.Add("Preference-Applied", "return=representation");
 #endif
@@ -213,7 +212,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             {
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -227,7 +226,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// </returns>
 #if NETFRAMEWORK
         public HttpResponseMessage DeleteString()
-#elif NETSTANDARD
+#else
         public NoContentResult DeleteString()
 #endif
         {
@@ -244,7 +243,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// </returns>
 #if NETFRAMEWORK
         public HttpResponseMessage DeleteGuid()
-#elif NETSTANDARD
+#else
         public NoContentResult DeleteGuid()
 #endif
         {
@@ -255,7 +254,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
 #if NETFRAMEWORK
         private HttpResponseMessage DeleteEntity(object key)
-#elif NETSTANDARD
+#else
         private NoContentResult DeleteEntity(object key)
 #endif
         {
@@ -340,7 +339,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
                         List<DataObject> allProcessedObjects = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
 
-#elif NETSTANDARD
+#else
                         List<DataObject> dataObjectsToUpdate = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
                         List<DataObject> allProcessedObjects = (List<DataObject>)HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
 #endif
@@ -360,7 +359,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
 #if NETFRAMEWORK
                 return Request.CreateResponse(HttpStatusCode.NoContent);
-#elif NETSTANDARD
+#else
                 return NoContent();
 #endif
             }
@@ -369,7 +368,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 _removingFileDescriptions.Clear();
 #if NETFRAMEWORK
                 return InternalServerErrorMessage(ex);
-#elif NETSTANDARD
+#else
                 throw CustomException(ex);
 #endif
             }
@@ -460,9 +459,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             LogService.LogError(originalEx.Message, originalEx);
             return msg;
         }
-#endif
 
-#if NETFRAMEWORK
         private HttpResponseMessage TestPreferMinimal()
         {
             if (Request.Headers.Contains("Prefer"))
@@ -478,7 +475,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             return null;
         }
-#elif NETSTANDARD
+#else
 
         private NoContentResult TestPreferMinimal()
         {
@@ -585,7 +582,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             return edmEntity;
         }
-#elif NETSTANDARD
+#else
         /// <summary>
         /// Заменяет в теле запроса представление навигационных свойств с Имя_Связи@odata.bind:null на представление Имя_Связи:null.
         /// </summary>
@@ -717,7 +714,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 #if NETFRAMEWORK
                     List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
                     List<DataObject> allProcessedObjects = (List<DataObject>)Request.Properties[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
-#elif NETSTANDARD
+#else
                     List<DataObject> dataObjectsToUpdate = (List<DataObject>)Request.HttpContext.Items[DataObjectODataBatchHandler.DataObjectsToUpdatePropertyKey];
                     List<DataObject> allProcessedObjects = (List<DataObject>)Request.HttpContext.Items[DataObjectODataBatchHandler.AllProcessedObjectsPropertyKey];
 #endif
