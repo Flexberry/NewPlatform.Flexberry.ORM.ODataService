@@ -2,7 +2,7 @@
 {
 #if NETFRAMEWORK
     using System.Web;
-#elif NETSTANDARD || NETCOREAPP
+#else
     using Microsoft.AspNetCore.StaticFiles;
 #endif
 

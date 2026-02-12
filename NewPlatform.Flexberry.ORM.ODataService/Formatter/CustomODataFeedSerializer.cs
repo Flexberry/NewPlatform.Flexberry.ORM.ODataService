@@ -51,8 +51,7 @@
             {
                 resourceSet.Count = (int)writeContext.Request.Properties[Count];
             }
-#endif
-#if NETSTANDARD
+#else
             if (writeContext.Request.HttpContext.Items.ContainsKey(Count))
             {
                 resourceSet.Count = (int)writeContext.Request.HttpContext.Items[Count];

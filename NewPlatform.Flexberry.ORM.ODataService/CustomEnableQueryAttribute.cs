@@ -1,4 +1,5 @@
-﻿#if NETSTANDARD
+﻿#if NETFRAMEWORK
+#else
 namespace NewPlatform.Flexberry.ORM.ODataService
 {
     using System.Linq;

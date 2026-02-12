@@ -17,8 +17,7 @@
         /// The container with registered events.
         /// </summary>
         private readonly IEventHandlerContainer _events;
-#endif
-#if NETSTANDARD
+#else
         /// <summary>
         /// The container with registered events.
         /// </summary>

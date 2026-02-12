@@ -36,8 +36,7 @@
 
             return routingConventions;
         }
-#endif
-#if NETSTANDARD
+#else
         /// <summary>
         /// Создает набор конвенций маршрутизации по умолчанию.
         /// </summary>

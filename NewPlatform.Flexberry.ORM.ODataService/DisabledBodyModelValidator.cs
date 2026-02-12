@@ -16,8 +16,7 @@
             return false;
         }
     }
-#endif
-#if NETSTANDARD
+#else
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 

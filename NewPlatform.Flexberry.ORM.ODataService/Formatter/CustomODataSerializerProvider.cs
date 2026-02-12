@@ -9,7 +9,8 @@
     using Microsoft.AspNet.OData.Formatter.Serialization;
     using Microsoft.OData.Edm;
 
-#if NETSTANDARD
+#if NETFRAMEWORK
+#else
     using Microsoft.AspNetCore.Http;
 #endif
 
@@ -69,8 +70,7 @@
         public override ODataSerializer GetODataPayloadSerializer(Type type,
 #if NETFRAMEWORK
             HttpRequestMessage request
-#endif
-#if NETSTANDARD
+#else
             HttpRequest request
 #endif
             )

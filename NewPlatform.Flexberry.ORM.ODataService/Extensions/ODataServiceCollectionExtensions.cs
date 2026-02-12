@@ -1,4 +1,5 @@
-﻿#if NETSTANDARD
+﻿#if NETFRAMEWORK
+#else
 namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Extensions
 {
     using Microsoft.AspNet.OData.Extensions;

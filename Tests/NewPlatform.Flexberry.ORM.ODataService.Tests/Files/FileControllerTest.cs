@@ -62,7 +62,7 @@
         /// Инициализирует тестовый класс (инициализация выполняется перед запуском тестов).
         /// </summary>
         public FileControllerTest()
-#elif NETCOREAPP
+#else
         /// <summary>
         /// Initializes a new instance of the <see cref="FileControllerTest"/> class.
         /// </summary>
@@ -249,7 +249,7 @@
                         string fileMimeType = MimeTypeUtils.GetFileMimeType(fileName);
 #if NETFRAMEWORK
                         string fileContentDisposition = string.Format("attachment; filename=\"{0}\"; filename*=UTF-8''{1}; size={2}", fileName, Uri.EscapeDataString(fileName), fileInfo.Length);
-#elif NETCOREAPP
+#else
                         string fileContentDisposition = string.Format("attachment; filename={0}; filename*=UTF-8''{1}", fileName, Uri.EscapeDataString(fileName));
 #endif
 
@@ -361,7 +361,7 @@
                         long fileSize = fileInfo.Length;
 #if NETFRAMEWORK
                         string fileContentDisposition = string.Format("attachment; filename=\"{0}\"; filename*=UTF-8''{1}; size={2}", fileName, Uri.EscapeDataString(fileName), fileInfo.Length);
-#elif NETCOREAPP
+#else
                         string fileContentDisposition = string.Format("attachment; filename={0}; filename*=UTF-8''{1}", fileName, Uri.EscapeDataString(fileName));
 #endif
 
