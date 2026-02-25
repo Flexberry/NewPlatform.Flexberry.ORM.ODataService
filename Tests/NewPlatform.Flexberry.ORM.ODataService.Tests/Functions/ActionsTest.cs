@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Functions
+namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Functions
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,7 @@
 
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Windows.Forms;
 
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.OData;
@@ -19,6 +20,7 @@
     using Newtonsoft.Json.Linq;
 
     using Xunit;
+    using Xunit.Abstractions;
 
     using Action = ODataService.Functions.Action;
 
@@ -141,7 +143,7 @@
             ActODataService(args =>
             {
                 RegisterODataActions(args.Token.Functions, args.DataService);
-                var code = HttpStatusCode.InternalServerError;var s = $"{code.ToString()}";
+                var code = HttpStatusCode.InternalServerError; var s = $"{code.ToString()}";
                 // Формируем URL запроса к OData-сервису.
                 string requestUrl = $"http://localhost/odata/ActionEntity";
                 string jsonClass = "{\"PropertyString\": \"свойство 1\", \"__PrimaryKey\":\"2b7afa44-2df7-4838-b489-18874435b0d0\"}";
@@ -318,5 +320,264 @@
             return dobjs.AsEnumerable();
         }
 
+        /// <summary>
+        /// Тестирует автоматическое разворачивание мастеров из OData Action с использованием параметра __autoExpand.
+        /// </summary>
+        [Fact]
+        public void TestActionReturnObjectWithAutoExpand()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает объект с загруженным мастером
+                if (!args.Token.Functions.IsRegistered("ActionWithAutoExpand"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "objectKey", typeof(string) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionWithAutoExpand",
+                        (queryParameters, parameters) =>
+                        {
+                            // Создаем мастера
+                            var master = new Мастер
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                prop = "ТестовыйМастер"
+                            };
+                            args.DataService.UpdateObject(master);
+
+                            // Создаем объект с мастером
+                            var obj = new Наследник
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Свойство = 42.0,
+                                Мастер = master
+                            };
+                            args.DataService.UpdateObject(obj);
+
+                            // Загружаем объект с представлением, включающим мастера
+                            // ВАЖНО: представление определяет какие свойства загружены
+                            var view = new View(typeof(Наследник), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Мастер.prop");
+                            args.DataService.LoadObject(view, obj);
+
+                            return obj;
+                        },
+                        typeof(Наследник),
+                        parametersTypes));
+                }
+
+                // Тест 1: Вызов Action без __autoExpand - мастер не должен быть в ответе (backward compatibility)
+                string requestUrl = $"http://localhost/odata/ActionWithAutoExpand";
+                string json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+                    _output?.WriteLine($"Response without __autoExpand: {receivedStr}");
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем, что объект вернулся
+                    Assert.NotNull(receivedObj["__PrimaryKey"]);
+
+                    // Проверяем, что мастер не включен в ответ (или null, или без свойств)
+                    var masterToken = receivedObj["MasterAlias"];
+                    if (masterToken != null && masterToken.Type != JTokenType.Null)
+                    {
+                        // Если мастер есть, у него не должно быть свойства prop
+                        Assert.Null(masterToken["prop"]);
+                    }
+                }
+
+                // Тест 2: Вызов Action с __autoExpand=true - мастер должен быть в ответе автоматически
+                requestUrl = $"http://localhost/odata/ActionWithAutoExpand?__autoExpand=true";
+                json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    _output?.WriteLine($"=== FULL RESPONSE (with __autoExpand) ===");
+                    _output?.WriteLine(receivedStr);
+                    _output?.WriteLine($"=====================");
+
+                    Assert.True(response.StatusCode == HttpStatusCode.OK,
+                        $"Expected OK but got {response.StatusCode}. Response: {receivedStr}");
+
+                    JObject receivedObj = JObject.Parse(receivedStr);
+                    
+                    // Мастер должен быть автоматически развернут
+                    var masterToken = receivedObj["MasterAlias"];
+                    Assert.NotNull(masterToken);
+                    Assert.NotEqual(JTokenType.Null, masterToken.Type);
+                    Assert.NotNull(masterToken["__PrimaryKey"]);
+                    Assert.Equal("ТестовыйМастер", masterToken["prop"]?.ToString());
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тестирует автоматическое разворачивание мастеров в коллекции из OData Action.
+        /// </summary>
+        [Fact]
+        public void TestActionReturnCollectionWithAutoExpand()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает коллекцию объектов с загруженными мастерами
+                if (!args.Token.Functions.IsRegistered("ActionCollectionWithAutoExpand"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "count", typeof(int) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionCollectionWithAutoExpand",
+                        (queryParameters, parameters) =>
+                        {
+                            int count = (int)parameters["count"];
+                            var objects = new List<Наследник>();
+
+                            for (int i = 0; i < count; i++)
+                            {
+                                // Создаем мастера
+                                var master = new Мастер
+                                {
+                                    __PrimaryKey = Guid.NewGuid(),
+                                    prop = $"Мастер{i}"
+                                };
+                                args.DataService.UpdateObject(master);
+
+                                // Создаем объект с мастером
+                                var obj = new Наследник
+                                {
+                                    __PrimaryKey = Guid.NewGuid(),
+                                    Свойство = i * 10.0,
+                                    Мастер = master
+                                };
+                                args.DataService.UpdateObject(obj);
+                                objects.Add(obj);
+                            }
+
+                            // Загружаем объекты с представлением, включающим мастеров
+                            var view = new View(typeof(Наследник), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Мастер.prop");
+                            foreach (var obj in objects)
+                            {
+                                args.DataService.LoadObject(view, obj);
+                            }
+
+                            return objects.AsEnumerable();
+                        },
+                        typeof(IEnumerable<Наследник>),
+                        parametersTypes));
+                }
+
+                // Тест: Вызов Action с __autoExpand=true - мастера должны быть в ответе
+                string requestUrl = $"http://localhost/odata/ActionCollectionWithAutoExpand?__autoExpand=true";
+                string json = "{\"count\": 3}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+                    _output?.WriteLine($"Response with __autoExpand (collection): {receivedStr}");
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем, что коллекция вернулась
+                    Assert.NotNull(receivedObj["value"]);
+                    var valueArray = receivedObj["value"] as JArray;
+                    Assert.NotNull(valueArray);
+                    Assert.Equal(3, valueArray.Count);
+
+                    // Проверяем, что мастера автоматически развернуты в ответе
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var item = valueArray[i];
+                        Assert.Equal(i * 10.0, (double)item["PropertyAlias"]);
+
+                        // Мастер должен быть автоматически развернут
+                        var masterToken = item["MasterAlias"];
+                        Assert.NotNull(masterToken);
+                        Assert.NotEqual(JTokenType.Null, masterToken.Type);
+                        Assert.NotNull(masterToken["__PrimaryKey"]);
+                        Assert.Equal($"Мастер{i}", masterToken["prop"]?.ToString());
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тестирует автоматическое разворачивание нескольких мастеров.
+        /// </summary>
+        [Fact]
+        public void TestActionReturnObjectWithMultipleMastersAutoExpand()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает объект с несколькими загруженными мастерами
+                if (!args.Token.Functions.IsRegistered("ActionWithMultipleMastersAuto"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "objectKey", typeof(string) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionWithMultipleMastersAuto",
+                        (queryParameters, parameters) =>
+                        {
+                            // Создаем двух мастеров
+                            var master1 = new Мастер
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                prop = "Мастер1"
+                            };
+                            args.DataService.UpdateObject(master1);
+
+                            var master2 = new Мастер
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                prop = "Мастер2"
+                            };
+                            args.DataService.UpdateObject(master2);
+
+                            // Создаем объект с мастерами (используем один мастер дважды для простоты теста)
+                            var obj = new Наследник
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Свойство = 100.0,
+                                Мастер = master1
+                            };
+                            args.DataService.UpdateObject(obj);
+
+                            // Загружаем объект с представлением, включающим мастера
+                            var view = new View(typeof(Наследник), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Мастер.prop");
+                            args.DataService.LoadObject(view, obj);
+
+                            return obj;
+                        },
+                        typeof(Наследник),
+                        parametersTypes));
+                }
+
+                // Тест: Вызов Action с __autoExpand=true
+                string requestUrl = $"http://localhost/odata/ActionWithMultipleMastersAuto?__autoExpand=true";
+                string json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    _output?.WriteLine($"=== FULL RESPONSE (multiple masters auto) ===");
+                    _output?.WriteLine(receivedStr);
+                    _output?.WriteLine($"=====================");
+
+                    Assert.True(response.StatusCode == HttpStatusCode.OK,
+                        $"Expected OK but got {response.StatusCode}. Response: {receivedStr}");
+
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем что мастер автоматически развернут
+                    var masterToken = receivedObj["MasterAlias"];
+                    Assert.NotNull(masterToken);
+                    Assert.NotEqual(JTokenType.Null, masterToken.Type);
+                    Assert.Equal("Мастер1", masterToken["prop"]?.ToString());
+                }
+            });
+        }
     }
 }

@@ -133,22 +133,22 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Количество сущностей в результате, которое будет указано в метаданных.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
         public int Count { get; set; }
 
         /// <summary>
-        /// Включать или нет в метаданные количество сущностей.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
         public bool IncludeCount { get; set; }
 
         /// <summary>
-        /// Используемые в запросе параметры. Заполняется в методе Init().
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Init().
         /// </summary>
         public ODataQueryOptions QueryOptions { get; set; }
 
         /// <summary>
-        /// Тип DataObject, который соответствует сущности в наборе из запроса. Заполняется в методе Init().
+        /// пїЅпїЅпїЅ DataObject, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Init().
         /// </summary>
         public Type type { get; set; }
 
@@ -158,7 +158,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         internal BaseOfflineManager OfflineManager { get; set; }
 
         /// <summary>
-        /// Конструктор по-умолчанию.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
         /// <param name="dataObjectFileAccessor">The data object file properties accessor.</param>
         /// <param name="dataService">The data service for all manipulations with data.</param>
@@ -173,7 +173,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Создает настройку загрузки группы объектов.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
         /// <returns>A <see cref="LoadingCustomizationStruct"/> instance.</returns>
         public LoadingCustomizationStruct CreateLcs()
@@ -220,31 +220,65 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Создаёт параметры запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <returns>Параметры запроса OData.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.</returns>
         public ODataQueryOptions CreateODataQueryOptions(Type type)
         {
             return CreateODataQueryOptions(type, Request);
         }
 
         /// <summary>
-        /// Создаёт параметры запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="request">Запрос OData.</param>
-        /// <returns>Параметры запроса OData.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="request">пїЅпїЅпїЅпїЅпїЅпїЅ OData.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.</returns>
         public ODataQueryOptions CreateODataQueryOptions(Type type, HttpRequest request)
         {
             return new ODataQueryOptions(CreateODataQueryContext(type), request);
         }
 
         /// <summary>
-        /// Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей.
-        /// Этот метод вычисляет совпадающие сущности, применяя параметры запроса.
+        /// РЎРѕР·РґР°С‘С‚ ODataQueryOptions РґР»СЏ РґРёРЅР°РјРёС‡РµСЃРєРё РІС‹С‡РёСЃР»РµРЅРЅРѕРіРѕ OData-Р·Р°РїСЂРѕСЃР° (РЅР°РїСЂРёРјРµСЂ, $expand).
+        /// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РєРѕРіРґР° OData-РїР°СЂР°РјРµС‚СЂС‹ РІС‹С‡РёСЃР»СЏСЋС‚СЃСЏ РїСЂРѕРіСЂР°РјРјРЅРѕ, Р° РЅРµ РїСЂРёС…РѕРґСЏС‚ РѕС‚ РєР»РёРµРЅС‚Р°.
         /// </summary>
-        /// <returns>Совпадающие сущности из набора сущностей.</returns>
+        /// <param name="type">РўРёРї DataObject.</param>
+        /// <param name="odataQuery">OData query РїР°СЂР°РјРµС‚СЂС‹ (РЅР°РїСЂРёРјРµСЂ, "$expand=Master")</param>
+        /// <returns>РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РїСЂРѕСЃР° OData.</returns>
+        public ODataQueryOptions CreateQueryOptionsFromExpand(Type type, string odataQuery)
+        {
+            // РЎРѕР·РґР°С‘Рј С„РёРєС‚РёРІРЅС‹Р№ URI СЃ РЅСѓР¶РЅС‹РјРё РїР°СЂР°РјРµС‚СЂР°РјРё, С‡С‚РѕР±С‹ OData РјРѕРі СЂР°СЃРїР°СЂСЃРёС‚СЊ Р·Р°РїСЂРѕСЃ.
+            // РџСЂРёРјРµСЂ: "$expand=Master" -> "?$expand=Master"
+            string queryPart = new Uri($"http://localhost/odata/{type.Name}?{odataQuery}").Query;
+
+            // РЎРѕР·РґР°С‘Рј РЅРѕРІС‹Р№ ODataFeature, РєРѕС‚РѕСЂС‹Р№ С…СЂР°РЅРёС‚ РєРѕРЅС‚РµР№РЅРµСЂ СЃ СЃРµСЂРІРёСЃР°РјРё OData.
+            // Р‘РµР· РЅРµРіРѕ РїР°СЂСЃРµСЂ РЅРµ СЃРјРѕР¶РµС‚ СЂР°Р±РѕС‚Р°С‚СЊ СЃ EDM РјРѕРґРµР»СЊСЋ.
+            var odataFeature = new ODataFeature();
+            odataFeature.RequestContainer = Request.HttpContext.Features.Get<IODataFeature>().RequestContainer;
+
+            // РЎРѕР·РґР°С‘Рј РІСЂРµРјРµРЅРЅС‹Р№ HttpContext, РёРјРёС‚РёСЂСѓСЋС‰РёР№ СЂРµР°Р»СЊРЅС‹Р№ HTTP-Р·Р°РїСЂРѕСЃ.
+            // ODataQueryOptions РїР°СЂСЃРёС‚ Р·Р°РїСЂРѕСЃ С‡РµСЂРµР· HttpRequest, РїРѕСЌС‚РѕРјСѓ Р±РµР· РЅРµРіРѕ РЅРµ РѕР±РѕР№С‚РёСЃСЊ.
+            var httpContext = new DefaultHttpContext();
+            httpContext.RequestServices = Request.HttpContext.RequestServices;
+            httpContext.Features.Set<IODataFeature>(odataFeature);
+
+            // РџРѕРґРјРµРЅСЏРµРј query string РЅР° РЅР°С€ РґРёРЅР°РјРёС‡РµСЃРєРё РїРѕСЃС‚СЂРѕРµРЅРЅС‹Р№ Р·Р°РїСЂРѕСЃ.
+            // РўРµРїРµСЂСЊ OData Р±СѓРґРµС‚ РґСѓРјР°С‚СЊ, С‡С‚Рѕ РєР»РёРµРЅС‚ РїРµСЂРµРґР°Р» ?$expand=Master
+            var request = httpContext.Request;
+            request.QueryString = new QueryString(queryPart);
+
+            // РЎС‚Р°РЅРґР°СЂС‚РЅС‹Р№ РјРµС‚РѕРґ OData, РєРѕС‚РѕСЂС‹Р№ РїР°СЂСЃРёС‚ query string Рё СЃРѕР·РґР°С‘С‚ ODataQueryOptions.
+            // Р’РЅСѓС‚СЂРё РѕРЅ РёСЃРїРѕР»СЊР·СѓРµС‚ request.Query РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ.
+            return CreateODataQueryOptions(type, request);
+        }
+
+        /// <summary>
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ GET, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        /// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        /// </summary>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         [CustomEnableQuery]
         public IActionResult Get()
         {
@@ -260,10 +294,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает запросы GET, которые предпринимают попытку получить сущности из набора сущностей.
-        /// Этот метод вычисляет совпадающие сущности, применяя параметры запроса. Имя "GetCollection" устанавливается в DataObjectRoutingConvention.SelectAction.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ GET, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+        /// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ "GetCollection" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ DataObjectRoutingConvention.SelectAction.
         /// </summary>
-        /// <returns>Совпадающие сущности из набора сущностей.</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         [CustomEnableQuery]
         public OkObjectResult GetCollection()
         {
@@ -278,9 +312,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность. Имя "GetEntity" устанавливается в DataObjectRoutingConvention.SelectAction.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ GET, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ "GetEntity" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ DataObjectRoutingConvention.SelectAction.
         /// </summary>
-        /// <returns>Сущность</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</returns>
         [CustomEnableQuery]
         public OkObjectResult GetEntity()
         {
@@ -295,9 +329,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ GET, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <returns>Сущность</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</returns>
         [CustomEnableQuery]
         public OkObjectResult GetGuid()
         {
@@ -320,9 +354,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
 
         /// <summary>
-        /// Обрабатывает запросы GET, которые предпринимают попытку получить отдельную сущность с помощью ключа из набора сущностей.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ GET, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <returns>Сущность</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</returns>
         [CustomEnableQuery]
         public OkObjectResult GetString()
         {
@@ -344,24 +378,24 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Преобразует объект DataObject в сущность.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="entityType">Тип сущности.</param>
-        /// <param name="obj">Объект DataObject.</param>
-        /// <param name="level">Глубина раскрытия для навигационных свойств. Пока всегда должно быть равно 1, а если это рекурсивный вызов, то может быть равно 0.</param>
-        /// <param name="expandedNavigationSelectItem">Навигационное свойство.</param>
-        /// <returns>Сущность.</returns>
+        /// <param name="entityType">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="obj">пїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <param name="level">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 1, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 0.</param>
+        /// <param name="expandedNavigationSelectItem">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         public EdmEntityObject GetEdmObject(IEdmEntityType entityType, object obj, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem)
         {
             return GetEdmObject(entityType, obj, level, expandedNavigationSelectItem, null);
         }
 
         /// <summary>
-        /// Возвращает количество объектов для linq-выражения соответствующего параметрам запроса OData (только для $filter).
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $filter).
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="queryOptions">Параметры запроса.</param>
-        /// <returns>Количество объектов.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="queryOptions">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         public int GetObjectsCount(Type type, ODataQueryOptions queryOptions)
         {
             var expr = GetExpressionFilterOnly(type, queryOptions);
@@ -375,9 +409,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает все несопоставленные запросы OData
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData
         /// </summary>
-        /// <returns>Содержит сообщение ответа для отправки в клиент после завершения.</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         [AcceptVerbs("GET", "POST", "PUT", "PATCH", "MERGE", "DELETE")]
         public IActionResult HandleUnmappedRequest()
         {
@@ -385,11 +419,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает linq-выражение соответствующее параметрам запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <param name="queryOpt">Параметры запроса.</param>
-        /// <typeparam name="TElement">Параметр.</typeparam>
-        /// <returns>Linq-выражение.</returns>
+        /// <param name="queryOpt">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <typeparam name="TElement">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</typeparam>
+        /// <returns>Linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         public Expression ToExpression<TElement>(ODataQueryOptions queryOpt)
         {
             if (queryOpt == null)
@@ -413,11 +447,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает linq-выражение соответствующее параметрам запроса OData (только для $filter).
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $filter).
         /// </summary>
-        /// <param name="queryOpt">Параметры запроса.</param>
-        /// <typeparam name="TElement">Параметр.</typeparam>
-        /// <returns>Linq-выражение.</returns>
+        /// <param name="queryOpt">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <typeparam name="TElement">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</typeparam>
+        /// <returns>Linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         public Expression ToExpressionFilterOnly<TElement>(ODataQueryOptions queryOpt)
         {
             if (queryOpt == null)
@@ -502,14 +536,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Преобразует коллекцию объектов DataObject в набор сущностей.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="objs">Коллекция объектов DataObject.</param>
-        /// <param name="type">Тип объекта DataObject.</param>
-        /// <param name="level">Глубина раскрытия для навигационных свойств. Пока всегда должно быть равно 1, а если это рекурсивный вызов, то может быть равно 0.</param>
-        /// <param name="expandedNavigationSelectItem">Навигационное свойство.</param>
-        /// <param name="dynamicView">Динамическое представление.</param>
-        /// <returns>Набор сущностей.</returns>
+        /// <param name="objs">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <param name="type">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <param name="level">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 1, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 0.</param>
+        /// <param name="expandedNavigationSelectItem">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="dynamicView">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         internal EdmEntityObjectCollection GetEdmCollection(IEnumerable objs, Type type, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView = null)
         {
             if (level == 0)
@@ -536,14 +570,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Преобразует объект DataObject в сущность.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="entityType">Тип сущности.</param>
-        /// <param name="obj">Объект DataObject.</param>
-        /// <param name="level">Глубина раскрытия для навигационных свойств. Пока всегда должно быть равно 1.</param>
-        /// <param name="expandedNavigationSelectItem">Навигационное свойство.</param>
-        /// <param name="dynamicView">Динамическое представление.</param>
-        /// <returns>Сущность.</returns>
+        /// <param name="entityType">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="obj">пїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <param name="level">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 1.</param>
+        /// <param name="expandedNavigationSelectItem">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="dynamicView">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         internal EdmEntityObject GetEdmObject(IEdmEntityType entityType, object obj, int level, ExpandedNavigationSelectItem expandedNavigationSelectItem, DynamicView dynamicView)
         {
             if (level == 0 || obj == null || (obj is DataObject dataObject && dataObject.__PrimaryKey == null))
@@ -555,7 +589,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             IEnumerable<SelectItem> selectedItems = null;
             if (expandedNavigationSelectItem == null)
             {
-                if (QueryOptions?.SelectExpand != null)
+                if (QueryOptions?.SelectExpand?.SelectExpandClause != null)
                     selectedItems = QueryOptions.SelectExpand.SelectExpandClause.SelectedItems;
             }
             else
@@ -694,7 +728,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         //entity.TrySetPropertyValue(prop.Name, keyGuid.Guid);
                     }
 
-                    // Обрабатывать свойство, если $select пуст, включен в $select или пустое значение недопустимо (например, Enum).
+                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ $select пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ $select пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, Enum).
                     else if (!selectedProperties.Any()
                              || selectedProperties.ContainsKey(prop.Name)
                              || !prop.Type.IsNullable)
@@ -723,12 +757,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         if (propType == typeof(DataObject))
                             continue;
 
-                        // Если тип свойства относится к одному из зарегистрированных провайдеров файловых свойств,
-                        // значит свойство файловое, и его нужно обработать особым образом.
+                        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ,
+                        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                         if (_dataObjectFileAccessor.HasDataObjectFileProvider(propType))
                         {
-                            // Обработка файловых свойств объектов данных.
-                            // ODataService будет возвращать строку с сериализованными метаданными файлового свойства.
+                            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+                            // ODataService пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                             if (!selectedProperties.Any() || (selectedProperties.Any() && selectedProperties.ContainsKey(dataObjectPropName)))
                             {
                                 value = _dataObjectFileAccessor.GetDataObjectFileProvider(propType)
@@ -738,7 +772,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         }
                         else
                         {
-                            // Преобразование типов для примитивных свойств.
+                            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
                             if (value is KeyGuid)
                                 value = ((KeyGuid)value).Guid;
                             if (value is NullableDateTime)
@@ -768,12 +802,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Применяет linq-выражение соответствующее параметрам запроса OData к массиву объектов DataObject.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="queryOptions">Параметры запроса.</param>
-        /// <param name="objs">Массив объектов DataObject.</param>
-        /// <returns>Совпадающие с запросом OData объекты DataObject.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="queryOptions">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="objs">пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData пїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</returns>
         private IQueryable ApplyExpression(Type type, ODataQueryOptions queryOptions, DataObject[] objs)
         {
             MethodInfo methodToExpression = GetType().GetMethod("ApplyTo").MakeGenericMethod(type);
@@ -781,12 +815,12 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Применяет linq-выражение соответствующее параметрам запроса OData к массиву объектов DataObject.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.
         /// </summary>
-        /// <param name="queryOpt">Параметры запроса.</param>
-        /// <param name="objs">Массив объектов DataObject.</param>
-        /// <typeparam name="TElement">Параметр.</typeparam>
-        /// <returns>Совпадающие с запросом OData объекты DataObject.</returns>
+        /// <param name="queryOpt">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="objs">пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <typeparam name="TElement">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</typeparam>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData пїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</returns>
         public IQueryable ApplyTo<TElement>(ODataQueryOptions queryOpt, DataObject[] objs)
         {
             if (queryOpt == null)
@@ -882,10 +916,10 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Создаёт контекст запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <returns>Контекст запроса OData.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.</returns>
         private ODataQueryContext CreateODataQueryContext(Type type)
         {
             // The EntitySetSegment type represents the Microsoft OData v5.7.0 EntitySetPathSegment type here.
@@ -894,11 +928,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Создаёт экземпляр <see cref="ODataServiceCore.Common.Exceptions.CustomException"/> с кодом 500 по-умолчанию, содержащий возникшую в сервисе ошибку.
-        /// Для изменения возвращаемого кода необходимо реализовать обработчик CallbackAfterInternalServerError.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <see cref="ODataServiceCore.Common.Exceptions.CustomException"/> пїЅ пїЅпїЅпїЅпїЅпїЅ 500 пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
+        /// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CallbackAfterInternalServerError.
         /// </summary>
-        /// <param name="exception">Ошибка сервиса.</param>
-        /// <returns>Новый экземпляр <see cref="ODataServiceCore.Common.Exceptions.CustomException"/>.</returns>
+        /// <param name="exception">пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <see cref="ODataServiceCore.Common.Exceptions.CustomException"/>.</returns>
         private ODataServiceCore.Common.Exceptions.CustomException CustomException(Exception exception)
         {
             HttpStatusCode code = HttpStatusCode.InternalServerError;
@@ -916,9 +950,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает набор сущностей, соответствующий параметрам запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <returns>Набор сущностей.</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private IActionResult ExecuteExpression()
         {
             _objs = new DataObject[0];
@@ -955,9 +989,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Определяет сущность или коллекцию сущностей по пути OData в запросе.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ OData пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <returns>Сущность или коллекция сущностей.</returns>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private IEdmObject EvaluateOdataPath()
         {
             // The EntitySetSegment type represents the Microsoft OData v5.7.0 EntitySetPathSegment type here.
@@ -1051,11 +1085,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает linq-выражение соответствующее параметрам запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="queryOptions">Параметры запроса.</param>
-        /// <returns>Linq-выражение.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="queryOptions">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>Linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private Expression GetExpression(Type type, ODataQueryOptions queryOptions)
         {
             MethodInfo methodToExpression = GetType().GetMethod("ToExpression").MakeGenericMethod(type);
@@ -1063,11 +1097,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает linq-выражение соответствующее параметрам запроса OData (только для $filter).
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ $filter).
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="queryOptions">Параметры запроса.</param>
-        /// <returns>Linq-выражение.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="queryOptions">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns>Linq-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private Expression GetExpressionFilterOnly(Type type, ODataQueryOptions queryOptions)
         {
             MethodInfo methodToExpression = GetType().GetMethod("ToExpressionFilterOnly").MakeGenericMethod(type);
@@ -1220,7 +1254,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Инициализирует переменные класса значениями из запроса OData.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OData.
         /// </summary>
         private void Init()
         {
@@ -1245,11 +1279,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает объект DataObject для данного ключа.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="key">Ключ объекта DataObject.</param>
-        /// <returns>Объект DataObject для данного ключа.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="key">пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</returns>
         private DataObject LoadObject(Type type, string key)
         {
             View view = EdmModel.GetDataObjectDefaultView(type);
@@ -1257,11 +1291,11 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Возвращает объект DataObject для данного ключа.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="type">Тип DataObject.</param>
-        /// <param name="key">Ключ объекта DataObject.</param>
-        /// <returns>Объект DataObject для данного ключа.</returns>
+        /// <param name="type">пїЅпїЅпїЅ DataObject.</param>
+        /// <param name="key">пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ DataObject.</param>
+        /// <returns>пїЅпїЅпїЅпїЅпїЅпїЅ DataObject пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</returns>
         private DataObject LoadObject(Type type, Guid key)
         {
             View view = EdmModel.GetDataObjectDefaultView(type);
@@ -1274,15 +1308,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Получить объект данных по ключу.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
         /// </summary>
-        /// <param name="objType"> Тип объекта.</param>
-        /// <param name="view"> Представление.</param>
-        /// <param name="keyValue"> Значение ключа.</param>
-        /// <returns> Объект данных.</returns>
+        /// <param name="objType"> пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="view"> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="keyValue"> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <returns> пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private DataObject LoadObject(Type objType, View view, object keyValue)
         {
-            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, _dynamicView.View);
+            LoadingCustomizationStruct lcs = LoadingCustomizationStruct.GetSimpleStruct(objType, view);
             lcs.LimitFunction = FunctionBuilder.BuildEquals(keyValue);
             int count = -1;
             DataObject[] dobjs = LoadObjects(lcs, out count);
@@ -1292,14 +1326,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Получает объекты или количество объектов для заданной lcs.
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ lcs.
         /// </summary>
         /// <param name="lcs">LoadingCustomizationStruct.</param>
-        /// <param name="count">В этом параметре веренётся количество объектов, если параметр callGetObjectsCount установлен в true, иначе -1.</param>
-        /// <param name="callExecuteCallbackBeforeGet">Задаёт будет ли вызваться метод ExecuteCallbackBeforeGet.</param>
-        /// <param name="callGetObjectsCount">Задаёт будет ли вызваться метод GetObjectsCount вместо LoadObjects у сервиса данных.</param>
-        /// <param name="callExecuteCallbackAfterGet">Задаёт будет ли вызваться метод ExecuteCallbackAfterGet.</param>
-        /// <returns>Если параметр callGetObjectsCount установлен в false, то возвращаются объекты, иначе пустой массив объектов.</returns>
+        /// <param name="count">пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ callGetObjectsCount пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ true, пїЅпїЅпїЅпїЅпїЅ -1.</param>
+        /// <param name="callExecuteCallbackBeforeGet">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ExecuteCallbackBeforeGet.</param>
+        /// <param name="callGetObjectsCount">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ GetObjectsCount пїЅпїЅпїЅпїЅпїЅпїЅ LoadObjects пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.</param>
+        /// <param name="callExecuteCallbackAfterGet">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ExecuteCallbackAfterGet.</param>
+        /// <returns>пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ callGetObjectsCount пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ false, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</returns>
         private DataObject[] LoadObjects(LoadingCustomizationStruct lcs, out int count, bool callExecuteCallbackBeforeGet = true, bool callGetObjectsCount = false, bool callExecuteCallbackAfterGet = true)
         {
             foreach (var propType in Information.GetAllTypesFromView(lcs.View))

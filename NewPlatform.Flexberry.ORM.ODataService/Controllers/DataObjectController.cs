@@ -1,4 +1,4 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
+namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 {
     using System;
     using System.Collections;
@@ -45,9 +45,12 @@
     using DefaultAssembliesResolver = System.Web.Http.Dispatcher.DefaultAssembliesResolver;
     using IAssembliesResolver = System.Web.Http.Dispatcher.IAssembliesResolver;
 #elif NETSTANDARD
+    using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Common;
+    using Microsoft.AspNet.OData.Interfaces;
     using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using NewPlatform.Flexberry.ORM.ODataService.Batch;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
@@ -592,7 +595,7 @@
             IEnumerable<SelectItem> selectedItems = null;
             if (expandedNavigationSelectItem == null)
             {
-                if (QueryOptions?.SelectExpand != null)
+                if (QueryOptions?.SelectExpand?.SelectExpandClause != null)
                     selectedItems = QueryOptions.SelectExpand.SelectExpandClause.SelectedItems;
             }
             else
@@ -902,6 +905,66 @@
 #endif
         {
             return new ODataQueryOptions(CreateODataQueryContext(type), request);
+        }
+
+        /// <summary>
+        /// Создаёт ODataQueryOptions для динамически вычисленного OData-запроса (например, $expand).
+        /// Используется когда OData-параметры вычисляются программно, а не приходят от клиента.
+        /// </summary>
+        /// <param name="type">Тип DataObject.</param>
+        /// <param name="odataQuery">OData query параметры (например, "$expand=Master")</param>
+        /// <returns>Параметры запроса OData.</returns>
+        public ODataQueryOptions CreateQueryOptionsFromExpand(Type type, string odataQuery)
+        {
+#if NETFRAMEWORK
+            // Для .NET Framework: создаём UriBuilder на базе текущего Request.RequestUri
+            // и подставляем в него нашу строку query (например "$expand=Master").
+            UriBuilder uriBuilder = new UriBuilder(Request.RequestUri);
+            uriBuilder.Query = odataQuery;
+
+            // Формируем новый HttpRequestMessage типа GET с этим URI,
+            // потому что в старом Web API OData-парсер читает параметры из HttpRequestMessage.
+            HttpRequestMessage r = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);
+
+            // Копируем OData RequestContainer (контейнер сервисов/модели), если он есть
+            // в свойствах текущего запроса, чтобы парсер мог получить доступ к EDM-модели и сервисам.
+            const string RequestContainerKey = "Microsoft.AspNet.OData.RequestContainer";
+            object value;
+            if (Request.Properties.TryGetValue(RequestContainerKey, out value))
+            {
+                r.Properties.Add(RequestContainerKey, value);
+            }
+
+            // Создаём ODataQueryOptions, передав тип сущности и сформированный HttpRequestMessage.
+            return CreateODataQueryOptions(type, r);
+#elif NETSTANDARD
+            // В ASP.NET Core OData читает параметры из HttpRequest и IODataFeature.
+            // Поэтому мы создаём "виртуальный" HttpContext, чтобы "обмануть" парсер и дать ему нашу query-string.
+            UriBuilder uriBuilder = new UriBuilder(Request.GetDisplayUrl());
+            uriBuilder.Query = odataQuery; // сюда подставляется $expand / другие OData-параметры
+            string queryPart = uriBuilder.Uri.Query; // извлекаем сформированную часть query
+
+            // Создаём экземпляр ODataFeature и переносим в него RequestContainer
+            // из текущего HttpContext.Features, чтобы временный контекст имел ту же OData-конфигурацию.
+            ODataFeature odataFeature = new ODataFeature
+            {
+                RequestContainer = Request.HttpContext.Features.Get<IODataFeature>().RequestContainer,
+            };
+
+            // Создаём отдельный HttpContext, потому что нам нельзя менять текущий Request — поэтому создаём временный.
+            DefaultHttpContext httpContext = new DefaultHttpContext();
+
+            // Передаём тот же DI-контейнер приложения, чтобы зависимости OData разрешались корректно.
+            httpContext.RequestServices = Request.HttpContext.RequestServices;
+            httpContext.Features.Set<IODataFeature>(odataFeature);
+
+            // Подменяем только QueryString — именно его и анализирует ODataQueryOptions.
+            HttpRequest request = httpContext.Request;
+            request.QueryString = new QueryString(queryPart);
+
+            // ODataQueryOptions Разбирает query-string и строит скорректированное внутреннее представление запроса (ExpandClause, FilterClause и т.д.)
+            return CreateODataQueryOptions(type, request);
+#endif
         }
 
         private IQueryable FilterApplyTo(FilterQueryOption filter, IQueryable query)
