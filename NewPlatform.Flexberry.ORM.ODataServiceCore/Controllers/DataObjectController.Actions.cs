@@ -65,14 +65,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             }
         }
 
+        /// <summary>
+        /// Выполняет зарегистрированный OData action и возвращает результат.
+        /// </summary>
         private IActionResult ExecuteAction(ODataActionParameters parameters)
         {
             ODataPath odataPath = Request.HttpContext.ODataFeature().Path;
 
-            // The OperationImportSegment type represents the Microsoft OData v5.7.0 UnboundActionPathSegment here.
+            // OperationImportSegment представляет UnboundActionPathSegment в OData v5.7.0
             OperationImportSegment segment = odataPath.Segments[odataPath.Segments.Count - 1] as OperationImportSegment;
 
-            // The OperationImportSegment.Identifier property represents the Microsoft OData v5.7.0 UnboundActionPathSegment.ActionName property here.
             if (segment == null || !Functions.IsRegistered(segment.Identifier))
             {
                 return Ok("Action not found");
@@ -88,7 +90,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             queryParameters.Count = null;
             queryParameters.Request = Request;
             queryParameters.RequestBody = (string)Request.HttpContext.Items[RequestHeadersHookMiddleware.PropertyKeyRequestContent];
-            var result = action.Handler(queryParameters, parameters);
+            object result = action.Handler(queryParameters, parameters);
             if (action.ReturnType == typeof(void))
             {
                 return Ok();
@@ -101,44 +103,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             if (result is DataObject dataObject)
             {
-                // Обрабатываем параметр __autoExpand для автоматического разворачивания загруженных мастеров
-                string odataQuery = ProcessAutoExpand(result.GetType(), parameters, dataObject);
-                DynamicView dynamicView = null;
-
-                if (!string.IsNullOrEmpty(odataQuery))
-                {
-                    // Сохраняем предыдущее состояние для отката
-                    var previousQueryOptions = QueryOptions;
-                    var previousSelectExpandClause = HttpContext.ODataFeature().SelectExpandClause;
-
-                    try
-                    {
-                        QueryOptions = CreateQueryOptionsFromExpand(result.GetType(), odataQuery);
-
-                        // Устанавливаем SelectExpandClause в запросе для использования сериализатором
-                        if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
-                        {
-                            HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
-                        }
-
-                        // Создаем динамическое представление для корректной обработки expand
-                        type = result.GetType();
-                        CreateDynamicView();
-                        dynamicView = _dynamicView;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Откатываем предыдущее состояние для предотвращения частичного применения
-                        QueryOptions = previousQueryOptions;
-                        HttpContext.ODataFeature().SelectExpandClause = previousSelectExpandClause;
-                        _dynamicView = null;
-
-                        // Логируем ошибку но продолжаем с QueryOptions по умолчанию
-                        LogService.LogError($"Failed to apply OData query parameter '{odataQuery}': {ex.Message}", ex);
-                    }
-                }
-
-                var entityType = EdmModel.GetEdmEntityType(result.GetType());
+                DynamicView dynamicView = ApplyAutoExpand(result.GetType(), parameters, dataObject);
+                Microsoft.OData.Edm.IEdmEntityType entityType = EdmModel.GetEdmEntityType(result.GetType());
                 return Ok(GetEdmObject(entityType, result, 1, null, dynamicView));
             }
 
@@ -159,51 +125,14 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
                 if (type != null && (type.IsSubclassOf(typeof(DataObject)) || type == typeof(DataObject)))
                 {
-                    // Для коллекций используем первый объект для определения загруженных свойств для auto-expand
                     DataObject firstObject = null;
                     if (result is IEnumerable enumerable)
                     {
                         firstObject = enumerable.Cast<DataObject>().FirstOrDefault();
                     }
 
-                    // Обрабатываем параметр __autoExpand для автоматического разворачивания загруженных мастеров
-                    string odataQuery = ProcessAutoExpand(type, parameters, firstObject);
-                    DynamicView dynamicView = null;
-
-                    if (!string.IsNullOrEmpty(odataQuery))
-                    {
-                        // Сохраняем предыдущее состояние для отката
-                        var previousQueryOptions = QueryOptions;
-                        var previousSelectExpandClause = HttpContext.ODataFeature().SelectExpandClause;
-
-                        try
-                        {
-                            QueryOptions = CreateQueryOptionsFromExpand(type, odataQuery);
-
-                            // Устанавливаем SelectExpandClause в запросе для использования сериализатором
-                            if (QueryOptions.SelectExpand != null && QueryOptions.SelectExpand.SelectExpandClause != null)
-                            {
-                                HttpContext.ODataFeature().SelectExpandClause = QueryOptions.SelectExpand.SelectExpandClause;
-                            }
-
-                            // Создаем динамическое представление для корректной обработки expand
-                            this.type = type;
-                            CreateDynamicView();
-                            dynamicView = _dynamicView;
-                        }
-                        catch (Exception ex)
-                        {
-                            // Откатываем предыдущее состояние для предотвращения частичного применения
-                            QueryOptions = previousQueryOptions;
-                            HttpContext.ODataFeature().SelectExpandClause = previousSelectExpandClause;
-                            _dynamicView = null;
-
-                            // Логируем ошибку но продолжаем с QueryOptions по умолчанию
-                            LogService.LogError($"Failed to apply OData query parameter '{odataQuery}' for collection: {ex.Message}", ex);
-                        }
-                    }
-
-                    var coll = GetEdmCollection((IEnumerable)result, type, 1, null, dynamicView);
+                    DynamicView dynamicView = ApplyAutoExpand(type, parameters, firstObject);
+                    IEnumerable coll = GetEdmCollection((IEnumerable)result, type, 1, null, dynamicView);
                     return Ok(coll);
                 }
             }
@@ -212,12 +141,62 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         }
 
         /// <summary>
-        /// Обрабатывает параметр __autoExpand для автоматического разворачивания загруженных свойств-мастеров.
+        /// Получает текущий SelectExpandClause из запроса.
         /// </summary>
-        /// <param name="objectType">Тип возвращаемого DataObject.</param>
-        /// <param name="parameters">Параметры action.</param>
-        /// <param name="dataObject">Экземпляр DataObject (для случая с одним объектом).</param>
-        /// <returns>Строка OData $expand для использования, или null если auto-expand не запрошен.</returns>
+        private SelectExpandClause GetSelectExpandClause()
+        {
+            return HttpContext.ODataFeature().SelectExpandClause;
+        }
+
+        /// <summary>
+        /// Устанавливает SelectExpandClause для запроса.
+        /// </summary>
+        private void SetSelectExpandClause(SelectExpandClause clause)
+        {
+            HttpContext.ODataFeature().SelectExpandClause = clause;
+        }
+
+        /// <summary>
+        /// Применяет auto-expand к результату action и возвращает DynamicView.
+        /// Если auto-expand не запрошен - возвращает null.
+        /// </summary>
+        private DynamicView ApplyAutoExpand(Type objectType, ODataActionParameters parameters, DataObject dataObject)
+        {
+            string odataQuery = ProcessAutoExpand(objectType, parameters, dataObject);
+            if (string.IsNullOrEmpty(odataQuery))
+                return null;
+
+            ODataQueryOptions previousQueryOptions = QueryOptions;
+            SelectExpandClause previousSelectExpandClause = GetSelectExpandClause();
+
+            try
+            {
+                QueryOptions = CreateQueryOptionsFromExpand(objectType, odataQuery);
+
+                if (QueryOptions.SelectExpand?.SelectExpandClause != null)
+                {
+                    SetSelectExpandClause(QueryOptions.SelectExpand.SelectExpandClause);
+                }
+
+                type = objectType;
+                CreateDynamicView();
+                return _dynamicView;
+            }
+            catch (Exception ex)
+            {
+                QueryOptions = previousQueryOptions;
+                SetSelectExpandClause(previousSelectExpandClause);
+                _dynamicView = null;
+
+                LogService.LogError($"Failed to apply auto-expand '{odataQuery}': {ex.Message}", ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Обрабатывает параметр __autoExpand для автоматического разворачивания загруженных мастеров.
+        /// Возвращает строку $expand или null если auto-expand не запрошен.
+        /// </summary>
         private string ProcessAutoExpand(Type objectType, ODataActionParameters parameters, DataObject dataObject = null)
         {
             string autoExpand = Request.Query["__autoExpand"].ToString();
@@ -228,7 +207,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 
             if (!string.IsNullOrEmpty(autoExpand) && autoExpand.ToLowerInvariant() == "true" && dataObject != null)
             {
-                string autoExpandQuery = AutoExpander.BuildExpandQuery(dataObject, (type, prop) => EdmModel?.GetEdmTypePropertyName(type, prop));
+                string autoExpandQuery = AutoExpander.BuildExpandQuery(dataObject, (Type type, string prop) => EdmModel?.GetEdmTypePropertyName(type, prop));
                 if (!string.IsNullOrEmpty(autoExpandQuery))
                 {
                     LogService.LogDebug($"Auto-expanding masters for {objectType.Name}: {autoExpandQuery}");
