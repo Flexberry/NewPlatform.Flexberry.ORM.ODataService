@@ -1,16 +1,10 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the develop-v5.2 branch
   push:
     branches: [ release-v6.1.01 ]
   pull_request:
     branches: [ release-v6.1.01 ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 env:
@@ -18,50 +12,42 @@ env:
   CONFIGURATION: "Debug"
   NUPATH: "https://api.nuget.org/v3/index.json"
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-22.04
-    # Service containers to run with `runner-job`
     services:
-      # Label used to access the service container
       postgres:
-        # Docker Hub image
         image: flexberry/alt.p8-postgresql-postgis
-        # Provide the password for postgres
         env:
           POSTGRES_PASSWORD: p@ssw0rd
-        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          # Maps tcp port 5432 on service container to the host
           - 5432:5432
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install .NET Core 3.1 Runtime
-        run: |
-          wget https://dot.net/v1/dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --runtime aspnetcore --version 3.1.32
+    # ✅ Setup both 3.1 (for tests) and 8.0 (for tooling)
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          3.1.x
+          8.0.x
 
-      - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
-        
-      - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source $NUPATH
-        
-      - name: Compile code
-        run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
+    - name: Restore solution
+      run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
+      
+    - name: Install xunit.runner.console
+      run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source $NUPATH
+      
+    - name: Build
+      run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
 
-      - name: Test under dotnet
-        run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
-
+    # ✅ Run tests via project file (more reliable than DLL path)
+    - name: Test
+      run: dotnet test Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/NewPlatform.Flexberry.ORM.ODataService.Tests.csproj -c $CONFIGURATION --no-build --framework netcoreapp3.1
