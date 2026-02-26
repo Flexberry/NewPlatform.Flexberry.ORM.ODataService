@@ -10,6 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [6.1.01] - 2026.02.24
+
+### Added
+- Masters now auto expand in custom OData functions when `__autoExpand=true` is passed.
+
 ## [6.1.0] - 2021.06.12
 
 ### Added
