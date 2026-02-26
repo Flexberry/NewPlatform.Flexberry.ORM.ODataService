@@ -35,15 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPlatform.Flexberry.ORM.O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPlatform.Flexberry.ORM.ODataService.WebApi", "NewPlatform.Flexberry.ORM.ODataService.WebApi\NewPlatform.Flexberry.ORM.ODataService.WebApi.csproj", "{D3EBD348-D0F8-4C1E-BDC0-6C77D9D443CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataServiceSample.AspNet", "Samples\ODataServiceSample.AspNet\ODataServiceSample.AspNet.csproj", "{D1CE223D-844E-45FF-BDAD-6252A3F3A4EA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPlatform.Flexberry.ORM.ODataServiceCore.Common", "NewPlatform.Flexberry.ORM.ODataServiceCore.Common\NewPlatform.Flexberry.ORM.ODataServiceCore.Common.csproj", "{2C84BB80-78BD-4771-BA5A-32D32DB568DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi", "NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.csproj", "{B9E13B47-4A51-4D47-B5B1-2C1A3A8008B1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataServiceSample.AspNetCore", "Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj", "{5090ACBA-7CD6-4AA7-88A2-15D541573988}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{DE953BA7-BD14-48DA-AAAA-E835DC84497A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
