@@ -47,6 +47,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      - name: Install .NET Core 3.1 Runtime
+        run: |
+          wget https://dot.net/v1/dotnet-install.sh
+          chmod +x dotnet-install.sh
+          ./dotnet-install.sh --runtime aspnetcore --version 3.1.32
+
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
         run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
         
