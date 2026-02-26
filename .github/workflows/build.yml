@@ -6,19 +6,24 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the develop-v5.2 branch
   push:
-    branches: [ develop-v6.1 ]
+    branches: [ release-v6.1.01 ]
   pull_request:
-    branches: [ develop-v6.1 ]
+    branches: [ release-v6.1.01 ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  XUNIT_RUNNER: "2.4.1"
+  CONFIGURATION: "Debug"
+  NUPATH: "https://api.nuget.org/v3/index.json"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     # Service containers to run with `runner-job`
     services:
       # Label used to access the service container
@@ -40,29 +45,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        
-      - name: Install packages
-        run: sudo apt-get install -y doxygen 
+      - uses: actions/checkout@v4
 
       - name: Restore NewPlatform.Flexberry.ORM.ODataService.sln
-        run: nuget restore NewPlatform.Flexberry.ORM.ODataService.sln -NonInteractive
+        run: dotnet restore NewPlatform.Flexberry.ORM.ODataService.sln -s $NUPATH
         
       - name: Install xunit.runner.console
-        run: nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+        run: nuget install xunit.runner.console -Version $XUNIT_RUNNER -OutputDirectory testrunner -Source $NUPATH
         
       - name: Compile code
-        run:  msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=Debug NewPlatform.Flexberry.ORM.ODataService.sln 
-
-      - name: Test under mono
-        run: mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/net461/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
+        run: dotnet build --no-restore -v q /p:WarningLevel=0 -c $CONFIGURATION NewPlatform.Flexberry.ORM.ODataService.sln
 
       - name: Test under dotnet
         run: dotnet test ./Tests/NewPlatform.Flexberry.ORM.ODataService.Tests/bin/Debug/netcoreapp3.1/NewPlatform.Flexberry.ORM.ODataService.Tests.dll
 
-      - name: Update documentation
-        run: |
-          [ $GITHUB_EVENT_NAME == 'push' ] && 
-          ( [ $GITHUB_REF == "refs/heads/master" ] || [ $GITHUB_REF == "refs/heads/develop" ] ) &&
-          bash Doxygen/update-autodoc.sh
-          exit 0
