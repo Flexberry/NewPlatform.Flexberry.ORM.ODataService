@@ -331,31 +331,63 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 #if NETFRAMEWORK
         /// <summary>
         /// Строит OData $expand запрос из загруженных свойств-мастеров.
+        /// Поддерживает вложенные мастера (master inside a master).
         /// </summary>
         private string BuildExpandFromLoadedProperties(DataObject dataObject)
         {
             if (dataObject == null)
                 return string.Empty;
 
-            string[] loadedProperties = dataObject.GetLoadedProperties();
-            if (loadedProperties == null || loadedProperties.Length == 0)
-                return string.Empty;
+            var rootNode = new ExpandNode();
+            BuildExpandTreeForObject(dataObject, rootNode);
 
-            List<string> expandProperties = new List<string>();
+            string expandQuery = BuildExpandQueryFromNode(rootNode);
+            return !string.IsNullOrEmpty(expandQuery) ? "$expand=" + expandQuery : string.Empty;
+        }
+
+        /// <summary>
+        /// Рекурсивно строит дерево expand для объекта и его загруженных мастеров.
+        /// </summary>
+        private void BuildExpandTreeForObject(DataObject dataObject, ExpandNode parentNode)
+        {
+            if (dataObject == null)
+                return;
+
+            string[] loadedProps = dataObject.GetLoadedProperties();
+            if (loadedProps == null || loadedProps.Length == 0)
+                return;
+
             Type objectType = dataObject.GetType();
 
-            foreach (string propName in loadedProperties)
+            foreach (string propName in loadedProps)
             {
                 try
                 {
+                    // Проверяем, является ли свойство мастером
                     Type propType = Information.GetPropertyType(objectType, propName);
-                    if (propType != null && propType.IsSubclassOf(typeof(DataObject)) && !propType.IsSubclassOf(typeof(DetailArray)))
+                    if (propType == null ||
+                        !propType.IsSubclassOf(typeof(DataObject)) ||
+                        propType.IsSubclassOf(typeof(DetailArray)))
+                        continue;
+
+                    // Получаем EDM имя
+                    string edmName = _model.GetEdmTypePropertyName(objectType, propName);
+                    if (string.IsNullOrEmpty(edmName))
+                        continue;
+
+                    // Ищем или создаем узел
+                    var node = parentNode.Children.FirstOrDefault(n => n.EdmName == edmName);
+                    if (node == null)
                     {
-                        string edmName = _model.GetEdmTypePropertyName(objectType, propName);
-                        if (!string.IsNullOrEmpty(edmName))
-                        {
-                            expandProperties.Add(edmName);
-                        }
+                        node = new ExpandNode { EdmName = edmName, PropertyType = propType };
+                        parentNode.Children.Add(node);
+                    }
+
+                    // Рекурсивно обрабатываем вложенный мастер
+                    object propValue = Information.GetPropValueByName(dataObject, propName);
+                    if (propValue is DataObject nestedMaster)
+                    {
+                        BuildExpandTreeForObject(nestedMaster, node);
                     }
                 }
                 catch
@@ -363,11 +395,37 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                     continue;
                 }
             }
+        }
 
-            if (expandProperties.Count == 0)
+        /// <summary>
+        /// Строит строку $expand из дерева узлов.
+        /// </summary>
+        private string BuildExpandQueryFromNode(ExpandNode node)
+        {
+            if (node.Children.Count == 0)
                 return string.Empty;
 
-            return "$expand=" + string.Join(",", expandProperties);
+            var parts = new List<string>();
+            foreach (var child in node.Children)
+            {
+                string nestedExpand = BuildExpandQueryFromNode(child);
+                if (!string.IsNullOrEmpty(nestedExpand))
+                    parts.Add($"{child.EdmName}($expand={nestedExpand})");
+                else
+                    parts.Add(child.EdmName);
+            }
+
+            return string.Join(",", parts);
+        }
+
+        /// <summary>
+        /// Узел дерева для построения $expand запроса.
+        /// </summary>
+        private class ExpandNode
+        {
+            public string EdmName { get; set; }
+            public Type PropertyType { get; set; }
+            public List<ExpandNode> Children { get; } = new List<ExpandNode>();
         }
 #endif
     }

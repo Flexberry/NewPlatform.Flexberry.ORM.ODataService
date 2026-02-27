@@ -580,5 +580,135 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Functions
                 }
             });
         }
+
+        /// <summary>
+        /// Тестирует автоматическое разворачивание мастера внутри мастера (3 уровня вложенности).
+        /// Использует цепочку: Кошка -> Порода -> Порода (через Иерархия) -> ТипПороды
+        /// </summary>
+        [Fact]
+        public void TestActionReturnObjectWithNestedMasterAutoExpand()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает объект с вложенными мастерами (3 уровня)
+                if (!args.Token.Functions.IsRegistered("ActionWithNestedMasterAuto"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "objectKey", typeof(string) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionWithNestedMasterAuto",
+                        (queryParameters, parameters) =>
+                        {
+                            // Создаем мастера третьего уровня (ТипПороды)
+                            var master3 = new ТипПороды
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "ТипПородыУровень3"
+                            };
+                            args.DataService.UpdateObject(master3);
+
+                            // Создаем мастера второго уровня (Порода), которая ссылается на ТипПороды
+                            var master2 = new Порода
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "ПородаУровень2",
+                                ТипПороды = master3
+                            };
+                            args.DataService.UpdateObject(master2);
+
+                            // Создаем мастера первого уровня (Порода), которая ссылается на Породу второго уровня через Иерархия
+                            var master1 = new Порода
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "ПородаУровень1",
+                                Иерархия = master2
+                            };
+                            args.DataService.UpdateObject(master1);
+
+                            // Создаем объект Кошка, который ссылается на Породу
+                            var obj = new Кошка
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Кличка = "ТестоваяКошка",
+                                Порода = master1
+                            };
+                            args.DataService.UpdateObject(obj);
+
+                            // Загружаем объект с представлением, включающим все три уровня мастеров
+                            // Иерархия: Кошка -> Порода (L1) -> Порода (L2, через Иерархия) -> ТипПороды (L3)
+                            var view = new View(typeof(Кошка), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Порода.Название");
+                            view.AddProperty("Порода.Иерархия.Название");
+                            view.AddProperty("Порода.Иерархия.ТипПороды.Название");
+                            args.DataService.LoadObject(view, obj);
+
+                            return obj;
+                        },
+                        typeof(Кошка),
+                        parametersTypes));
+                }
+
+                // Тест 1: Вызов Action без __autoExpand - вложенные мастера не должны быть в ответе
+                string requestUrl = $"http://localhost/odata/ActionWithNestedMasterAuto";
+                string json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+                    _output?.WriteLine($"Response without __autoExpand: {receivedStr}");
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем, что объект вернулся
+                    Assert.NotNull(receivedObj["__PrimaryKey"]);
+
+                    // Проверяем, что мастер первого уровня не включен в ответ (или без свойств)
+                    var breedToken = receivedObj["Порода"];
+                    if (breedToken != null && breedToken.Type != JTokenType.Null)
+                    {
+                        // Если порода есть, у нее не должно быть свойства Название
+                        Assert.Null(breedToken["Название"]);
+                    }
+                }
+
+                // Тест 2: Вызов Action с __autoExpand=true - все мастера должны быть развернуты (3 уровня)
+                requestUrl = $"http://localhost/odata/ActionWithNestedMasterAuto?__autoExpand=true";
+                json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    _output?.WriteLine($"=== FULL RESPONSE (3-level nested masters with __autoExpand) ===");
+                    _output?.WriteLine(receivedStr);
+                    _output?.WriteLine($"=====================");
+
+                    Assert.True(response.StatusCode == HttpStatusCode.OK,
+                        $"Expected OK but got {response.StatusCode}. Response: {receivedStr}");
+
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем мастер первого уровня (Порода)
+                    var breedToken = receivedObj["Порода"];
+                    Assert.NotNull(breedToken);
+                    Assert.NotEqual(JTokenType.Null, breedToken.Type);
+                    Assert.NotNull(breedToken["__PrimaryKey"]);
+                    Assert.Equal("ПородаУровень1", breedToken["Название"]?.ToString());
+
+                    // Проверяем мастер второго уровня (Порода через Иерархия)
+                    var hierarchyToken = breedToken["Иерархия"];
+                    Assert.NotNull(hierarchyToken);
+                    Assert.NotEqual(JTokenType.Null, hierarchyToken.Type);
+                    Assert.NotNull(hierarchyToken["__PrimaryKey"]);
+                    Assert.Equal("ПородаУровень2", hierarchyToken["Название"]?.ToString());
+
+                    // Проверяем мастер третьего уровня (ТипПороды)
+                    var breedTypeToken = hierarchyToken["ТипПороды"];
+                    Assert.NotNull(breedTypeToken);
+                    Assert.NotEqual(JTokenType.Null, breedTypeToken.Type);
+                    Assert.NotNull(breedTypeToken["__PrimaryKey"]);
+                    Assert.Equal("ТипПородыУровень3", breedTypeToken["Название"]?.ToString());
+                }
+            });
+        }
     }
 }
