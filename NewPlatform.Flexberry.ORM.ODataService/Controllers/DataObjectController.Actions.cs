@@ -300,33 +300,33 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// Возвращает строку $expand или null если auto-expand не запрошен.
         /// </summary>
         private string ProcessAutoExpand(Type objectType, ODataActionParameters parameters, DataObject dataObject = null)
-{
+        {
 #if NETSTANDARD
             string autoExpand = Request.Query[autoExpandParamName].ToString();
 #elif NETFRAMEWORK
             string autoExpand = Request.RequestUri.ParseQueryString()[autoExpandParamName];
 #endif
-    if (string.IsNullOrEmpty(autoExpand) && parameters != null && parameters.ContainsKey(autoExpandParamName))
-    {
-        autoExpand = parameters[autoExpandParamName]?.ToString();
-    }
+            if (string.IsNullOrEmpty(autoExpand) && parameters != null && parameters.ContainsKey(autoExpandParamName))
+            {
+                autoExpand = parameters[autoExpandParamName]?.ToString();
+            }
 
-    if (!string.IsNullOrEmpty(autoExpand) && autoExpand.ToUpperInvariant() == "TRUE" && dataObject != null)
-    {
+            if (!string.IsNullOrEmpty(autoExpand) && autoExpand.ToUpperInvariant() == "TRUE" && dataObject != null)
+            {
 #if NETSTANDARD
                 string autoExpandQuery = ExpandQueryGenerator.GetQueryByLoadedProps(dataObject, (Type type, string prop) => _model?.GetEdmTypePropertyName(type, prop));
 #elif NETFRAMEWORK
                 string autoExpandQuery = BuildExpandFromLoadedProperties(dataObject);
 #endif
-        if (!string.IsNullOrEmpty(autoExpandQuery))
-        {
-            LogService.LogDebug($"Auto-expanding masters for {objectType.Name}: {autoExpandQuery}");
-            return autoExpandQuery;
-        }
-    }
+                if (!string.IsNullOrEmpty(autoExpandQuery))
+                {
+                    LogService.LogDebug($"Auto-expanding masters for {objectType.Name}: {autoExpandQuery}");
+                    return autoExpandQuery;
+                }
+            }
 
-    return null;
-}
+            return null;
+        }
 
 #if NETFRAMEWORK
         /// <summary>
