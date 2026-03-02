@@ -4,6 +4,7 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
     using System.Collections.Generic;
     using System.Linq;
     using ICSSoft.STORMNET;
+    using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Extensions;
 
     /// <summary>
     /// Класс для автоматического разворачивания мастеров в OData ответах.
@@ -22,14 +23,21 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
             Func<Type, string, string> getEdmPropertyName)
         {
             if (dataObject == null || getEdmPropertyName == null)
+            {
                 return string.Empty;
+            }
 
-            var rootNode = new ExpandNode();
-            var visitedObjects = new HashSet<DataObject>(ReferenceEqualityComparer<DataObject>.Instance);
-            BuildExpandTreeForObject(dataObject, rootNode, getEdmPropertyName, visitedObjects);
+            ExpandNode rootNode = new ExpandNode();
+            HashSet<TypeKeyTuple> processedDataObjects = new HashSet<TypeKeyTuple>();
+            BuildExpandTreeForObject(dataObject, rootNode, getEdmPropertyName, processedDataObjects);
 
             string expandQuery = BuildExpandQuery(rootNode);
-            return !string.IsNullOrEmpty(expandQuery) ? "$expand=" + expandQuery : string.Empty;
+            if (string.IsNullOrEmpty(expandQuery))
+            {
+                return string.Empty;
+            }
+
+            return "$expand=" + expandQuery;
         }
 
         /// <summary>
@@ -39,20 +47,25 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
             DataObject dataObject,
             ExpandNode parentNode,
             Func<Type, string, string> getEdmPropertyName,
-            HashSet<DataObject> visitedObjects)
+            HashSet<TypeKeyTuple> processedDataObjects)
         {
             if (dataObject == null)
+            {
                 return;
+            }
 
             // Защита от циклических ссылок: проверяем, не обрабатывали ли уже этот объект
-            if (visitedObjects.Contains(dataObject))
-                return;
-
-            visitedObjects.Add(dataObject);
+            TypeKeyTuple dataForHash = new TypeKeyTuple(dataObject.GetType(), dataObject.__PrimaryKey);
+            if (!processedDataObjects.Add(dataForHash))
+            {
+                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
+            }
 
             string[] loadedProps = dataObject.GetLoadedProperties();
             if (loadedProps == null || loadedProps.Length == 0)
+            {
                 return;
+            }
 
             Type objectType = dataObject.GetType();
 
@@ -65,24 +78,31 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
                     if (propType == null ||
                         !propType.IsSubclassOf(typeof(DataObject)) ||
                         propType.IsSubclassOf(typeof(DetailArray)))
+                    {
                         continue;
+                    }
 
                     // Получаем значение свойства и проверяем на циклическую ссылку
                     object propValue = Information.GetPropValueByName(dataObject, propName);
                     if (propValue is DataObject nestedMaster)
                     {
                         // Пропускаем циклические ссылки: если объект уже обрабатывался, не добавляем его
-                        if (visitedObjects.Contains(nestedMaster))
+                        TypeKeyTuple nestedDataForHash = new TypeKeyTuple(nestedMaster.GetType(), nestedMaster.__PrimaryKey);
+                        if (processedDataObjects.Contains(nestedDataForHash))
+                        {
                             continue;
+                        }
                     }
 
                     // Получаем EDM имя
                     string edmName = getEdmPropertyName(objectType, propName);
                     if (string.IsNullOrEmpty(edmName))
+                    {
                         continue;
+                    }
 
                     // Ищем или создаем узел
-                    var node = parentNode.Children.FirstOrDefault(n => n.EdmName == edmName);
+                    ExpandNode node = parentNode.Children.FirstOrDefault(n => n.EdmName == edmName);
                     if (node == null)
                     {
                         node = new ExpandNode { EdmName = edmName, PropertyType = propType };
@@ -92,7 +112,7 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
                     // Рекурсивно обрабатываем вложенный мастер
                     if (propValue is DataObject master)
                     {
-                        BuildExpandTreeForObject(master, node, getEdmPropertyName, visitedObjects);
+                        BuildExpandTreeForObject(master, node, getEdmPropertyName, processedDataObjects);
                     }
                 }
                 catch
@@ -108,16 +128,22 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
         private static string BuildExpandQuery(ExpandNode node)
         {
             if (node.Children.Count == 0)
+            {
                 return string.Empty;
+            }
 
-            var parts = new List<string>();
-            foreach (var child in node.Children)
+            List<string> parts = new List<string>();
+            foreach (ExpandNode child in node.Children)
             {
                 string nestedExpand = BuildExpandQuery(child);
                 if (!string.IsNullOrEmpty(nestedExpand))
+                {
                     parts.Add($"{child.EdmName}($expand={nestedExpand})");
+                }
                 else
+                {
                     parts.Add(child.EdmName);
+                }
             }
 
             return string.Join(",", parts);
@@ -131,25 +157,6 @@ namespace NewPlatform.Flexberry.ORM.ODataServiceCore.Common
             public string EdmName { get; set; }
             public Type PropertyType { get; set; }
             public List<ExpandNode> Children { get; } = new List<ExpandNode>();
-        }
-
-        /// <summary>
-        /// Comparer для сравнения объектов по ссылке (reference equality).
-        /// </summary>
-        private class ReferenceEqualityComparer<T> : IEqualityComparer<T>
-            where T : class
-        {
-            public static ReferenceEqualityComparer<T> Instance { get; } = new ReferenceEqualityComparer<T>();
-
-            public bool Equals(T x, T y)
-            {
-                return ReferenceEquals(x, y);
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
-            }
         }
     }
 }
