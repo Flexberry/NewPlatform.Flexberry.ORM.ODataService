@@ -710,5 +710,166 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests.Functions
                 }
             });
         }
+
+        /// <summary>
+        /// Тестирует, что самоссылка в мастерах (self-referencing master) не приводит к бесконечному циклу.
+        /// </summary>
+        [Fact]
+        public void TestActionAutoExpandWithSelfReferencingMaster()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает объект с самоссылкой в мастере
+                if (!args.Token.Functions.IsRegistered("ActionWithSelfReferencingMaster"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "objectKey", typeof(string) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionWithSelfReferencingMaster",
+                        (queryParameters, parameters) =>
+                        {
+                            // Создаем Породу, которая ссылается сама на себя через Иерархия (self-reference)
+                            var selfReferencingBreed = new Порода
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "СамоссылочнаяПорода"
+                            };
+                            args.DataService.UpdateObject(selfReferencingBreed);
+
+                            // Устанавливаем самоссылку: Порода -> Порода (сама на себя)
+                            selfReferencingBreed.Иерархия = selfReferencingBreed;
+                            args.DataService.UpdateObject(selfReferencingBreed);
+
+                            // Создаем Кошку, которая ссылается на самоссылочную Породу
+                            var obj = new Кошка
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Кличка = "ТестоваяКошка",
+                                Порода = selfReferencingBreed
+                            };
+                            args.DataService.UpdateObject(obj);
+
+                            // Загружаем объект с представлением, включающим самоссылочный мастер
+                            var view = new View(typeof(Кошка), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Порода.Название");
+                            view.AddProperty("Порода.Иерархия.Название"); // Это создает самоссылку
+                            args.DataService.LoadObject(view, obj);
+
+                            return obj;
+                        },
+                        typeof(Кошка),
+                        parametersTypes));
+                }
+
+                // Тест: Вызов Action с __autoExpand=true при самоссылке не должен зависнуть
+                string requestUrl = $"http://localhost/odata/ActionWithSelfReferencingMaster?__autoExpand=true";
+                string json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем, что объект вернулся
+                    Assert.NotNull(receivedObj["__PrimaryKey"]);
+                    Assert.Equal("ТестоваяКошка", receivedObj["Кличка"]?.ToString());
+
+                    // Проверяем, что мастер автоматически развернут
+                    var breedToken = receivedObj["Порода"];
+                    Assert.NotNull(breedToken);
+                    Assert.NotEqual(JTokenType.Null, breedToken.Type);
+                    Assert.NotNull(breedToken["__PrimaryKey"]);
+                    Assert.Equal("СамоссылочнаяПорода", breedToken["Название"]?.ToString());
+
+                    // Проверяем, что циклическое свойство Иерархия НЕ развернуто (защита от зацикливания)
+                    // При самоссылке свойство может отсутствовать или быть null
+                    var hierarchyToken = breedToken["Иерархия"];
+                    Assert.True(hierarchyToken == null || hierarchyToken.Type == JTokenType.Null,
+                        "Циклическое свойство Иерархия не должно быть развернуто");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Тестирует, что косвенная самоссылка (A -> B -> A) не приводит к бесконечному циклу.
+        /// </summary>
+        [Fact]
+        public void TestActionAutoExpandWithCircularReference()
+        {
+            ActODataService(args =>
+            {
+                // Регистрируем Action, который возвращает объект с косвенной самоссылкой
+                if (!args.Token.Functions.IsRegistered("ActionWithCircularReference"))
+                {
+                    var parametersTypes = new Dictionary<string, Type> { { "objectKey", typeof(string) } };
+                    args.Token.Functions.Register(new Action(
+                        "ActionWithCircularReference",
+                        (queryParameters, parameters) =>
+                        {
+                            // Создаем две Породы, которые ссылаются друг на друга (A <-> B)
+                            var breedA = new Порода
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "ПородаA"
+                            };
+                            args.DataService.UpdateObject(breedA);
+
+                            var breedB = new Порода
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Название = "ПородаB"
+                            };
+                            args.DataService.UpdateObject(breedB);
+
+                            // Устанавливаем кросс-ссылки: A -> B, B -> A
+                            breedA.Иерархия = breedB;
+                            breedB.Иерархия = breedA;
+                            args.DataService.UpdateObject(breedA);
+                            args.DataService.UpdateObject(breedB);
+
+                            // Создаем Кошку, которая ссылается на ПородуA
+                            var obj = new Кошка
+                            {
+                                __PrimaryKey = Guid.NewGuid(),
+                                Кличка = "ТестоваяКошка",
+                                Порода = breedA
+                            };
+                            args.DataService.UpdateObject(obj);
+
+                            // Загружаем объект с представлением, включающим круговую ссылку
+                            var view = new View(typeof(Кошка), View.ReadType.OnlyThatObject);
+                            view.AddProperty("Порода.Название");
+                            view.AddProperty("Порода.Иерархия.Название");
+                            view.AddProperty("Порода.Иерархия.Иерархия.Название"); // A -> B -> A
+                            args.DataService.LoadObject(view, obj);
+
+                            return obj;
+                        },
+                        typeof(Кошка),
+                        parametersTypes));
+                }
+
+                // Тест: Вызов Action с __autoExpand=true при косвенной самоссылке не должен зависнуть
+                string requestUrl = $"http://localhost/odata/ActionWithCircularReference?__autoExpand=true";
+                string json = "{\"objectKey\": \"test\"}";
+
+                using (HttpResponseMessage response = args.HttpClient.PostAsJsonStringAsync(requestUrl, json).Result)
+                {
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    string receivedStr = response.Content.ReadAsStringAsync().Result;
+
+                    JObject receivedObj = JObject.Parse(receivedStr);
+
+                    // Проверяем, что объект вернулся
+                    Assert.NotNull(receivedObj["__PrimaryKey"]);
+
+                    // Проверяем, что мастер автоматически развернут
+                    var breedToken = receivedObj["Порода"];
+                    Assert.NotNull(breedToken);
+                    Assert.Equal("ПородаA", breedToken["Название"]?.ToString());
+                }
+            });
+        }
     }
 }

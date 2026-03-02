@@ -340,7 +340,8 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 return string.Empty;
 
             var rootNode = new ExpandNode();
-            BuildExpandTreeForObject(dataObject, rootNode);
+            var visitedObjects = new HashSet<DataObject>(ReferenceEqualityComparer<DataObject>.Instance);
+            BuildExpandTreeForObject(dataObject, rootNode, visitedObjects);
 
             string expandQuery = BuildExpandQueryFromNode(rootNode);
             return !string.IsNullOrEmpty(expandQuery) ? "$expand=" + expandQuery : string.Empty;
@@ -349,10 +350,16 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         /// <summary>
         /// Рекурсивно строит дерево expand для объекта и его загруженных мастеров.
         /// </summary>
-        private void BuildExpandTreeForObject(DataObject dataObject, ExpandNode parentNode)
+        private void BuildExpandTreeForObject(DataObject dataObject, ExpandNode parentNode, HashSet<DataObject> visitedObjects)
         {
             if (dataObject == null)
                 return;
+
+            // Защита от циклических ссылок: проверяем, не обрабатывали ли уже этот объект
+            if (visitedObjects.Contains(dataObject))
+                return;
+
+            visitedObjects.Add(dataObject);
 
             string[] loadedProps = dataObject.GetLoadedProperties();
             if (loadedProps == null || loadedProps.Length == 0)
@@ -371,6 +378,15 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                         propType.IsSubclassOf(typeof(DetailArray)))
                         continue;
 
+                    // Получаем значение свойства и проверяем на циклическую ссылку
+                    object propValue = Information.GetPropValueByName(dataObject, propName);
+                    if (propValue is DataObject nestedMaster)
+                    {
+                        // Пропускаем циклические ссылки: если объект уже обрабатывался, не добавляем его
+                        if (visitedObjects.Contains(nestedMaster))
+                            continue;
+                    }
+
                     // Получаем EDM имя
                     string edmName = _model.GetEdmTypePropertyName(objectType, propName);
                     if (string.IsNullOrEmpty(edmName))
@@ -385,10 +401,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                     }
 
                     // Рекурсивно обрабатываем вложенный мастер
-                    object propValue = Information.GetPropValueByName(dataObject, propName);
-                    if (propValue is DataObject nestedMaster)
+                    if (propValue is DataObject master)
                     {
-                        BuildExpandTreeForObject(nestedMaster, node);
+                        BuildExpandTreeForObject(master, node, visitedObjects);
                     }
                 }
                 catch
@@ -427,6 +442,25 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
             public string EdmName { get; set; }
             public Type PropertyType { get; set; }
             public List<ExpandNode> Children { get; } = new List<ExpandNode>();
+        }
+
+        /// <summary>
+        /// Comparer для сравнения объектов по ссылке (reference equality).
+        /// </summary>
+        private class ReferenceEqualityComparer<T> : IEqualityComparer<T>
+            where T : class
+        {
+            public static ReferenceEqualityComparer<T> Instance { get; } = new ReferenceEqualityComparer<T>();
+
+            public bool Equals(T x, T y)
+            {
+                return ReferenceEquals(x, y);
+            }
+
+            public int GetHashCode(T obj)
+            {
+                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
+            }
         }
 #endif
     }
