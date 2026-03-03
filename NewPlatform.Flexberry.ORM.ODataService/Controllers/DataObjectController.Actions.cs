@@ -10,6 +10,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Query;
     using Microsoft.OData.UriParser;
+    using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.Routing;
@@ -201,7 +202,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                 {
                     Type[] args = result.GetType().GetGenericArguments();
                     if (args.Length == 1)
+                    {
                         type = args[0];
+                    }
                 }
 
                 if (result.GetType().IsArray)
@@ -266,7 +269,9 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
         {
             string odataQuery = ProcessAutoExpand(objectType, parameters, dataObject);
             if (string.IsNullOrEmpty(odataQuery))
+            {
                 return null;
+            }
 
             ODataQueryOptions previousQueryOptions = QueryOptions;
             SelectExpandClause previousSelectExpandClause = GetSelectExpandClause();
@@ -331,31 +336,98 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
 #if NETFRAMEWORK
         /// <summary>
         /// Строит OData $expand запрос из загруженных свойств-мастеров.
+        /// Поддерживает вложенные мастера (master inside a master).
         /// </summary>
+        /// <remarks>TODO: поправить дублирующуюся логику с классом ExpandQueryGenerator.</remarks>
         private string BuildExpandFromLoadedProperties(DataObject dataObject)
         {
             if (dataObject == null)
+            {
                 return string.Empty;
+            }
 
-            string[] loadedProperties = dataObject.GetLoadedProperties();
-            if (loadedProperties == null || loadedProperties.Length == 0)
+            ExpandNode rootNode = new ExpandNode();
+            HashSet<TypeKeyTuple> processedDataObjects = new HashSet<TypeKeyTuple>();
+            BuildExpandTreeForObject(dataObject, rootNode, processedDataObjects);
+
+            string expandQuery = BuildExpandQueryFromNode(rootNode);
+            if (string.IsNullOrEmpty(expandQuery))
+            {
                 return string.Empty;
+            }
 
-            List<string> expandProperties = new List<string>();
+            return "$expand=" + expandQuery;
+        }
+
+        /// <summary>
+        /// Рекурсивно строит дерево expand для объекта и его загруженных мастеров.
+        /// </summary>
+        private void BuildExpandTreeForObject(DataObject dataObject, ExpandNode parentNode, HashSet<TypeKeyTuple> processedDataObjects)
+        {
+            if (dataObject == null)
+            {
+                return;
+            }
+
+            // Защита от циклических ссылок: проверяем, не обрабатывали ли уже этот объект
+            TypeKeyTuple dataForHash = new TypeKeyTuple(dataObject.GetType(), dataObject.__PrimaryKey);
+            if (!processedDataObjects.Add(dataForHash))
+            {
+                return; // Найдена ссылка в цепочке объектов на ранее отсмотренный. Чтобы предотвратить рекурсию, далее не нужно загружать.
+            }
+
+            string[] loadedProps = dataObject.GetLoadedProperties();
+            if (loadedProps == null || loadedProps.Length == 0)
+            {
+                return;
+            }
+
             Type objectType = dataObject.GetType();
 
-            foreach (string propName in loadedProperties)
+            foreach (string propName in loadedProps)
             {
                 try
                 {
+                    // Проверяем, является ли свойство мастером
                     Type propType = Information.GetPropertyType(objectType, propName);
-                    if (propType != null && propType.IsSubclassOf(typeof(DataObject)) && !propType.IsSubclassOf(typeof(DetailArray)))
+                    if (propType == null ||
+                        !propType.IsSubclassOf(typeof(DataObject)) ||
+                        propType.IsSubclassOf(typeof(DetailArray)))
                     {
-                        string edmName = _model.GetEdmTypePropertyName(objectType, propName);
-                        if (!string.IsNullOrEmpty(edmName))
+                        continue;
+                    }
+
+                    // Получаем значение свойства и проверяем на циклическую ссылку
+                    object propValue = Information.GetPropValueByName(dataObject, propName);
+                    if (propValue is DataObject nestedMaster)
+                    {
+                        // Пропускаем циклические ссылки: если объект уже обрабатывался, не добавляем его
+                        TypeKeyTuple nestedDataForHash = new TypeKeyTuple(nestedMaster.GetType(), nestedMaster.__PrimaryKey);
+                        if (processedDataObjects.Contains(nestedDataForHash))
                         {
-                            expandProperties.Add(edmName);
+                            continue;
                         }
+                    }
+
+                    // Получаем EDM имя
+                    string edmName = _model.GetEdmTypePropertyName(objectType, propName);
+                    if (string.IsNullOrEmpty(edmName))
+                    {
+                        continue;
+                    }
+
+                    // Ищем или создаем узел
+                    ExpandNode node = parentNode.Children.FirstOrDefault(n => n.EdmName == edmName);
+                    if (node == null)
+                    {
+                        node = new ExpandNode { EdmName = edmName, PropertyType = propType };
+                        parentNode.Children.Add(node);
+                    }
+
+                    // Рекурсивно обрабатываем вложенный мастер
+                    if (propValue is DataObject master)
+                    {
+                        BuildExpandTreeForObject(master, node, processedDataObjects);
                     }
                 }
                 catch
@@ -363,11 +435,45 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Controllers
                     continue;
                 }
             }
+        }
 
-            if (expandProperties.Count == 0)
+        /// <summary>
+        /// Строит строку $expand из дерева узлов.
+        /// </summary>
+        private string BuildExpandQueryFromNode(ExpandNode node)
+        {
+            if (node.Children.Count == 0)
+            {
                 return string.Empty;
+            }
 
-            return "$expand=" + string.Join(",", expandProperties);
+            List<string> parts = new List<string>();
+            foreach (ExpandNode child in node.Children)
+            {
+                string nestedExpand = BuildExpandQueryFromNode(child);
+                if (!string.IsNullOrEmpty(nestedExpand))
+                {
+                    parts.Add($"{child.EdmName}($expand={nestedExpand})");
+                }
+                else
+                {
+                    parts.Add(child.EdmName);
+                }
+            }
+
+            return string.Join(",", parts);
+        }
+
+        /// <summary>
+        /// Узел дерева для построения $expand запроса.
+        /// </summary>
+        private class ExpandNode
+        {
+            public string EdmName { get; set; }
+
+            public Type PropertyType { get; set; }
+
+            public List<ExpandNode> Children { get; } = new List<ExpandNode>();
         }
 #endif
     }
