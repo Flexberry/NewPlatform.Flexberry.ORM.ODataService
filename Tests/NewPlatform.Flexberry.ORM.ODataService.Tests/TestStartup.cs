@@ -3,6 +3,7 @@
 namespace NewPlatform.Flexberry.ORM.ODataService.Tests
 {
     using System;
+    using System.Net.Http;
     using ICSSoft.Services;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
     using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry.ORM.ODataService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
+    using NewPlatform.Flexberry.ORM.ODataService.Handlers;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.Services;
@@ -49,6 +51,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Tests
                 unityContainer.IsRegistered<IODataExportService>("Export") ? unityContainer.Resolve<IODataExportService>("Export") : null));
 
             app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<NewPlatform.Flexberry.ORM.ODataService.Handlers.RequestSizeLimitMiddleware>();
 
             app.UseMvc(builder =>
             {
