@@ -63,16 +63,27 @@
             var applicationPartManager = builder.ServiceProvider.GetRequiredService<ApplicationPartManager>();
             applicationPartManager.ApplicationParts.Add(new AssemblyPart(typeof(DataObjectController).Assembly));
 
+            var batchHandler = new DataObjectODataBatchHandler();
+
             ODataRoute route = builder.MapODataServiceRoute(routeName, routePrefix, cb => cb
                 .AddService(ServiceLifetime.Singleton, typeof(IEdmModel), sp => model)
                 .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
                 .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
-                .AddService(ServiceLifetime.Singleton, typeof(ODataBatchHandler), sp => new DataObjectODataBatchHandler())
+                .AddService(ServiceLifetime.Singleton, typeof(ODataBatchHandler), sp => batchHandler)
+                .AddService(ServiceLifetime.Singleton, typeof(ODataMessageReaderSettings), sp =>
+                {
+                    var settings = new ODataMessageReaderSettings();
+                    settings.MessageQuotas.MaxPartsPerBatch = messageQuotasMaxPartsPerBatch;
+                    settings.MessageQuotas.MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset;
+                    settings.MessageQuotas.MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize;
+                    return settings;
+                })
                 .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
                 .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp)));
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
+            token.BatchHandler = batchHandler;
 
             return token;
         }

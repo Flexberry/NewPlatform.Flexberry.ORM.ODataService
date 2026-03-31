@@ -66,6 +66,30 @@
         }
 
         /// <summary>
+        /// Создать batch-запрос с несколькими top-level changeset частями.
+        /// </summary>
+        /// <param name="url">Базовый адрес odata-сервиса.</param>
+        /// <param name="changesets">Набор подзапросов (по одному на changeset).</param>
+        /// <returns>Сконфигурированный <see cref="HttpRequestMessage" /> содержащий batch-запрос.</returns>
+        public static HttpRequestMessage CreateBatchRequestWithMultipleTopLevelChangesets(string url, string[] changesets)
+        {
+            string boundary = $"batch_{Guid.NewGuid()}";
+            string body = CreateBatchBodyWithMultipleTopLevelChangesets(boundary, changesets);
+
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri($"{url}/$batch"),
+                Method = new HttpMethod("POST"),
+                Content = new StringContent(body),
+            };
+
+            request.Content.Headers.ContentType.MediaType = "multipart/mixed";
+            request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("boundary", boundary));
+
+            return request;
+        }
+
+        /// <summary>
         /// Проверить ответ на batch-запрос.
         /// </summary>
         /// <param name="response">Сообщение.</param>
@@ -108,6 +132,33 @@
             }
 
             body.AppendLine($"--{changesetBoundary}--");
+            body.AppendLine($"--{boundary}--");
+            body.AppendLine();
+
+            return body.ToString();
+        }
+
+        private static string CreateBatchBodyWithMultipleTopLevelChangesets(string boundary, string[] changesets)
+        {
+            var body = new StringBuilder();
+
+            for (var i = 0; i < changesets.Length; i++)
+            {
+                string changesetBoundary = $"changeset_{Guid.NewGuid()}";
+
+                body.AppendLine($"--{boundary}");
+                body.AppendLine($"Content-Type: multipart/mixed;boundary={changesetBoundary}");
+                body.AppendLine();
+
+                body.AppendLine($"--{changesetBoundary}");
+                body.AppendLine("Content-Type: application/http");
+                body.AppendLine("Content-Transfer-Encoding: binary");
+                body.AppendLine($"Content-ID: {i + 1}");
+                body.AppendLine();
+                body.AppendLine(changesets[i]);
+                body.AppendLine($"--{changesetBoundary}--");
+            }
+
             body.AppendLine($"--{boundary}--");
             body.AppendLine();
 

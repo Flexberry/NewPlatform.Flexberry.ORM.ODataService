@@ -80,11 +80,20 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
                 .AddService(ServiceLifetime.Singleton, typeof(IODataPathHandler), sp => new ExtendedODataPathHandler())
                 .AddService(ServiceLifetime.Singleton, typeof(IEnumerable<IODataRoutingConvention>), sp => DataObjectRoutingConventions.CreateDefault())
                 .AddService(ServiceLifetime.Singleton, typeof(ODataBatchHandler), sp => batchHandler)
+                .AddService(ServiceLifetime.Singleton, typeof(ODataMessageReaderSettings), sp =>
+                {
+                    var settings = new ODataMessageReaderSettings();
+                    settings.MessageQuotas.MaxPartsPerBatch = messageQuotasMaxPartsPerBatch;
+                    settings.MessageQuotas.MaxOperationsPerChangeset = messageQuotasMaxOperationsPerChangeset;
+                    settings.MessageQuotas.MaxReceivedMessageSize = messageQuotasMaxReceivedMessageSize;
+                    return settings;
+                })
                 .AddService(ServiceLifetime.Singleton, typeof(ODataSerializerProvider), sp => new CustomODataSerializerProvider(sp))
                 .AddService(ServiceLifetime.Singleton, typeof(ODataDeserializerProvider), sp => new ExtendedODataDeserializerProvider(sp)));
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
+            token.BatchHandler = batchHandler;
 
             batchHandler.InitializeEvents(token.Events);
 

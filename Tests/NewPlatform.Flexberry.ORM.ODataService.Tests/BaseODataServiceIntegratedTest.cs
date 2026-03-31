@@ -195,6 +195,11 @@
             return BatchHelper.CreateBatchRequest(url, changesets);
         }
 
+        protected HttpRequestMessage CreateBatchRequestWithMultipleTopLevelChangesets(string url, string[] changesets)
+        {
+            return BatchHelper.CreateBatchRequestWithMultipleTopLevelChangesets(url, changesets);
+        }
+
         /// <summary>
         /// Проверка наличия поддержки Gis текущей реализацией <see cref="IDataService"/>.
         /// </summary>

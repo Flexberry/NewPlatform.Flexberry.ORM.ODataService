@@ -106,7 +106,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <ProjectReference Include="..\..\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi\NewPlatform.Flexberry.ORM.ODataServiceCore.WebApi.csproj" />
-    <ProjectReference Include="..\..\Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj" />
+	<ProjectReference Include="..\..\Samples\ODataServiceSample.AspNetCore\ODataServiceSample.AspNetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
