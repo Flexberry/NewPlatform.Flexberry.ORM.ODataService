@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using Xunit;
-
-namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
+﻿namespace NewPlatform.Flexberry.ORM.ODataService.Tests.CRUD.Read
 {
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using Xunit;
 
     /// <summary>
     /// Тесты квот batch-запросов для кастомного QuotasStartup.
