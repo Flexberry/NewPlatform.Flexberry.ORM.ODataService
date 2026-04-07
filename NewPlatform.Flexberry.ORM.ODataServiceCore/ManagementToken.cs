@@ -1,6 +1,7 @@
-﻿namespace NewPlatform.Flexberry.ORM.ODataService
+namespace NewPlatform.Flexberry.ORM.ODataService
 {
     using System;
+    using Microsoft.AspNet.OData.Batch;
     using Microsoft.AspNet.OData.Routing;
 
     using NewPlatform.Flexberry.ORM.ODataService.Events;
@@ -47,6 +48,8 @@
         public IEventHandlerContainer Events { get; } = new EventHandlerContainer();
 
         public IFunctionContainer Functions { get; }
+
+        public ODataBatchHandler BatchHandler { get; internal set; }
 
         public ManagementToken(ODataRoute route, DataObjectEdmModel model)
         {

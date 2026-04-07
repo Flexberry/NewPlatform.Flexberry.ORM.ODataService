@@ -108,6 +108,7 @@ namespace NewPlatform.Flexberry.ORM.ODataService.Extensions
 
             // Token.
             ManagementToken token = route.CreateManagementToken(model);
+            token.BatchHandler = batchHandler;
 
             // Initialize events for batchHandler.
             batchHandler.InitializeEvents(token.Events);
