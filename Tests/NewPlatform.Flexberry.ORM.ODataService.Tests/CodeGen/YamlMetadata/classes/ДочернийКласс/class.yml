@@ -1,0 +1,15 @@
+name: ДочернийКласс
+nameStr: ДочернийКласс
+storage: ДочернийКласс
+auditConnectionStringName: AuditConnString_43370
+attributesStr: +ChildProperty:string
+attributes:
+  - name: ChildProperty
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

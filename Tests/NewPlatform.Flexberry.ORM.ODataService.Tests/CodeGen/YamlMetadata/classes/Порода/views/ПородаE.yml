@@ -1,0 +1,17 @@
+name: ПородаE
+properties:
+  - name: Название
+    lookupType: default
+  - name: ТипПороды
+    visible: false
+    isMaster: true
+    lookupType: default
+  - name: ТипПороды.Название
+    lookupType: default
+  - name: Иерархия
+    visible: false
+    isMaster: true
+    lookupType: default
+  - name: Иерархия.Название
+    lookupType: default
+details: []

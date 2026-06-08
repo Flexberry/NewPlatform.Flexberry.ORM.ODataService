@@ -1,0 +1,23 @@
+name: Журнал
+nameStr: Журнал
+auditConnectionStringName: AuditConnString_38670
+attributesStr: >-
+  +Название:string
+
+  +Номер:int
+attributes:
+  - name: Название
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Номер
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

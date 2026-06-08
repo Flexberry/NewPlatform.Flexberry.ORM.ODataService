@@ -1,0 +1,56 @@
+name: tTip
+nameStr: tTip
+stereotype: «enumeration»
+auditConnectionStringName: AuditConnString_573
+attributesStr: >-
+  sedan
+
+  cabriolet
+
+  coupe
+
+  pickup
+
+  crossover
+
+  limousine
+
+  roadster
+
+  minivan
+attributes:
+  - name: sedan
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: cabriolet
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: coupe
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+  - name: pickup
+    order: 4
+    isNullable: true
+    dataServiceExpression: []
+  - name: crossover
+    order: 5
+    isNullable: true
+    dataServiceExpression: []
+  - name: limousine
+    order: 6
+    isNullable: true
+    dataServiceExpression: []
+  - name: roadster
+    order: 7
+    isNullable: true
+    dataServiceExpression: []
+  - name: minivan
+    order: 8
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

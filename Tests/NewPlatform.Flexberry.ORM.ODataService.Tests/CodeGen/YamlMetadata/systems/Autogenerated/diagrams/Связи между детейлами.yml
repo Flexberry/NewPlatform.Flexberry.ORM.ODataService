@@ -1,0 +1,147 @@
+name: Связи между детейлами
+caseObjectsString: Class:(FirstLevel);Class:(SecondLevel1);Class:(SecondLevel2);Class:(ThirdLevel);Class:(TestConfiguration);Class:(TestClass);Class:(TestAssociation)
+primitives:
+  - type: CADClass
+    caseName: FirstLevel
+    x: 238
+    y: 125
+    width: 107
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: SecondLevel1
+    x: 193
+    y: 269
+    width: 116
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: SecondLevel2
+    x: 337
+    y: 268
+    width: 116
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: ThirdLevel
+    x: 208
+    y: 489
+    width: 107
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Composition
+    startPrimitive: FirstLevel
+    endPrimitive: SecondLevel1
+    points:
+      - x: 260
+        y: 180
+      - x: 259
+        y: 311
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Composition
+    startPrimitive: FirstLevel
+    endPrimitive: SecondLevel2
+    points:
+      - x: 340
+        y: 180
+      - x: 342
+        y: 308
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Association
+    startPrimitive: SecondLevel1
+    endPrimitive: SecondLevel2
+    points:
+      - x: 300
+        y: 280
+      - x: 374
+        y: 279
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 1
+      EndMultTxt: '*'
+  - type: Association
+    startPrimitive: SecondLevel1
+    endPrimitive: SecondLevel2
+    points:
+      - x: 300
+        y: 320
+      - x: 374
+        y: 320
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 1
+      EndMultTxt: '*'
+  - type: CADClass
+    caseName: TestConfiguration
+    x: 222
+    width: 137
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: TestClass
+    x: 194
+    y: 374
+    width: 107
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Composition
+    startPrimitive: TestClass
+    endPrimitive: ThirdLevel
+    points:
+      - x: 250
+        y: 430
+      - x: 252
+        y: 532
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Inheritance
+    startPrimitive: SecondLevel1
+    endPrimitive: TestClass
+    points:
+      - x: 250
+        y: 320
+      - x: 253
+        y: 405
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Composition
+    startPrimitive: TestConfiguration
+    endPrimitive: FirstLevel
+    points:
+      - x: 300
+        y: 60
+      - x: 301
+        y: 176
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: TestAssociation
+    x: 344
+    y: 373
+    width: 127
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Inheritance
+    startPrimitive: SecondLevel2
+    endPrimitive: TestAssociation
+    points:
+      - x: 410
+        y: 310
+      - x: 412
+        y: 412
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+diagramType: CAD

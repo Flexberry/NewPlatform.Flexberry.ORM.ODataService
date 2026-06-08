@@ -1,0 +1,5 @@
+startClassName: SecondLevel1
+endClassName: SecondLevel2
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: SecondLevel1

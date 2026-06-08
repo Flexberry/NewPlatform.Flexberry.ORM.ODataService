@@ -1,0 +1,28 @@
+name: tПол
+nameStr: tПол
+stereotype: «enumeration»
+description: Пол
+caption: Пол
+auditConnectionStringName: AuditConnString_44614
+attributesStr: >-
+  Мужской
+
+  Женский
+
+  НеПонятно
+attributes:
+  - name: Мужской
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Женский
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: НеПонятно
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

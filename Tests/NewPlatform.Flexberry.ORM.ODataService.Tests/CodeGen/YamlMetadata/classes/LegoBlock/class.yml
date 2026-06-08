@@ -1,0 +1,40 @@
+name: LegoBlock
+nameStr: LegoBlock
+publishName: LegoBlock
+auditConnectionStringName: AuditConnString_41534
+attributesStr: >-
+  +Width:int
+
+  +Height:int
+
+  +Depth:int
+
+  +Configuration:string
+attributes:
+  - name: Width
+    type: int
+    typeName: int
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Height
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: Depth
+    type: int
+    typeName: int
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+  - name: Configuration
+    type: string
+    typeName: string
+    order: 4
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

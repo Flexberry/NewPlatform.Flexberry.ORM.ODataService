@@ -1,0 +1,8 @@
+type: Aggregation
+startClassName: LegoBlock
+endClassName: LegoBlockTopPanel
+startRole: Block
+endRole: TopPanels
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: Block

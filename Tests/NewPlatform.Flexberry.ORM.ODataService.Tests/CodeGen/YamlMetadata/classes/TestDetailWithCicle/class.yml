@@ -1,0 +1,14 @@
+name: TestDetailWithCicle
+nameStr: TestDetailWithCicle
+auditConnectionStringName: AuditConnString_31466
+attributesStr: +TestDetailName:string
+attributes:
+  - name: TestDetailName
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

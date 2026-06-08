@@ -1,0 +1,10 @@
+name: Eview
+properties:
+  - name: Адрес
+    caption: Адрес
+    lookupType: default
+details:
+  - name: Журнал
+    viewName: Dжурнал
+  - name: Книга
+    viewName: Dкнига

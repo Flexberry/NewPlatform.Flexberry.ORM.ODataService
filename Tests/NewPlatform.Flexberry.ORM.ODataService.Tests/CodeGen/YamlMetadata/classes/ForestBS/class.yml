@@ -1,0 +1,8 @@
+name: ForestBS
+nameStr: ForestBS
+stereotype: «businessserver»
+auditConnectionStringName: AuditConnString_32978
+attributes: []
+methods: []
+formViews: []
+classStorageTypes: []

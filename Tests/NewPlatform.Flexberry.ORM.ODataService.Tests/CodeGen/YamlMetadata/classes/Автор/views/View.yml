@@ -1,0 +1,6 @@
+name: View
+properties:
+  - name: Имя
+    caption: Имя
+    lookupType: default
+details: []

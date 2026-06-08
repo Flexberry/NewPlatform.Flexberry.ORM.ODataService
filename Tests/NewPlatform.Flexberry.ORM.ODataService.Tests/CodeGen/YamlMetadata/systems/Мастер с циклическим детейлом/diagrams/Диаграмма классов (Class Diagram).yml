@@ -1,0 +1,43 @@
+name: Диаграмма классов (Class Diagram)
+caseObjectsString: Class:(TestDetailWithCicle);Class:(TestMaster)
+primitives:
+  - type: CADClass
+    caseName: TestDetailWithCicle
+    x: 370
+    y: 290
+    width: 200
+    height: 70
+  - type: Association
+    startPrimitive: TestDetailWithCicle
+    endPrimitive: TestDetailWithCicle
+    points:
+      - x: 500
+        y: 320
+      - x: 690
+        y: 320
+      - x: 690
+        y: 430
+      - x: 460
+        y: 430
+      - x: 460
+        y: 360
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 0..1
+      EndMultTxt: '*'
+      StartRoleTxt: +Parent
+  - type: CADClass
+    caseName: TestMaster
+    x: 380
+    y: 130
+    width: 160
+    height: 70
+  - type: Composition
+    startPrimitive: TestMaster
+    endPrimitive: TestDetailWithCicle
+    points:
+      - x: 460
+        y: 190
+      - x: 460
+        y: 310
+diagramType: CAD

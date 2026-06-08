@@ -1,0 +1,49 @@
+name: Мастер и детейл одного типа
+caseObjectsString: Class:(AgregatorSameMD);Class:(DetailAndMaster)
+primitives:
+  - type: CADClass
+    caseName: AgregatorSameMD
+    x: 286
+    y: 141
+    width: 245
+    height: 66
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: CADClass
+    caseName: DetailAndMaster
+    x: 312
+    y: 356
+    width: 130
+    height: 78
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Composition
+    startPrimitive: AgregatorSameMD
+    endPrimitive: DetailAndMaster
+    points:
+      - x: 370
+        y: 190
+      - x: 372
+        y: 391
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+  - type: Association
+    startPrimitive: DetailAndMaster
+    endPrimitive: AgregatorSameMD
+    points:
+      - x: 430
+        y: 400
+      - x: 552
+        y: 399
+      - x: 545
+        y: 190
+      - x: 507
+        y: 189
+    textColor: '#FF000000'
+    fillColor: '#FFFFFFFF'
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 0..1
+      EndMultTxt: '*'
+      StartRoleTxt: +Master
+diagramType: CAD

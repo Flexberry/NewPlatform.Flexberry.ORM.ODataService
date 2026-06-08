@@ -1,0 +1,7 @@
+startClassName: Библиотека
+endClassName: ПоставщикКниг
+startRole: Мастер
+startMultiplicity: 1
+endMultiplicity: '*'
+startRoleStored: false
+storage: Мастер

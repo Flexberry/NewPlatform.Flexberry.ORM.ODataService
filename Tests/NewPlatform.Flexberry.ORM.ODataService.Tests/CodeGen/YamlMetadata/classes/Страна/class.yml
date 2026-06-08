@@ -1,0 +1,16 @@
+name: Страна
+nameStr: Страна
+description: Страна
+caption: Страна
+auditConnectionStringName: AuditConnString_44614
+attributesStr: Название:string
+attributes:
+  - name: Название
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

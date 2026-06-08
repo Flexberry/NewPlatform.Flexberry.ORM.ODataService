@@ -1,0 +1,24 @@
+name: LegoPanelAngle
+nameStr: LegoPanelAngle
+publishName: LegoPanelAngle
+auditConnectionStringName: AuditConnString_39378
+attributesStr: >-
+  +Name:string
+
+  +Angle:int
+attributes:
+  - name: Name
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Angle
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

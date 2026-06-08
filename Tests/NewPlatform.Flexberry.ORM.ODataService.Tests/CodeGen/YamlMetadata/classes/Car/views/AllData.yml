@@ -1,0 +1,12 @@
+name: AllData
+properties:
+  - name: Number
+    caption: Number
+    lookupType: default
+  - name: Model
+    caption: Model
+    lookupType: default
+  - name: TipCar
+    caption: TipCar
+    lookupType: default
+details: []

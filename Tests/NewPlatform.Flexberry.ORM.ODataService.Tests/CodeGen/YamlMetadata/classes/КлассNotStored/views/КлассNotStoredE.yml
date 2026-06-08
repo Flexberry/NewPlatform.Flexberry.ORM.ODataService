@@ -1,0 +1,5 @@
+name: КлассNotStoredE
+properties:
+  - name: StrAttr
+    lookupType: default
+details: []

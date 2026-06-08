@@ -1,0 +1,89 @@
+name: Диаграмма классов (Class Diagram)
+caseObjectsString: Class:(Библиотека);Class:(Книга);Class:(Журнал);Class:(ПоставщикКниг);Class:(Автор)
+primitives:
+  - type: CADClass
+    caseName: Библиотека
+    x: 200
+    y: 40
+    width: 100
+    height: 90
+  - type: Association
+    startPrimitive: Автор
+    endPrimitive: Журнал
+    points:
+      - x: 290
+        y: 430
+      - x: 290
+        y: 320
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Автор2
+  - type: Association
+    startPrimitive: Автор
+    endPrimitive: Книга
+    points:
+      - x: 210
+        y: 430
+      - x: 210
+        y: 320
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Автор1
+  - type: Association
+    startPrimitive: Библиотека
+    endPrimitive: ПоставщикКниг
+    points:
+      - x: 290
+        y: 100
+      - x: 540
+        y: 100
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: /+Мастер
+  - type: CADClass
+    caseName: Книга
+    x: 120
+    y: 240
+    width: 130
+    height: 90
+  - type: CADClass
+    caseName: Журнал
+    x: 280
+    y: 240
+    width: 130
+    height: 90
+  - type: CADClass
+    caseName: ПоставщикКниг
+    x: 530
+    y: 40
+    width: 120
+    height: 90
+  - type: Composition
+    startPrimitive: Библиотека
+    endPrimitive: Журнал
+    points:
+      - x: 290
+        y: 120
+      - x: 290
+        y: 250
+  - type: Composition
+    startPrimitive: Библиотека
+    endPrimitive: Книга
+    points:
+      - x: 210
+        y: 120
+      - x: 210
+        y: 240
+  - type: CADClass
+    caseName: Автор
+    x: 200
+    y: 420
+    width: 100
+    height: 90
+diagramType: CAD

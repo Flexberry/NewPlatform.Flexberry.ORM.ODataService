@@ -1,0 +1,20 @@
+name: ТипПерелома
+nameStr: ТипПерелома
+stereotype: «enumeration»
+auditConnectionStringName: AuditConnString_24588
+attributesStr: >-
+  Открытый
+
+  Закрытый
+attributes:
+  - name: Открытый
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Закрытый
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

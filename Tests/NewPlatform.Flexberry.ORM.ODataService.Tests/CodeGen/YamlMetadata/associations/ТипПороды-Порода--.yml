@@ -1,0 +1,4 @@
+startClassName: ТипПороды
+endClassName: Порода
+startMultiplicity: 0..1
+endMultiplicity: '*'

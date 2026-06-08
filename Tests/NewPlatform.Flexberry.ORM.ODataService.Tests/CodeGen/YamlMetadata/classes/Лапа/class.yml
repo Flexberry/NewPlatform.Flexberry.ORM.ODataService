@@ -1,0 +1,100 @@
+name: Лапа
+nameStr: Лапа
+businessServerClass: CatsBS
+auditConnectionStringName: AuditConnString_35311
+attributesStr: >-
+  +Цвет:string
+
+  +Размер:int
+
+  +ДатаРождения:NullableDateTime
+
+  +БылиЛиПереломы:bool
+
+  +Сторона:Сторона
+
+  +Номер:int
+
+  /+РазмерСтрокой:string
+
+  +РазмерDouble:double
+
+  +РазмерFloat:float
+
+  +РазмерDecimal:decimal
+
+  /+РазмерChar:char
+attributes:
+  - name: Цвет
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Размер
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: ДатаРождения
+    type: NullableDateTime
+    typeName: NullableDateTime
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+  - name: БылиЛиПереломы
+    type: bool
+    typeName: bool
+    order: 4
+    isNullable: true
+    dataServiceExpression: []
+  - name: Сторона
+    type: Сторона
+    typeName: Сторона
+    order: 5
+    isNullable: true
+    dataServiceExpression: []
+  - name: Номер
+    type: int
+    typeName: int
+    order: 6
+    isNullable: true
+    dataServiceExpression: []
+  - name: РазмерСтрокой
+    type: string
+    notStored: true
+    stored: false
+    typeName: string
+    order: 7
+    isNullable: true
+    dataServiceExpression: []
+  - name: РазмерDouble
+    type: double
+    typeName: double
+    order: 8
+    isNullable: true
+    dataServiceExpression: []
+  - name: РазмерFloat
+    type: float
+    typeName: float
+    order: 9
+    isNullable: true
+    dataServiceExpression: []
+  - name: РазмерDecimal
+    type: decimal
+    typeName: decimal
+    order: 10
+    isNullable: true
+    dataServiceExpression: []
+  - name: РазмерChar
+    type: char
+    notStored: true
+    stored: false
+    typeName: char
+    order: 11
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

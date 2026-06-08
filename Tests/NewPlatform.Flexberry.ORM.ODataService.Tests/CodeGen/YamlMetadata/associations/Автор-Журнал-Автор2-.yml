@@ -1,0 +1,6 @@
+startClassName: Автор
+endClassName: Журнал
+startRole: Автор2
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: Автор2

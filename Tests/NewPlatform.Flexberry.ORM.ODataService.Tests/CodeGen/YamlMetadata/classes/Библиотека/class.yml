@@ -1,0 +1,14 @@
+name: Библиотека
+nameStr: Библиотека
+auditConnectionStringName: AuditConnString_4061
+attributesStr: +Адрес:string
+attributes:
+  - name: Адрес
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

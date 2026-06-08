@@ -1,0 +1,15 @@
+name: КлассСоСтроковымКлючом
+nameStr: КлассСоСтроковымКлючом
+storage: КлассСоСтрокКл
+primaryKeyStorage: StoragePrimaryKey
+auditConnectionStringName: AuditConnString_44955
+attributesStr: +StoragePrimaryKey:string
+attributes:
+  - name: StoragePrimaryKey
+    type: string
+    typeName: string
+    order: 1
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

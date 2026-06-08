@@ -1,0 +1,6 @@
+startClassName: Медведь
+endClassName: Блоха
+startRole: МедведьОбитания
+startMultiplicity: 0..1
+endMultiplicity: '*'
+storage: МедведьОбитания

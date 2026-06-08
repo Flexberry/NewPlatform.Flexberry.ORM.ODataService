@@ -1,0 +1,24 @@
+name: LegoBlockBottomPanel
+nameStr: LegoBlockBottomPanel
+publishName: LegoBlockBottomPanel
+auditConnectionStringName: AuditConnString_39787
+attributesStr: >-
+  +WidthCount:int
+
+  +HeightCount:int
+attributes:
+  - name: WidthCount
+    type: int
+    typeName: int
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: HeightCount
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

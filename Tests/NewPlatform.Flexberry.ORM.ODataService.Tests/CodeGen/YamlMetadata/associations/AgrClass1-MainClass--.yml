@@ -1,0 +1,5 @@
+startClassName: AgrClass1
+endClassName: MainClass
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: AgrClass1

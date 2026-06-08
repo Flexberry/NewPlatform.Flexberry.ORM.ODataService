@@ -1,0 +1,120 @@
+name: Диаграмма классов (Class Diagram)
+caseObjectsString: Class:(ДетейлНаследник);Class:(БазовыйКласс);Class:(Детейл);Class:(Наследник);Class:(Мастер);Class:(Детейл2);Class:(Master);Class:(Мастер2)
+primitives:
+  - type: CADClass
+    caseName: ДетейлНаследник
+    x: 280
+    y: 20
+    width: 130
+    height: 90
+  - type: CADClass
+    caseName: БазовыйКласс
+    x: 40
+    y: 170
+    width: 130
+    height: 90
+  - type: CADClass
+    caseName: Детейл
+    x: 280
+    y: 170
+    width: 100
+    height: 90
+  - type: Inheritance
+    startPrimitive: Детейл
+    endPrimitive: ДетейлНаследник
+    points:
+      - x: 330
+        y: 190
+      - x: 330
+        y: 90
+  - type: Association
+    startPrimitive: Мастер2
+    endPrimitive: Мастер
+    points:
+      - x: 530
+        y: 400
+      - x: 370
+        y: 400
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 0..1
+      EndMultTxt: '*'
+  - type: Association
+    startPrimitive: Мастер
+    endPrimitive: Наследник
+    points:
+      - x: 280
+        y: 400
+      - x: 150
+        y: 400
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 0..1
+      EndMultTxt: '*'
+  - type: CADClass
+    caseName: Наследник
+    x: 40
+    y: 360
+    width: 130
+    height: 90
+  - type: Composition
+    startPrimitive: БазовыйКласс
+    endPrimitive: Детейл
+    points:
+      - x: 150
+        y: 200
+      - x: 290
+        y: 200
+  - type: Inheritance
+    startPrimitive: БазовыйКласс
+    endPrimitive: Наследник
+    points:
+      - x: 100
+        y: 260
+      - x: 100
+        y: 360
+  - type: Composition
+    startPrimitive: Детейл
+    endPrimitive: Детейл2
+    points:
+      - x: 370
+        y: 240
+      - x: 540
+        y: 240
+  - type: Association
+    startPrimitive: Master
+    endPrimitive: Наследник
+    points:
+      - x: 130
+        y: 520
+      - x: 130
+        y: 450
+    properties:
+      InitialMultiplicity: 1
+      StartMultTxt: 0..1
+      EndMultTxt: '*'
+  - type: CADClass
+    caseName: Мастер
+    x: 280
+    y: 360
+    width: 100
+    height: 90
+  - type: CADClass
+    caseName: Детейл2
+    x: 530
+    y: 180
+    width: 100
+    height: 90
+  - type: CADClass
+    caseName: Master
+    x: 80
+    y: 520
+    width: 100
+    height: 90
+  - type: CADClass
+    caseName: Мастер2
+    x: 530
+    y: 360
+    width: 100
+    height: 90
+diagramType: CAD

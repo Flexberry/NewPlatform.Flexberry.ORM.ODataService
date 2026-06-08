@@ -1,0 +1,8 @@
+name: DenBS
+nameStr: DenBS
+stereotype: «businessserver»
+auditConnectionStringName: AuditConnString_35411
+attributes: []
+methods: []
+formViews: []
+classStorageTypes: []

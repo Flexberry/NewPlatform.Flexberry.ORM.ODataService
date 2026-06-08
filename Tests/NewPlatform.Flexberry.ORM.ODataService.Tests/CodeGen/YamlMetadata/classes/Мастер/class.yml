@@ -1,0 +1,14 @@
+name: Мастер
+nameStr: Мастер
+auditConnectionStringName: AuditConnString_60859
+attributesStr: prop:string
+attributes:
+  - name: prop
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

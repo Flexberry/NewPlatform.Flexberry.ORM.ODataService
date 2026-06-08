@@ -1,0 +1,23 @@
+name: ТипЛапы
+nameStr: ТипЛапы
+auditConnectionStringName: AuditConnString_24588
+attributesStr: >-
+  +Название:string
+
+  +Актуально:bool
+attributes:
+  - name: Название
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Актуально
+    type: bool
+    typeName: bool
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

@@ -1,0 +1,6 @@
+startClassName: Лес
+endClassName: Медведь
+startRole: ЛесОбитания
+startMultiplicity: 0..1
+endMultiplicity: '*'
+storage: ЛесОбитания

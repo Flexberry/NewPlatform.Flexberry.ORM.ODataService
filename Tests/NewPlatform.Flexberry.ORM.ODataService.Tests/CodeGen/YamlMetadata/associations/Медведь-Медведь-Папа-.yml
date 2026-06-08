@@ -1,0 +1,6 @@
+startClassName: Медведь
+endClassName: Медведь
+startRole: Папа
+startMultiplicity: 0..1
+endMultiplicity: '*'
+storage: Папа

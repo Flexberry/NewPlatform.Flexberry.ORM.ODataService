@@ -1,0 +1,6 @@
+startClassName: Медведь
+endClassName: Медведь
+startRole: Мама
+startMultiplicity: 0..1
+endMultiplicity: '*'
+storage: Мама

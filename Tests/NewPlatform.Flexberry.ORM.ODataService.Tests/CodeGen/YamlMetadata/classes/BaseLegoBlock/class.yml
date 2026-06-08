@@ -1,0 +1,24 @@
+name: BaseLegoBlock
+nameStr: /BaseLegoBlock
+stored: false
+auditConnectionStringName: AuditConnString_26892
+attributesStr: >-
+  Name:string
+
+  BlockId:int
+attributes:
+  - name: Name
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: BlockId
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

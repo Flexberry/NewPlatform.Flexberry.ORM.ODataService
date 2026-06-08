@@ -1,0 +1,14 @@
+name: Книга
+nameStr: Книга
+auditConnectionStringName: AuditConnString_30651
+attributesStr: +Название:string
+attributes:
+  - name: Название
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

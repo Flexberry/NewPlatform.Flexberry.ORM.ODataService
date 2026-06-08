@@ -1,0 +1,5 @@
+name: TestMasterL
+properties:
+  - name: TestMasterName
+    lookupType: default
+details: []

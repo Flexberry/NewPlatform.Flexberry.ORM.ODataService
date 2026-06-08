@@ -1,0 +1,14 @@
+name: TestAssociation
+nameStr: TestAssociation
+auditConnectionStringName: AuditConnString_53152
+attributesStr: +Name2:string
+attributes:
+  - name: Name2
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

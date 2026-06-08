@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: Driver
+endClassName: Car
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: driver

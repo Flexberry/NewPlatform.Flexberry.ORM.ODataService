@@ -1,0 +1,8 @@
+type: Aggregation
+startClassName: AgregatorSameMD
+endClassName: DetailAndMaster
+startRole: Agregator
+endRole: Details
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: Agregator

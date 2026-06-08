@@ -1,0 +1,31 @@
+name: Driver
+nameStr: Driver
+auditConnectionStringName: AuditConnString_23187
+attributesStr: >-
+  +Name:string
+
+  +CarCount:int
+
+  +Documents:bool
+attributes:
+  - name: Name
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: CarCount
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: Documents
+    type: bool
+    typeName: bool
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

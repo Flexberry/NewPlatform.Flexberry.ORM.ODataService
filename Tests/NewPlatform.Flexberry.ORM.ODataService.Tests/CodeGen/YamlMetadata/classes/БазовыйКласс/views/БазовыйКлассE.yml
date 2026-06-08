@@ -1,0 +1,7 @@
+name: БазовыйКлассE
+properties:
+  - name: Свойство1
+    lookupType: default
+details:
+  - name: Детейл
+    viewName: ДетейлE

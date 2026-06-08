@@ -1,0 +1,8 @@
+name: CarBS
+nameStr: CarBS
+stereotype: «businessserver»
+auditConnectionStringName: AuditConnString_52174
+attributes: []
+methods: []
+formViews: []
+classStorageTypes: []

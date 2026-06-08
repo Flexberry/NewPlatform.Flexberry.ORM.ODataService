@@ -1,0 +1,8 @@
+name: ДетейлНаследникE
+properties:
+  - name: prop1
+    lookupType: default
+  - name: БазовыйКласс
+    isMaster: true
+    lookupType: default
+details: []

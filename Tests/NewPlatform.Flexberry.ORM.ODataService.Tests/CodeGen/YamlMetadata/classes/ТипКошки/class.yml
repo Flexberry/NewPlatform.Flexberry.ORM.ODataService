@@ -1,0 +1,26 @@
+name: ТипКошки
+nameStr: ТипКошки
+stereotype: «enumeration»
+auditConnectionStringName: AuditConnString_24588
+attributesStr: >-
+  НетЗначения
+
+  Дикая
+
+  Домашняя
+attributes:
+  - name: НетЗначения
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Дикая
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: Домашняя
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

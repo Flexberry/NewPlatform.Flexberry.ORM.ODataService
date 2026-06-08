@@ -1,0 +1,6 @@
+startClassName: LegoPanelAngle
+endClassName: LegoBlockCustomPanel
+startRole: PanelAngle
+startMultiplicity: 0..1
+endMultiplicity: '*'
+storage: PanelAngle

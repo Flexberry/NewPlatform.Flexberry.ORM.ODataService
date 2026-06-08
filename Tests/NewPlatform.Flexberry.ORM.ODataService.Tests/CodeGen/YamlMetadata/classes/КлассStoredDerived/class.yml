@@ -1,0 +1,14 @@
+name: КлассStoredDerived
+nameStr: КлассStoredDerived
+auditConnectionStringName: AuditConnString_44711
+attributesStr: +StrAttr2:string
+attributes:
+  - name: StrAttr2
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

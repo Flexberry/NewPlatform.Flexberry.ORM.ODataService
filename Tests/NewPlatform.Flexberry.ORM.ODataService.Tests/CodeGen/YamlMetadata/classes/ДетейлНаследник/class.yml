@@ -1,0 +1,14 @@
+name: ДетейлНаследник
+nameStr: ДетейлНаследник
+auditConnectionStringName: AuditConnString_24823
+attributesStr: +prop3:string
+attributes:
+  - name: prop3
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

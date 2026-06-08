@@ -1,0 +1,8 @@
+type: Aggregation
+startClassName: Библиотека
+endClassName: Журнал
+startRole: Библиотека2
+endRole: Журнал
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: Библиотека2

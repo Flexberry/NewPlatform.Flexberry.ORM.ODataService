@@ -1,0 +1,43 @@
+name: Лес
+nameStr: Лес
+description: Лес
+caption: Лес
+businessServerClass: ForestBS
+auditConnectionStringName: AuditConnString_44614
+attributesStr: >-
+  +Название:string
+
+  +Площадь:int
+
+  +Заповедник:bool
+
+  +ДатаПоследнегоОсмотра:NullableDateTime
+attributes:
+  - name: Название
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: Площадь
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+  - name: Заповедник
+    type: bool
+    typeName: bool
+    order: 3
+    isNullable: true
+    dataServiceExpression: []
+  - name: ДатаПоследнегоОсмотра
+    type: NullableDateTime
+    typeName: NullableDateTime
+    order: 4
+    isNullable: true
+    storage: ДатаПослОсмотра
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

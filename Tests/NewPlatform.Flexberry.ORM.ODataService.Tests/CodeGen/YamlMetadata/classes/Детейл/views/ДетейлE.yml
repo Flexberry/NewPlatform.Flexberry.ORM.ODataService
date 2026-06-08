@@ -1,0 +1,5 @@
+name: ДетейлE
+properties:
+  - name: prop1
+    lookupType: default
+details: []

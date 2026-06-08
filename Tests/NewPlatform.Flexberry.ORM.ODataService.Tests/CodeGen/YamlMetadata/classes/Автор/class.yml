@@ -1,0 +1,14 @@
+name: Автор
+nameStr: Автор
+auditConnectionStringName: AuditConnString_20251
+attributesStr: +Имя:string
+attributes:
+  - name: Имя
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

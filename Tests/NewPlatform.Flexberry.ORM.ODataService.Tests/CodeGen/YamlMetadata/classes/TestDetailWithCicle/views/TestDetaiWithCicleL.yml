@@ -1,0 +1,15 @@
+name: TestDetaiWithCicleL
+properties:
+  - name: TestDetailName
+    lookupType: default
+  - name: TestMaster
+    isMaster: true
+    lookupType: default
+  - name: TestMaster.TestMasterName
+    lookupType: default
+  - name: Parent
+    isMaster: true
+    lookupType: default
+  - name: Parent.TestDetailName
+    lookupType: default
+details: []

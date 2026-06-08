@@ -1,0 +1,14 @@
+name: Детейл
+nameStr: Детейл
+auditConnectionStringName: AuditConnString_41359
+attributesStr: +prop1:int
+attributes:
+  - name: prop1
+    type: int
+    typeName: int
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

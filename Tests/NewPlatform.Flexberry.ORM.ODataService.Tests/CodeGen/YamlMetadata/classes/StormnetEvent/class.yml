@@ -1,0 +1,8 @@
+name: StormnetEvent
+nameStr: StormnetEvent
+stereotype: «typedef»
+auditConnectionStringName: AuditConnString_17307
+attributes: []
+methods: []
+formViews: []
+classStorageTypes: []

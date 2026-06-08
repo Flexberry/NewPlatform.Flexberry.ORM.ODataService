@@ -1,0 +1,14 @@
+name: TestMaster
+nameStr: TestMaster
+auditConnectionStringName: AuditConnString_38956
+attributesStr: +TestMasterName:string
+attributes:
+  - name: TestMasterName
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

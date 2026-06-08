@@ -1,0 +1,24 @@
+name: LegoBlockColor
+nameStr: LegoBlockColor
+publishName: LegoBlockColor
+auditConnectionStringName: AuditConnString_42448
+attributesStr: >-
+  +Name:string
+
+  +ColorNumber:int
+attributes:
+  - name: Name
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+  - name: ColorNumber
+    type: int
+    typeName: int
+    order: 2
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

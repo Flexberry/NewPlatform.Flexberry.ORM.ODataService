@@ -1,0 +1,14 @@
+name: Блоха
+nameStr: Блоха
+auditConnectionStringName: AuditConnString_16316
+attributesStr: +Кличка:string
+attributes:
+  - name: Кличка
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

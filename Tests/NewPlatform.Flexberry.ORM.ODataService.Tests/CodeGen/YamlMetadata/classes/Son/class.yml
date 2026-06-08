@@ -1,0 +1,15 @@
+name: Son
+nameStr: Son
+publishName: Son
+auditConnectionStringName: AuditConnString_10011
+attributesStr: +SuspendersColor:string
+attributes:
+  - name: SuspendersColor
+    type: string
+    typeName: string
+    order: 1
+    isNullable: true
+    dataServiceExpression: []
+methods: []
+formViews: []
+classStorageTypes: []

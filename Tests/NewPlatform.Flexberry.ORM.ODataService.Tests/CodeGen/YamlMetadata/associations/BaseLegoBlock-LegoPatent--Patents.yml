@@ -1,0 +1,9 @@
+type: Aggregation
+startClassName: BaseLegoBlock
+endClassName: LegoPatent
+endRole: Patents
+startMultiplicity: 1
+endMultiplicity: '*'
+storage: LegoBlock,LegoDevice
+typeUsage: LegoBlock,LegoDevice
+autoGenerateTypeUsage: false
