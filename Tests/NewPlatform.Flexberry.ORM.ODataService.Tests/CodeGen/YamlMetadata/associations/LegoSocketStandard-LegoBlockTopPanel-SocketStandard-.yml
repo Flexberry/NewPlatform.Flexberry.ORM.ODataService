@@ -1,6 +1,0 @@
-startClassName: LegoSocketStandard
-endClassName: LegoBlockTopPanel
-startRole: SocketStandard
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: SocketStandard

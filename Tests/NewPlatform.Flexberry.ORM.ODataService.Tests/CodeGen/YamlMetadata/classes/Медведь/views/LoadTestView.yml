@@ -3,16 +3,11 @@ description: Представление для работы тестов на з
 properties:
   - name: ЛесОбитания
     isMaster: true
-    lookupType: default
   - name: ЛесОбитания.Заповедник
-    lookupType: default
   - name: Мама
     isMaster: true
-    lookupType: default
   - name: Мама.ЦветГлаз
-    lookupType: default
   - name: Вес
-    lookupType: default
 details:
   - name: Берлога
     viewName: LoadTestView

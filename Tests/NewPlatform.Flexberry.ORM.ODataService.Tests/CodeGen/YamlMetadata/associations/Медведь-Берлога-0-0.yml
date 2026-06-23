@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: Медведь
+startMultiplicity: 1
+endClassName: Берлога
+endMultiplicity: '*'
+storage: Медведь

@@ -1,8 +1,2 @@
 name: BearBS
-nameStr: BearBS
 stereotype: «businessserver»
-auditConnectionStringName: AuditConnString_58924
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

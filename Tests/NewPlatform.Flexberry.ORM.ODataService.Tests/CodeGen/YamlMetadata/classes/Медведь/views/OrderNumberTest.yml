@@ -2,8 +2,5 @@ name: OrderNumberTest
 description: Представление для работы теста по использованию порядкового номера.
 properties:
   - name: ПорядковыйНомер
-    lookupType: default
   - name: ЛесОбитания
     isMaster: true
-    lookupType: default
-details: []

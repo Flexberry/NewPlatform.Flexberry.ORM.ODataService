@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: AgrClass1
+startMultiplicity: 1
+endClassName: DetailsClass1
+endMultiplicity: '*'
+storage: AgrClass1

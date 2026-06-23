@@ -1,5 +1,5 @@
+diagramType: CAD
 name: Диаграмма классов(Class Diagram)
-caseObjectsString: Class:(КлассСМножествомТипов);Class:(StormnetContact);Class:(StormnetGeoData);Class:(SystemNullableGuid);Class:(КлассСоСтроковымКлючом);Class:(StormnetNullableInt);Class:(StormnetWebFile);Class:(StormnetPartliedDate);Class:(StormnetNullableDateTime);Class:(Цифра);Class:(SystemNullableDateTime);Class:(StormnetNullableDecimal);Class:(SystemNullableInt);Class:(ДочернийКласс);Class:(SystemNullableDecimal);Class:(Geography);Class:(StormnetKeyGuid);Class:(КлассStoredDerived);Class:(StormnetBlob);Class:(StormnetEvent);Class:(StormnetImage);Class:(/КлассNotStored);Class:(StormnetFile)
 primitives:
   - type: CADClass
     caseName: КлассСМножествомТипов
@@ -7,152 +7,332 @@ primitives:
     y: 10
     width: 380
     height: 410
+    properties:
+      Name: КлассСМножествомТипов
+      AttributesTxt: >-
+        +PropertyGeography:Geography
+
+        +PropertyEnum:Цифра
+
+        +PropertyBool:bool
+
+        +PropertyInt:int
+
+        +PropertyDateTime:DateTime
+
+        +PropertyString:string
+
+        +PropertyFloat:float
+
+        +PropertyDouble:double
+
+        +PropertyDecimal:decimal
+
+        +PropertySystemNullableDateTime:SystemNullableDateTime
+
+        +PropertySystemNullableInt:SystemNullableInt
+
+        +PropertySystemNullableGuid:SystemNullableGuid
+
+        +PropertySystemNullableDecimal:SystemNullableDecimal
+
+        +PropertyStormnetNullableDateTime:StormnetNullableDateTime
+
+        +PropertyStormnetNullableInt:StormnetNullableInt
+
+        +PropertyStormnetKeyGuid:StormnetKeyGuid
+
+        +PropertyStormnetNullableDecimal:StormnetNullableDecimal
+
+        +PropertyStormnetPartliedDate:StormnetPartliedDate
+
+        +PropertyStormnetContact:StormnetContact
+
+        +PropertyStormnetBlob:StormnetBlob
+
+        +PropertyStormnetEvent:StormnetEvent
+
+        +PropertyStormnetGeoData:StormnetGeoData
+
+        +PropertyStormnetImage:StormnetImage
+
+        +PropertyStormnetWebFile:StormnetWebFile
+
+        +PropertyStormnetFile:StormnetFile
+
+        /+NotStoredProperty:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: StormnetContact
     x: 10
     y: 260
     width: 170
     height: 40
+    properties:
+      Name: StormnetContact
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: Inheritance
     startPrimitive: КлассСМножествомТипов
     endPrimitive: ДочернийКласс
     points:
-      - x: 730
-        y: 380
-      - x: 730
-        y: 560
+      - 730, 380
+      - 730, 560
   - type: CADClass
     caseName: StormnetGeoData
     x: 10
     y: 410
     width: 170
     height: 40
+    properties:
+      Name: StormnetGeoData
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: SystemNullableGuid
     x: 210
     y: 110
     width: 170
     height: 40
+    properties:
+      Name: SystemNullableGuid
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: КлассСоСтроковымКлючом
     x: 1200
     y: 470
     width: 240
     height: 90
+    properties:
+      Name: КлассСоСтроковымКлючом
+      AttributesTxt: +StoragePrimaryKey:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: StormnetNullableInt
     x: 10
     y: 60
     width: 170
     height: 40
+    properties:
+      Name: StormnetNullableInt
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetWebFile
     x: 10
     y: 510
     width: 170
     height: 40
+    properties:
+      Name: StormnetWebFile
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetPartliedDate
     x: 10
     y: 210
     width: 170
     height: 40
+    properties:
+      Name: StormnetPartliedDate
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetNullableDateTime
     x: 10
     y: 10
     width: 170
     height: 40
+    properties:
+      Name: StormnetNullableDateTime
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: Цифра
     x: 410
     y: 10
     width: 110
     height: 200
+    properties:
+      Name: Цифра
+      AttributesTxt: >-
+        Ноль
+
+        Один
+
+        Два
+
+        Три
+
+        Четыре
+
+        Пять
+
+        Шесть
+
+        Семь
+
+        Восемь
+
+        Девять
+      MethodsTxt: ' '
+      StereotypeTxt: «enumeration»
   - type: CADClass
     caseName: SystemNullableDateTime
     x: 210
     y: 10
     width: 170
     height: 40
+    properties:
+      Name: SystemNullableDateTime
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetNullableDecimal
     x: 10
     y: 160
     width: 170
     height: 40
+    properties:
+      Name: StormnetNullableDecimal
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: SystemNullableInt
     x: 210
     y: 60
     width: 170
     height: 40
+    properties:
+      Name: SystemNullableInt
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: ДочернийКласс
     x: 670
     y: 560
     width: 130
     height: 90
+    properties:
+      Name: ДочернийКласс
+      AttributesTxt: +ChildProperty:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: SystemNullableDecimal
     x: 210
     y: 160
     width: 170
     height: 40
+    properties:
+      Name: SystemNullableDecimal
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: Geography
     x: 10
     y: 610
     width: 170
     height: 40
+    properties:
+      Name: Geography
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetKeyGuid
     x: 10
     y: 110
     width: 170
     height: 40
+    properties:
+      Name: StormnetKeyGuid
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: КлассStoredDerived
     x: 1180
     y: 220
     width: 140
     height: 100
+    properties:
+      Name: КлассStoredDerived
+      AttributesTxt: +StrAttr2:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: StormnetBlob
     x: 10
     y: 310
     width: 170
     height: 40
+    properties:
+      Name: StormnetBlob
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetEvent
     x: 10
     y: 360
     width: 170
     height: 40
+    properties:
+      Name: StormnetEvent
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: StormnetImage
     x: 10
     y: 460
     width: 170
     height: 40
+    properties:
+      Name: StormnetImage
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: Inheritance
     startPrimitive: /КлассNotStored
     endPrimitive: КлассStoredDerived
     points:
-      - x: 1240
-        y: 140
-      - x: 1240
-        y: 220
+      - 1240, 140
+      - 1240, 220
   - type: CADClass
     caseName: /КлассNotStored
     x: 1180
     y: 50
     width: 120
     height: 90
+    properties:
+      Name: /КлассNotStored
+      AttributesTxt: +StrAttr:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: StormnetFile
     x: 10
     y: 560
     width: 170
     height: 40
-diagramType: CAD
+    properties:
+      Name: StormnetFile
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»

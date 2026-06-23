@@ -1,14 +1,6 @@
 name: DetailsClass1
-nameStr: DetailsClass1
-auditConnectionStringName: AuditConnString_36486
-attributesStr: '+DetailCl1Name: string'
 attributes:
   - name: DetailCl1Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

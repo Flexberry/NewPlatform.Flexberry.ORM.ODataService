@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: TestMaster
+startMultiplicity: 1
+endClassName: TestDetailWithCicle
+endMultiplicity: '*'
+storage: TestMaster

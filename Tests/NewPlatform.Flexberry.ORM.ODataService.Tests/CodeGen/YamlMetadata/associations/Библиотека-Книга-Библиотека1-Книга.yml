@@ -1,8 +1,8 @@
 type: Aggregation
 startClassName: Библиотека
-endClassName: Книга
 startRole: Библиотека1
-endRole: Книга
 startMultiplicity: 1
+endClassName: Книга
+endRole: Книга
 endMultiplicity: '*'
 storage: Библиотека1

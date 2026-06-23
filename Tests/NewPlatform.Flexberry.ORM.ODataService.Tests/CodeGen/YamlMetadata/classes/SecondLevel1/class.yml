@@ -1,14 +1,6 @@
 name: SecondLevel1
-nameStr: SecondLevel1
-auditConnectionStringName: AuditConnString_4712
-attributesStr: +Name:string
 attributes:
   - name: Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

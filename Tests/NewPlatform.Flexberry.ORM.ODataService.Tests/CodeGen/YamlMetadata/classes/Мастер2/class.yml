@@ -1,14 +1,6 @@
 name: Мастер2
-nameStr: Мастер2
-auditConnectionStringName: AuditConnString_61074
-attributesStr: свойство2:int
 attributes:
   - name: свойство2
     type: int
-    typeName: int
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

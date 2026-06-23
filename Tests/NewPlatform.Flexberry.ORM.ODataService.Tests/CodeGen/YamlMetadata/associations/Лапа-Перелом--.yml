@@ -1,5 +1,0 @@
-type: Aggregation
-startClassName: Лапа
-endClassName: Перелом
-startMultiplicity: 1
-endMultiplicity: '*'

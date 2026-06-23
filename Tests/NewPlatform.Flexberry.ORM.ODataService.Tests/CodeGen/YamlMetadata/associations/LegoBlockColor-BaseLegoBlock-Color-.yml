@@ -1,6 +1,0 @@
-startClassName: LegoBlockColor
-endClassName: BaseLegoBlock
-startRole: Color
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Color

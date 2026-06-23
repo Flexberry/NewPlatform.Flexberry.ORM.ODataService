@@ -1,220 +1,111 @@
 name: КлассСМножествомТипов
-nameStr: КлассСМножествомТипов
 storage: КлассСМножТипов
-auditConnectionStringName: AuditConnString_52933
-attributesStr: >-
-  +PropertyGeography:Geography
-
-  +PropertyEnum:Цифра
-
-  +PropertyBool:bool
-
-  +PropertyInt:int
-
-  +PropertyDateTime:DateTime
-
-  +PropertyString:string
-
-  +PropertyFloat:float
-
-  +PropertyDouble:double
-
-  +PropertyDecimal:decimal
-
-  +PropertySystemNullableDateTime:SystemNullableDateTime
-
-  +PropertySystemNullableInt:SystemNullableInt
-
-  +PropertySystemNullableGuid:SystemNullableGuid
-
-  +PropertySystemNullableDecimal:SystemNullableDecimal
-
-  +PropertyStormnetNullableDateTime:StormnetNullableDateTime
-
-  +PropertyStormnetNullableInt:StormnetNullableInt
-
-  +PropertyStormnetKeyGuid:StormnetKeyGuid
-
-  +PropertyStormnetNullableDecimal:StormnetNullableDecimal
-
-  +PropertyStormnetPartliedDate:StormnetPartliedDate
-
-  +PropertyStormnetContact:StormnetContact
-
-  +PropertyStormnetBlob:StormnetBlob
-
-  +PropertyStormnetEvent:StormnetEvent
-
-  +PropertyStormnetGeoData:StormnetGeoData
-
-  +PropertyStormnetImage:StormnetImage
-
-  +PropertyStormnetWebFile:StormnetWebFile
-
-  +PropertyStormnetFile:StormnetFile
-
-  /+NotStoredProperty:int
 attributes:
   - name: PropertyGeography
     type: Geography
-    typeName: Geography
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyEnum
     type: Цифра
-    typeName: Цифра
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyBool
     type: bool
-    typeName: bool
     order: 3
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyInt
     type: int
-    typeName: int
     order: 4
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyDateTime
     type: DateTime
-    typeName: DateTime
     order: 5
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyString
     type: string
-    typeName: string
     order: 6
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyFloat
     type: float
-    typeName: float
     order: 7
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyDouble
     type: double
-    typeName: double
     order: 8
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyDecimal
     type: decimal
-    typeName: decimal
     order: 9
     isNullable: true
-    dataServiceExpression: []
   - name: PropertySystemNullableDateTime
     type: SystemNullableDateTime
-    typeName: SystemNullableDateTime
     order: 10
     isNullable: true
-    dataServiceExpression: []
   - name: PropertySystemNullableInt
     type: SystemNullableInt
-    typeName: SystemNullableInt
     order: 11
     isNullable: true
-    dataServiceExpression: []
   - name: PropertySystemNullableGuid
     type: SystemNullableGuid
-    typeName: SystemNullableGuid
     order: 12
     isNullable: true
-    dataServiceExpression: []
   - name: PropertySystemNullableDecimal
     type: SystemNullableDecimal
-    typeName: SystemNullableDecimal
     order: 13
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetNullableDateTime
     type: StormnetNullableDateTime
-    typeName: StormnetNullableDateTime
     order: 14
     isNullable: true
     storage: PropStormnetNullableDateTime
-    dataServiceExpression: []
   - name: PropertyStormnetNullableInt
     type: StormnetNullableInt
-    typeName: StormnetNullableInt
     order: 15
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetKeyGuid
     type: StormnetKeyGuid
-    typeName: StormnetKeyGuid
     order: 16
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetNullableDecimal
     type: StormnetNullableDecimal
-    typeName: StormnetNullableDecimal
     order: 17
     isNullable: true
     storage: PropStormnetNullableDecimal
-    dataServiceExpression: []
   - name: PropertyStormnetPartliedDate
     type: StormnetPartliedDate
-    typeName: StormnetPartliedDate
     order: 18
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetContact
     type: StormnetContact
-    typeName: StormnetContact
     order: 19
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetBlob
     type: StormnetBlob
-    typeName: StormnetBlob
     order: 20
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetEvent
     type: StormnetEvent
-    typeName: StormnetEvent
     order: 21
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetGeoData
     type: StormnetGeoData
-    typeName: StormnetGeoData
     order: 22
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetImage
     type: StormnetImage
-    typeName: StormnetImage
     order: 23
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetWebFile
     type: StormnetWebFile
-    typeName: StormnetWebFile
     order: 24
     isNullable: true
-    dataServiceExpression: []
   - name: PropertyStormnetFile
     type: StormnetFile
-    typeName: StormnetFile
     order: 25
     isNullable: true
-    dataServiceExpression: []
   - name: NotStoredProperty
     type: int
     notStored: true
     stored: false
-    typeName: int
     order: 26
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

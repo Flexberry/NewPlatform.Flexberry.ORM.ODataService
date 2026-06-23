@@ -1,15 +1,7 @@
 name: LegoBlockTopPanelHole
-nameStr: LegoBlockTopPanelHole
 publishName: LegoBlockTopPanelHole
-auditConnectionStringName: AuditConnString_1649
-attributesStr: +Position:string
 attributes:
   - name: Position
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

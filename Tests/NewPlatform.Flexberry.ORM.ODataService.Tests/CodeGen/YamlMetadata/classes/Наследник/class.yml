@@ -1,14 +1,6 @@
 name: Наследник
-nameStr: Наследник
-auditConnectionStringName: AuditConnString_2232
-attributesStr: +Свойство:double
 attributes:
   - name: Свойство
     type: double
-    typeName: double
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

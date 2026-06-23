@@ -1,0 +1,6 @@
+startClassName: Автор
+startRole: Автор1
+startMultiplicity: 1
+endClassName: Книга
+endMultiplicity: '*'
+storage: Автор1

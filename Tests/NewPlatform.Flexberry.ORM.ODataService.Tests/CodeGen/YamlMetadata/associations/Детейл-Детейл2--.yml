@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: Детейл
-endClassName: Детейл2
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: Детейл

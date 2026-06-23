@@ -1,14 +1,6 @@
 name: AgrClass1
-nameStr: AgrClass1
-auditConnectionStringName: AuditConnString_44293
-attributesStr: '+AgrCl1Name: string'
 attributes:
   - name: AgrCl1Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: TestClass
+startMultiplicity: 1
+endClassName: ThirdLevel
+endMultiplicity: '*'
+storage: TestClass

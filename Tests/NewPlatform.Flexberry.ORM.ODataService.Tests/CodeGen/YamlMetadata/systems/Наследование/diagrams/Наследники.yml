@@ -1,5 +1,5 @@
+diagramType: CAD
 name: Наследники
-caseObjectsString: Class:(/Child);Class:(Daughter);Class:(Son);Class:(Person)
 primitives:
   - type: CADClass
     caseName: /Child
@@ -7,46 +7,64 @@ primitives:
     y: 30
     width: 290
     height: 90
+    properties:
+      Name: /Child
+      AttributesTxt: +Name:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: Daughter
     x: 80
     y: 190
     width: 120
     height: 90
+    properties:
+      Name: Daughter
+      AttributesTxt: +DressColor:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: Son
     x: 220
     y: 190
     width: 160
     height: 90
+    properties:
+      Name: Son
+      AttributesTxt: +SuspendersColor:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: Person
     x: 600
     y: 30
     width: 100
     height: 90
+    properties:
+      Name: Person
+      AttributesTxt: +Name:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: Person
     endPrimitive: /Child
     points:
-      - x: 610
-        y: 70
-      - x: 130
-        y: 70
+      - 610, 70
+      - 130, 70
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Parent
+      EndRoleTxt: +Childrens
   - type: Inheritance
     startPrimitive: /Child
     endPrimitive: Daughter
     points:
-      - x: 150
-        y: 100
-      - x: 150
-        y: 210
+      - 150, 100
+      - 150, 210
   - type: Inheritance
     startPrimitive: /Child
     endPrimitive: Son
     points:
-      - x: 290
-        y: 120
-      - x: 290
-        y: 220
-diagramType: CAD
+      - 290, 120
+      - 290, 220

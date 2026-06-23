@@ -1,23 +1,10 @@
 name: БазовыйКласс
-nameStr: БазовыйКласс
-auditConnectionStringName: AuditConnString_55186
-attributesStr: >-
-  +Свойство1:string
-
-  +Свойство2:int
 attributes:
   - name: Свойство1
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Свойство2
     type: int
-    typeName: int
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

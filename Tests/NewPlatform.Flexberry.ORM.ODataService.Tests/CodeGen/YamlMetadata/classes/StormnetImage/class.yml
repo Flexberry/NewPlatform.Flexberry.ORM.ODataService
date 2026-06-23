@@ -1,8 +1,2 @@
 name: StormnetImage
-nameStr: StormnetImage
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_60152
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

@@ -1,14 +1,6 @@
 name: ПоставщикКниг
-nameStr: ПоставщикКниг
-auditConnectionStringName: AuditConnString_59788
-attributesStr: +Ссылка:guid
 attributes:
   - name: Ссылка
     type: guid
-    typeName: guid
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

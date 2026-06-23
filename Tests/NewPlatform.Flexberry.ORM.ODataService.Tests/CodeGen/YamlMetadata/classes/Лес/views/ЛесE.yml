@@ -2,21 +2,14 @@ name: ЛесE
 properties:
   - name: Название
     caption: Название
-    lookupType: default
   - name: Площадь
     caption: Площадь
-    lookupType: default
   - name: Заповедник
     caption: Заповедник
-    lookupType: default
   - name: ДатаПоследнегоОсмотра
     caption: Дата последнего осмотра
-    lookupType: default
   - name: Страна
     caption: Страна
     isMaster: true
-    lookupType: default
   - name: Страна.Название
     caption: Название
-    lookupType: default
-details: []

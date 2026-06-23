@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: FirstLevel
-endClassName: SecondLevel1
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: FirstLevel

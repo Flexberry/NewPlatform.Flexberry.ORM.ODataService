@@ -1,14 +1,12 @@
+diagramType: CAD
 name: Диаграмма классов (Class Diagram)
-caseObjectsString: Class:(Лес);Class:(Страна);Class:(WebFile);Class:(tПол);Class:(Берлога);Class:(Блоха);Class:(DenBS);Class:(BearBS);Class:(ForestBS);Class:(Медведь);Class:(stringMax);Class:(Порода)
 primitives:
   - type: Association
     startPrimitive: Порода
     endPrimitive: Берлога
     points:
-      - x: 150
-        y: 680
-      - x: 440
-        y: 680
+      - 150, 680
+      - 440, 680
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -20,26 +18,38 @@ primitives:
     y: 250
     width: 280
     height: 120
+    properties:
+      Name: Лес
+      AttributesTxt: >-
+        +Название:string
+
+        +Площадь:int
+
+        +Заповедник:bool
+
+        +ДатаПоследнегоОсмотра:NullableDateTime
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: Страна
     x: 850
     y: 110
     width: 110
     height: 90
+    properties:
+      Name: Страна
+      AttributesTxt: Название:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Association
     startPrimitive: Медведь
     endPrimitive: Медведь
     points:
-      - x: 470
-        y: 260
-      - x: 470
-        y: 160
-      - x: 290
-        y: 160
-      - x: 290
-        y: 320
-      - x: 440
-        y: 320
+      - 470, 260
+      - 470, 160
+      - 290, 160
+      - 290, 320
+      - 440, 320
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -49,11 +59,8 @@ primitives:
     startPrimitive: Медведь
     endPrimitive: Блоха
     points:
-      - &o0
-        x: 460
-        y: 370
-      - x: 130
-        y: 370
+      - 460, 370
+      - 130, 370
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -63,12 +70,9 @@ primitives:
     startPrimitive: Страна
     endPrimitive: Медведь
     points:
-      - x: 850
-        y: 120
-      - x: 540
-        y: 120
-      - x: 540
-        y: 250
+      - 850, 120
+      - 540, 120
+      - 540, 250
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -80,32 +84,58 @@ primitives:
     y: 590
     width: 70
     height: 40
+    properties:
+      Name: WebFile
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: tПол
     x: 1030
     y: 420
     width: 100
     height: 100
+    properties:
+      Name: tПол
+      AttributesTxt: >-
+        Мужской
+
+        Женский
+
+        НеПонятно
+      MethodsTxt: ' '
+      StereotypeTxt: «enumeration»
   - type: CADClass
     caseName: Берлога
     x: 420
     y: 550
     width: 200
     height: 140
+    properties:
+      Name: Берлога
+      AttributesTxt: >-
+        +ПолеБС:string
+
+        +Наименование:string
+
+        +Комфортность:int
+
+        +Заброшена:bool
+
+        +Сертификат:WebFile
+
+        +СертификатСтрока:stringMax
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Association
     startPrimitive: Медведь
     endPrimitive: Медведь
     points:
-      - x: 590
-        y: 260
-      - x: 590
-        y: 160
-      - x: 780
-        y: 160
-      - x: 780
-        y: 320
-      - x: 610
-        y: 320
+      - 590, 260
+      - 590, 160
+      - 780, 160
+      - 780, 320
+      - 610, 320
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -115,12 +145,9 @@ primitives:
     startPrimitive: Лес
     endPrimitive: Берлога
     points:
-      - x: 880
-        y: 360
-      - x: 880
-        y: 600
-      - x: 530
-        y: 600
+      - 880, 360
+      - 880, 600
+      - 530, 600
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -130,10 +157,8 @@ primitives:
     startPrimitive: Лес
     endPrimitive: Медведь
     points:
-      - x: 870
-        y: 340
-      - x: 590
-        y: 340
+      - 870, 340
+      - 590, 340
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -145,39 +170,59 @@ primitives:
     y: 260
     width: 100
     height: 150
+    properties:
+      Name: Блоха
+      AttributesTxt: +Кличка:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: DenBS
     x: 80
     y: 470
     width: 120
     height: 40
+    properties:
+      Name: DenBS
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «businessserver»
   - type: CADClass
     caseName: BearBS
     x: 80
     y: 530
     width: 120
     height: 40
+    properties:
+      Name: BearBS
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «businessserver»
   - type: CADClass
     caseName: ForestBS
     x: 80
     y: 590
     width: 120
     height: 40
+    properties:
+      Name: ForestBS
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «businessserver»
   - type: Composition
     startPrimitive: Медведь
     endPrimitive: Берлога
     points:
-      - *o0
-      - x: 460
-        y: 600
+      - 460, 370
+      - 460, 600
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
   - type: Association
     startPrimitive: Страна
     endPrimitive: Лес
     points:
-      - x: 900
-        y: 190
-      - x: 900
-        y: 280
+      - 900, 190
+      - 900, 280
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -188,16 +233,53 @@ primitives:
     y: 250
     width: 230
     height: 220
+    properties:
+      Name: Медведь
+      AttributesTxt: >-
+        +ПолеБС:string
+
+        +ПорядковыйНомер:int
+
+        +Вес:int
+
+        +ЦветГлаз:string
+
+        +Пол:tПол
+
+        +ДатаРождения:NullableDateTime
+
+        /+МедведьСтрокой:string
+
+        /+ВычислимоеПоле:int=0
+
+        +CreateTime:AuditNullableDateTime
+
+        +Creator:string
+
+        +EditTime:AuditNullableDateTime
+
+        +Editor:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: stringMax
     x: 1090
     y: 590
     width: 70
     height: 40
+    properties:
+      Name: stringMax
+      AttributesTxt: ' '
+      MethodsTxt: ' '
+      StereotypeTxt: «typedef»
   - type: CADClass
     caseName: Порода
     x: 80
     y: 660
     width: 120
     height: 90
-diagramType: CAD
+    properties:
+      Name: Порода
+      AttributesTxt: +Название:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '

@@ -2,32 +2,24 @@ name: БерлогаE
 properties:
   - name: Наименование
     caption: Наименование
-    lookupType: default
   - name: Комфортность
     caption: Комфортность
-    lookupType: default
   - name: Заброшена
     caption: Заброшена
-    lookupType: default
   - name: ЛесРасположения
     caption: Лес расположения
     isMaster: true
+    lookupType: standard
     masterPropertyName: Название
   - name: ЛесРасположения.Название
     caption: Название
     visible: false
-    lookupType: default
   - name: Медведь
     caption: Медведь
     visible: false
     isMaster: true
-    lookupType: default
   - name: ПолеБС
-    lookupType: default
   - name: Сертификат
     visible: false
-    lookupType: default
   - name: СертификатСтрока
     visible: false
-    lookupType: default
-details: []

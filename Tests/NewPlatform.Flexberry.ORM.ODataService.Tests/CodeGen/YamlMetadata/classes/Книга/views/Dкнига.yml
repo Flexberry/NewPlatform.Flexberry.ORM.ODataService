@@ -2,9 +2,8 @@ name: Dкнига
 properties:
   - name: Название
     caption: Название
-    lookupType: default
   - name: Автор1
     caption: Автор
     isMaster: true
+    lookupType: standard
     masterPropertyName: Имя
-details: []

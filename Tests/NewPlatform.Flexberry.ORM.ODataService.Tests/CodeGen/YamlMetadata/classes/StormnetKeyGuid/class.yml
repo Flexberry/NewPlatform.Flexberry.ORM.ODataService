@@ -1,8 +1,2 @@
 name: StormnetKeyGuid
-nameStr: StormnetKeyGuid
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_21468
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

@@ -1,0 +1,5 @@
+startClassName: Страна
+startMultiplicity: 0..1
+endClassName: Лес
+endMultiplicity: '*'
+storage: Страна

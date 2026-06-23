@@ -1,40 +1,19 @@
 name: LegoPatent
-nameStr: LegoPatent
 publishName: LegoPatent
-auditConnectionStringName: AuditConnString_48060
-attributesStr: >-
-  +Name:string
-
-  +Date:DateTime
-
-  +Authors:string
-
-  +Description:string
 attributes:
   - name: Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Date
     type: DateTime
-    typeName: DateTime
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: Authors
     type: string
-    typeName: string
     order: 3
     isNullable: true
-    dataServiceExpression: []
   - name: Description
     type: string
-    typeName: string
     order: 4
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

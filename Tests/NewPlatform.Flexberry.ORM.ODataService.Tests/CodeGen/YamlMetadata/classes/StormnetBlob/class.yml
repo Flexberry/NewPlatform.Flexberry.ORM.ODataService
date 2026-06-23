@@ -1,8 +1,2 @@
 name: StormnetBlob
-nameStr: StormnetBlob
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_43125
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

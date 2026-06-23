@@ -1,6 +1,0 @@
-startClassName: LegoMaterial
-endClassName: LegoBlock
-startRole: Material
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Material

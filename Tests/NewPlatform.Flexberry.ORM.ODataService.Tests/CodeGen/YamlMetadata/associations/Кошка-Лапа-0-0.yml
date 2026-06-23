@@ -1,0 +1,5 @@
+type: Aggregation
+startClassName: Кошка
+startMultiplicity: 1
+endClassName: Лапа
+endMultiplicity: '*'

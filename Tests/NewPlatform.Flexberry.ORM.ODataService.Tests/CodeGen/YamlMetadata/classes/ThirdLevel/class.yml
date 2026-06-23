@@ -1,14 +1,6 @@
 name: ThirdLevel
-nameStr: ThirdLevel
-auditConnectionStringName: AuditConnString_6140
-attributesStr: +Name:string
 attributes:
   - name: Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

@@ -1,8 +1,2 @@
 name: WebFile
-nameStr: WebFile
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_24289
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

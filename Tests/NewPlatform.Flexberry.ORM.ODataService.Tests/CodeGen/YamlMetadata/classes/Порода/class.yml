@@ -1,14 +1,6 @@
 name: Порода
-nameStr: Порода
-auditConnectionStringName: AuditConnString_24588
-attributesStr: +Название:string
 attributes:
   - name: Название
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

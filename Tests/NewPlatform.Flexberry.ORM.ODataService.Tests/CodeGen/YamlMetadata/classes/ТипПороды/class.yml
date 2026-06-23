@@ -1,23 +1,10 @@
 name: ТипПороды
-nameStr: ТипПороды
-auditConnectionStringName: AuditConnString_24588
-attributesStr: >-
-  +Название:string
-
-  +ДатаРегистрации:DateTime
 attributes:
   - name: Название
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: ДатаРегистрации
     type: DateTime
-    typeName: DateTime
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

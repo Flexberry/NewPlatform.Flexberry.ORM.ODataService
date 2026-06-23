@@ -1,14 +1,6 @@
 name: Master
-nameStr: Master
-auditConnectionStringName: AuditConnString_38281
-attributesStr: property:string
 attributes:
   - name: property
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

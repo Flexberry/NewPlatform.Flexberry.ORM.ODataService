@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: TestConfiguration
-endClassName: FirstLevel
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: TestConfiguration

@@ -1,6 +1,0 @@
-startClassName: Автор
-endClassName: Книга
-startRole: Автор1
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: Автор1

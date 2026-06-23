@@ -1,59 +1,30 @@
 name: Берлога
-nameStr: Берлога
 description: Берлога
 caption: Берлога
 businessServerClass: DenBS
-auditConnectionStringName: AuditConnString_44614
-attributesStr: >-
-  +ПолеБС:string
-
-  +Наименование:string
-
-  +Комфортность:int
-
-  +Заброшена:bool
-
-  +Сертификат:WebFile
-
-  +СертификатСтрока:stringMax
 attributes:
   - name: ПолеБС
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Наименование
     type: string
-    typeName: string
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: Комфортность
     type: int
-    typeName: int
     order: 3
     isNullable: true
-    dataServiceExpression: []
   - name: Заброшена
     type: bool
-    typeName: bool
     order: 4
     isNullable: true
-    dataServiceExpression: []
   - name: Сертификат
     type: WebFile
-    typeName: WebFile
     order: 5
     isNullable: true
-    dataServiceExpression: []
   - name: СертификатСтрока
     type: stringMax
-    typeName: stringMax
     order: 6
     isNullable: true
     storage: CertString
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

@@ -1,23 +1,10 @@
 name: Котенок
-nameStr: Котенок
-auditConnectionStringName: AuditConnString_24588
-attributesStr: >-
-  +КличкаКотенка:string
-
-  +Глупость:int
 attributes:
   - name: КличкаКотенка
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Глупость
     type: int
-    typeName: int
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

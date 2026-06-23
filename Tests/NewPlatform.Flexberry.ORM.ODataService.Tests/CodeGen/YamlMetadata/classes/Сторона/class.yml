@@ -1,26 +1,12 @@
 name: Сторона
-nameStr: Сторона
 stereotype: «enumeration»
-auditConnectionStringName: AuditConnString_24588
-attributesStr: >-
-  НетЗначения
-
-  Левая
-
-  Правая
 attributes:
   - name: НетЗначения
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Левая
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: Правая
     order: 3
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

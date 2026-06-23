@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: AgrClass2
-endClassName: DetailsClass2
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: AgrClass2

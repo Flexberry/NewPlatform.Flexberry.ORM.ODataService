@@ -1,8 +1,2 @@
 name: SystemNullableDateTime
-nameStr: SystemNullableDateTime
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_60565
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

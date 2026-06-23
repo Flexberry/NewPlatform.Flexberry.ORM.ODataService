@@ -1,6 +1,0 @@
-startClassName: Страна
-endClassName: Медведь
-startRole: СтранаРождения
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Страна

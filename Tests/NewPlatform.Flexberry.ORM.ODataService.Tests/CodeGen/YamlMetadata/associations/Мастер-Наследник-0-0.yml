@@ -1,0 +1,5 @@
+startClassName: Мастер
+startMultiplicity: 0..1
+endClassName: Наследник
+endMultiplicity: '*'
+storage: Мастер

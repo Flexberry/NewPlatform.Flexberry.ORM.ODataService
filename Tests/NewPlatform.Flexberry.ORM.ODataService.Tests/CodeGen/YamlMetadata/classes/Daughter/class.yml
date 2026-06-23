@@ -1,15 +1,7 @@
 name: Daughter
-nameStr: Daughter
 publishName: Daughter
-auditConnectionStringName: AuditConnString_29508
-attributesStr: +DressColor:string
 attributes:
   - name: DressColor
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

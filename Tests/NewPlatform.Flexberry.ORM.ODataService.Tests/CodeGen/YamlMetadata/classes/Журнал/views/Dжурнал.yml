@@ -2,12 +2,10 @@ name: Dжурнал
 properties:
   - name: Название
     caption: Название
-    lookupType: default
   - name: Номер
     caption: Номер
-    lookupType: default
   - name: Автор2
     caption: Автор
     isMaster: true
+    lookupType: standard
     masterPropertyName: Имя
-details: []

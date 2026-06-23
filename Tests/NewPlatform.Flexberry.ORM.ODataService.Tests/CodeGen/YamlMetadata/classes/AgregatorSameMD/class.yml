@@ -1,14 +1,6 @@
 name: AgregatorSameMD
-nameStr: AgregatorSameMD
-auditConnectionStringName: AuditConnString_51827
-attributesStr: +Name:string
 attributes:
   - name: Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

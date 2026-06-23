@@ -1,6 +1,0 @@
-startClassName: TestDetailWithCicle
-endClassName: TestDetailWithCicle
-startRole: Parent
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Parent

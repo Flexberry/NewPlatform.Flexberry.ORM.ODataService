@@ -1,9 +1,9 @@
 type: Aggregation
 startClassName: Person
-endClassName: Child
 startRole: Parent
-endRole: Childrens
 startMultiplicity: 1
+endClassName: Child
+endRole: Childrens
 endMultiplicity: '*'
 storage: Parent
 detailTypeUsage: Daughter,Son

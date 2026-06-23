@@ -1,15 +1,7 @@
 name: КлассNotStored
-nameStr: /КлассNotStored
 stored: false
-auditConnectionStringName: AuditConnString_21090
-attributesStr: +StrAttr:string
 attributes:
   - name: StrAttr
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

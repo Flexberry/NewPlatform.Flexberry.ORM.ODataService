@@ -1,0 +1,4 @@
+startClassName: Порода
+startMultiplicity: 1
+endClassName: Кошка
+endMultiplicity: '*'

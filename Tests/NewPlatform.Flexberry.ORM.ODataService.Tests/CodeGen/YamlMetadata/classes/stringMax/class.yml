@@ -1,8 +1,2 @@
 name: stringMax
-nameStr: stringMax
 stereotype: «typedef»
-auditConnectionStringName: AuditConnString_12750
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

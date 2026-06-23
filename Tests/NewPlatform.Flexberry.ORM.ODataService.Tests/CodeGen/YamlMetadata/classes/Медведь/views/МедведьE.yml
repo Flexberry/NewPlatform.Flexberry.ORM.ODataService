@@ -2,51 +2,35 @@ name: МедведьE
 properties:
   - name: ПорядковыйНомер
     caption: Порядковый номер
-    lookupType: default
   - name: Вес
     caption: Вес
-    lookupType: default
   - name: ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: Пол
     caption: Пол
-    lookupType: default
   - name: ДатаРождения
     caption: Дата рождения
-    lookupType: default
   - name: Мама
     caption: Мама
     isMaster: true
-    lookupType: default
   - name: Мама.ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: Мама.Вес
-    lookupType: default
   - name: Папа
     caption: Папа
     isMaster: true
-    lookupType: default
   - name: Папа.ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: Папа.Вес
-    lookupType: default
   - name: ЛесОбитания
     caption: Лес обитания
     isMaster: true
-    lookupType: default
   - name: ЛесОбитания.Название
     caption: Название
-    lookupType: default
   - name: ПолеБС
-    lookupType: default
   - name: СтранаРождения
     isMaster: true
-    lookupType: default
   - name: СтранаРождения.Название
-    lookupType: default
 details:
   - name: Берлога
     viewName: БерлогаE

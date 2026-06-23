@@ -1,16 +1,8 @@
 name: Child
-nameStr: /Child
 stored: false
 publishName: Child
-auditConnectionStringName: AuditConnString_55558
-attributesStr: +Name:string
 attributes:
   - name: Name
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

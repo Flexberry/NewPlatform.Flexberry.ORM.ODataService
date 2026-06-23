@@ -1,5 +1,0 @@
-type: Aggregation
-startClassName: Кошка
-endClassName: Лапа
-startMultiplicity: 1
-endMultiplicity: '*'

@@ -1,86 +1,156 @@
+diagramType: CAD
 name: Наследники и агрегация (Lego)
-caseObjectsString: Class:(LegoBlock);Class:(LegoPatent);Class:(LegoBlockTopPanel);Class:(LegoBlockBottomPanel);Class:(LegoPanelAngle);Class:(LegoMaterial);Class:(LegoBlockColor);Class:(LegoDevice);Class:(/BaseLegoBlock);Class:(LegoBlockCustomPanel);Class:(LegoSocketStandard);Class:(LegoBlockTopPanelHole)
 primitives:
   - type: Composition
     startPrimitive: /BaseLegoBlock
     endPrimitive: LegoPatent
     points:
-      - x: 470
-        y: 160
-      - x: 670
-        y: 160
+      - 470, 160
+      - 670, 160
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      EndRoleTxt: +Patents
   - type: CADClass
     caseName: LegoBlock
     x: 310
     y: 440
     width: 130
     height: 120
+    properties:
+      Name: LegoBlock
+      AttributesTxt: >-
+        +Width:int
+
+        +Height:int
+
+        +Depth:int
+
+        +Configuration:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoPatent
     x: 650
     y: 100
     width: 120
     height: 120
+    properties:
+      Name: LegoPatent
+      AttributesTxt: >-
+        +Name:string
+
+        +Date:DateTime
+
+        +Authors:string
+
+        +Description:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoBlockTopPanel
     x: 60
     y: 440
     width: 140
     height: 90
+    properties:
+      Name: LegoBlockTopPanel
+      AttributesTxt: >-
+        +WidthCount:int
+
+        +HeightCount:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoBlockBottomPanel
     x: 240
     y: 620
     width: 160
     height: 90
+    properties:
+      Name: LegoBlockBottomPanel
+      AttributesTxt: >-
+        +WidthCount:int
+
+        +HeightCount:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoPanelAngle
     x: 100
     y: 750
     width: 120
     height: 90
+    properties:
+      Name: LegoPanelAngle
+      AttributesTxt: >-
+        +Name:string
+
+        +Angle:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoMaterial
     x: 260
     y: 290
     width: 100
     height: 90
+    properties:
+      Name: LegoMaterial
+      AttributesTxt: +Name:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoBlockColor
     x: 110
     y: 100
     width: 120
     height: 90
+    properties:
+      Name: LegoBlockColor
+      AttributesTxt: >-
+        +Name:string
+
+        +ColorNumber:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoDevice
     x: 450
     y: 300
     width: 130
     height: 90
+    properties:
+      Name: LegoDevice
+      AttributesTxt: >-
+        +Description:string
+
+        +Electricity:bool
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: LegoBlockTopPanel
     endPrimitive: LegoBlockTopPanelHole
     points:
-      - x: 130
-        y: 520
-      - x: 130
-        y: 640
+      - 130, 520
+      - 130, 640
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +TopPanel
+      EndRoleTxt: +Holes
   - type: Inheritance
     startPrimitive: /BaseLegoBlock
     endPrimitive: LegoBlock
     points:
-      - x: 390
-        y: 180
-      - x: 390
-        y: 460
+      - 390, 180
+      - 390, 460
   - type: Association
     startPrimitive: LegoBlockColor
     endPrimitive: /BaseLegoBlock
     points:
-      - x: 200
-        y: 150
-      - x: 400
-        y: 150
+      - 200, 150
+      - 400, 150
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -92,28 +162,34 @@ primitives:
     y: 20
     width: 228
     height: 30
+    properties:
+      Name: 'Учёт конструкторов и блоков Lego '
   - type: Inheritance
     startPrimitive: /BaseLegoBlock
     endPrimitive: LegoDevice
     points:
-      - x: 460
-        y: 180
-      - x: 460
-        y: 310
+      - 460, 180
+      - 460, 310
   - type: CADClass
     caseName: /BaseLegoBlock
     x: 370
     y: 100
     width: 110
     height: 90
+    properties:
+      Name: /BaseLegoBlock
+      AttributesTxt: >-
+        Name:string
+
+        BlockId:int
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Association
     startPrimitive: LegoMaterial
     endPrimitive: LegoBlock
     points:
-      - x: 330
-        y: 360
-      - x: 330
-        y: 450
+      - 330, 360
+      - 330, 450
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -123,52 +199,77 @@ primitives:
     startPrimitive: LegoBlock
     endPrimitive: LegoBlockCustomPanel
     points:
-      - x: 430
-        y: 560
-      - x: 430
-        y: 810
+      - 430, 560
+      - 430, 810
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Block
+      EndRoleTxt: +CustomPanels
   - type: Composition
     startPrimitive: LegoBlock
     endPrimitive: LegoBlockBottomPanel
     points:
-      - x: 330
-        y: 550
-      - x: 330
-        y: 640
+      - 330, 550
+      - 330, 640
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Block
+      EndRoleTxt: +BottomPanels
   - type: Composition
     startPrimitive: LegoBlock
     endPrimitive: LegoBlockTopPanel
     points:
-      - x: 330
-        y: 460
-      - x: 190
-        y: 520
+      - 330, 460
+      - 190, 520
+    properties:
+      StartMultTxt: 1
+      EndMultTxt: '*'
+      StartRoleTxt: +Block
+      EndRoleTxt: +TopPanels
   - type: CADClass
     caseName: LegoBlockCustomPanel
     x: 370
     y: 750
     width: 160
     height: 90
+    properties:
+      Name: LegoBlockCustomPanel
+      AttributesTxt: >-
+        +Orientation:string
+
+        +Position:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoSocketStandard
     x: 60
     y: 290
     width: 140
     height: 90
+    properties:
+      Name: LegoSocketStandard
+      AttributesTxt: +Name:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: CADClass
     caseName: LegoBlockTopPanelHole
     x: 60
     y: 620
     width: 160
     height: 90
+    properties:
+      Name: LegoBlockTopPanelHole
+      AttributesTxt: +Position:string
+      MethodsTxt: ' '
+      StereotypeTxt: ' '
   - type: Association
     startPrimitive: LegoSocketStandard
     endPrimitive: LegoBlockTopPanel
     points:
-      - x: 120
-        y: 350
-      - x: 120
-        y: 460
+      - 120, 350
+      - 120, 460
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
@@ -178,13 +279,10 @@ primitives:
     startPrimitive: LegoPanelAngle
     endPrimitive: LegoBlockCustomPanel
     points:
-      - x: 210
-        y: 790
-      - x: 410
-        y: 790
+      - 210, 790
+      - 410, 790
     properties:
       InitialMultiplicity: 1
       StartMultTxt: 0..1
       EndMultTxt: '*'
       StartRoleTxt: +PanelAngle
-diagramType: CAD

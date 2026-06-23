@@ -1,24 +1,11 @@
 name: Перелом
-nameStr: Перелом
 businessServerClass: CatsBS
-auditConnectionStringName: AuditConnString_24588
-attributesStr: >-
-  +Дата:DateTime
-
-  +Тип:ТипПерелома
 attributes:
   - name: Дата
     type: DateTime
-    typeName: DateTime
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Тип
     type: ТипПерелома
-    typeName: ТипПерелома
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

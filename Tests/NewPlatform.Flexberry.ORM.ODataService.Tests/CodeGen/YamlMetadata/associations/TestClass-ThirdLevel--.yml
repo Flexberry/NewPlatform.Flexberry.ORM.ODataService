@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: TestClass
-endClassName: ThirdLevel
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: TestClass

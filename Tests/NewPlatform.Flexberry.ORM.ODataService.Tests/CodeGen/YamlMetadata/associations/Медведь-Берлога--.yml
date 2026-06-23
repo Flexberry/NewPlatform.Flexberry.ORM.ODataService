@@ -1,6 +1,0 @@
-type: Aggregation
-startClassName: Медведь
-endClassName: Берлога
-startMultiplicity: 1
-endMultiplicity: '*'
-storage: Медведь

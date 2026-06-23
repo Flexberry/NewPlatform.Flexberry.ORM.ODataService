@@ -2,5 +2,3 @@ name: View
 properties:
   - name: Ссылка
     caption: Ссылка
-    lookupType: default
-details: []

@@ -1,5 +1,3 @@
 name: TestMasterE
 properties:
   - name: TestMasterName
-    lookupType: default
-details: []

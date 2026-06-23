@@ -1,6 +1,0 @@
-startClassName: Порода
-endClassName: Берлога
-startRole: ПодходитДляПороды
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: ДляКакойПороды

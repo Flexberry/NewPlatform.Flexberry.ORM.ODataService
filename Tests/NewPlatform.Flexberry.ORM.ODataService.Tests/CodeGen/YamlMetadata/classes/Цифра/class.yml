@@ -1,68 +1,33 @@
 name: Цифра
-nameStr: Цифра
 stereotype: «enumeration»
-auditConnectionStringName: AuditConnString_65366
-attributesStr: >-
-  Ноль
-
-  Один
-
-  Два
-
-  Три
-
-  Четыре
-
-  Пять
-
-  Шесть
-
-  Семь
-
-  Восемь
-
-  Девять
 attributes:
   - name: Ноль
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Один
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: Два
     order: 3
     isNullable: true
-    dataServiceExpression: []
   - name: Три
     order: 4
     isNullable: true
-    dataServiceExpression: []
   - name: Четыре
     order: 5
     isNullable: true
-    dataServiceExpression: []
   - name: Пять
     order: 6
     isNullable: true
-    dataServiceExpression: []
   - name: Шесть
     order: 7
     isNullable: true
-    dataServiceExpression: []
   - name: Семь
     order: 8
     isNullable: true
-    dataServiceExpression: []
   - name: Восемь
     order: 9
     isNullable: true
-    dataServiceExpression: []
   - name: Девять
     order: 10
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

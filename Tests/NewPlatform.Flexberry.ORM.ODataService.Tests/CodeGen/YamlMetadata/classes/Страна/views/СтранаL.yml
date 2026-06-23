@@ -2,5 +2,3 @@ name: СтранаL
 properties:
   - name: Название
     caption: Название
-    lookupType: default
-details: []

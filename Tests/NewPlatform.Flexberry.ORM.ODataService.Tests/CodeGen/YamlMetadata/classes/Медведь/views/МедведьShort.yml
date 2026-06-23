@@ -2,5 +2,3 @@ name: МедведьShort
 properties:
   - name: ПорядковыйНомер
     caption: Порядковый номер
-    lookupType: default
-details: []

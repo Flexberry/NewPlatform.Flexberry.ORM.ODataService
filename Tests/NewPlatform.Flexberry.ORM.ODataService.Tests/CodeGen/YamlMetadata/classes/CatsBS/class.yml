@@ -1,8 +1,2 @@
 name: CatsBS
-nameStr: CatsBS
 stereotype: «businessserver»
-auditConnectionStringName: AuditConnString_36428
-attributes: []
-methods: []
-formViews: []
-classStorageTypes: []

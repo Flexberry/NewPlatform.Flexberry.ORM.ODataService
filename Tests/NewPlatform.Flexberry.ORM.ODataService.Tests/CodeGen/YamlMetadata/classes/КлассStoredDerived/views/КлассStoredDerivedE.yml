@@ -1,7 +1,4 @@
 name: КлассStoredDerivedE
 properties:
   - name: StrAttr2
-    lookupType: default
   - name: StrAttr
-    lookupType: default
-details: []

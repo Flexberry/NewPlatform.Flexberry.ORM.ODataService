@@ -1,32 +1,15 @@
 name: Car
-nameStr: Car
 businessServerClass: CarBS
-auditConnectionStringName: AuditConnString_17196
-attributesStr: >-
-  +Number:string
-
-  +Model:string
-
-  +TipCar:tTip
 attributes:
   - name: Number
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Model
     type: string
-    typeName: string
     order: 2
     isNullable: true
-    dataServiceExpression: []
   - name: TipCar
     type: tTip
-    typeName: tTip
     order: 3
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

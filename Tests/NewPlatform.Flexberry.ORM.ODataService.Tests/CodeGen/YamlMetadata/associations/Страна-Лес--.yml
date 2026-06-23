@@ -1,5 +1,0 @@
-startClassName: Страна
-endClassName: Лес
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Страна

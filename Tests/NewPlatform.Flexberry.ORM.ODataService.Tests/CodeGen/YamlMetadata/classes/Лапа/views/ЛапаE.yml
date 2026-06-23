@@ -1,27 +1,14 @@
 name: ЛапаE
 properties:
   - name: Цвет
-    lookupType: default
   - name: Размер
-    lookupType: default
   - name: ДатаРождения
-    lookupType: default
   - name: БылиЛиПереломы
-    lookupType: default
   - name: Сторона
-    lookupType: default
   - name: Номер
-    lookupType: default
   - name: РазмерСтрокой
-    lookupType: default
   - name: РазмерDouble
-    lookupType: default
   - name: РазмерFloat
-    lookupType: default
   - name: РазмерDecimal
-    lookupType: default
   - name: РазмерChar
-    lookupType: default
   - name: Кошка.Кличка
-    lookupType: default
-details: []

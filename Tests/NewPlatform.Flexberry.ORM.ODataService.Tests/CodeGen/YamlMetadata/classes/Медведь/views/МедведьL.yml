@@ -2,26 +2,17 @@ name: МедведьL
 properties:
   - name: ПорядковыйНомер
     caption: Порядковый номер
-    lookupType: default
   - name: Вес
     caption: Вес
-    lookupType: default
   - name: ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: Пол
     caption: Пол
-    lookupType: default
   - name: ДатаРождения
     caption: Дата рождения
-    lookupType: default
   - name: Мама.ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: Папа.ЦветГлаз
     caption: Цвет глаз
-    lookupType: default
   - name: ЛесОбитания.Название
     caption: Название
-    lookupType: default
-details: []

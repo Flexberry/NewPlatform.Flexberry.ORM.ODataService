@@ -1,23 +1,12 @@
 name: КошкаE
 properties:
   - name: Кличка
-    lookupType: default
   - name: ДатаРождения
-    lookupType: default
   - name: Тип
-    lookupType: default
   - name: ПородаСтрокой
-    lookupType: default
   - name: Агрессивная
-    lookupType: default
   - name: КоличествоУсовСлева
-    lookupType: default
   - name: КоличествоУсовСправа
-    lookupType: default
   - name: КошкаСтрокой
-    lookupType: default
   - name: Порода.Название
-    lookupType: default
   - name: Порода.ТипПороды.Название
-    lookupType: default
-details: []

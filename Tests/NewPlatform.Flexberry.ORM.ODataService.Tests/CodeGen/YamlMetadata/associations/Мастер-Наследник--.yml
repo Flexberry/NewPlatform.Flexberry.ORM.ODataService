@@ -1,5 +1,0 @@
-startClassName: Мастер
-endClassName: Наследник
-startMultiplicity: 0..1
-endMultiplicity: '*'
-storage: Мастер

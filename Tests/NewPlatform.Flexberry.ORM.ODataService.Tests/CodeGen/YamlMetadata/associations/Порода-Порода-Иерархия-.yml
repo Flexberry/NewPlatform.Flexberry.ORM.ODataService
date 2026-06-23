@@ -1,5 +1,0 @@
-startClassName: Порода
-endClassName: Порода
-startRole: Иерархия
-startMultiplicity: 0..1
-endMultiplicity: '*'

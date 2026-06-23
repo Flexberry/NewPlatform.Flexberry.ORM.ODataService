@@ -2,13 +2,8 @@ name: БерлогаUpdateView
 properties:
   - name: Наименование
     caption: Наименование
-    lookupType: default
   - name: Комфортность
     caption: Комфортность
-    lookupType: default
   - name: Заброшена
     caption: Заброшена
-    lookupType: default
   - name: ПолеБС
-    lookupType: default
-details: []

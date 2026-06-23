@@ -1,24 +1,11 @@
 name: LegoBlockCustomPanel
-nameStr: LegoBlockCustomPanel
 publishName: LegoBlockCustomPanel
-auditConnectionStringName: AuditConnString_10313
-attributesStr: >-
-  +Orientation:string
-
-  +Position:string
 attributes:
   - name: Orientation
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Position
     type: string
-    typeName: string
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []

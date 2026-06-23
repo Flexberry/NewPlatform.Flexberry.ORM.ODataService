@@ -1,24 +1,11 @@
 name: LegoDevice
-nameStr: LegoDevice
 publishName: LegoDevice
-auditConnectionStringName: AuditConnString_32642
-attributesStr: >-
-  +Description:string
-
-  +Electricity:bool
 attributes:
   - name: Description
     type: string
-    typeName: string
     order: 1
     isNullable: true
-    dataServiceExpression: []
   - name: Electricity
     type: bool
-    typeName: bool
     order: 2
     isNullable: true
-    dataServiceExpression: []
-methods: []
-formViews: []
-classStorageTypes: []
