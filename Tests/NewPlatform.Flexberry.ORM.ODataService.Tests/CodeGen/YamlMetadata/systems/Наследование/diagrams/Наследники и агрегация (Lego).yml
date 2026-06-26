@@ -10,52 +10,36 @@ primitives:
       - 670, 160
   - type: CADClass
     caseName: LegoBlock
-    x: 310
-    y: 440
-    width: 130
-    height: 120
+    position: 310, 440
+    size: 130, 120
   - type: CADClass
     caseName: LegoPatent
-    x: 650
-    y: 100
-    width: 120
-    height: 120
+    position: 650, 100
+    size: 120, 120
   - type: CADClass
     caseName: LegoBlockTopPanel
-    x: 60
-    y: 440
-    width: 140
-    height: 90
+    position: 60, 440
+    size: 140, 90
   - type: CADClass
     caseName: LegoBlockBottomPanel
-    x: 240
-    y: 620
-    width: 160
-    height: 90
+    position: 240, 620
+    size: 160, 90
   - type: CADClass
     caseName: LegoPanelAngle
-    x: 100
-    y: 750
-    width: 120
-    height: 90
+    position: 100, 750
+    size: 120, 90
   - type: CADClass
     caseName: LegoMaterial
-    x: 260
-    y: 290
-    width: 100
-    height: 90
+    position: 260, 290
+    size: 100, 90
   - type: CADClass
     caseName: LegoBlockColor
-    x: 110
-    y: 100
-    width: 120
-    height: 90
+    position: 110, 100
+    size: 120, 90
   - type: CADClass
     caseName: LegoDevice
-    x: 450
-    y: 300
-    width: 130
-    height: 90
+    position: 450, 300
+    size: 130, 90
   - type: Composition
     startPrimitive: LegoBlockTopPanel
     endPrimitive: LegoBlockTopPanelHole
@@ -79,10 +63,8 @@ primitives:
       - 400, 150
   - type: Note
     caseName: 'Учёт конструкторов и блоков Lego '
-    x: 190
-    y: 20
-    width: 228
-    height: 30
+    position: 190, 20
+    size: 228, 30
   - type: Inheritance
     startPrimitive: /BaseLegoBlock
     endPrimitive: LegoDevice
@@ -91,10 +73,8 @@ primitives:
       - 460, 310
   - type: CADClass
     caseName: /BaseLegoBlock
-    x: 370
-    y: 100
-    width: 110
-    height: 90
+    position: 370, 100
+    size: 110, 90
   - type: Association
     startPrimitive: LegoMaterial
     endPrimitive: LegoBlock
@@ -128,22 +108,16 @@ primitives:
       - 190, 520
   - type: CADClass
     caseName: LegoBlockCustomPanel
-    x: 370
-    y: 750
-    width: 160
-    height: 90
+    position: 370, 750
+    size: 160, 90
   - type: CADClass
     caseName: LegoSocketStandard
-    x: 60
-    y: 290
-    width: 140
-    height: 90
+    position: 60, 290
+    size: 140, 90
   - type: CADClass
     caseName: LegoBlockTopPanelHole
-    x: 60
-    y: 620
-    width: 160
-    height: 90
+    position: 60, 620
+    size: 160, 90
   - type: Association
     startPrimitive: LegoSocketStandard
     endPrimitive: LegoBlockTopPanel

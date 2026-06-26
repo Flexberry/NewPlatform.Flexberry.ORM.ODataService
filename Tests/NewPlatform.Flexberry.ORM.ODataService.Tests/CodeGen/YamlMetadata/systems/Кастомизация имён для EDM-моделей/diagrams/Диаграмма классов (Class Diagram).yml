@@ -3,22 +3,16 @@ name: Диаграмма классов (Class Diagram)
 primitives:
   - type: CADClass
     caseName: ДетейлНаследник
-    x: 280
-    y: 20
-    width: 130
-    height: 90
+    position: 280, 20
+    size: 130, 90
   - type: CADClass
     caseName: БазовыйКласс
-    x: 40
-    y: 170
-    width: 130
-    height: 90
+    position: 40, 170
+    size: 130, 90
   - type: CADClass
     caseName: Детейл
-    x: 280
-    y: 170
-    width: 100
-    height: 90
+    position: 280, 170
+    size: 100, 90
   - type: Inheritance
     startPrimitive: Детейл
     endPrimitive: ДетейлНаследник
@@ -39,10 +33,8 @@ primitives:
       - 150, 400
   - type: CADClass
     caseName: Наследник
-    x: 40
-    y: 360
-    width: 130
-    height: 90
+    position: 40, 360
+    size: 130, 90
   - type: Composition
     startPrimitive: БазовыйКласс
     endPrimitive: Детейл
@@ -69,25 +61,17 @@ primitives:
       - 130, 450
   - type: CADClass
     caseName: Мастер
-    x: 280
-    y: 360
-    width: 100
-    height: 90
+    position: 280, 360
+    size: 100, 90
   - type: CADClass
     caseName: Детейл2
-    x: 530
-    y: 180
-    width: 100
-    height: 90
+    position: 530, 180
+    size: 100, 90
   - type: CADClass
     caseName: Master
-    x: 80
-    y: 520
-    width: 100
-    height: 90
+    position: 80, 520
+    size: 100, 90
   - type: CADClass
     caseName: Мастер2
-    x: 530
-    y: 360
-    width: 100
-    height: 90
+    position: 530, 360
+    size: 100, 90

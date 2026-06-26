@@ -3,10 +3,8 @@ name: Диаграмма классов (Class Diagram)
 primitives:
   - type: CADClass
     caseName: TestDetailWithCicle
-    x: 370
-    y: 290
-    width: 200
-    height: 70
+    position: 370, 290
+    size: 200, 70
   - type: Association
     startPrimitive: TestDetailWithCicle
     endPrimitive: TestDetailWithCicle
@@ -19,10 +17,8 @@ primitives:
       - 460, 360
   - type: CADClass
     caseName: TestMaster
-    x: 380
-    y: 130
-    width: 160
-    height: 70
+    position: 380, 130
+    size: 160, 70
   - type: Composition
     startPrimitive: TestMaster
     endPrimitive: TestDetailWithCicle

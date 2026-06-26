@@ -3,16 +3,12 @@ name: Диаграмма классов(Class Diagram)
 primitives:
   - type: CADClass
     caseName: КлассСМножествомТипов
-    x: 550
-    y: 10
-    width: 380
-    height: 410
+    position: 550, 10
+    size: 380, 410
   - type: CADClass
     caseName: StormnetContact
-    x: 10
-    y: 260
-    width: 170
-    height: 40
+    position: 10, 260
+    size: 170, 40
   - type: Inheritance
     startPrimitive: КлассСМножествомТипов
     endPrimitive: ДочернийКласс
@@ -21,118 +17,80 @@ primitives:
       - 730, 560
   - type: CADClass
     caseName: StormnetGeoData
-    x: 10
-    y: 410
-    width: 170
-    height: 40
+    position: 10, 410
+    size: 170, 40
   - type: CADClass
     caseName: SystemNullableGuid
-    x: 210
-    y: 110
-    width: 170
-    height: 40
+    position: 210, 110
+    size: 170, 40
   - type: CADClass
     caseName: КлассСоСтроковымКлючом
-    x: 1200
-    y: 470
-    width: 240
-    height: 90
+    position: 1200, 470
+    size: 240, 90
   - type: CADClass
     caseName: StormnetNullableInt
-    x: 10
-    y: 60
-    width: 170
-    height: 40
+    position: 10, 60
+    size: 170, 40
   - type: CADClass
     caseName: StormnetWebFile
-    x: 10
-    y: 510
-    width: 170
-    height: 40
+    position: 10, 510
+    size: 170, 40
   - type: CADClass
     caseName: StormnetPartliedDate
-    x: 10
-    y: 210
-    width: 170
-    height: 40
+    position: 10, 210
+    size: 170, 40
   - type: CADClass
     caseName: StormnetNullableDateTime
-    x: 10
-    y: 10
-    width: 170
-    height: 40
+    position: 10, 10
+    size: 170, 40
   - type: CADClass
     caseName: Цифра
-    x: 410
-    y: 10
-    width: 110
-    height: 200
+    position: 410, 10
+    size: 110, 200
   - type: CADClass
     caseName: SystemNullableDateTime
-    x: 210
-    y: 10
-    width: 170
-    height: 40
+    position: 210, 10
+    size: 170, 40
   - type: CADClass
     caseName: StormnetNullableDecimal
-    x: 10
-    y: 160
-    width: 170
-    height: 40
+    position: 10, 160
+    size: 170, 40
   - type: CADClass
     caseName: SystemNullableInt
-    x: 210
-    y: 60
-    width: 170
-    height: 40
+    position: 210, 60
+    size: 170, 40
   - type: CADClass
     caseName: ДочернийКласс
-    x: 670
-    y: 560
-    width: 130
-    height: 90
+    position: 670, 560
+    size: 130, 90
   - type: CADClass
     caseName: SystemNullableDecimal
-    x: 210
-    y: 160
-    width: 170
-    height: 40
+    position: 210, 160
+    size: 170, 40
   - type: CADClass
     caseName: Geography
-    x: 10
-    y: 610
-    width: 170
-    height: 40
+    position: 10, 610
+    size: 170, 40
   - type: CADClass
     caseName: StormnetKeyGuid
-    x: 10
-    y: 110
-    width: 170
-    height: 40
+    position: 10, 110
+    size: 170, 40
   - type: CADClass
     caseName: КлассStoredDerived
-    x: 1180
-    y: 220
-    width: 140
-    height: 100
+    position: 1180, 220
+    size: 140, 100
   - type: CADClass
     caseName: StormnetBlob
-    x: 10
-    y: 310
-    width: 170
-    height: 40
+    position: 10, 310
+    size: 170, 40
   - type: CADClass
     caseName: StormnetEvent
-    x: 10
-    y: 360
-    width: 170
-    height: 40
+    position: 10, 360
+    size: 170, 40
   - type: CADClass
     caseName: StormnetImage
-    x: 10
-    y: 460
-    width: 170
-    height: 40
+    position: 10, 460
+    size: 170, 40
   - type: Inheritance
     startPrimitive: /КлассNotStored
     endPrimitive: КлассStoredDerived
@@ -141,13 +99,9 @@ primitives:
       - 1240, 220
   - type: CADClass
     caseName: /КлассNotStored
-    x: 1180
-    y: 50
-    width: 120
-    height: 90
+    position: 1180, 50
+    size: 120, 90
   - type: CADClass
     caseName: StormnetFile
-    x: 10
-    y: 560
-    width: 170
-    height: 40
+    position: 10, 560
+    size: 170, 40

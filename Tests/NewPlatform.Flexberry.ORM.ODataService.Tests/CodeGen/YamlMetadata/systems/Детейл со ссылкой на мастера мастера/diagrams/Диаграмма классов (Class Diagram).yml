@@ -3,34 +3,24 @@ name: Диаграмма классов (Class Diagram)
 primitives:
   - type: CADClass
     caseName: MainClass
-    x: 260
-    y: 170
-    width: 100
-    height: 90
+    position: 260, 170
+    size: 100, 90
   - type: CADClass
     caseName: DetailsClass2
-    x: 820
-    y: 490
-    width: 150
-    height: 90
+    position: 820, 490
+    size: 150, 90
   - type: CADClass
     caseName: AgrClass2
-    x: 540
-    y: 490
-    width: 140
-    height: 90
+    position: 540, 490
+    size: 140, 90
   - type: CADClass
     caseName: DetailsClass1
-    x: 810
-    y: 160
-    width: 150
-    height: 90
+    position: 810, 160
+    size: 150, 90
   - type: CADClass
     caseName: AgrClass1
-    x: 540
-    y: 170
-    width: 140
-    height: 90
+    position: 540, 170
+    size: 140, 90
   - type: Composition
     startPrimitive: AgrClass2
     endPrimitive: DetailsClass2

@@ -3,28 +3,20 @@ name: Связи между детейлами
 primitives:
   - type: CADClass
     caseName: FirstLevel
-    x: 238
-    y: 125
-    width: 107
-    height: 66
+    position: 238, 125
+    size: 107, 66
   - type: CADClass
     caseName: SecondLevel1
-    x: 193
-    y: 269
-    width: 116
-    height: 66
+    position: 193, 269
+    size: 116, 66
   - type: CADClass
     caseName: SecondLevel2
-    x: 337
-    y: 268
-    width: 116
-    height: 66
+    position: 337, 268
+    size: 116, 66
   - type: CADClass
     caseName: ThirdLevel
-    x: 208
-    y: 489
-    width: 107
-    height: 66
+    position: 208, 489
+    size: 107, 66
   - type: Composition
     startPrimitive: FirstLevel
     endPrimitive: SecondLevel1
@@ -51,15 +43,12 @@ primitives:
       - 374, 320
   - type: CADClass
     caseName: TestConfiguration
-    x: 222
-    width: 137
-    height: 66
+    position: 222, 0
+    size: 137, 66
   - type: CADClass
     caseName: TestClass
-    x: 194
-    y: 374
-    width: 107
-    height: 66
+    position: 194, 374
+    size: 107, 66
   - type: Composition
     startPrimitive: TestClass
     endPrimitive: ThirdLevel
@@ -80,10 +69,8 @@ primitives:
       - 301, 176
   - type: CADClass
     caseName: TestAssociation
-    x: 344
-    y: 373
-    width: 127
-    height: 66
+    position: 344, 373
+    size: 127, 66
   - type: Inheritance
     startPrimitive: SecondLevel2
     endPrimitive: TestAssociation

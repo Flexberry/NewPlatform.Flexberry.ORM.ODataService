@@ -9,26 +9,18 @@ primitives:
       - 400, 320
   - type: CADClass
     caseName: Driver
-    x: 350
-    y: 90
-    width: 120
-    height: 120
+    position: 350, 90
+    size: 120, 120
   - type: CADClass
     caseName: CarBS
-    x: 150
-    y: 230
-    width: 120
-    height: 40
+    position: 150, 230
+    size: 120, 40
     fillColor: '#FF80FFFF'
   - type: CADClass
     caseName: Car
-    x: 340
-    y: 300
-    width: 140
-    height: 160
+    position: 340, 300
+    size: 140, 160
   - type: CADClass
     caseName: tTip
-    x: 570
-    y: 290
-    width: 100
-    height: 180
+    position: 570, 290
+    size: 100, 180

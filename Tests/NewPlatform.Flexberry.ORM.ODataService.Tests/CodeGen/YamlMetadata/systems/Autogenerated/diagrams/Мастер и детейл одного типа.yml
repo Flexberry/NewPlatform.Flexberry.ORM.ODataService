@@ -3,16 +3,12 @@ name: Мастер и детейл одного типа
 primitives:
   - type: CADClass
     caseName: AgregatorSameMD
-    x: 286
-    y: 141
-    width: 245
-    height: 66
+    position: 286, 141
+    size: 245, 66
   - type: CADClass
     caseName: DetailAndMaster
-    x: 312
-    y: 356
-    width: 130
-    height: 78
+    position: 312, 356
+    size: 130, 78
   - type: Composition
     startPrimitive: AgregatorSameMD
     endPrimitive: DetailAndMaster

@@ -3,22 +3,16 @@ name: Кошки с лапами
 primitives:
   - type: CADClass
     caseName: Порода
-    x: 570
-    y: 60
-    width: 120
-    height: 90
+    position: 570, 60
+    size: 120, 90
   - type: CADClass
     caseName: Перелом
-    x: 260
-    y: 620
-    width: 180
-    height: 90
+    position: 260, 620
+    size: 180, 90
   - type: CADClass
     caseName: ТипПерелома
-    x: 780
-    y: 530
-    width: 110
-    height: 90
+    position: 780, 530
+    size: 110, 90
   - type: Association
     startPrimitive: Порода
     endPrimitive: Кошка
@@ -27,16 +21,12 @@ primitives:
       - 470, 100
   - type: CADClass
     caseName: ТипЛапы
-    x: 610
-    y: 340
-    width: 120
-    height: 100
+    position: 610, 340
+    size: 120, 100
   - type: CADClass
     caseName: Сторона
-    x: 930
-    y: 390
-    width: 110
-    height: 100
+    position: 930, 390
+    size: 110, 100
   - type: Association
     startPrimitive: Кошка
     endPrimitive: Котенок
@@ -62,10 +52,8 @@ primitives:
       - 320, 370
   - type: CADClass
     caseName: ТипПороды
-    x: 770
-    y: 180
-    width: 190
-    height: 90
+    position: 770, 180
+    size: 190, 90
   - type: Association
     startPrimitive: ТипПороды
     endPrimitive: Порода
@@ -74,10 +62,8 @@ primitives:
       - 640, 120
   - type: CADClass
     caseName: Котенок
-    x: 20
-    y: 120
-    width: 160
-    height: 90
+    position: 20, 120
+    size: 160, 90
   - type: Composition
     startPrimitive: Лапа
     endPrimitive: Перелом
@@ -86,22 +72,16 @@ primitives:
       - 330, 630
   - type: CADClass
     caseName: CatsBS
-    x: 20
-    y: 280
-    width: 120
-    height: 40
+    position: 20, 280
+    size: 120, 40
   - type: CADClass
     caseName: Кошка
-    x: 280
-    y: 60
-    width: 230
-    height: 180
+    position: 280, 60
+    size: 230, 180
   - type: CADClass
     caseName: Лапа
-    x: 260
-    y: 310
-    width: 300
-    height: 210
+    position: 260, 310
+    size: 300, 210
   - type: Association
     startPrimitive: ТипЛапы
     endPrimitive: Лапа
@@ -110,7 +90,5 @@ primitives:
       - 430, 370
   - type: CADClass
     caseName: ТипКошки
-    x: 780
-    y: 390
-    width: 110
-    height: 100
+    position: 780, 390
+    size: 110, 100

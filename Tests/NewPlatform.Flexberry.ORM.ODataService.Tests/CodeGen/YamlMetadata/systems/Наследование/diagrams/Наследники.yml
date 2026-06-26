@@ -3,28 +3,20 @@ name: Наследники
 primitives:
   - type: CADClass
     caseName: /Child
-    x: 80
-    y: 30
-    width: 290
-    height: 90
+    position: 80, 30
+    size: 290, 90
   - type: CADClass
     caseName: Daughter
-    x: 80
-    y: 190
-    width: 120
-    height: 90
+    position: 80, 190
+    size: 120, 90
   - type: CADClass
     caseName: Son
-    x: 220
-    y: 190
-    width: 160
-    height: 90
+    position: 220, 190
+    size: 160, 90
   - type: CADClass
     caseName: Person
-    x: 600
-    y: 30
-    width: 100
-    height: 90
+    position: 600, 30
+    size: 100, 90
   - type: Composition
     startPrimitive: Person
     endPrimitive: /Child
