@@ -7,36 +7,18 @@ primitives:
     y: 20
     width: 130
     height: 90
-    properties:
-      Name: ДетейлНаследник
-      AttributesTxt: +prop3:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: БазовыйКласс
     x: 40
     y: 170
     width: 130
     height: 90
-    properties:
-      Name: БазовыйКласс
-      AttributesTxt: >-
-        +Свойство1:string
-
-        +Свойство2:int
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Детейл
     x: 280
     y: 170
     width: 100
     height: 90
-    properties:
-      Name: Детейл
-      AttributesTxt: +prop1:int
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Inheritance
     startPrimitive: Детейл
     endPrimitive: ДетейлНаследник
@@ -49,40 +31,24 @@ primitives:
     points:
       - 530, 400
       - 370, 400
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: Мастер
     endPrimitive: Наследник
     points:
       - 280, 400
       - 150, 400
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: Наследник
     x: 40
     y: 360
     width: 130
     height: 90
-    properties:
-      Name: Наследник
-      AttributesTxt: +Свойство:double
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: БазовыйКласс
     endPrimitive: Детейл
     points:
       - 150, 200
       - 290, 200
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Inheritance
     startPrimitive: БазовыйКласс
     endPrimitive: Наследник
@@ -95,60 +61,33 @@ primitives:
     points:
       - 370, 240
       - 540, 240
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: Master
     endPrimitive: Наследник
     points:
       - 130, 520
       - 130, 450
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: Мастер
     x: 280
     y: 360
     width: 100
     height: 90
-    properties:
-      Name: Мастер
-      AttributesTxt: prop:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Детейл2
     x: 530
     y: 180
     width: 100
     height: 90
-    properties:
-      Name: Детейл2
-      AttributesTxt: prop2:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Master
     x: 80
     y: 520
     width: 100
     height: 90
-    properties:
-      Name: Master
-      AttributesTxt: property:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Мастер2
     x: 530
     y: 360
     width: 100
     height: 90
-    properties:
-      Name: Мастер2
-      AttributesTxt: свойство2:int
-      MethodsTxt: ' '
-      StereotypeTxt: ' '

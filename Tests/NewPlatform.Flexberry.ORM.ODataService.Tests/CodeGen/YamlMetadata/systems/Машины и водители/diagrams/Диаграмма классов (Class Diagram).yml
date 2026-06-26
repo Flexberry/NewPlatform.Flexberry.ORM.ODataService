@@ -7,25 +7,12 @@ primitives:
     points:
       - 400, 200
       - 400, 320
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: Driver
     x: 350
     y: 90
     width: 120
     height: 120
-    properties:
-      Name: Driver
-      AttributesTxt: >-
-        +Name:string
-
-        +CarCount:int
-
-        +Documents:bool
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: CarBS
     x: 150
@@ -33,50 +20,15 @@ primitives:
     width: 120
     height: 40
     fillColor: '#FF80FFFF'
-    properties:
-      Name: CarBS
-      AttributesTxt: ' '
-      MethodsTxt: ' '
-      StereotypeTxt: «businessserver»
   - type: CADClass
     caseName: Car
     x: 340
     y: 300
     width: 140
     height: 160
-    properties:
-      Name: Car
-      AttributesTxt: >-
-        +Number:string
-
-        +Model:string
-
-        +TipCar:tTip
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: tTip
     x: 570
     y: 290
     width: 100
     height: 180
-    properties:
-      Name: tTip
-      AttributesTxt: >-
-        sedan
-
-        cabriolet
-
-        coupe
-
-        pickup
-
-        crossover
-
-        limousine
-
-        roadster
-
-        minivan
-      MethodsTxt: ' '
-      StereotypeTxt: «enumeration»

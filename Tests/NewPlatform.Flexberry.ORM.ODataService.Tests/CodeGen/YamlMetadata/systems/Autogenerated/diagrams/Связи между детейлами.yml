@@ -7,112 +7,65 @@ primitives:
     y: 125
     width: 107
     height: 66
-    properties:
-      Name: FirstLevel
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: SecondLevel1
     x: 193
     y: 269
     width: 116
     height: 66
-    properties:
-      Name: SecondLevel1
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: SecondLevel2
     x: 337
     y: 268
     width: 116
     height: 66
-    properties:
-      Name: SecondLevel2
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: ThirdLevel
     x: 208
     y: 489
     width: 107
     height: 66
-    properties:
-      Name: ThirdLevel
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: FirstLevel
     endPrimitive: SecondLevel1
     points:
       - 260, 180
       - 259, 311
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Composition
     startPrimitive: FirstLevel
     endPrimitive: SecondLevel2
     points:
       - 340, 180
       - 342, 308
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: SecondLevel1
     endPrimitive: SecondLevel2
     points:
       - 300, 280
       - 374, 279
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: SecondLevel1
     endPrimitive: SecondLevel2
     points:
       - 300, 320
       - 374, 320
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: TestConfiguration
     x: 222
     width: 137
     height: 66
-    properties:
-      Name: TestConfiguration
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: TestClass
     x: 194
     y: 374
     width: 107
     height: 66
-    properties:
-      Name: TestClass
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: TestClass
     endPrimitive: ThirdLevel
     points:
       - 250, 430
       - 252, 532
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Inheritance
     startPrimitive: SecondLevel1
     endPrimitive: TestClass
@@ -125,20 +78,12 @@ primitives:
     points:
       - 300, 60
       - 301, 176
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: TestAssociation
     x: 344
     y: 373
     width: 127
     height: 66
-    properties:
-      Name: TestAssociation
-      AttributesTxt: +Name2:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Inheritance
     startPrimitive: SecondLevel2
     endPrimitive: TestAssociation

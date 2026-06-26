@@ -7,110 +7,64 @@ primitives:
     y: 40
     width: 100
     height: 90
-    properties:
-      Name: Библиотека
-      AttributesTxt: +Адрес:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Association
     startPrimitive: Автор
     endPrimitive: Журнал
+    startRole: +Автор2
     points:
       - 290, 430
       - 290, 320
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: +Автор2
   - type: Association
     startPrimitive: Автор
     endPrimitive: Книга
+    startRole: +Автор1
     points:
       - 210, 430
       - 210, 320
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: +Автор1
   - type: Association
     startPrimitive: Библиотека
     endPrimitive: ПоставщикКниг
+    startRole: /+Мастер
     points:
       - 290, 100
       - 540, 100
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: /+Мастер
   - type: CADClass
     caseName: Книга
     x: 120
     y: 240
     width: 130
     height: 90
-    properties:
-      Name: Книга
-      AttributesTxt: +Название:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Журнал
     x: 280
     y: 240
     width: 130
     height: 90
-    properties:
-      Name: Журнал
-      AttributesTxt: >-
-        +Название:string
-
-        +Номер:int
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: ПоставщикКниг
     x: 530
     y: 40
     width: 120
     height: 90
-    properties:
-      Name: ПоставщикКниг
-      AttributesTxt: +Ссылка:guid
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: Библиотека
     endPrimitive: Журнал
+    startRole: +Библиотека2
+    endRole: +Журнал
     points:
       - 290, 120
       - 290, 250
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: +Библиотека2
-      EndRoleTxt: +Журнал
   - type: Composition
     startPrimitive: Библиотека
     endPrimitive: Книга
+    startRole: +Библиотека1
+    endRole: +Книга
     points:
       - 210, 120
       - 210, 240
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: +Библиотека1
-      EndRoleTxt: +Книга
   - type: CADClass
     caseName: Автор
     x: 200
     y: 420
     width: 100
     height: 90
-    properties:
-      Name: Автор
-      AttributesTxt: +Имя:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '

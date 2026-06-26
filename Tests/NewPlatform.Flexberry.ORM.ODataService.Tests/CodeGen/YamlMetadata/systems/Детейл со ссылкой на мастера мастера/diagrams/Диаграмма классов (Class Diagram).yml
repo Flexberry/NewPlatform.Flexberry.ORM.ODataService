@@ -7,90 +7,51 @@ primitives:
     y: 170
     width: 100
     height: 90
-    properties:
-      Name: MainClass
-      AttributesTxt: '+Name: string'
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: DetailsClass2
     x: 820
     y: 490
     width: 150
     height: 90
-    properties:
-      Name: DetailsClass2
-      AttributesTxt: '+DetailCl2Name: string'
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: AgrClass2
     x: 540
     y: 490
     width: 140
     height: 90
-    properties:
-      Name: AgrClass2
-      AttributesTxt: '+AgrCl2Name: string'
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: DetailsClass1
     x: 810
     y: 160
     width: 150
     height: 90
-    properties:
-      Name: DetailsClass1
-      AttributesTxt: '+DetailCl1Name: string'
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: AgrClass1
     x: 540
     y: 170
     width: 140
     height: 90
-    properties:
-      Name: AgrClass1
-      AttributesTxt: '+AgrCl1Name: string'
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: AgrClass2
     endPrimitive: DetailsClass2
     points:
       - 620, 530
       - 840, 530
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Composition
     startPrimitive: AgrClass1
     endPrimitive: DetailsClass1
     points:
       - 620, 210
       - 830, 210
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: DetailsClass2
     endPrimitive: DetailsClass1
     points:
       - 870, 510
       - 870, 230
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: AgrClass1
     endPrimitive: MainClass
     points:
       - 570, 210
       - 310, 210
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'

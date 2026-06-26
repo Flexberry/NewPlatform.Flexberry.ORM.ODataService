@@ -7,55 +7,32 @@ primitives:
     y: 30
     width: 290
     height: 90
-    properties:
-      Name: /Child
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Daughter
     x: 80
     y: 190
     width: 120
     height: 90
-    properties:
-      Name: Daughter
-      AttributesTxt: +DressColor:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Son
     x: 220
     y: 190
     width: 160
     height: 90
-    properties:
-      Name: Son
-      AttributesTxt: +SuspendersColor:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Person
     x: 600
     y: 30
     width: 100
     height: 90
-    properties:
-      Name: Person
-      AttributesTxt: +Name:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: Person
     endPrimitive: /Child
+    startRole: +Parent
+    endRole: +Childrens
     points:
       - 610, 70
       - 130, 70
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
-      StartRoleTxt: +Parent
-      EndRoleTxt: +Childrens
   - type: Inheritance
     startPrimitive: /Child
     endPrimitive: Daughter

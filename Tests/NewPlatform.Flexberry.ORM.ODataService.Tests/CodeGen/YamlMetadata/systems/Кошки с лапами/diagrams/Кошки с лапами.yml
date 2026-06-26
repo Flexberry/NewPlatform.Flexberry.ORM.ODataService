@@ -7,92 +7,46 @@ primitives:
     y: 60
     width: 120
     height: 90
-    properties:
-      Name: Порода
-      AttributesTxt: +Название:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Перелом
     x: 260
     y: 620
     width: 180
     height: 90
-    properties:
-      Name: Перелом
-      AttributesTxt: >-
-        +Дата:DateTime
-
-        +Тип:ТипПерелома
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: ТипПерелома
     x: 780
     y: 530
     width: 110
     height: 90
-    properties:
-      Name: ТипПерелома
-      AttributesTxt: >-
-        Открытый
-
-        Закрытый
-      MethodsTxt: ' '
-      StereotypeTxt: «enumeration»
   - type: Association
     startPrimitive: Порода
     endPrimitive: Кошка
     points:
       - 590, 100
       - 470, 100
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: ТипЛапы
     x: 610
     y: 340
     width: 120
     height: 100
-    properties:
-      Name: ТипЛапы
-      AttributesTxt: >-
-        +Название:string
-
-        +Актуально:bool
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Сторона
     x: 930
     y: 390
     width: 110
     height: 100
-    properties:
-      Name: Сторона
-      AttributesTxt: >-
-        НетЗначения
-
-        Левая
-
-        Правая
-      MethodsTxt: ' '
-      StereotypeTxt: «enumeration»
   - type: Association
     startPrimitive: Кошка
     endPrimitive: Котенок
     points:
       - 310, 140
       - 130, 140
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: Association
     startPrimitive: Порода
     endPrimitive: Порода
+    startRole: +Иерархия
     points:
       - 660, 70
       - 700, 10
@@ -100,161 +54,63 @@ primitives:
       - 770, 90
       - 730, 90
       - 650, 90
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
-      StartRoleTxt: +Иерархия
   - type: Composition
     startPrimitive: Кошка
     endPrimitive: Лапа
     points:
       - 320, 130
       - 320, 370
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: ТипПороды
     x: 770
     y: 180
     width: 190
     height: 90
-    properties:
-      Name: ТипПороды
-      AttributesTxt: >-
-        +Название:string
-
-        +ДатаРегистрации:DateTime
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Association
     startPrimitive: ТипПороды
     endPrimitive: Порода
     points:
       - 810, 190
       - 640, 120
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: Котенок
     x: 20
     y: 120
     width: 160
     height: 90
-    properties:
-      Name: Котенок
-      AttributesTxt: >-
-        +КличкаКотенка:string
-
-        +Глупость:int
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: Лапа
     endPrimitive: Перелом
     points:
       - 330, 450
       - 330, 630
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: CatsBS
     x: 20
     y: 280
     width: 120
     height: 40
-    properties:
-      Name: CatsBS
-      AttributesTxt: ' '
-      MethodsTxt: ' '
-      StereotypeTxt: «businessserver»
   - type: CADClass
     caseName: Кошка
     x: 280
     y: 60
     width: 230
     height: 180
-    properties:
-      Name: Кошка
-      AttributesTxt: >-
-        +Кличка:string
-
-        +ДатаРождения:NullableDateTime
-
-        +Тип:ТипКошки
-
-        +ПородаСтрокой:string
-
-        +Агрессивная:bool
-
-        +КоличествоУсовСлева:NullableInt
-
-        +КоличествоУсовСправа:NullableInt
-
-        /+КошкаСтрокой:string
-
-        +Кличка:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: CADClass
     caseName: Лапа
     x: 260
     y: 310
     width: 300
     height: 210
-    properties:
-      Name: Лапа
-      AttributesTxt: >-
-        +Цвет:string
-
-        +Размер:int
-
-        +ДатаРождения:NullableDateTime
-
-        +БылиЛиПереломы:bool
-
-        +Сторона:Сторона
-
-        +Номер:int
-
-        /+РазмерСтрокой:string
-
-        +РазмерDouble:double
-
-        +РазмерFloat:float
-
-        +РазмерDecimal:decimal
-
-        /+РазмерChar:char
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Association
     startPrimitive: ТипЛапы
     endPrimitive: Лапа
     points:
       - 610, 370
       - 430, 370
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
   - type: CADClass
     caseName: ТипКошки
     x: 780
     y: 390
     width: 110
     height: 100
-    properties:
-      Name: ТипКошки
-      AttributesTxt: >-
-        НетЗначения
-
-        Дикая
-
-        Домашняя
-      MethodsTxt: ' '
-      StereotypeTxt: «enumeration»

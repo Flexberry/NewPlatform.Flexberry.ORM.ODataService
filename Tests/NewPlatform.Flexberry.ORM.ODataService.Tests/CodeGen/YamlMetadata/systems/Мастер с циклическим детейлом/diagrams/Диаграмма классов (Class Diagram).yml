@@ -7,42 +7,25 @@ primitives:
     y: 290
     width: 200
     height: 70
-    properties:
-      Name: TestDetailWithCicle
-      AttributesTxt: +TestDetailName:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Association
     startPrimitive: TestDetailWithCicle
     endPrimitive: TestDetailWithCicle
+    startRole: +Parent
     points:
       - 500, 320
       - 690, 320
       - 690, 430
       - 460, 430
       - 460, 360
-    properties:
-      InitialMultiplicity: 1
-      StartMultTxt: 0..1
-      EndMultTxt: '*'
-      StartRoleTxt: +Parent
   - type: CADClass
     caseName: TestMaster
     x: 380
     y: 130
     width: 160
     height: 70
-    properties:
-      Name: TestMaster
-      AttributesTxt: +TestMasterName:string
-      MethodsTxt: ' '
-      StereotypeTxt: ' '
   - type: Composition
     startPrimitive: TestMaster
     endPrimitive: TestDetailWithCicle
     points:
       - 460, 190
       - 460, 310
-    properties:
-      StartMultTxt: 1
-      EndMultTxt: '*'
