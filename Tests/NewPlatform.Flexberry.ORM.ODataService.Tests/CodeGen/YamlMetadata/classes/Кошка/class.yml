@@ -1,39 +1,39 @@
 name: Кошка
 businessServerClass: CatsBS
 attributes:
+  - name: Кличка
+    type: string
+    order: 1
+    isNullable: true
   - name: ДатаРождения
     type: NullableDateTime
-    order: 1
+    order: 2
     isNullable: true
   - name: Тип
     type: ТипКошки
-    order: 2
+    order: 3
     isNullable: true
   - name: ПородаСтрокой
     type: string
-    order: 3
+    order: 4
     isNullable: true
   - name: Агрессивная
     type: bool
-    order: 4
+    order: 5
     isNullable: true
   - name: КоличествоУсовСлева
     type: NullableInt
-    order: 5
+    order: 6
     isNullable: true
     storage: УсыСлева
   - name: КоличествоУсовСправа
     type: NullableInt
-    order: 6
+    order: 7
     isNullable: true
     storage: УсыСправа
   - name: КошкаСтрокой
     type: string
     notStored: true
     stored: false
-    order: 7
-    isNullable: true
-  - name: Кличка
-    type: string
     order: 8
     isNullable: true

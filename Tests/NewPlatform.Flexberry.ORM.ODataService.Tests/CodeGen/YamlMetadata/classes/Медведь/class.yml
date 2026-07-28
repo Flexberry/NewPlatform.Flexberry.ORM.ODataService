@@ -46,8 +46,6 @@ attributes:
     dataServiceExpression:
       - dataServiceName: ICSSoft.STORMNET.Business.MSSQLDataService
         data: "'ПорядковыйНомер:' + @ПорядковыйНомер@ + \", Цвет глаз мамы:\" + isnull(@Мама.ЦветГлаз@,'')"
-      - dataServiceName: ICSSoft.STORMNET.Business.PostgresDataService
-        data: "'ПорядковыйНомер:' || @ПорядковыйНомер@ || \", Цвет глаз мамы:\" || coalesce(@Мама.ЦветГлаз@,'')"
   - name: ВычислимоеПоле
     type: int
     notStored: true
