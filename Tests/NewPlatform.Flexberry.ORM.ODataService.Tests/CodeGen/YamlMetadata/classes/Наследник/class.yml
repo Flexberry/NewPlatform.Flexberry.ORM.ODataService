@@ -1,0 +1,6 @@
+name: Наследник
+attributes:
+  - name: Свойство
+    type: double
+    order: 1
+    isNullable: true

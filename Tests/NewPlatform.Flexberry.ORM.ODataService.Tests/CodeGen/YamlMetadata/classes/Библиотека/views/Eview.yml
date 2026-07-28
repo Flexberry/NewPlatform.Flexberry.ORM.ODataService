@@ -1,0 +1,9 @@
+name: Eview
+properties:
+  - name: Адрес
+    caption: Адрес
+details:
+  - name: Журнал
+    viewName: Dжурнал
+  - name: Книга
+    viewName: Dкнига

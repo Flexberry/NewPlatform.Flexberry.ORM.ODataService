@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: Детейл
+startMultiplicity: 1
+endClassName: Детейл2
+endMultiplicity: '*'
+storage: Детейл

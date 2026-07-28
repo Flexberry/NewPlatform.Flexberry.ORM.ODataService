@@ -1,0 +1,111 @@
+name: КлассСМножествомТипов
+storage: КлассСМножТипов
+attributes:
+  - name: PropertyGeography
+    type: Geography
+    order: 1
+    isNullable: true
+  - name: PropertyEnum
+    type: Цифра
+    order: 2
+    isNullable: true
+  - name: PropertyBool
+    type: bool
+    order: 3
+    isNullable: true
+  - name: PropertyInt
+    type: int
+    order: 4
+    isNullable: true
+  - name: PropertyDateTime
+    type: DateTime
+    order: 5
+    isNullable: true
+  - name: PropertyString
+    type: string
+    order: 6
+    isNullable: true
+  - name: PropertyFloat
+    type: float
+    order: 7
+    isNullable: true
+  - name: PropertyDouble
+    type: double
+    order: 8
+    isNullable: true
+  - name: PropertyDecimal
+    type: decimal
+    order: 9
+    isNullable: true
+  - name: PropertySystemNullableDateTime
+    type: SystemNullableDateTime
+    order: 10
+    isNullable: true
+  - name: PropertySystemNullableInt
+    type: SystemNullableInt
+    order: 11
+    isNullable: true
+  - name: PropertySystemNullableGuid
+    type: SystemNullableGuid
+    order: 12
+    isNullable: true
+  - name: PropertySystemNullableDecimal
+    type: SystemNullableDecimal
+    order: 13
+    isNullable: true
+  - name: PropertyStormnetNullableDateTime
+    type: StormnetNullableDateTime
+    order: 14
+    isNullable: true
+    storage: PropStormnetNullableDateTime
+  - name: PropertyStormnetNullableInt
+    type: StormnetNullableInt
+    order: 15
+    isNullable: true
+  - name: PropertyStormnetKeyGuid
+    type: StormnetKeyGuid
+    order: 16
+    isNullable: true
+  - name: PropertyStormnetNullableDecimal
+    type: StormnetNullableDecimal
+    order: 17
+    isNullable: true
+    storage: PropStormnetNullableDecimal
+  - name: PropertyStormnetPartliedDate
+    type: StormnetPartliedDate
+    order: 18
+    isNullable: true
+  - name: PropertyStormnetContact
+    type: StormnetContact
+    order: 19
+    isNullable: true
+  - name: PropertyStormnetBlob
+    type: StormnetBlob
+    order: 20
+    isNullable: true
+  - name: PropertyStormnetEvent
+    type: StormnetEvent
+    order: 21
+    isNullable: true
+  - name: PropertyStormnetGeoData
+    type: StormnetGeoData
+    order: 22
+    isNullable: true
+  - name: PropertyStormnetImage
+    type: StormnetImage
+    order: 23
+    isNullable: true
+  - name: PropertyStormnetWebFile
+    type: StormnetWebFile
+    order: 24
+    isNullable: true
+  - name: PropertyStormnetFile
+    type: StormnetFile
+    order: 25
+    isNullable: true
+  - name: NotStoredProperty
+    type: int
+    notStored: true
+    stored: false
+    order: 26
+    isNullable: true

@@ -1,0 +1,6 @@
+startClassName: DetailAndMaster
+startRole: Master
+startMultiplicity: 0..1
+endClassName: AgregatorSameMD
+endMultiplicity: '*'
+storage: Master

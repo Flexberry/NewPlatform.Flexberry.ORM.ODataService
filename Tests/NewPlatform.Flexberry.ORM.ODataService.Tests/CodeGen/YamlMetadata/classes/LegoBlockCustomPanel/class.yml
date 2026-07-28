@@ -1,0 +1,11 @@
+name: LegoBlockCustomPanel
+publishName: LegoBlockCustomPanel
+attributes:
+  - name: Orientation
+    type: string
+    order: 1
+    isNullable: true
+  - name: Position
+    type: string
+    order: 2
+    isNullable: true

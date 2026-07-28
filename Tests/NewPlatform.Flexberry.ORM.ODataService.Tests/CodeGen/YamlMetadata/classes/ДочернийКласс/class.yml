@@ -1,0 +1,7 @@
+name: ДочернийКласс
+storage: ДочернийКласс
+attributes:
+  - name: ChildProperty
+    type: string
+    order: 1
+    isNullable: true

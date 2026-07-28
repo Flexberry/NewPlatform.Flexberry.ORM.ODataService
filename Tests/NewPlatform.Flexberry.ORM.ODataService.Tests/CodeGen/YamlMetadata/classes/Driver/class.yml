@@ -1,0 +1,14 @@
+name: Driver
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true
+  - name: CarCount
+    type: int
+    order: 2
+    isNullable: true
+  - name: Documents
+    type: bool
+    order: 3
+    isNullable: true

@@ -1,0 +1,5 @@
+type: Aggregation
+startClassName: Лапа
+startMultiplicity: 1
+endClassName: Перелом
+endMultiplicity: '*'

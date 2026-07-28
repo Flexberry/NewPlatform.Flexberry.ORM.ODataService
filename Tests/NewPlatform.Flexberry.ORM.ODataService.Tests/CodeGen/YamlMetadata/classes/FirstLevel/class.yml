@@ -1,0 +1,6 @@
+name: FirstLevel
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true

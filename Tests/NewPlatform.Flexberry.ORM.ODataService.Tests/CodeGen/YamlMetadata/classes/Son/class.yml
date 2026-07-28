@@ -1,0 +1,7 @@
+name: Son
+publishName: Son
+attributes:
+  - name: SuspendersColor
+    type: string
+    order: 1
+    isNullable: true

@@ -1,0 +1,6 @@
+name: БазовыйКлассE
+properties:
+  - name: Свойство1
+details:
+  - name: Детейл
+    viewName: ДетейлE

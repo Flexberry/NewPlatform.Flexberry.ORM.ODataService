@@ -1,0 +1,51 @@
+name: Лапа
+businessServerClass: CatsBS
+attributes:
+  - name: Цвет
+    type: string
+    order: 1
+    isNullable: true
+  - name: Размер
+    type: int
+    order: 2
+    isNullable: true
+  - name: ДатаРождения
+    type: NullableDateTime
+    order: 3
+    isNullable: true
+  - name: БылиЛиПереломы
+    type: bool
+    order: 4
+    isNullable: true
+  - name: Сторона
+    type: Сторона
+    order: 5
+    isNullable: true
+  - name: Номер
+    type: int
+    order: 6
+    isNullable: true
+  - name: РазмерСтрокой
+    type: string
+    notStored: true
+    stored: false
+    order: 7
+    isNullable: true
+  - name: РазмерDouble
+    type: double
+    order: 8
+    isNullable: true
+  - name: РазмерFloat
+    type: float
+    order: 9
+    isNullable: true
+  - name: РазмерDecimal
+    type: decimal
+    order: 10
+    isNullable: true
+  - name: РазмерChar
+    type: char
+    notStored: true
+    stored: false
+    order: 11
+    isNullable: true

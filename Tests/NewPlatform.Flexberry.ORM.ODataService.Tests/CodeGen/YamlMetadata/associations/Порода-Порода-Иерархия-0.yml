@@ -1,0 +1,5 @@
+startClassName: Порода
+startRole: Иерархия
+startMultiplicity: 0..1
+endClassName: Порода
+endMultiplicity: '*'

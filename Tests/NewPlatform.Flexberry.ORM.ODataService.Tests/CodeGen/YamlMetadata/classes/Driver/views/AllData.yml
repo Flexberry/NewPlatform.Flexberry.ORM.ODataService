@@ -1,0 +1,8 @@
+name: AllData
+properties:
+  - name: Name
+    caption: Name
+  - name: CarCount
+    caption: CarCount
+  - name: Documents
+    caption: Documents

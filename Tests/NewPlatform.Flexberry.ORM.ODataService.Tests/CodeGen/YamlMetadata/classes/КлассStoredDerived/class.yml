@@ -1,0 +1,6 @@
+name: КлассStoredDerived
+attributes:
+  - name: StrAttr2
+    type: string
+    order: 1
+    isNullable: true

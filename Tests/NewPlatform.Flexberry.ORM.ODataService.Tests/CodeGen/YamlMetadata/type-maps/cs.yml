@@ -1,0 +1,94 @@
+bool:
+  typeName: System.Boolean
+byte:
+  typeName: System.Byte
+char:
+  typeName: System.Char
+DateTime:
+  typeName: System.DateTime
+decimal:
+  typeName: System.Decimal
+double:
+  typeName: System.Double
+float:
+  typeName: System.Single
+Geography:
+  typeName: Microsoft.Spatial.Geography
+guid:
+  typeName: System.Guid
+int:
+  typeName: System.Int32
+long:
+  typeName: System.Int64
+NullableDateTime:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableDateTime
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+NullableDecimal:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableDecimal
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+NullableInt:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableInt
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+object:
+  typeName: System.Object
+sbyte:
+  typeName: System.SByte
+short:
+  typeName: System.Int16
+StormnetBlob:
+  typeName: ICSSoft.STORMNET.UserDataTypes.Blob
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetContact:
+  typeName: ICSSoft.STORMNET.UserDataTypes.Contact
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetEvent:
+  typeName: ICSSoft.STORMNET.UserDataTypes.Event
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetFile:
+  typeName: ICSSoft.STORMNET.FileType.File
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetGeoData:
+  typeName: ICSSoft.STORMNET.UserDataTypes.GeoData
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetImage:
+  typeName: ICSSoft.STORMNET.UserDataTypes.Image
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetKeyGuid:
+  typeName: ICSSoft.STORMNET.KeyGen.KeyGuid
+  assemblyDllName: ICSSoft.STORMNET.DataObject.dll
+StormnetNullableDateTime:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableDateTime
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetNullableDecimal:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableDecimal
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetNullableInt:
+  typeName: ICSSoft.STORMNET.UserDataTypes.NullableInt
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetPartliedDate:
+  typeName: ICSSoft.STORMNET.UserDataTypes.PartliedDate
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+StormnetWebFile:
+  typeName: ICSSoft.STORMNET.UserDataTypes.WebFile
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll
+string:
+  typeName: System.String
+stringMax:
+  typeName: System.String
+SystemNullableDateTime:
+  typeName: System.Nullable<System.DateTime>
+SystemNullableDecimal:
+  typeName: System.Nullable<System.Decimal>
+SystemNullableGuid:
+  typeName: System.Nullable<System.Guid>
+SystemNullableInt:
+  typeName: System.Nullable<System.Int32>
+uint:
+  typeName: System.UInt32
+ulong:
+  typeName: System.UInt64
+ushort:
+  typeName: System.UInt16
+WebFile:
+  typeName: ICSSoft.STORMNET.UserDataTypes.WebFile
+  assemblyDllName: ICSSoft.STORMNET.UserDataTypes.dll

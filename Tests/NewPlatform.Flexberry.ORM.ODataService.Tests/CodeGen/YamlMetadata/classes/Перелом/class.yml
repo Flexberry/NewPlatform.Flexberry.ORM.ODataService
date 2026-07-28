@@ -1,0 +1,11 @@
+name: Перелом
+businessServerClass: CatsBS
+attributes:
+  - name: Дата
+    type: DateTime
+    order: 1
+    isNullable: true
+  - name: Тип
+    type: ТипПерелома
+    order: 2
+    isNullable: true

@@ -1,0 +1,5 @@
+startClassName: DetailsClass2
+startMultiplicity: 1
+endClassName: DetailsClass1
+endMultiplicity: '*'
+storage: DetailsClass2

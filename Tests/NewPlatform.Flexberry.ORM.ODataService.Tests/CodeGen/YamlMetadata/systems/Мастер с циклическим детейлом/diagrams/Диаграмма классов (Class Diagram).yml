@@ -1,0 +1,27 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: CADClass
+    caseName: TestDetailWithCicle
+    position: 370, 290
+    size: 200, 70
+  - type: Association
+    startPrimitive: TestDetailWithCicle
+    endPrimitive: TestDetailWithCicle
+    startRole: +Parent
+    points:
+      - 500, 320
+      - 690, 320
+      - 690, 430
+      - 460, 430
+      - 460, 360
+  - type: CADClass
+    caseName: TestMaster
+    position: 380, 130
+    size: 160, 70
+  - type: Composition
+    startPrimitive: TestMaster
+    endPrimitive: TestDetailWithCicle
+    points:
+      - 460, 190
+      - 460, 310

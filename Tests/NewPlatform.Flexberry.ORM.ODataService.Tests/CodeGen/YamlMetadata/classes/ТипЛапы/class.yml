@@ -1,0 +1,10 @@
+name: ТипЛапы
+attributes:
+  - name: Название
+    type: string
+    order: 1
+    isNullable: true
+  - name: Актуально
+    type: bool
+    order: 2
+    isNullable: true

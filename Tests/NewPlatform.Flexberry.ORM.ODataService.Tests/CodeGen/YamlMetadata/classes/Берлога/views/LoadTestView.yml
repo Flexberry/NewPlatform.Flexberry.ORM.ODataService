@@ -1,0 +1,4 @@
+name: LoadTestView
+description: Представление для работы тестов на загрузку объектов.
+properties:
+  - name: Наименование

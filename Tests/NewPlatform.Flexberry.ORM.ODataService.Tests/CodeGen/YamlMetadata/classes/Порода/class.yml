@@ -1,0 +1,6 @@
+name: Порода
+attributes:
+  - name: Название
+    type: string
+    order: 1
+    isNullable: true

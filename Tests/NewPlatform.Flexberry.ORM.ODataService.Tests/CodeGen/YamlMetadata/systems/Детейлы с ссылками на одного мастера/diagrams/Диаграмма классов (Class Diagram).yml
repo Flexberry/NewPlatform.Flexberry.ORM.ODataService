@@ -1,0 +1,60 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: CADClass
+    caseName: Библиотека
+    position: 200, 40
+    size: 100, 90
+  - type: Association
+    startPrimitive: Автор
+    endPrimitive: Журнал
+    startRole: +Автор2
+    points:
+      - 290, 430
+      - 290, 320
+  - type: Association
+    startPrimitive: Автор
+    endPrimitive: Книга
+    startRole: +Автор1
+    points:
+      - 210, 430
+      - 210, 320
+  - type: Association
+    startPrimitive: Библиотека
+    endPrimitive: ПоставщикКниг
+    startRole: /+Мастер
+    points:
+      - 290, 100
+      - 540, 100
+  - type: CADClass
+    caseName: Книга
+    position: 120, 240
+    size: 130, 90
+  - type: CADClass
+    caseName: Журнал
+    position: 280, 240
+    size: 130, 90
+  - type: CADClass
+    caseName: ПоставщикКниг
+    position: 530, 40
+    size: 120, 90
+  - type: Composition
+    startPrimitive: Библиотека
+    endPrimitive: Журнал
+    startRole: +Библиотека2
+    endRole: +Журнал
+    points:
+      - 290, 120
+      - 290, 250
+  - type: Composition
+    startPrimitive: Библиотека
+    endPrimitive: Книга
+    startRole: +Библиотека1
+    endRole: +Книга
+    points:
+      - 210, 120
+      - 210, 240
+  - type: CADClass
+    caseName: Автор
+    position: 200, 420
+    size: 100, 90

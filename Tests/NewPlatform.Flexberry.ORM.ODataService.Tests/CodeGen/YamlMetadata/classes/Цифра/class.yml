@@ -1,0 +1,33 @@
+name: Цифра
+stereotype: «enumeration»
+attributes:
+  - name: Ноль
+    order: 1
+    isNullable: true
+  - name: Один
+    order: 2
+    isNullable: true
+  - name: Два
+    order: 3
+    isNullable: true
+  - name: Три
+    order: 4
+    isNullable: true
+  - name: Четыре
+    order: 5
+    isNullable: true
+  - name: Пять
+    order: 6
+    isNullable: true
+  - name: Шесть
+    order: 7
+    isNullable: true
+  - name: Семь
+    order: 8
+    isNullable: true
+  - name: Восемь
+    order: 9
+    isNullable: true
+  - name: Девять
+    order: 10
+    isNullable: true

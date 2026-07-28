@@ -1,0 +1,10 @@
+name: ТипПороды
+attributes:
+  - name: Название
+    type: string
+    order: 1
+    isNullable: true
+  - name: ДатаРегистрации
+    type: DateTime
+    order: 2
+    isNullable: true

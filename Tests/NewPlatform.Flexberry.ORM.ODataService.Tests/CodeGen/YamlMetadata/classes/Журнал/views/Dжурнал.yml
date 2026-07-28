@@ -1,0 +1,11 @@
+name: Dжурнал
+properties:
+  - name: Название
+    caption: Название
+  - name: Номер
+    caption: Номер
+  - name: Автор2
+    caption: Автор
+    isMaster: true
+    lookupType: standard
+    masterPropertyName: Имя

@@ -1,0 +1,12 @@
+name: ТипКошки
+stereotype: «enumeration»
+attributes:
+  - name: НетЗначения
+    order: 1
+    isNullable: true
+  - name: Дикая
+    order: 2
+    isNullable: true
+  - name: Домашняя
+    order: 3
+    isNullable: true

@@ -1,0 +1,6 @@
+name: ДетейлНаследник
+attributes:
+  - name: prop3
+    type: string
+    order: 1
+    isNullable: true

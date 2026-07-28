@@ -1,0 +1,6 @@
+name: TestAssociation
+attributes:
+  - name: Name2
+    type: string
+    order: 1
+    isNullable: true

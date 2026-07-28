@@ -1,0 +1,107 @@
+diagramType: CAD
+name: Диаграмма классов(Class Diagram)
+primitives:
+  - type: CADClass
+    caseName: КлассСМножествомТипов
+    position: 550, 10
+    size: 380, 410
+  - type: CADClass
+    caseName: StormnetContact
+    position: 10, 260
+    size: 170, 40
+  - type: Inheritance
+    startPrimitive: КлассСМножествомТипов
+    endPrimitive: ДочернийКласс
+    points:
+      - 730, 380
+      - 730, 560
+  - type: CADClass
+    caseName: StormnetGeoData
+    position: 10, 410
+    size: 170, 40
+  - type: CADClass
+    caseName: SystemNullableGuid
+    position: 210, 110
+    size: 170, 40
+  - type: CADClass
+    caseName: КлассСоСтроковымКлючом
+    position: 1200, 470
+    size: 240, 90
+  - type: CADClass
+    caseName: StormnetNullableInt
+    position: 10, 60
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetWebFile
+    position: 10, 510
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetPartliedDate
+    position: 10, 210
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetNullableDateTime
+    position: 10, 10
+    size: 170, 40
+  - type: CADClass
+    caseName: Цифра
+    position: 410, 10
+    size: 110, 200
+  - type: CADClass
+    caseName: SystemNullableDateTime
+    position: 210, 10
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetNullableDecimal
+    position: 10, 160
+    size: 170, 40
+  - type: CADClass
+    caseName: SystemNullableInt
+    position: 210, 60
+    size: 170, 40
+  - type: CADClass
+    caseName: ДочернийКласс
+    position: 670, 560
+    size: 130, 90
+  - type: CADClass
+    caseName: SystemNullableDecimal
+    position: 210, 160
+    size: 170, 40
+  - type: CADClass
+    caseName: Geography
+    position: 10, 610
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetKeyGuid
+    position: 10, 110
+    size: 170, 40
+  - type: CADClass
+    caseName: КлассStoredDerived
+    position: 1180, 220
+    size: 140, 100
+  - type: CADClass
+    caseName: StormnetBlob
+    position: 10, 310
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetEvent
+    position: 10, 360
+    size: 170, 40
+  - type: CADClass
+    caseName: StormnetImage
+    position: 10, 460
+    size: 170, 40
+  - type: Inheritance
+    startPrimitive: /КлассNotStored
+    endPrimitive: КлассStoredDerived
+    points:
+      - 1240, 140
+      - 1240, 220
+  - type: CADClass
+    caseName: /КлассNotStored
+    position: 1180, 50
+    size: 120, 90
+  - type: CADClass
+    caseName: StormnetFile
+    position: 10, 560
+    size: 170, 40

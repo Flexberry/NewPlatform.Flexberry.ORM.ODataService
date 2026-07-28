@@ -1,0 +1,14 @@
+name: ЛапаE
+properties:
+  - name: Цвет
+  - name: Размер
+  - name: ДатаРождения
+  - name: БылиЛиПереломы
+  - name: Сторона
+  - name: Номер
+  - name: РазмерСтрокой
+  - name: РазмерDouble
+  - name: РазмерFloat
+  - name: РазмерDecimal
+  - name: РазмерChar
+  - name: Кошка.Кличка

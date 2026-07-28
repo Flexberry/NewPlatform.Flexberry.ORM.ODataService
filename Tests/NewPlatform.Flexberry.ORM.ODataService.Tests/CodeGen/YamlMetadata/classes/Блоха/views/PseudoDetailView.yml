@@ -1,0 +1,4 @@
+name: PseudoDetailView
+description: Представление для работы тестов на фильтрацию с использованием псевдодетейла.
+properties:
+  - name: Кличка

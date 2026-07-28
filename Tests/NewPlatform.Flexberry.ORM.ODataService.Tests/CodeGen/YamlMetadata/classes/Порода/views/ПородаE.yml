@@ -1,0 +1,11 @@
+name: ПородаE
+properties:
+  - name: Название
+  - name: ТипПороды
+    visible: false
+    isMaster: true
+  - name: ТипПороды.Название
+  - name: Иерархия
+    visible: false
+    isMaster: true
+  - name: Иерархия.Название

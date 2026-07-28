@@ -1,0 +1,120 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: Association
+    startPrimitive: Порода
+    endPrimitive: Берлога
+    startRole: +ПодходитДляПороды
+    points:
+      - 150, 680
+      - 440, 680
+  - type: CADClass
+    caseName: Лес
+    position: 850, 250
+    size: 280, 120
+  - type: CADClass
+    caseName: Страна
+    position: 850, 110
+    size: 110, 90
+  - type: Association
+    startPrimitive: Медведь
+    endPrimitive: Медведь
+    startRole: +Папа
+    points:
+      - 470, 260
+      - 470, 160
+      - 290, 160
+      - 290, 320
+      - 440, 320
+  - type: Association
+    startPrimitive: Медведь
+    endPrimitive: Блоха
+    startRole: +МедведьОбитания
+    points:
+      - 460, 370
+      - 130, 370
+  - type: Association
+    startPrimitive: Страна
+    endPrimitive: Медведь
+    startRole: +СтранаРождения
+    points:
+      - 850, 120
+      - 540, 120
+      - 540, 250
+  - type: CADClass
+    caseName: WebFile
+    position: 970, 590
+    size: 70, 40
+  - type: CADClass
+    caseName: tПол
+    position: 1030, 420
+    size: 100, 100
+  - type: CADClass
+    caseName: Берлога
+    position: 420, 550
+    size: 200, 140
+  - type: Association
+    startPrimitive: Медведь
+    endPrimitive: Медведь
+    startRole: +Мама
+    points:
+      - 590, 260
+      - 590, 160
+      - 780, 160
+      - 780, 320
+      - 610, 320
+  - type: Association
+    startPrimitive: Лес
+    endPrimitive: Берлога
+    startRole: +ЛесРасположения
+    points:
+      - 880, 360
+      - 880, 600
+      - 530, 600
+  - type: Association
+    startPrimitive: Лес
+    endPrimitive: Медведь
+    startRole: +ЛесОбитания
+    points:
+      - 870, 340
+      - 590, 340
+  - type: CADClass
+    caseName: Блоха
+    position: 70, 260
+    size: 100, 150
+  - type: CADClass
+    caseName: DenBS
+    position: 80, 470
+    size: 120, 40
+  - type: CADClass
+    caseName: BearBS
+    position: 80, 530
+    size: 120, 40
+  - type: CADClass
+    caseName: ForestBS
+    position: 80, 590
+    size: 120, 40
+  - type: Composition
+    startPrimitive: Медведь
+    endPrimitive: Берлога
+    points:
+      - 460, 370
+      - 460, 600
+  - type: Association
+    startPrimitive: Страна
+    endPrimitive: Лес
+    points:
+      - 900, 190
+      - 900, 280
+  - type: CADClass
+    caseName: Медведь
+    position: 420, 250
+    size: 230, 220
+  - type: CADClass
+    caseName: stringMax
+    position: 1090, 590
+    size: 70, 40
+  - type: CADClass
+    caseName: Порода
+    position: 80, 660
+    size: 120, 90

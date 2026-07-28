@@ -1,0 +1,6 @@
+name: OrderNumberTest
+description: Представление для работы теста по использованию порядкового номера.
+properties:
+  - name: ПорядковыйНомер
+  - name: ЛесОбитания
+    isMaster: true

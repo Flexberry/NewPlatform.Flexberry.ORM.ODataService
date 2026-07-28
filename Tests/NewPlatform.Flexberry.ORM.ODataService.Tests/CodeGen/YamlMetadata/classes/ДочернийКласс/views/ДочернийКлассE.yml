@@ -1,0 +1,27 @@
+name: ДочернийКлассE
+properties:
+  - name: ChildProperty
+  - name: PropertyEnum
+  - name: PropertyBool
+  - name: PropertyInt
+  - name: PropertyDateTime
+  - name: PropertyString
+  - name: PropertyFloat
+  - name: PropertyDouble
+  - name: PropertyDecimal
+  - name: PropertySystemNullableDateTime
+  - name: PropertySystemNullableInt
+  - name: PropertySystemNullableGuid
+  - name: PropertySystemNullableDecimal
+  - name: PropertyStormnetNullableDateTime
+  - name: PropertyStormnetNullableInt
+  - name: PropertyStormnetKeyGuid
+  - name: PropertyStormnetNullableDecimal
+  - name: PropertyStormnetPartliedDate
+  - name: PropertyStormnetContact
+  - name: PropertyStormnetBlob
+  - name: PropertyStormnetEvent
+  - name: PropertyStormnetGeoData
+  - name: PropertyStormnetImage
+  - name: PropertyStormnetWebFile
+  - name: PropertyStormnetFile

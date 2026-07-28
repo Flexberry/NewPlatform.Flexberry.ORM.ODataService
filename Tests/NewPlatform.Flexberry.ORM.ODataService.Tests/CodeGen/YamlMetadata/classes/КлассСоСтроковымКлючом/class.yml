@@ -1,0 +1,7 @@
+name: КлассСоСтроковымКлючом
+storage: КлассСоСтрокКл
+primaryKeyStorage: StoragePrimaryKey
+attributes:
+  - name: StoragePrimaryKey
+    type: string
+    order: 1

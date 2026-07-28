@@ -1,0 +1,6 @@
+startClassName: TestDetailWithCicle
+startRole: Parent
+startMultiplicity: 0..1
+endClassName: TestDetailWithCicle
+endMultiplicity: '*'
+storage: Parent

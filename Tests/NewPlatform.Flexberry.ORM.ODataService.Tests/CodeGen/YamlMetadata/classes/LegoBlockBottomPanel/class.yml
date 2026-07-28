@@ -1,0 +1,11 @@
+name: LegoBlockBottomPanel
+publishName: LegoBlockBottomPanel
+attributes:
+  - name: WidthCount
+    type: int
+    order: 1
+    isNullable: true
+  - name: HeightCount
+    type: int
+    order: 2
+    isNullable: true

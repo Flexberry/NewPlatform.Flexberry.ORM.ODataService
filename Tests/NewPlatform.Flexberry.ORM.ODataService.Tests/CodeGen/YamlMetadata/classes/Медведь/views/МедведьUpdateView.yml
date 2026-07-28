@@ -1,0 +1,13 @@
+name: МедведьUpdateView
+properties:
+  - name: ПорядковыйНомер
+    caption: Порядковый номер
+  - name: Вес
+    caption: Вес
+  - name: ЦветГлаз
+    caption: Цвет глаз
+  - name: Пол
+    caption: Пол
+  - name: ДатаРождения
+    caption: Дата рождения
+  - name: ПолеБС

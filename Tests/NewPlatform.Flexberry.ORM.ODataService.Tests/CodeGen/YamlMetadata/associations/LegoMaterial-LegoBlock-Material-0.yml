@@ -1,0 +1,6 @@
+startClassName: LegoMaterial
+startRole: Material
+startMultiplicity: 0..1
+endClassName: LegoBlock
+endMultiplicity: '*'
+storage: Material

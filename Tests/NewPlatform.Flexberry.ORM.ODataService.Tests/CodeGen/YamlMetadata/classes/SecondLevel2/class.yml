@@ -1,0 +1,6 @@
+name: SecondLevel2
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true

@@ -1,0 +1,14 @@
+formatVersion: 1.0
+format: fdy
+name: NewPlatform.Flexberry.ORM.ODataService.Tests
+description: undefined
+product: NewPlatform.Flexberry.ORM.ODataService.Tests
+copyright: (c) 2004-2015. NewPlatform Ltd. All rights reserved.
+version: 1.0.0.0
+sQLPath: SQL
+defaultBaseClass: ICSSoft.STORMNET.DataObject
+defaultDetailArrayClass: ICSSoft.STORMNET.DetailArray
+mssqlConnectionString: SERVER=rtc-storm;Trusted_connection=yes;DATABASE=odatatest6;
+oracleConnectionString: Data Source=rtc-altoracle;User ID=ORM_Test;Password=ORM_Test;
+postgreConnectionString: Server=rtc-altpostgres;Port=5432;User Id=flexberry_orm_tester;Password=sa3dfE;Database=odatatests6;
+auditEnabled: true

@@ -1,0 +1,12 @@
+name: Сторона
+stereotype: «enumeration»
+attributes:
+  - name: НетЗначения
+    order: 1
+    isNullable: true
+  - name: Левая
+    order: 2
+    isNullable: true
+  - name: Правая
+    order: 3
+    isNullable: true

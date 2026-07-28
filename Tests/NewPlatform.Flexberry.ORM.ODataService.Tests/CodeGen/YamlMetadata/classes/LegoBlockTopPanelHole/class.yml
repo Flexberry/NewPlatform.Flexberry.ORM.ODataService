@@ -1,0 +1,7 @@
+name: LegoBlockTopPanelHole
+publishName: LegoBlockTopPanelHole
+attributes:
+  - name: Position
+    type: string
+    order: 1
+    isNullable: true

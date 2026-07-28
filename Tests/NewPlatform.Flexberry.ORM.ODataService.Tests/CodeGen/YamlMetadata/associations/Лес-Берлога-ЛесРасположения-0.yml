@@ -1,0 +1,6 @@
+startClassName: Лес
+startRole: ЛесРасположения
+startMultiplicity: 0..1
+endClassName: Берлога
+endMultiplicity: '*'
+storage: ЛесРасположения

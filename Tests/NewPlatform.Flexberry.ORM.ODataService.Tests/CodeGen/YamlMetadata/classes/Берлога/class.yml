@@ -1,0 +1,30 @@
+name: Берлога
+description: Берлога
+caption: Берлога
+businessServerClass: DenBS
+attributes:
+  - name: ПолеБС
+    type: string
+    order: 1
+    isNullable: true
+  - name: Наименование
+    type: string
+    order: 2
+    isNullable: true
+  - name: Комфортность
+    type: int
+    order: 3
+    isNullable: true
+  - name: Заброшена
+    type: bool
+    order: 4
+    isNullable: true
+  - name: Сертификат
+    type: WebFile
+    order: 5
+    isNullable: true
+  - name: СертификатСтрока
+    type: stringMax
+    order: 6
+    isNullable: true
+    storage: CertString

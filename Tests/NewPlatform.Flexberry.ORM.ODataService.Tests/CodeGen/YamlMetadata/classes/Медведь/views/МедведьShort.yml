@@ -1,0 +1,4 @@
+name: МедведьShort
+properties:
+  - name: ПорядковыйНомер
+    caption: Порядковый номер

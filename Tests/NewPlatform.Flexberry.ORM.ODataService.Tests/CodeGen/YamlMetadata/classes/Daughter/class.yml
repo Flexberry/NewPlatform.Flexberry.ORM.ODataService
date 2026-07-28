@@ -1,0 +1,7 @@
+name: Daughter
+publishName: Daughter
+attributes:
+  - name: DressColor
+    type: string
+    order: 1
+    isNullable: true

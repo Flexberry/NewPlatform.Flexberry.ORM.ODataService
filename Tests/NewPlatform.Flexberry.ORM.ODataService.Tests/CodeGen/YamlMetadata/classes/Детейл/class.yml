@@ -1,0 +1,6 @@
+name: Детейл
+attributes:
+  - name: prop1
+    type: int
+    order: 1
+    isNullable: true

@@ -1,0 +1,78 @@
+bool:
+  typeName: BOOLEAN
+byte:
+  typeName: SMALLINT
+char:
+  typeName: SMALLINT
+DateTime:
+  typeName: TIMESTAMP(3)
+decimal:
+  typeName: DECIMAL
+double:
+  typeName: DOUBLE PRECISION
+float:
+  typeName: REAL
+Geography:
+  typeName: geometry
+guid:
+  typeName: UUID
+int:
+  typeName: INT
+long:
+  typeName: BIGINT
+NullableDateTime:
+  typeName: TIMESTAMP(3)
+NullableDecimal:
+  typeName: DECIMAL
+NullableInt:
+  typeName: INT
+object:
+  typeName: BYTEA
+sbyte:
+  typeName: SMALLINT
+short:
+  typeName: SMALLINT
+StormnetBlob:
+  typeName: TEXT
+StormnetContact:
+  typeName: TEXT
+StormnetEvent:
+  typeName: TEXT
+StormnetFile:
+  typeName: TEXT
+StormnetGeoData:
+  typeName: TEXT
+StormnetImage:
+  typeName: TEXT
+StormnetKeyGuid:
+  typeName: UUID
+StormnetNullableDateTime:
+  typeName: TIMESTAMP(3)
+StormnetNullableDecimal:
+  typeName: DECIMAL
+StormnetNullableInt:
+  typeName: INT
+StormnetPartliedDate:
+  typeName: VARCHAR(255)
+StormnetWebFile:
+  typeName: TEXT
+string:
+  typeName: VARCHAR(255)
+stringMax:
+  typeName: TEXT
+SystemNullableDateTime:
+  typeName: TIMESTAMP(3)
+SystemNullableDecimal:
+  typeName: DECIMAL
+SystemNullableGuid:
+  typeName: UUID
+SystemNullableInt:
+  typeName: INT
+uint:
+  typeName: INT
+ulong:
+  typeName: BIGINT
+ushort:
+  typeName: SMALLINT
+WebFile:
+  typeName: TEXT

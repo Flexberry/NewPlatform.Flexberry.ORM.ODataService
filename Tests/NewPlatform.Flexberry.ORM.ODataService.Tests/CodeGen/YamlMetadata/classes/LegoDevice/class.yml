@@ -1,0 +1,11 @@
+name: LegoDevice
+publishName: LegoDevice
+attributes:
+  - name: Description
+    type: string
+    order: 1
+    isNullable: true
+  - name: Electricity
+    type: bool
+    order: 2
+    isNullable: true

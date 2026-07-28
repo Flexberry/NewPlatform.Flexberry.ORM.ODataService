@@ -1,0 +1,4 @@
+name: View
+properties:
+  - name: Имя
+    caption: Имя

@@ -1,0 +1,6 @@
+name: TestDetailWithCicle
+attributes:
+  - name: TestDetailName
+    type: string
+    order: 1
+    isNullable: true

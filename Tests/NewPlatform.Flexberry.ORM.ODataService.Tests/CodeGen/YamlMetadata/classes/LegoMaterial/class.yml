@@ -1,0 +1,7 @@
+name: LegoMaterial
+publishName: LegoMaterial
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true

@@ -1,0 +1,78 @@
+bool:
+  typeName: NUMBER(1)
+byte:
+  typeName: NUMBER(3)
+char:
+  typeName: NUMBER(3)
+DateTime:
+  typeName: DATE
+decimal:
+  typeName: NUMBER(38)
+double:
+  typeName: FLOAT(126)
+float:
+  typeName: FLOAT(53)
+Geography:
+  typeName: CLOB
+guid:
+  typeName: RAW(16)
+int:
+  typeName: NUMBER(10)
+long:
+  typeName: NUMBER(20)
+NullableDateTime:
+  typeName: DATE
+NullableDecimal:
+  typeName: NUMBER(38)
+NullableInt:
+  typeName: NUMBER(10)
+object:
+  typeName: RAW(255)
+sbyte:
+  typeName: NUMBER(3)
+short:
+  typeName: NUMBER(5)
+StormnetBlob:
+  typeName: CLOB
+StormnetContact:
+  typeName: CLOB
+StormnetEvent:
+  typeName: CLOB
+StormnetFile:
+  typeName: CLOB
+StormnetGeoData:
+  typeName: CLOB
+StormnetImage:
+  typeName: CLOB
+StormnetKeyGuid:
+  typeName: RAW(16)
+StormnetNullableDateTime:
+  typeName: DATE
+StormnetNullableDecimal:
+  typeName: NUMBER(38)
+StormnetNullableInt:
+  typeName: NUMBER(10)
+StormnetPartliedDate:
+  typeName: VARCHAR2(255)
+StormnetWebFile:
+  typeName: CLOB
+string:
+  typeName: VARCHAR2(255)
+stringMax:
+  typeName: CLOB
+SystemNullableDateTime:
+  typeName: DATE
+SystemNullableDecimal:
+  typeName: NUMBER(38)
+SystemNullableGuid:
+  typeName: RAW(16)
+SystemNullableInt:
+  typeName: NUMBER(10)
+uint:
+  typeName: NUMBER(10)
+ulong:
+  typeName: NUMBER(20)
+ushort:
+  typeName: NUMBER(5)
+WebFile:
+  typeName: CLOB

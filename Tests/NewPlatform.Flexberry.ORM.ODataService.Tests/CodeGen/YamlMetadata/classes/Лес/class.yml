@@ -1,0 +1,22 @@
+name: Лес
+description: Лес
+caption: Лес
+businessServerClass: ForestBS
+attributes:
+  - name: Название
+    type: string
+    order: 1
+    isNullable: true
+  - name: Площадь
+    type: int
+    order: 2
+    isNullable: true
+  - name: Заповедник
+    type: bool
+    order: 3
+    isNullable: true
+  - name: ДатаПоследнегоОсмотра
+    type: NullableDateTime
+    order: 4
+    isNullable: true
+    storage: ДатаПослОсмотра

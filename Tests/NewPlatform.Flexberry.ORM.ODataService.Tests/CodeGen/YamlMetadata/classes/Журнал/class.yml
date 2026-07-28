@@ -1,0 +1,10 @@
+name: Журнал
+attributes:
+  - name: Название
+    type: string
+    order: 1
+    isNullable: true
+  - name: Номер
+    type: int
+    order: 2
+    isNullable: true

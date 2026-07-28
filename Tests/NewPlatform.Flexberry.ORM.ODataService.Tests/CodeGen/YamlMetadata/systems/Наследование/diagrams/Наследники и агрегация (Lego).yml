@@ -1,0 +1,134 @@
+diagramType: CAD
+name: Наследники и агрегация (Lego)
+primitives:
+  - type: Composition
+    startPrimitive: /BaseLegoBlock
+    endPrimitive: LegoPatent
+    endRole: +Patents
+    points:
+      - 470, 160
+      - 670, 160
+  - type: CADClass
+    caseName: LegoBlock
+    position: 310, 440
+    size: 130, 120
+  - type: CADClass
+    caseName: LegoPatent
+    position: 650, 100
+    size: 120, 120
+  - type: CADClass
+    caseName: LegoBlockTopPanel
+    position: 60, 440
+    size: 140, 90
+  - type: CADClass
+    caseName: LegoBlockBottomPanel
+    position: 240, 620
+    size: 160, 90
+  - type: CADClass
+    caseName: LegoPanelAngle
+    position: 100, 750
+    size: 120, 90
+  - type: CADClass
+    caseName: LegoMaterial
+    position: 260, 290
+    size: 100, 90
+  - type: CADClass
+    caseName: LegoBlockColor
+    position: 110, 100
+    size: 120, 90
+  - type: CADClass
+    caseName: LegoDevice
+    position: 450, 300
+    size: 130, 90
+  - type: Composition
+    startPrimitive: LegoBlockTopPanel
+    endPrimitive: LegoBlockTopPanelHole
+    startRole: +TopPanel
+    endRole: +Holes
+    points:
+      - 130, 520
+      - 130, 640
+  - type: Inheritance
+    startPrimitive: /BaseLegoBlock
+    endPrimitive: LegoBlock
+    points:
+      - 390, 180
+      - 390, 460
+  - type: Association
+    startPrimitive: LegoBlockColor
+    endPrimitive: /BaseLegoBlock
+    startRole: +Color
+    points:
+      - 200, 150
+      - 400, 150
+  - type: Note
+    caseName: 'Учёт конструкторов и блоков Lego '
+    position: 190, 20
+    size: 228, 30
+  - type: Inheritance
+    startPrimitive: /BaseLegoBlock
+    endPrimitive: LegoDevice
+    points:
+      - 460, 180
+      - 460, 310
+  - type: CADClass
+    caseName: /BaseLegoBlock
+    position: 370, 100
+    size: 110, 90
+  - type: Association
+    startPrimitive: LegoMaterial
+    endPrimitive: LegoBlock
+    startRole: +Material
+    points:
+      - 330, 360
+      - 330, 450
+  - type: Composition
+    startPrimitive: LegoBlock
+    endPrimitive: LegoBlockCustomPanel
+    startRole: +Block
+    endRole: +CustomPanels
+    points:
+      - 430, 560
+      - 430, 810
+  - type: Composition
+    startPrimitive: LegoBlock
+    endPrimitive: LegoBlockBottomPanel
+    startRole: +Block
+    endRole: +BottomPanels
+    points:
+      - 330, 550
+      - 330, 640
+  - type: Composition
+    startPrimitive: LegoBlock
+    endPrimitive: LegoBlockTopPanel
+    startRole: +Block
+    endRole: +TopPanels
+    points:
+      - 330, 460
+      - 190, 520
+  - type: CADClass
+    caseName: LegoBlockCustomPanel
+    position: 370, 750
+    size: 160, 90
+  - type: CADClass
+    caseName: LegoSocketStandard
+    position: 60, 290
+    size: 140, 90
+  - type: CADClass
+    caseName: LegoBlockTopPanelHole
+    position: 60, 620
+    size: 160, 90
+  - type: Association
+    startPrimitive: LegoSocketStandard
+    endPrimitive: LegoBlockTopPanel
+    startRole: +SocketStandard
+    points:
+      - 120, 350
+      - 120, 460
+  - type: Association
+    startPrimitive: LegoPanelAngle
+    endPrimitive: LegoBlockCustomPanel
+    startRole: +PanelAngle
+    points:
+      - 210, 790
+      - 410, 790

@@ -1,0 +1,37 @@
+name: МедведьE
+properties:
+  - name: ПорядковыйНомер
+    caption: Порядковый номер
+  - name: Вес
+    caption: Вес
+  - name: ЦветГлаз
+    caption: Цвет глаз
+  - name: Пол
+    caption: Пол
+  - name: ДатаРождения
+    caption: Дата рождения
+  - name: Мама
+    caption: Мама
+    isMaster: true
+  - name: Мама.ЦветГлаз
+    caption: Цвет глаз
+  - name: Мама.Вес
+  - name: Папа
+    caption: Папа
+    isMaster: true
+  - name: Папа.ЦветГлаз
+    caption: Цвет глаз
+  - name: Папа.Вес
+  - name: ЛесОбитания
+    caption: Лес обитания
+    isMaster: true
+  - name: ЛесОбитания.Название
+    caption: Название
+  - name: ПолеБС
+  - name: СтранаРождения
+    isMaster: true
+  - name: СтранаРождения.Название
+details:
+  - name: Берлога
+    viewName: БерлогаE
+    caption: Берлога

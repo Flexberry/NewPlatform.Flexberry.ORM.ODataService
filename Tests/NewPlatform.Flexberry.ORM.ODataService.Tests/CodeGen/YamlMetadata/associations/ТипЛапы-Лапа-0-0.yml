@@ -1,0 +1,4 @@
+startClassName: ТипЛапы
+startMultiplicity: 0..1
+endClassName: Лапа
+endMultiplicity: '*'

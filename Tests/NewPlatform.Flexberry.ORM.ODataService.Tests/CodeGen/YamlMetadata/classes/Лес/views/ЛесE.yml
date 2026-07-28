@@ -1,0 +1,15 @@
+name: ЛесE
+properties:
+  - name: Название
+    caption: Название
+  - name: Площадь
+    caption: Площадь
+  - name: Заповедник
+    caption: Заповедник
+  - name: ДатаПоследнегоОсмотра
+    caption: Дата последнего осмотра
+  - name: Страна
+    caption: Страна
+    isMaster: true
+  - name: Страна.Название
+    caption: Название

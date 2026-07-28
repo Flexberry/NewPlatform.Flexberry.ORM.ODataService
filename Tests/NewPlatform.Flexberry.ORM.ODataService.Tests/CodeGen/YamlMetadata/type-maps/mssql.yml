@@ -1,0 +1,78 @@
+bool:
+  typeName: BIT
+byte:
+  typeName: TINYINT
+char:
+  typeName: TINYINT
+DateTime:
+  typeName: DATETIME
+decimal:
+  typeName: DECIMAL
+double:
+  typeName: FLOAT
+float:
+  typeName: REAL
+Geography:
+  typeName: geography
+guid:
+  typeName: UNIQUEIDENTIFIER
+int:
+  typeName: INT
+long:
+  typeName: INT
+NullableDateTime:
+  typeName: DATETIME
+NullableDecimal:
+  typeName: DECIMAL
+NullableInt:
+  typeName: INT
+object:
+  typeName: LONGVARBINARY
+sbyte:
+  typeName: TINYINT
+short:
+  typeName: SMALLINT
+StormnetBlob:
+  typeName: NVARCHAR(MAX)
+StormnetContact:
+  typeName: NVARCHAR(MAX)
+StormnetEvent:
+  typeName: NVARCHAR(MAX)
+StormnetFile:
+  typeName: NVARCHAR(MAX)
+StormnetGeoData:
+  typeName: NVARCHAR(MAX)
+StormnetImage:
+  typeName: NVARCHAR(MAX)
+StormnetKeyGuid:
+  typeName: UNIQUEIDENTIFIER
+StormnetNullableDateTime:
+  typeName: DATETIME
+StormnetNullableDecimal:
+  typeName: DECIMAL
+StormnetNullableInt:
+  typeName: INT
+StormnetPartliedDate:
+  typeName: VARCHAR(255)
+StormnetWebFile:
+  typeName: NVARCHAR(MAX)
+string:
+  typeName: VARCHAR(255)
+stringMax:
+  typeName: NVARCHAR(MAX)
+SystemNullableDateTime:
+  typeName: DATETIME
+SystemNullableDecimal:
+  typeName: DECIMAL
+SystemNullableGuid:
+  typeName: UNIQUEIDENTIFIER
+SystemNullableInt:
+  typeName: INT
+uint:
+  typeName: INT
+ulong:
+  typeName: INT
+ushort:
+  typeName: SMALLINT
+WebFile:
+  typeName: NVARCHAR(MAX)

@@ -1,0 +1,6 @@
+name: TestMaster
+attributes:
+  - name: TestMasterName
+    type: string
+    order: 1
+    isNullable: true

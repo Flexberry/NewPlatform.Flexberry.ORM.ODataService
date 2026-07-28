@@ -1,0 +1,4 @@
+startClassName: Кошка
+startMultiplicity: 1
+endClassName: Котенок
+endMultiplicity: '*'

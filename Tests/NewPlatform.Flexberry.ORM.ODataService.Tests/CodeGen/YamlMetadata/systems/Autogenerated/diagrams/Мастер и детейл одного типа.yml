@@ -1,0 +1,28 @@
+diagramType: CAD
+name: Мастер и детейл одного типа
+primitives:
+  - type: CADClass
+    caseName: AgregatorSameMD
+    position: 286, 141
+    size: 245, 66
+  - type: CADClass
+    caseName: DetailAndMaster
+    position: 312, 356
+    size: 130, 78
+  - type: Composition
+    startPrimitive: AgregatorSameMD
+    endPrimitive: DetailAndMaster
+    startRole: +Agregator
+    endRole: +Details
+    points:
+      - 370, 190
+      - 372, 391
+  - type: Association
+    startPrimitive: DetailAndMaster
+    endPrimitive: AgregatorSameMD
+    startRole: +Master
+    points:
+      - 430, 400
+      - 552, 399
+      - 545, 190
+      - 507, 189

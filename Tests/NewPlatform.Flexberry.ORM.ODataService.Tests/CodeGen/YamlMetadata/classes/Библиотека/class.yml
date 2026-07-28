@@ -1,0 +1,6 @@
+name: Библиотека
+attributes:
+  - name: Адрес
+    type: string
+    order: 1
+    isNullable: true

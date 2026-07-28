@@ -1,0 +1,6 @@
+name: Детейл2
+attributes:
+  - name: prop2
+    type: string
+    order: 1
+    isNullable: true

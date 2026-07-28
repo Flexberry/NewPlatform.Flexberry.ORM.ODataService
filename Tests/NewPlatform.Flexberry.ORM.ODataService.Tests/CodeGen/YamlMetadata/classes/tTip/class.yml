@@ -1,0 +1,27 @@
+name: tTip
+stereotype: «enumeration»
+attributes:
+  - name: sedan
+    order: 1
+    isNullable: true
+  - name: cabriolet
+    order: 2
+    isNullable: true
+  - name: coupe
+    order: 3
+    isNullable: true
+  - name: pickup
+    order: 4
+    isNullable: true
+  - name: crossover
+    order: 5
+    isNullable: true
+  - name: limousine
+    order: 6
+    isNullable: true
+  - name: roadster
+    order: 7
+    isNullable: true
+  - name: minivan
+    order: 8
+    isNullable: true

@@ -1,0 +1,6 @@
+name: AgrClass2
+attributes:
+  - name: AgrCl2Name
+    type: string
+    order: 1
+    isNullable: true

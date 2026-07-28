@@ -1,0 +1,11 @@
+name: LegoPanelAngle
+publishName: LegoPanelAngle
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true
+  - name: Angle
+    type: int
+    order: 2
+    isNullable: true

@@ -1,0 +1,6 @@
+name: Мастер
+attributes:
+  - name: prop
+    type: string
+    order: 1
+    isNullable: true

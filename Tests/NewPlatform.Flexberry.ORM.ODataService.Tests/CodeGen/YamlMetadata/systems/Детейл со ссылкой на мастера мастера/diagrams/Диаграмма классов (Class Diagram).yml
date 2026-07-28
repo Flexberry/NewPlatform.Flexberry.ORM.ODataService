@@ -1,0 +1,47 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: CADClass
+    caseName: MainClass
+    position: 260, 170
+    size: 100, 90
+  - type: CADClass
+    caseName: DetailsClass2
+    position: 820, 490
+    size: 150, 90
+  - type: CADClass
+    caseName: AgrClass2
+    position: 540, 490
+    size: 140, 90
+  - type: CADClass
+    caseName: DetailsClass1
+    position: 810, 160
+    size: 150, 90
+  - type: CADClass
+    caseName: AgrClass1
+    position: 540, 170
+    size: 140, 90
+  - type: Composition
+    startPrimitive: AgrClass2
+    endPrimitive: DetailsClass2
+    points:
+      - 620, 530
+      - 840, 530
+  - type: Composition
+    startPrimitive: AgrClass1
+    endPrimitive: DetailsClass1
+    points:
+      - 620, 210
+      - 830, 210
+  - type: Association
+    startPrimitive: DetailsClass2
+    endPrimitive: DetailsClass1
+    points:
+      - 870, 510
+      - 870, 230
+  - type: Association
+    startPrimitive: AgrClass1
+    endPrimitive: MainClass
+    points:
+      - 570, 210
+      - 310, 210

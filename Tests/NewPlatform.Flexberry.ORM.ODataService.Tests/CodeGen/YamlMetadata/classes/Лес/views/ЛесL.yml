@@ -1,0 +1,12 @@
+name: ЛесL
+properties:
+  - name: Название
+    caption: Название
+  - name: Площадь
+    caption: Площадь
+  - name: Заповедник
+    caption: Заповедник
+  - name: ДатаПоследнегоОсмотра
+    caption: Дата последнего осмотра
+  - name: Страна.Название
+    caption: Название

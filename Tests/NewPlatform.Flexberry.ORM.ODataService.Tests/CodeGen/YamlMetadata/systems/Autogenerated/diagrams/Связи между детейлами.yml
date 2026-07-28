@@ -1,0 +1,79 @@
+diagramType: CAD
+name: Связи между детейлами
+primitives:
+  - type: CADClass
+    caseName: FirstLevel
+    position: 238, 125
+    size: 107, 66
+  - type: CADClass
+    caseName: SecondLevel1
+    position: 193, 269
+    size: 116, 66
+  - type: CADClass
+    caseName: SecondLevel2
+    position: 337, 268
+    size: 116, 66
+  - type: CADClass
+    caseName: ThirdLevel
+    position: 208, 489
+    size: 107, 66
+  - type: Composition
+    startPrimitive: FirstLevel
+    endPrimitive: SecondLevel1
+    points:
+      - 260, 180
+      - 259, 311
+  - type: Composition
+    startPrimitive: FirstLevel
+    endPrimitive: SecondLevel2
+    points:
+      - 340, 180
+      - 342, 308
+  - type: Association
+    startPrimitive: SecondLevel1
+    endPrimitive: SecondLevel2
+    points:
+      - 300, 280
+      - 374, 279
+  - type: Association
+    startPrimitive: SecondLevel1
+    endPrimitive: SecondLevel2
+    points:
+      - 300, 320
+      - 374, 320
+  - type: CADClass
+    caseName: TestConfiguration
+    position: 222, 0
+    size: 137, 66
+  - type: CADClass
+    caseName: TestClass
+    position: 194, 374
+    size: 107, 66
+  - type: Composition
+    startPrimitive: TestClass
+    endPrimitive: ThirdLevel
+    points:
+      - 250, 430
+      - 252, 532
+  - type: Inheritance
+    startPrimitive: SecondLevel1
+    endPrimitive: TestClass
+    points:
+      - 250, 320
+      - 253, 405
+  - type: Composition
+    startPrimitive: TestConfiguration
+    endPrimitive: FirstLevel
+    points:
+      - 300, 60
+      - 301, 176
+  - type: CADClass
+    caseName: TestAssociation
+    position: 344, 373
+    size: 127, 66
+  - type: Inheritance
+    startPrimitive: SecondLevel2
+    endPrimitive: TestAssociation
+    points:
+      - 410, 310
+      - 412, 412

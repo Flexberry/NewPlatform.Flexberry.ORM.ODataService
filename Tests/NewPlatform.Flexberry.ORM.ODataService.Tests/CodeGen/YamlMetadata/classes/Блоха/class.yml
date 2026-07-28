@@ -1,0 +1,6 @@
+name: Блоха
+attributes:
+  - name: Кличка
+    type: string
+    order: 1
+    isNullable: true

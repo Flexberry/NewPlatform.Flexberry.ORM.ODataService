@@ -1,0 +1,18 @@
+name: МедведьL
+properties:
+  - name: ПорядковыйНомер
+    caption: Порядковый номер
+  - name: Вес
+    caption: Вес
+  - name: ЦветГлаз
+    caption: Цвет глаз
+  - name: Пол
+    caption: Пол
+  - name: ДатаРождения
+    caption: Дата рождения
+  - name: Мама.ЦветГлаз
+    caption: Цвет глаз
+  - name: Папа.ЦветГлаз
+    caption: Цвет глаз
+  - name: ЛесОбитания.Название
+    caption: Название

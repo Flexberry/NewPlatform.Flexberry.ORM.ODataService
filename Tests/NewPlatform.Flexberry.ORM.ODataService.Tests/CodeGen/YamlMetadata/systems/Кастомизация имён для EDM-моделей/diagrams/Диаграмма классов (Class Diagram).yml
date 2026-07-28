@@ -1,0 +1,77 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: CADClass
+    caseName: ДетейлНаследник
+    position: 280, 20
+    size: 130, 90
+  - type: CADClass
+    caseName: БазовыйКласс
+    position: 40, 170
+    size: 130, 90
+  - type: CADClass
+    caseName: Детейл
+    position: 280, 170
+    size: 100, 90
+  - type: Inheritance
+    startPrimitive: Детейл
+    endPrimitive: ДетейлНаследник
+    points:
+      - 330, 190
+      - 330, 90
+  - type: Association
+    startPrimitive: Мастер2
+    endPrimitive: Мастер
+    points:
+      - 530, 400
+      - 370, 400
+  - type: Association
+    startPrimitive: Мастер
+    endPrimitive: Наследник
+    points:
+      - 280, 400
+      - 150, 400
+  - type: CADClass
+    caseName: Наследник
+    position: 40, 360
+    size: 130, 90
+  - type: Composition
+    startPrimitive: БазовыйКласс
+    endPrimitive: Детейл
+    points:
+      - 150, 200
+      - 290, 200
+  - type: Inheritance
+    startPrimitive: БазовыйКласс
+    endPrimitive: Наследник
+    points:
+      - 100, 260
+      - 100, 360
+  - type: Composition
+    startPrimitive: Детейл
+    endPrimitive: Детейл2
+    points:
+      - 370, 240
+      - 540, 240
+  - type: Association
+    startPrimitive: Master
+    endPrimitive: Наследник
+    points:
+      - 130, 520
+      - 130, 450
+  - type: CADClass
+    caseName: Мастер
+    position: 280, 360
+    size: 100, 90
+  - type: CADClass
+    caseName: Детейл2
+    position: 530, 180
+    size: 100, 90
+  - type: CADClass
+    caseName: Master
+    position: 80, 520
+    size: 100, 90
+  - type: CADClass
+    caseName: Мастер2
+    position: 530, 360
+    size: 100, 90

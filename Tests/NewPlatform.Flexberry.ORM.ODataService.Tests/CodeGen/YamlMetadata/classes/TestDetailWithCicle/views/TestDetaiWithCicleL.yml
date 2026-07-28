@@ -1,0 +1,9 @@
+name: TestDetaiWithCicleL
+properties:
+  - name: TestDetailName
+  - name: TestMaster
+    isMaster: true
+  - name: TestMaster.TestMasterName
+  - name: Parent
+    isMaster: true
+  - name: Parent.TestDetailName

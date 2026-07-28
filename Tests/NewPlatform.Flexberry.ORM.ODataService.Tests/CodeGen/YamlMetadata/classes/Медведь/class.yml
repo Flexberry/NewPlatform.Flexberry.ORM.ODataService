@@ -1,0 +1,82 @@
+name: Медведь
+description: >-
+  Медведь
+
+  Аудит включен для тестирования оффлайн-сервиса аудита в OData.
+caption: Медведь
+businessServerClass: BearBS
+auditEnabled: true
+addAuditFields: true
+useDefaultView: true
+insertAudit: true
+deleteAudit: true
+updateAudit: true
+selectAudit: true
+attributes:
+  - name: ПолеБС
+    type: string
+    order: 1
+    isNullable: true
+  - name: ПорядковыйНомер
+    type: int
+    order: 2
+    isNullable: true
+  - name: Вес
+    type: int
+    order: 3
+    isNullable: true
+  - name: ЦветГлаз
+    type: string
+    order: 4
+    isNullable: true
+  - name: Пол
+    type: tПол
+    order: 5
+    isNullable: true
+  - name: ДатаРождения
+    type: NullableDateTime
+    order: 6
+    isNullable: true
+  - name: МедведьСтрокой
+    type: string
+    notStored: true
+    stored: false
+    order: 7
+    isNullable: true
+    dataServiceExpression:
+      - dataServiceName: ICSSoft.STORMNET.Business.MSSQLDataService
+        data: "'ПорядковыйНомер:' + @ПорядковыйНомер@ + \", Цвет глаз мамы:\" + isnull(@Мама.ЦветГлаз@,'')"
+  - name: ВычислимоеПоле
+    type: int
+    notStored: true
+    stored: false
+    defaultValue: 0
+    order: 8
+    isNullable: true
+    dataServiceExpression:
+      - dataServiceName: ICSSoft.STORMNET.Business.MSSQLDataService
+        data: '@ПорядковыйНомер@ + @Вес@'
+  - name: CreateTime
+    type: AuditNullableDateTime
+    description: Время создания объекта
+    order: 9
+    isNullable: true
+    caption: Создание
+  - name: Creator
+    type: string
+    description: Создатель объекта
+    order: 10
+    isNullable: true
+    caption: Создатель
+  - name: EditTime
+    type: AuditNullableDateTime
+    description: Время последнего редактирования объекта
+    order: 11
+    isNullable: true
+    caption: Редактирование
+  - name: Editor
+    type: string
+    description: Последний редактор объекта
+    order: 12
+    isNullable: true
+    caption: Редактор

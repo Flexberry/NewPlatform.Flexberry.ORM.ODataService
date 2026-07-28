@@ -1,0 +1,26 @@
+diagramType: CAD
+name: Диаграмма классов (Class Diagram)
+primitives:
+  - type: Composition
+    startPrimitive: Driver
+    endPrimitive: Car
+    points:
+      - 400, 200
+      - 400, 320
+  - type: CADClass
+    caseName: Driver
+    position: 350, 90
+    size: 120, 120
+  - type: CADClass
+    caseName: CarBS
+    position: 150, 230
+    size: 120, 40
+    fillColor: '#FF80FFFF'
+  - type: CADClass
+    caseName: Car
+    position: 340, 300
+    size: 140, 160
+  - type: CADClass
+    caseName: tTip
+    position: 570, 290
+    size: 100, 180

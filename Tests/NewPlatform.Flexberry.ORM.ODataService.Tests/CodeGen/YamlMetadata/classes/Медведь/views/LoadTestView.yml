@@ -1,0 +1,13 @@
+name: LoadTestView
+description: Представление для работы тестов на загрузку объектов.
+properties:
+  - name: ЛесОбитания
+    isMaster: true
+  - name: ЛесОбитания.Заповедник
+  - name: Мама
+    isMaster: true
+  - name: Мама.ЦветГлаз
+  - name: Вес
+details:
+  - name: Берлога
+    viewName: LoadTestView

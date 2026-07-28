@@ -1,0 +1,6 @@
+name: Master
+attributes:
+  - name: property
+    type: string
+    order: 1
+    isNullable: true

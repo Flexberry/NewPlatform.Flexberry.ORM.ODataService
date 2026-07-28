@@ -1,0 +1,11 @@
+name: LegoBlockColor
+publishName: LegoBlockColor
+attributes:
+  - name: Name
+    type: string
+    order: 1
+    isNullable: true
+  - name: ColorNumber
+    type: int
+    order: 2
+    isNullable: true

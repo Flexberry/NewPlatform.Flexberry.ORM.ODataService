@@ -1,0 +1,39 @@
+diagramType: CAD
+name: Наследники
+primitives:
+  - type: CADClass
+    caseName: /Child
+    position: 80, 30
+    size: 290, 90
+  - type: CADClass
+    caseName: Daughter
+    position: 80, 190
+    size: 120, 90
+  - type: CADClass
+    caseName: Son
+    position: 220, 190
+    size: 160, 90
+  - type: CADClass
+    caseName: Person
+    position: 600, 30
+    size: 100, 90
+  - type: Composition
+    startPrimitive: Person
+    endPrimitive: /Child
+    startRole: +Parent
+    endRole: +Childrens
+    points:
+      - 610, 70
+      - 130, 70
+  - type: Inheritance
+    startPrimitive: /Child
+    endPrimitive: Daughter
+    points:
+      - 150, 100
+      - 150, 210
+  - type: Inheritance
+    startPrimitive: /Child
+    endPrimitive: Son
+    points:
+      - 290, 120
+      - 290, 220

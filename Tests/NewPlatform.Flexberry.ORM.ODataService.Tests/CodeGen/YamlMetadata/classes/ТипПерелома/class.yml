@@ -1,0 +1,9 @@
+name: ТипПерелома
+stereotype: «enumeration»
+attributes:
+  - name: Открытый
+    order: 1
+    isNullable: true
+  - name: Закрытый
+    order: 2
+    isNullable: true

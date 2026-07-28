@@ -1,0 +1,8 @@
+name: ViewFull
+properties:
+  - name: Ссылка
+    caption: Ссылка
+    lookupType: standard
+  - name: Мастер
+    caption: Мастер
+    isMaster: true

@@ -1,0 +1,5 @@
+name: ДетейлНаследникE
+properties:
+  - name: prop1
+  - name: БазовыйКласс
+    isMaster: true

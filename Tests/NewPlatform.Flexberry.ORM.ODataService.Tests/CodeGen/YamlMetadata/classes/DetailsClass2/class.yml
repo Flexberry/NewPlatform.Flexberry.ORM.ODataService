@@ -1,0 +1,6 @@
+name: DetailsClass2
+attributes:
+  - name: DetailCl2Name
+    type: string
+    order: 1
+    isNullable: true

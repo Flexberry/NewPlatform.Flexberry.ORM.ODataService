@@ -1,0 +1,8 @@
+name: AllData
+properties:
+  - name: Number
+    caption: Number
+  - name: Model
+    caption: Model
+  - name: TipCar
+    caption: TipCar

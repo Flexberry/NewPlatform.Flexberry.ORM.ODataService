@@ -1,0 +1,19 @@
+name: LegoBlock
+publishName: LegoBlock
+attributes:
+  - name: Width
+    type: int
+    order: 1
+    isNullable: true
+  - name: Height
+    type: int
+    order: 2
+    isNullable: true
+  - name: Depth
+    type: int
+    order: 3
+    isNullable: true
+  - name: Configuration
+    type: string
+    order: 4
+    isNullable: true

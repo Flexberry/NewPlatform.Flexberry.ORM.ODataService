@@ -1,0 +1,6 @@
+type: Aggregation
+startClassName: FirstLevel
+startMultiplicity: 1
+endClassName: SecondLevel1
+endMultiplicity: '*'
+storage: FirstLevel

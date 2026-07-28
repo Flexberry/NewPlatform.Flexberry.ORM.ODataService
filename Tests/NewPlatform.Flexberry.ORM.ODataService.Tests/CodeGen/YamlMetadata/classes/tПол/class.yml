@@ -1,0 +1,14 @@
+name: tПол
+stereotype: «enumeration»
+description: Пол
+caption: Пол
+attributes:
+  - name: Мужской
+    order: 1
+    isNullable: true
+  - name: Женский
+    order: 2
+    isNullable: true
+  - name: НеПонятно
+    order: 3
+    isNullable: true

@@ -1,0 +1,6 @@
+name: Автор
+attributes:
+  - name: Имя
+    type: string
+    order: 1
+    isNullable: true

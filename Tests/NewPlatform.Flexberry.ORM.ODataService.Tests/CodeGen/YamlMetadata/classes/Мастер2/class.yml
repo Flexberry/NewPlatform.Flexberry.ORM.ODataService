@@ -1,0 +1,6 @@
+name: Мастер2
+attributes:
+  - name: свойство2
+    type: int
+    order: 1
+    isNullable: true

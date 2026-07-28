@@ -1,0 +1,6 @@
+name: ПоставщикКниг
+attributes:
+  - name: Ссылка
+    type: guid
+    order: 1
+    isNullable: true

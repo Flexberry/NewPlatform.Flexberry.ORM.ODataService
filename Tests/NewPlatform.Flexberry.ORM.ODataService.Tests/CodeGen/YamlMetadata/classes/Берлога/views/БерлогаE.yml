@@ -1,0 +1,25 @@
+name: БерлогаE
+properties:
+  - name: Наименование
+    caption: Наименование
+  - name: Комфортность
+    caption: Комфортность
+  - name: Заброшена
+    caption: Заброшена
+  - name: ЛесРасположения
+    caption: Лес расположения
+    isMaster: true
+    lookupType: standard
+    masterPropertyName: Название
+  - name: ЛесРасположения.Название
+    caption: Название
+    visible: false
+  - name: Медведь
+    caption: Медведь
+    visible: false
+    isMaster: true
+  - name: ПолеБС
+  - name: Сертификат
+    visible: false
+  - name: СертификатСтрока
+    visible: false

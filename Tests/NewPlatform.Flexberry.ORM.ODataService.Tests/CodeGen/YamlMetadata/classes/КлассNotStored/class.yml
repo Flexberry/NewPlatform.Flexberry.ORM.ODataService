@@ -1,0 +1,7 @@
+name: КлассNotStored
+stored: false
+attributes:
+  - name: StrAttr
+    type: string
+    order: 1
+    isNullable: true

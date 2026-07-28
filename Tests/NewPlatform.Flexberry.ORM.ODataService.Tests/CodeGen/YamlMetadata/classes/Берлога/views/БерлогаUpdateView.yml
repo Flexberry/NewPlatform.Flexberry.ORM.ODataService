@@ -1,0 +1,9 @@
+name: БерлогаUpdateView
+properties:
+  - name: Наименование
+    caption: Наименование
+  - name: Комфортность
+    caption: Комфортность
+  - name: Заброшена
+    caption: Заброшена
+  - name: ПолеБС

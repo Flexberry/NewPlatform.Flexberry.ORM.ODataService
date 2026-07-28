@@ -1,0 +1,10 @@
+name: Котенок
+attributes:
+  - name: КличкаКотенка
+    type: string
+    order: 1
+    isNullable: true
+  - name: Глупость
+    type: int
+    order: 2
+    isNullable: true
